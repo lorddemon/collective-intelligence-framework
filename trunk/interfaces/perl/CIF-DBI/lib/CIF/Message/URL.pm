@@ -8,7 +8,7 @@ use XML::IODEF;
 use Digest::SHA1 qw(sha1_hex);
 use Digest::MD5 qw(md5_hex);
 
-__PACKAGE__->table('inet');
+__PACKAGE__->table('urls');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid description address impact source url_md5 url_sha1 malware_md5 malware_sha1 confidence severity restriction tsv detecttime reporttime created/);
 __PACKAGE__->columns(Essential => qw/id uuid description address restriction created/);
