@@ -1,0 +1,42 @@
+<%ARGS>
+$reporttime => undef
+$format => 'text' 
+</%ARGS>
+<%INIT>
+use RT::Interface::REST;
+use CIF::Message::Infrastructure;
+use RT::CIF;
+
+my $status = '200 Ok';
+my $output;
+$format = $m->dhandler_arg() if($m->dhandler_arg());
+
+my $hash;
+my @recs;
+
+if($reporttime){
+    CIF::Message::Infrastructure->set_sql('custom', qq{
+        SELECT * FROM infrastructure
+        WHERE reporttime >= ?
+        ORDER BY reporttime DESC
+    });
+    @recs = CIF::Message::Infrastructure->search_custom($reporttime);
+} else {
+    @recs = CIF::Message::Infrastructure->retrieve_all();
+}
+
+foreach my $rec (@recs){
+    next if(RT::CIF::isPrivateAddress($rec->address()));
+    next if(exists($hash->{$rec->address()}));
+    $hash->{$rec->address()} = $rec;
+    $hash->{$rec->address()}->{'asn'} = $rec->asn() || 0;
+}
+
+$output = eval { $m->comp('/REST/1.0/cif/output/inet/'.$format, recs => $hash) };
+if($@){
+    $output = $m->comp('/REST/1.0/cif/output/inet/text', recs => $hash);
+}
+
+$m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
+$m->out($output);
+</%INIT>

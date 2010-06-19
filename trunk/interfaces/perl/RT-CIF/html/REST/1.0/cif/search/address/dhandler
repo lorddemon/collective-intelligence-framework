@@ -1,0 +1,32 @@
+<%ARGS>
+$order       => 'DESC'
+$format     => 't'
+</%ARGS>
+<%INIT>
+use RT::Interface::REST;
+use CIF::Message::Inet;
+use CIF::Message::Structured;
+use Text::Table;
+
+my $output = "";
+my $status = "200 Ok";
+my $arg = $m->dhandler_arg();
+
+CIF::Message::Inet->set_sql('within' => qq{
+    SELECT * FROM inet 
+    WHERE address <<= ?
+    ORDER BY id DESC
+});
+
+my @recs = CIF::Message::Inet->search_within($arg);
+
+if($format eq 't'){
+    $output = $m->comp('text', recs => \@recs);
+} elsif($format eq 'xml'){
+    $output = $m->comp('../xml', recs => \@recs);
+}
+
+$m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
+
+$m->out($output );
+</%INIT>

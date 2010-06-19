@@ -1,0 +1,5 @@
+INSTALLATION
+
+1. #> perl Makefile.PL
+2. #> make
+3. #> make install

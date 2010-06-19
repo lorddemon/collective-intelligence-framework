@@ -1,0 +1,42 @@
+<%ARGS>
+$reporttime => undef
+$dblimit      => 1500
+$feedlimit      => 500
+</%ARGS>
+<%INIT>
+use RT::Interface::REST;
+use CIF::Message::URL;
+
+my $output = '';
+my $status = '200 Ok';
+my $arg = $m->dhandler_arg();
+
+my @recs;
+if($reporttime){
+    CIF::Message::URL->set_sql('custom', qq{
+        SELECT * FROM urls
+        WHERE reporttime >= ?
+        AND (impact LIKE '$arg%' OR impact LIKE '%$arg%' OR impact like '%$arg')
+        ORDER BY reporttime DESC
+    });
+    @recs = CIF::Message::URL->search_custom($reporttime);
+} else {
+    @recs = CIF::Message::URL->search_like(impact => '%'.$arg.'%');
+}
+
+$status .= ' '.$#recs.'/'.$feedlimit.' (total recs / feed limit)';
+
+my $x = 1;
+my $hash;
+foreach $r (@recs){
+    next if(exists($hash->{$r->address()}));
+    next if(lc($r->impact() eq 'whitelist'));
+    $hash->{$r->address()} = $r;
+    last if($x++ == $feedlimit);
+}
+
+$output = $m->comp('../text', recs => $hash);
+
+$m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
+$m->out($output);
+</%INIT>

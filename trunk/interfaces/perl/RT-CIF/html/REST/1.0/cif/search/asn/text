@@ -1,0 +1,42 @@
+<%ARGS>
+@recs => undef
+</%ARGS>
+
+<%INIT>
+use Text::Table;
+
+my $t = Text::Table->new(
+    { title => '# asn_desc', align => 'left' }, { is_sep => 1, title => ' | ' },
+    "address", { is_sep => 1, title => ' | ' }, 
+    "cidr", { is_sep => 1, title => ' | ' },
+    "description", { is_sep => 1, title => ' | ' },
+    'rir', { is_sep => 1, title => ' | ' },
+    'country', { is_sep => 1, title => ' | ' },
+    'confidence', { is_sep => 1, title => ' | ' },
+    'severity', { is_sep => 1, title => ' | ' },
+    'restriction', { is_sep => 1, title => ' | ' },
+    'reporttime', { is_sep => 1, title => ' | ' },
+    'created', { is_sep => 1, title => ' | ' },
+    'reference',
+);
+
+foreach my $r (@recs){
+    $t->load([
+        $r->asn_desc()  || 'NA',
+        $r->address()   || 'NA',
+        $r->cidr()      || 'NA',
+        $r->description() || 'NA',
+        $r->rir()       || 'NA',
+        $r->cc()        || 'NA',
+        $r->confidence() || 'NA',
+        $r->severity()  || 'NA',
+        $r->restriction()   || 'NA',
+        $r->reporttime()    || 'NA',
+        $r->created(),
+        RT->Config->Get("rtname").'/REST/1.0/cif/uuid/'.$r->uuid(),
+    ]);
+}
+
+return($t);
+
+</%INIT>
