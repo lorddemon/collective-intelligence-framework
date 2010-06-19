@@ -1,0 +1,52 @@
+<%ARGS>
+$reporttime => undef
+$format => 't'
+$feedlimit => 500
+$dblimit => 1500
+</%ARGS>
+<%INIT>
+use RT::Interface::REST;
+use CIF::Message::SuspiciousNetwork;
+use RT::CIF;
+use DateTime;
+use DateTime::Format::DateParse;
+
+my $arg = $m->dhandler_arg() || 'text';
+
+my $status = '200 Ok';
+my $output;
+
+my $hash;
+my @recs;
+
+if($reporttime){
+    @recs = CIF::Message::SuspiciousNetwork->search_history_byreporttime($reporttime);
+} else {
+    @recs = CIF::Message::SuspiciousNetwork->retrieve_all();
+}
+
+$status .= ' '.$#recs.'/'.$feedlimit.' (total recs / feed limit)';
+
+foreach my $rec (@recs){
+    next if(RT::CIF::isPrivateAddress($rec->address()));
+    next if(exists($hash->{$rec->address()}));
+    $hash->{$rec->address()} = $rec;
+    $hash->{$rec->address()}->{'asn'} = $rec->asn() || 0;
+    my $reported = DateTime::Format::DateParse->parse_datetime($rec->reporttime());
+    $hash->{$rec->address()}->{'reported'} = $reported->epoch();
+}
+
+for(lc($arg)){
+    if(/^text$/){
+        $output = $m->comp('/REST/1.0/cif/output/inet/text', recs => $hash);
+        last;
+    }
+    if(/^json$/){
+        $output = $m->comp('/REST/1.0/cif/output/inet/json', recs => $hash);
+        last;
+    }
+}
+
+$m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
+$m->out($output);
+</%INIT>

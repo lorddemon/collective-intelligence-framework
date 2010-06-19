@@ -1,0 +1,32 @@
+<%ARGS>
+$reporttime => undef;
+</%ARGS>
+<%INIT>
+use RT::Interface::REST;
+use CIF::Message::Scanner;
+use RT::CIF;
+
+my $status = '200 Ok';
+my $output;
+
+my $hash;
+my @recs;
+
+if($reporttime){
+    @recs = CIF::Message::Scanner->search_history_byreporttime($reporttime);
+} else {
+    @recs = CIF::Message::Scanner->retrieve_all();
+}
+
+foreach my $rec (@recs){
+    next if(RT::CIF::isPrivateAddress($rec->address()));
+    next if(exists($hash->{$rec->address()}));
+    $hash->{$rec->address()} = $rec;
+    $hash->{$rec->address()}->{'asn'} = $rec->asn() || 0;
+}
+
+$output = $m->comp('../text', recs => $hash);
+
+$m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
+$m->out($output);
+</%INIT>

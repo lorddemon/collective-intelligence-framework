@@ -1,0 +1,72 @@
+<%ARGS>
+$order       => 'DESC'
+$format     => 't'
+</%ARGS>
+<%INIT>
+use RT::Interface::REST;
+use CIF::Message::Domain;
+use CIF::Message::Structured;
+use Text::Table;
+
+my $output = "";
+my $status = "200 Ok";
+my $address = $m->dhandler_arg();
+my @recs = CIF::Message::Domain->search(address => $address);
+
+if($format eq 't'){
+my $t = Text::Table->new(
+    { title => '# asn', align => 'left' }, { is_sep => 1, title => ' | ' },
+    "asn_desc", { is_sep => 1, title => ' | ' },
+    "cidr", { is_sep => 1, title => ' | ' },
+    'description', { is_sep => 1, title => ' | ' },
+    'rdata', { is_sep => 1, title => ' | ' },
+    'rtype', { is_sep => 1, title => ' | ' },
+    'class', { is_sep => 1, title => ' | ' },
+    'ttl', { is_sep => 1, title => ' | ' },
+    'rir', { is_sep => 1, title => ' | ' },
+    'country', { is_sep => 1, title => ' | ' },
+    'confidence', { is_sep => 1, title => ' | ' },
+    'severity', { is_sep => 1, title => ' | ' },
+    'restriction', { is_sep => 1, title => ' | ' },
+    'reporttime', { is_sep => 1, title => ' | ' },
+    'created', { is_sep => 1, title => ' | ' },
+    'reference',
+);
+
+foreach my $r (@recs){
+    my $asn         = $r->asn() || 'NA';
+    my $asn_desc    = $r->asn_desc() || 'NA';
+    my $cidr        = $r->cidr() || 'NA';
+    $t->load([
+        $asn,
+        $asn_desc,   
+        $cidr,
+        $r->description(),
+        $r->rdata() || 'NA',
+        $r->rrtype() || 'NA',
+        $r->class() || 'NA',
+        $r->ttl() || 'NA',
+        $r->rir() || 'NA',
+        $r->cc() || 'NA',
+        $r->confidence() || 'NA',
+        $r->severity() || 'NA',
+        $r->restriction() || 'private',
+        $r->reporttime() || 'NA',
+        $r->created(),
+        RT->Config->Get("rtname").'/REST/1.0/cif/uuid/'.$r->uuid(),
+    ]);
+}
+$output = $t;
+} elsif($format eq 'json') {
+    # post json
+} else {
+    foreach my $r (@recs){
+        my $m = CIF::Message::Structured->retrieve(uuid => $r->uuid());
+        $output .= $m->message();
+    }
+}
+
+$m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
+
+$m->out($output);
+</%INIT>

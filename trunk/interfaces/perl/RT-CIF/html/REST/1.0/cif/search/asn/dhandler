@@ -1,0 +1,36 @@
+<%ARGS>
+$format  => 't'
+$reporttime => undef
+$limit => undef
+</%ARGS>
+<%INIT>
+use RT::Interface::REST;
+use CIF::Message::Inet;
+
+my $output = "";
+my $status = "200 Ok";
+
+my $asn = $m->dhandler_arg();
+
+my @recs;
+if($reporttime){
+    CIF::Message::Inet->set_sql('reporttime', qq{
+        SELECT * FROM inet
+        WHERE asn = ?
+        AND reporttime >= ?
+    });
+
+    @recs = CIF::Message::Inet->search_reporttime($asn,$reporttime);
+} else {
+    @recs = CIF::Message::Inet->search(asn => $asn);
+}
+
+if($format eq 't'){
+    $output = $m->comp('text', recs => \@recs);
+} elsif($format eq 'xml'){
+    $output = $m->comp('../xml', recs => \@recs);
+}
+
+$m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
+$m->out($output);
+</%INIT>

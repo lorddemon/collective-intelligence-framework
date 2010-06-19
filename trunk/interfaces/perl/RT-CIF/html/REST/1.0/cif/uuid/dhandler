@@ -1,0 +1,31 @@
+<%ARGS>
+</%ARGS>
+<%INIT>
+use RT::Interface::REST;
+use CIF::Message;
+
+my $output = "";
+my $status = "200 Ok";
+my $object = $m->dhandler_arg;
+
+my $uuid = $object;
+unless(CIF::Message::isUUID($uuid)){
+    $status = "409 Syntax Error";
+    $output = 'uuid not formatted correctly';
+    goto OUTPUT;
+}
+
+my $r = CIF::Message->retrieve(uuid => $uuid);        
+my $type = $r->type();
+my $msg;
+if($type eq 'structured'){
+    $msg = CIF::Message::Structured->retrieve(uuid => $uuid);
+} else {
+    $msg = CIF::Message::Unstructured->retrieve(uuid => $uuid);
+}
+
+$output = $msg->message();
+
+OUTPUT:
+$m->out("RT/".$RT::VERSION ." ".$status ."\n\n$output\n") if ($output || $status !~ /^200/);
+</%INIT>

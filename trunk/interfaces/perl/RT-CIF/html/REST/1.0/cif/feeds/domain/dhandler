@@ -1,0 +1,41 @@
+<%ARGS>
+$reporttime => undef
+$dblimit      => 1500
+$feedlimit      => 500
+</%ARGS>
+<%INIT>
+use RT::Interface::REST;
+use CIF::Message::Domain;
+
+my $output = '';
+my $status = '200 Ok';
+my $domain = $m->dhandler_arg();
+
+my @recs;
+if($reporttime){
+    @recs = CIF::Message::Domain->search_reporttime($reporttime);
+} else {
+    CIF::Message::Domain->set_sql('custom', qq{
+        SELECT * FROM domains
+        ORDER BY reporttime,created,id DESC
+        LIMIT ?
+    });
+    @recs = CIF::Message::Domain->search_custom($dblimit);
+}
+
+$status .= ' '.$#recs.'/'.$feedlimit.' (total recs / feed limit)';
+
+my $x = 1;
+my $hash;
+foreach $r (@recs){
+    next if(exists($hash->{$r->address()}));
+    next if(lc($r->impact() eq 'whitelist'));
+    $hash->{$r->address()} = $r;
+    last if($x++ == $feedlimit);
+}
+
+$output = $m->comp('text', recs => $hash);
+
+$m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
+$m->out($output);
+</%INIT>

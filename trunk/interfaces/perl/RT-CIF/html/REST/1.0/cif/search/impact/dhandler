@@ -1,0 +1,22 @@
+<%INIT>
+use RT::Interface::REST;
+use CIF::Message;
+
+my $output = "";
+my $status = "200 Ok";
+
+my $arg = $m->dhandler_arg();
+unless($arg){
+    $status = '409 Syntax Error';
+    $output = 'no impact defined';
+    goto OUTPUT;
+}
+
+my @r = CIF::Message->search_like(impact => '%'.$arg.'%');
+
+$output = $m->comp('text', recs => \@r);
+
+OUTPUT:
+$m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
+$m->out($output);
+</%INIT>
