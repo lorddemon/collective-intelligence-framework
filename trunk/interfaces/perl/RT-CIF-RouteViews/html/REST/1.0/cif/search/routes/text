@@ -1,0 +1,38 @@
+<%ARGS>
+@recs => undef
+</%ARGS>
+
+<%INIT>
+use Text::Table;
+
+my $t = Text::Table->new(
+    { title => '# asn', align => 'left' }, { is_sep => 1, title => ' | ' },
+    "asn_desc", { is_sep => 1, title => ' | ' }, 
+    "cc", { is_sep => 1, title => ' | ' },
+    "rir", { is_sep => 1, title => ' | ' },
+    'prefix', { is_sep => 1, title => ' | ' },
+    'cidr', { is_sep => 1, title => ' | ' },
+    'peer', { is_sep => 1, title => ' | ' },
+    'peer_desc', { is_sep => 1, title => ' | ' },
+    'reporttime', { is_sep => 1, title => ' | ' },
+    'created', { is_sep => 1, title => ' | ' },
+);
+
+foreach my $r (@recs){
+    $t->load([
+        $r->asn()  || 'NA',
+        $r->asn_desc()   || 'NA',
+        $r->cc()      || 'NA',
+        $r->rir() || 'NA',
+        $r->prefix()       || 'NA',
+        $r->cidr()        || 'NA',
+        $r->peer() || 'NA',
+        $r->peer_desc()  || 'NA',
+        $r->reporttime()    || 'NA',
+        $r->created(),
+    ]);
+}
+
+return($t);
+
+</%INIT>
