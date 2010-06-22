@@ -5,7 +5,7 @@ $format     => 'text'
 </%ARGS>
 <%INIT>
 use RT::Interface::REST;
-use CIF::Message::Inet;
+use CIF::Message::URL;
 
 my $output = '';
 my $status = '200 Ok';
@@ -23,14 +23,20 @@ if($detecttime){
 }
 
 if($arg){
-    $sql .= "asn = '$arg'";
+    if($arg =~ /^[a-zA-Z0-9]{32}$/){
+        $sql .= "url_md5 = '$arg'";
+    } elsif($arg =~ /^[a-zA-Z0-9]{40}$/){
+        $sql .= "url_sha1 = '$arg'";
+    } else {
+        $sql .= "address = '$arg'";
+    }
 }
 
 $sql =~ s/ AND $//;
 
 $sql .= " ORDER BY detecttime,created,id DESC LIMIT $qlimit";
 
-my @recs = CIF::Message::Inet->retrieve_from_sql($sql);
+my @recs = CIF::Message::URL->retrieve_from_sql($sql);
 
 $status .= ' '.($#recs + 1).'/'.$qlimit.' (total recs / query limit)';
 

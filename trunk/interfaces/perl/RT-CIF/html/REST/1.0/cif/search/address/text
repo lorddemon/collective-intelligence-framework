@@ -14,7 +14,7 @@ my $t = Text::Table->new(
     'confidence', { is_sep => 1, title => ' | ' },
     'severity', { is_sep => 1, title => ' | ' },
     'restriction', { is_sep => 1, title => ' | ' },
-    'reporttime', { is_sep => 1, title => ' | ' },
+    'detecttime', { is_sep => 1, title => ' | ' },
     'created', { is_sep => 1, title => ' | ' },
     'reference',
 );
@@ -30,7 +30,7 @@ foreach my $r (@recs){
         $r->confidence()    || 'NA',
         $r->severity()      || 'NA',
         $r->restriction()   || 'private',
-        $r->reporttime()    || 'NA',
+        $r->detecttime()    || 'NA',
         $r->created()       || 'NA',
         RT->Config->Get("rtname").'/REST/1.0/cif/uuid/'.$r->uuid(),
     ]);
