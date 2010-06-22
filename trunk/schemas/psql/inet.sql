@@ -11,7 +11,7 @@ DROP TABLE inet;
 CREATE TABLE inet (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     uuid uuid REFERENCES messages(uuid) ON DELETE CASCADE NOT NULL,
-    description VARCHAR(140),
+    description text,
     impact VARCHAR(140),
     address INET NOT NULL,
     cidr INET,
@@ -25,10 +25,11 @@ CREATE TABLE inet (
     source uuid NOT NULL,
     severity VARCHAR(6) CHECK (severity IN ('low','medium','high')),
     restriction VARCHAR(16) CHECK (restriction IN ('default','private','need-to-know','public')) DEFAULT 'private' NOT NULL,
+    alternativeid text,
+    alternativeid_restriction VARCHAR(16) CHECK (restriction IN ('default','private','need-to-know','public')) DEFAULT 'private' NOT NULL,
     whois text,
     tsv tsvector,
     detecttime timestamp with time zone,
-    reporttime timestamp with time zone,
     created timestamp with time zone DEFAULT NOW()
 );
 

@@ -4,7 +4,7 @@ DROP TABLE urls;
 CREATE TABLE urls (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     uuid uuid REFERENCES messages(uuid) ON DELETE CASCADE NOT NULL,
-    description VARCHAR(140),
+    description text,
     address text,
     url_md5 varchar(32),
     url_sha1 varchar(40),
@@ -15,8 +15,9 @@ CREATE TABLE urls (
     confidence REAL,
     severity VARCHAR(6) CHECK (severity IN ('low','medium','high')),
     restriction VARCHAR(16) CHECK (restriction IN ('default','private','need-to-know','public')) DEFAULT 'private' NOT NULL,
+    alternativeid text,
+    alternativeid_restriction VARCHAR(16) CHECK (restriction IN ('default','private','need-to-know','public')) DEFAULT 'private' NOT NULL,
     detecttime timestamp with time zone,
-    reporttime timestamp with time zone,
     created timestamp with time zone DEFAULT NOW(),
     tsv tsvector,
     UNIQUE (uuid)
