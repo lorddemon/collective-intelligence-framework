@@ -34,7 +34,6 @@ sub insert {
         impact      => $info->{'impact'},
         restriction => $info->{'restriction'},
         detecttime  => $info->{'detecttime'},
-        reporttime  => $info->{'reporttime'},
     }); 
     
     my $id = eval {

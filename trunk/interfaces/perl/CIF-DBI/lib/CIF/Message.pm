@@ -8,7 +8,7 @@ use OSSP::uuid;
 
 __PACKAGE__->table('messages');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid type format source confidence severity description impact restriction detecttime reporttime created/);
+__PACKAGE__->columns(All => qw/id uuid type format source confidence severity description impact restriction detecttime created/);
 __PACKAGE__->columns(Essential => qw/id uuid type created/);
 __PACKAGE__->sequence('messages_id_seq');
 __PACKAGE__->might_have(unstructured => 'CIF::Message::Unstructured');

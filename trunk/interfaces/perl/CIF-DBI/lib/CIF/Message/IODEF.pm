@@ -30,7 +30,6 @@ sub insert {
 
         my $desc = $i->findvalue('//Incident/Description');
         my $restriction = $i->getAttribute('restriction') || 'private';
-        my $reporttime = $i->findvalue('//Incident/ReportTime') || undef;
         my $detecttime = $i->findvalue('//Incident/DetectTime') || undef;
 
         my @confidence = $i->findnodes('//Incident/Assessment/Confidence');
@@ -56,7 +55,6 @@ sub insert {
             description => $desc,
             restriction => $restriction,
             confidence  => $conf,
-            reporttime  => $reporttime,
             detecttime  => $detecttime,
             message     => $iodef->out(),
             impact      => $impact,

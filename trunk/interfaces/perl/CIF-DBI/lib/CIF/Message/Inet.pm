@@ -9,7 +9,7 @@ use CIF::Message::IODEF;
 
 __PACKAGE__->table('inet');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid description impact address cidr asn asn_desc cc rir protocol portlist confidence source severity restriction whois tsv detecttime reporttime created/);
+__PACKAGE__->columns(All => qw/id uuid description impact address cidr asn asn_desc cc rir protocol portlist confidence source severity restriction alternativeid alternativeid_restriction whois tsv detecttime created/);
 __PACKAGE__->columns(Essential => qw/id uuid description address restriction created/);
 __PACKAGE__->has_a(uuid   => 'CIF::Message');
 __PACKAGE__->sequence('inet_id_seq');
@@ -50,8 +50,9 @@ sub insert {
         restriction => $info->{'restriction'} || 'private',
         whois       => $info->{'whois'},
         detecttime  => $info->{'detecttime'},
-        reporttime  => $info->{'reporttime'},
         impact      => $info->{'impact'},
+        alternativeid   => $info->{'alternativeid'},
+        alternativeid_restriction => $info->{'alternativeid_restriction'} || 'private',
     }) };
     if($@){
         die unless($@ =~ /duplicate key value violates unique constraint/);
@@ -94,10 +95,9 @@ sub toIODEF {
     my $whois       = $info->{'whois'};
     my $source      = $info->{'source'};
     my $detecttime  = $info->{'detecttime'};
-    my $reporttime  = $info->{'reporttime'};
     my $relatedid   = $info->{'relatedid'};
-    my $externalid  = $info->{'externalid'};
-    my $externalid_restriction = $info->{'externalid_restriction'} || 'private';
+    my $alternativeid  = $info->{'alternativeid'};
+    my $alternativeid_restriction = $info->{'alternativeid_restriction'} || 'private';
 
     die('source or source uuid required') unless($source);
 
@@ -108,12 +108,11 @@ sub toIODEF {
     if($relatedid){
         $iodef->add('IncidentRelatedActivityIncidentID',$relatedid);
     }
-    if($externalid){
-        $iodef->add('IncidentAlternativeIDIncidentID',$externalid);
-        $iodef->add('IncidentAlternativeIDIncidentIDrestriction',$externalid_restriction);
+    if($alternativeid){
+        $iodef->add('IncidentAlternativeIDIncidentID',$alternativeid);
+        $iodef->add('IncidentAlternativeIDIncidentIDrestriction',$alternativeid_restriction);
     }
 
-    $iodef->add('IncidentReportTime',$reporttime) if($reporttime);
     $iodef->add('IncidentDetectTime',$detecttime) if($detecttime);
     $iodef->add('IncidentAssessmentImpact',$impact);
     $iodef->add('IncidentAssessmentConfidencerating','numeric');
@@ -142,13 +141,6 @@ sub toIODEF {
     }
     return $iodef->out();
 }
-
-__PACKAGE__->set_sql('history_byreporttime', => qq{
-    SELECT *
-    FROM __TABLE__
-    WHERE reporttime >= ?
-    ORDER BY reporttime DESC
-});
 
 __PACKAGE__->set_sql('history_bycreatetime', => qq{
     SELECT *
