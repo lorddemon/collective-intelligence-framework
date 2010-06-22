@@ -8,7 +8,7 @@ use CIF::Message::IODEF;
 
 __PACKAGE__->table('domains');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid description address rrtype rdata cidr asn asn_desc cc rir class ttl whois impact confidence source severity restriction detecttime reporttime created tsv/);
+__PACKAGE__->columns(All => qw/id uuid description address type rdata cidr asn asn_desc cc rir class ttl whois impact confidence source alternativeid alternativeid_restriction severity restriction detecttime created tsv/);
 __PACKAGE__->columns(Essential => qw/id uuid description address rdata impact restriction created/);
 __PACKAGE__->has_a(uuid => 'CIF::Message');
 
@@ -33,7 +33,7 @@ sub insert {
         uuid        => $uuid,
         description => $info->{'description'},
         address     => $info->{'address'},
-        rrtype      => $info->{'rrtype'},
+        type        => $info->{'type'},
         rdata       => $info->{'rdata'},
         cidr        => $info->{'cidr'},
         asn         => $info->{'asn'},
@@ -48,7 +48,8 @@ sub insert {
         severity    => $info->{'severity'},
         restriction => $info->{'restriction'} || 'private',
         detecttime  => $info->{'detecttime'},
-        reporttime  => $info->{'reporttime'},
+        alternativeid => $info->{'alternativeid'},
+        alternativeid_restriction => $info->{'alternativeid_restriction'} || 'private',
     }) };
     if($@){
         die unless($@ =~ /duplicate key value violates unique constraint/);
@@ -70,7 +71,6 @@ sub toIODEF {
     my $restriction = $info->{'restriction'} || 'private';
     my $source      = $info->{'source'};
     my $detecttime    = $info->{'detecttime'};
-    my $reporttime  = $info->{'reporttime'};
     my $relatedid   = $info->{'relatedid'};
     my $rdata       = $info->{'rdata'};
     my $asn         = $info->{'asn'};
@@ -78,21 +78,20 @@ sub toIODEF {
     my $cidr        = $info->{'cidr'};
     my $cc          = $info->{'cc'};
     my $rir         = $info->{'rir'};
-    my $externalid  = $info->{'externalid'};
-    my $externalid_restriction = $info->{'externalid_restriction'} || 'private';
+    my $alternativeid  = $info->{'alternativeid'};
+    my $alternativeid_restriction = $info->{'alternativeid_restriction'} || 'private';
 
     my $iodef = XML::IODEF->new();
     $iodef->add('Incidentrestriction',$restriction);
     $iodef->add('IncidentDescription',$description);
     $iodef->add('IncidentDetectTime',$detecttime) if($detecttime);
-    $iodef->add('IncidentReportTime',$reporttime) if($reporttime);
     $iodef->add('IncidentIncidentIDname',$source);
     if($relatedid){
         $iodef->add('IncidentRelatedActivityIncidentID',$relatedid);
     }
-    if($externalid){
-        $iodef->add('IncidentAlternativeIDIncidentID',$externalid);
-        $iodef->add('IncidentAlternativeIDIncidentIDrestriction',$externalid_restriction);
+    if($alternativeid){
+        $iodef->add('IncidentAlternativeIDIncidentID',$alternativeid);
+        $iodef->add('IncidentAlternativeIDIncidentIDrestriction',$alternativeid_restriction);
     }
     $iodef->add('IncidentAssessmentImpact',$impact);
     $iodef->add('IncidentAssessmentConfidencerating','numeric');
