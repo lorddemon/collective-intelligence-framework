@@ -6,22 +6,33 @@ $format     => 'text'
 </%ARGS>
 <%INIT>
 use RT::Interface::REST;
-use CIF::Message::Scanner;
+use CIF::Message::Infrastructure;
 use RT::CIF;
 
 my $output = '';
 my $status = '200 Ok';
+my $arg = $m->dhandler_arg();
+
+unless($arg){
+    $status = '409 Syntax Error';
+    $output = 'Missing required arguments: arg';
+    goto OUTPUT;
+}
 
 my $sql = '';
 if($detecttime){
-    $sql = "detecttime >= '$detecttime'";
-} else {
-    $sql = '1=1';
+    $sql .= "detecttime >= '$detecttime' AND ";
 }
+
+if($arg){
+    $sql .= "impact LIKE '%$arg%'";
+}
+
+$sql =~ s/ AND $//;
 
 $sql .= " ORDER BY detecttime,created,id DESC LIMIT $qlimit";
 
-my @recs = CIF::Message::Scanner->retrieve_from_sql($sql);
+my @recs = CIF::Message::Infrastructure->retrieve_from_sql($sql);
 
 $status .= ' '.$#recs.'/'.$feedlimit.' (total recs / feed limit)';
 
@@ -43,6 +54,7 @@ if($@){
     $output = $m->comp('/REST/1.0/cif/search/address/text', recs => \@recs);
 }
 
+OUTPUT:
 $m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
 $m->out($output);
 </%INIT>

@@ -1,50 +1,46 @@
 <%ARGS>
-$reporttime => undef
-$format => 't'
-$feedlimit => 500
-$dblimit => 1500
+$detecttime => undef
+$qlimit    => 1500
+$feedlimit  => 500
+$format     => 'text'
 </%ARGS>
 <%INIT>
 use RT::Interface::REST;
 use CIF::Message::SuspiciousNetwork;
 use RT::CIF;
-use DateTime;
-use DateTime::Format::DateParse;
 
-my $arg = $m->dhandler_arg() || 'text';
-
+my $output = '';
 my $status = '200 Ok';
-my $output;
 
-my $hash;
-my @recs;
-
-if($reporttime){
-    @recs = CIF::Message::SuspiciousNetwork->search_history_byreporttime($reporttime);
+my $sql = '';
+if($detecttime){
+    $sql = "detecttime >= '$detecttime'";
 } else {
-    @recs = CIF::Message::SuspiciousNetwork->retrieve_all();
+    $sql = '1=1';
 }
+
+$sql .= " ORDER BY detecttime,created,id DESC LIMIT $qlimit";
+
+my @recs = CIF::Message::SuspiciousNetwork->retrieve_from_sql($sql);
 
 $status .= ' '.$#recs.'/'.$feedlimit.' (total recs / feed limit)';
 
-foreach my $rec (@recs){
-    next if(RT::CIF::isPrivateAddress($rec->address()));
-    next if(exists($hash->{$rec->address()}));
-    $hash->{$rec->address()} = $rec;
-    $hash->{$rec->address()}->{'asn'} = $rec->asn() || 0;
-    my $reported = DateTime::Format::DateParse->parse_datetime($rec->reporttime());
-    $hash->{$rec->address()}->{'reported'} = $reported->epoch();
+my @feed;
+my $x = 1;
+my $hash;
+foreach my $r (@recs){
+    my $a = $r->address();
+    next if(RT::CIF::isPrivateAddress($a));
+    next if(exists($hash->{$a}));
+    $hash->{$a} = $r;
+    push(@feed,$r);
+    last if($x++ == $feedlimit);
 }
+@recs = @feed;
 
-for(lc($arg)){
-    if(/^text$/){
-        $output = $m->comp('/REST/1.0/cif/output/inet/text', recs => $hash);
-        last;
-    }
-    if(/^json$/){
-        $output = $m->comp('/REST/1.0/cif/output/inet/json', recs => $hash);
-        last;
-    }
+$output = eval { $m->comp('/REST/1.0/cif/search/address/'.$format, recs => \@recs) };
+if($@){
+    $output = $m->comp('/REST/1.0/cif/search/address/text', recs => \@recs);
 }
 
 $m->out("RT/". $RT::VERSION . " " . $status ."\n\n");

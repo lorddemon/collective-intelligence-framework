@@ -1,7 +1,8 @@
 <%ARGS>
-$reporttime => undef
-$dblimit      => 1500
-$feedlimit      => 500
+$detecttime => undef
+$qlimit    => 1500
+$feedlimit  => 500
+$format     => 'text'
 </%ARGS>
 <%INIT>
 use RT::Interface::REST;
@@ -9,32 +10,36 @@ use CIF::Message::Domain;
 
 my $output = '';
 my $status = '200 Ok';
-my $domain = $m->dhandler_arg();
 
-my @recs;
-if($reporttime){
-    @recs = CIF::Message::Domain->search_reporttime($reporttime);
+my $sql = '';
+if($detecttime){
+    $sql = "detecttime >= '$detecttime'";
 } else {
-    CIF::Message::Domain->set_sql('custom', qq{
-        SELECT * FROM domains
-        ORDER BY reporttime,created,id DESC
-        LIMIT ?
-    });
-    @recs = CIF::Message::Domain->search_custom($dblimit);
+    $sql = '1=1';
 }
+
+$sql .= " ORDER BY detecttime,created,id DESC LIMIT $qlimit";
+
+my @recs = CIF::Message::Domain->retrieve_from_sql($sql);
 
 $status .= ' '.$#recs.'/'.$feedlimit.' (total recs / feed limit)';
 
+my @feed;
 my $x = 1;
 my $hash;
-foreach $r (@recs){
-    next if(exists($hash->{$r->address()}));
-    next if(lc($r->impact() eq 'whitelist'));
-    $hash->{$r->address()} = $r;
+foreach my $r (@recs){
+    my $a = $r->address();
+    next if(exists($hash->{$a}));
+    $hash->{$a} = $r;
+    push(@feed,$r);
     last if($x++ == $feedlimit);
 }
+@recs = @feed;
 
-$output = $m->comp('text', recs => $hash);
+$output = eval { $m->comp('/REST/1.0/cif/search/domain/'.$format, recs => \@recs) };
+if($@){
+    $output = $m->comp('/REST/1.0/cif/search/domain/text', recs => \@recs);
+}
 
 $m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
 $m->out($output);
