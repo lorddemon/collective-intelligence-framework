@@ -5,7 +5,7 @@ use base Class::DBI;
 
 RV->connection('DBI:Pg:database=cif;host=localhost','postgres','',{ AutoCommit => 1} );
 RV->table('rv');
-RV->columns(All => qw/id sha1 asn asn_desc cc rir prefix cidr peer peer_desc reporttime created/);
+RV->columns(All => qw/id sha1 asn asn_desc cc rir prefix cidr peer peer_desc detecttime created/);
 1;
 
 use strict;

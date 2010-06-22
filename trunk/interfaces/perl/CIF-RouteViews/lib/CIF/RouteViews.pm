@@ -6,7 +6,7 @@ use strict;
 use warnings;
 
 __PACKAGE__->table('routeviews');
-__PACKAGE__->columns(All => qw/id sha1 asn asn_desc cc rir prefix cidr peer peer_desc reporttime created/);
+__PACKAGE__->columns(All => qw/id sha1 asn asn_desc cc rir prefix cidr peer peer_desc detecttime created/);
 
 our $VERSION = '0.00_01';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
