@@ -6,22 +6,33 @@ $format     => 'text'
 </%ARGS>
 <%INIT>
 use RT::Interface::REST;
-use CIF::Message::Scanner;
+use CIF::Message::PhishingURL;
 use RT::CIF;
 
 my $output = '';
 my $status = '200 Ok';
+my $arg = $m->dhandler_arg();
+
+unless($arg){
+    $status = '409 Syntax Error';
+    $output = 'Missing required arguments: arg';
+    goto OUTPUT;
+}
 
 my $sql = '';
 if($detecttime){
-    $sql = "detecttime >= '$detecttime'";
-} else {
-    $sql = '1=1';
+    $sql .= "detecttime >= '$detecttime' AND ";
 }
+
+if($arg){
+    $sql .= "description LIKE '%$arg%'";
+}
+
+$sql =~ s/ AND $//;
 
 $sql .= " ORDER BY detecttime,created,id DESC LIMIT $qlimit";
 
-my @recs = CIF::Message::Scanner->retrieve_from_sql($sql);
+my @recs = CIF::Message::PhishingURL->retrieve_from_sql($sql);
 
 $status .= ' '.$#recs.'/'.$feedlimit.' (total recs / feed limit)';
 
@@ -29,8 +40,7 @@ my @feed;
 my $x = 1;
 my $hash;
 foreach my $r (@recs){
-    my $a = $r->address();
-    next if(RT::CIF::isPrivateAddress($a));
+    my $a = $r->url_sha1();
     next if(exists($hash->{$a}));
     $hash->{$a} = $r;
     push(@feed,$r);
@@ -38,9 +48,9 @@ foreach my $r (@recs){
 }
 @recs = @feed;
 
-$output = eval { $m->comp('/REST/1.0/cif/search/address/'.$format, recs => \@recs) };
+$output = eval { $m->comp('/REST/1.0/cif/search/url/'.$format, recs => \@recs) };
 if($@){
-    $output = $m->comp('/REST/1.0/cif/search/address/text', recs => \@recs);
+    $output = $m->comp('/REST/1.0/cif/search/url/text', recs => \@recs);
 }
 
 $m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
