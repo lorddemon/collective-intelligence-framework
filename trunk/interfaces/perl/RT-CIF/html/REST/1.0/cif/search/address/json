@@ -12,6 +12,8 @@ foreach my $r (@recs){
         'asn_desc'      => $r->asn_desc()       || 'NA',   
         'cidr'          => $r->cidr()           || 'NA',
         'address'       => $r->address(),
+        'portlist'      => $r->portlist()       || 'NA',
+        'protocol'      => $r->protocol()       || 'NA',
         'description'   => $r->description()    || 'NA',
         'cc'            => $r->cc()             || 'NA',
         'confidence'    => $r->confidence()     || 'NA',
