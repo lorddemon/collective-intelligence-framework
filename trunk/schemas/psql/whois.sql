@@ -5,7 +5,7 @@ CREATE TABLE whois (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     uuid uuid REFERENCES messages(uuid) ON DELETE CASCADE NOT NULL,
     type VARCHAR(6) CHECK (type IN ('domain','inet')),
-    description VARCHAR(140),
+    description text,
     impact VARCHAR(140),
     whois text,
     tsv tsvector,

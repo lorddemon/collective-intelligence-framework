@@ -10,11 +10,10 @@ CREATE TABLE messages (
     format VARCHAR(32), -- IODEF, MetaSharing, IRC, Email, etc...
     confidence REAL,
     severity VARCHAR(6) CHECK (severity IN ('low','medium','high')),
-    description VARCHAR(140),
+    description text,
     impact VARCHAR(140),
     restriction VARCHAR(16) CHECK (restriction IN ('default','private','need-to-know','public')) DEFAULT 'private' NOT NULL,
     detecttime timestamp with time zone,
-    reporttime timestamp with time zone,
     created timestamp with time zone DEFAULT NOW(),
     UNIQUE (uuid)
 );
