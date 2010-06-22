@@ -1,32 +1,45 @@
 <%ARGS>
-$order       => 'DESC'
-$format     => 't'
+$detecttime => undef
+$qlimit     => 1500
+$format     => 'text'
 </%ARGS>
 <%INIT>
 use RT::Interface::REST;
 use CIF::Message::Inet;
-use CIF::Message::Structured;
-use Text::Table;
 
-my $output = "";
-my $status = "200 Ok";
+my $output = '';
+my $status = '200 Ok';
 my $arg = $m->dhandler_arg();
 
-CIF::Message::Inet->set_sql('within' => qq{
-    SELECT * FROM inet 
-    WHERE address <<= ?
-    ORDER BY id DESC
-});
-
-my @recs = CIF::Message::Inet->search_within($arg);
-
-if($format eq 't'){
-    $output = $m->comp('text', recs => \@recs);
-} elsif($format eq 'xml'){
-    $output = $m->comp('../xml', recs => \@recs);
+unless($arg || $detecttime){
+    $status = '409 Syntax Error';
+    $output = 'Missing required arguments: detecttime || arg';
+    goto OUTPUT;
 }
 
-$m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
+my $sql = '';
+if($detecttime){
+    $sql .= "detecttime >= '$detecttime' AND ";
+}
 
-$m->out($output );
+if($arg){
+    $sql .= "address <<= '$arg'";
+}
+
+$sql =~ s/ AND $//;
+
+$sql .= " ORDER BY detecttime,created,id DESC LIMIT $qlimit";
+
+my @recs = CIF::Message::Inet->retrieve_from_sql($sql);
+
+$status .= ' '.($#recs + 1).'/'.$qlimit.' (total recs / query limit)';
+
+$output = eval { $m->comp($format, recs => \@recs) };
+if($@){
+    $output = $m->comp('text', recs => \@recs);
+}
+
+OUTPUT:
+$m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
+$m->out($output);
 </%INIT>

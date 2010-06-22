@@ -1,20 +1,43 @@
+<%ARGS>
+$detecttime => undef
+$qlimit    => 1500
+$format     => 'text'
+</%ARGS>
 <%INIT>
 use RT::Interface::REST;
 use CIF::Message;
 
-my $output = "";
-my $status = "200 Ok";
-
+my $output = '';
+my $status = '200 Ok';
 my $arg = $m->dhandler_arg();
-unless($arg){
+
+unless($arg || $detecttime){
     $status = '409 Syntax Error';
-    $output = 'no impact defined';
+    $output = 'Missing required arguments: detecttime || arg';
     goto OUTPUT;
 }
 
-my @r = CIF::Message->search_like(impact => '%'.$arg.'%');
+my $sql = '';
+if($detecttime){
+    $sql .= "detecttime >= '$detecttime' AND ";
+}
 
-$output = $m->comp('text', recs => \@r);
+if($arg){
+    $sql .= "impact LIKE '%$arg%'";
+}
+
+$sql =~ s/ AND $//;
+
+$sql .= " ORDER BY detecttime,created,id DESC LIMIT $qlimit";
+
+my @recs = CIF::Message->retrieve_from_sql($sql);
+
+$status .= ' '.($#recs + 1).'/'.$qlimit.' (total recs / query limit)';
+
+$output = eval { $m->comp($format, recs => \@recs) };
+if($@){
+    $output = $m->comp('text', recs => \@recs);
+}
 
 OUTPUT:
 $m->out("RT/". $RT::VERSION . " " . $status ."\n\n");

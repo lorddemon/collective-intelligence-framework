@@ -1,11 +1,11 @@
 <%ARGS>
 $detecttime => undef
-$qlimit     => 1500
+$qlimit    => 1500
 $format     => 'text'
 </%ARGS>
 <%INIT>
 use RT::Interface::REST;
-use CIF::Message::Inet;
+use CIF::Message::Email;
 
 my $output = '';
 my $status = '200 Ok';
@@ -23,14 +23,14 @@ if($detecttime){
 }
 
 if($arg){
-    $sql .= "asn = '$arg'";
+    $sql .= "address = '$arg'";
 }
 
 $sql =~ s/ AND $//;
 
 $sql .= " ORDER BY detecttime,created,id DESC LIMIT $qlimit";
 
-my @recs = CIF::Message::Inet->retrieve_from_sql($sql);
+my @recs = CIF::Message::Email->retrieve_from_sql($sql);
 
 $status .= ' '.($#recs + 1).'/'.$qlimit.' (total recs / query limit)';
 
