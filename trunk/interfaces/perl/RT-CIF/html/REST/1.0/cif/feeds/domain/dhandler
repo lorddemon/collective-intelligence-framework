@@ -18,7 +18,7 @@ if($detecttime){
     $sql = '1=1';
 }
 
-$sql .= " ORDER BY detecttime,created,id DESC LIMIT $qlimit";
+$sql .= " ORDER BY detecttime DESC, created DESC, id DESC LIMIT $qlimit";
 
 my @recs = CIF::Message::Domain->retrieve_from_sql($sql);
 

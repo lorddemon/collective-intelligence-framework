@@ -30,7 +30,7 @@ if($arg){
 
 $sql =~ s/ AND $//;
 
-$sql .= " ORDER BY detecttime,created,id DESC LIMIT $qlimit";
+$sql .= " ORDER BY detecttime DESC, created DESC, id DESC LIMIT $qlimit";
 
 my @recs = CIF::Message::PhishingURL->retrieve_from_sql($sql);
 
