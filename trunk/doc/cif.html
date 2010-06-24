@@ -112,12 +112,12 @@
   <body>
 
     <!-- Primary Index -->
-	<p><br><br>Dumped on 2010-06-14</p>
+	<p><br><br>Dumped on 2010-06-24</p>
 <h1><a name="index">Index of database - cif</a></h1>
 <ul>
     
     <li><a name="public.schema">public</a></li><ul>
-    	<li><a href="#public.table.domains">domains</a></li><li><a href="#public.table.inet">inet</a></li><li><a href="#public.table.infrastructure">infrastructure</a></li><li><a href="#public.table.malware">malware</a></li><li><a href="#public.table.malware-urls">malware_urls</a></li><li><a href="#public.table.messages">messages</a></li><li><a href="#public.table.messages-structured">messages_structured</a></li><li><a href="#public.table.messages-unstructured">messages_unstructured</a></li><li><a href="#public.table.phishing-replyto">phishing_replyto</a></li><li><a href="#public.table.phishing-urls">phishing_urls</a></li><li><a href="#public.table.scanners">scanners</a></li><li><a href="#public.table.spammers">spammers</a></li><li><a href="#public.table.suspicious-networks">suspicious_networks</a></li><li><a href="#public.table.urls">urls</a></li><li><a href="#public.view.v-inet">v_inet</a></li><li><a href="#public.view.v-messages">v_messages</a></li>
+    	<li><a href="#public.table.domains">domains</a></li><li><a href="#public.table.emails">emails</a></li><li><a href="#public.table.inet">inet</a></li><li><a href="#public.table.infrastructure">infrastructure</a></li><li><a href="#public.table.malware">malware</a></li><li><a href="#public.table.malware-urls">malware_urls</a></li><li><a href="#public.table.messages">messages</a></li><li><a href="#public.table.messages-structured">messages_structured</a></li><li><a href="#public.table.messages-unstructured">messages_unstructured</a></li><li><a href="#public.table.phishing-urls">phishing_urls</a></li><li><a href="#public.table.routeviews">routeviews</a></li><li><a href="#public.table.scanners">scanners</a></li><li><a href="#public.table.spammers">spammers</a></li><li><a href="#public.table.suspicious-networks">suspicious_networks</a></li><li><a href="#public.table.urls">urls</a></li><li><a href="#public.view.v-inet">v_inet</a></li><li><a href="#public.view.v-messages">v_messages</a></li>
   	
     </ul>
     
@@ -204,7 +204,7 @@
                 
                 </td>
             	<td>description</td>
-            	<td>character varying(140)</td>
+            	<td>text</td>
                 <td><i>
 				
 
@@ -235,7 +235,7 @@
 				<td>
                 
                 </td>
-            	<td>rrtype</td>
+            	<td>type</td>
             	<td>character varying(10)</td>
                 <td><i>
 				
@@ -443,6 +443,38 @@
 				<td>
                 
                 </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
             	<td>severity</td>
             	<td>character varying(6)</td>
                 <td><i>
@@ -491,22 +523,6 @@
 				<td>
                 
                 </td>
-            	<td>reporttime</td>
-            	<td>timestamp with time zone</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                </td>
             	<td>created</td>
             	<td>timestamp with time zone</td>
                 <td><i>
@@ -519,7 +535,7 @@
 				</td>
 			 </tr>
             
-            <tr class="tr0">
+            <tr class="tr1">
 				<td>
                 
                 </td>
@@ -560,7 +576,313 @@
             </tr>
 			
             <tr class="tr1">
+				<td>domains_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr0">
 				<td>domains_severity_check</td>
+                <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
+            </tr>
+			
+		</table>
+		
+
+        <!-- Foreign Key Discovery -->
+		
+
+    <!-- Indexes -->
+    
+
+	<!-- View Definition -->
+	
+
+	<!-- List off permissions -->
+	
+
+	<p>
+		<a href="#index">Index</a> -
+		<a href="#public.schema">Schema public</a>
+    </p>
+	
+        <hr>
+		<h2>Table:
+			<a name="public.table.emails">emails</a>
+		</h2>
+        
+
+
+        <table width="100%" cellspacing="0" cellpadding="3">
+                <caption>emails Structure</caption>
+                <tr>
+                <th>F-Key</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                  
+                
+                </td>
+            	<td>id</td>
+            	<td>bigserial</td>
+                <td><i>
+				
+					PRIMARY KEY
+					
+
+					
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                  
+                  <a href="#public.table.messages">messages.uuid</a>
+                  
+                
+                  
+                
+                </td>
+            	<td>uuid</td>
+            	<td>uuid</td>
+                <td><i>
+				
+					
+
+					
+				
+					
+
+					
+                       UNIQUE
+                    
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>description</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>address</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>source</td>
+            	<td>uuid</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>impact</td>
+            	<td>character varying(140)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>confidence</td>
+            	<td>real</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>severity</td>
+            	<td>character varying(6)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>detecttime</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>created</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				DEFAULT now()
+				</i>
+				
+				</td>
+			 </tr>
+            
+        </table>
+
+        <!-- Inherits -->
+		
+
+		
+		
+		
+
+        <!-- Constraint List -->
+		
+        <p>&nbsp;</p>
+		<table width="100%" cellspacing="0" cellpadding="3">
+            <caption>emails Constraints</caption>
+            <tr>
+            	<th>Name</th>
+            	<th>Constraint</th>
+            </tr>
+			
+            <tr class="tr0">
+				<td>emails_restriction_check</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr1">
+				<td>emails_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr0">
+				<td>emails_severity_check</td>
                 <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
             </tr>
 			
@@ -652,7 +974,7 @@
                 
                 </td>
             	<td>description</td>
-            	<td>character varying(140)</td>
+            	<td>text</td>
                 <td><i>
 				
 
@@ -875,6 +1197,38 @@
 				<td>
                 
                 </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
             	<td>whois</td>
             	<td>text</td>
                 <td><i>
@@ -923,22 +1277,6 @@
 				<td>
                 
                 </td>
-            	<td>reporttime</td>
-            	<td>timestamp with time zone</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
             	<td>created</td>
             	<td>timestamp with time zone</td>
                 <td><i>
@@ -981,6 +1319,11 @@
             </tr>
 			
             <tr class="tr0">
+				<td>inet_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr1">
 				<td>inet_severity_check</td>
                 <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
             </tr>
@@ -1081,7 +1424,7 @@
                 
                 </td>
             	<td>description</td>
-            	<td>character varying(140)</td>
+            	<td>text</td>
                 <td><i>
 				
 
@@ -1304,6 +1647,38 @@
 				<td>
                 
                 </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
             	<td>whois</td>
             	<td>text</td>
                 <td><i>
@@ -1349,22 +1724,6 @@
 			 </tr>
             
             <tr class="tr1">
-				<td>
-                
-                </td>
-            	<td>reporttime</td>
-            	<td>timestamp with time zone</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
 				<td>
                 
                 </td>
@@ -1417,6 +1776,11 @@
             </tr>
 			
             <tr class="tr0">
+				<td>inet_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr1">
 				<td>inet_severity_check</td>
                 <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
             </tr>
@@ -1517,7 +1881,7 @@
                 
                 </td>
             	<td>description</td>
-            	<td>character varying(140)</td>
+            	<td>text</td>
                 <td><i>
 				
 
@@ -1660,6 +2024,38 @@
 				<td>
                 
                 </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
             	<td>detecttime</td>
             	<td>timestamp with time zone</td>
                 <td><i>
@@ -1676,13 +2072,13 @@
 				<td>
                 
                 </td>
-            	<td>reporttime</td>
+            	<td>created</td>
             	<td>timestamp with time zone</td>
                 <td><i>
 				
 
 				
-				
+				DEFAULT now()
 				</i>
 				
 				</td>
@@ -1692,13 +2088,13 @@
 				<td>
                 
                 </td>
-            	<td>created</td>
-            	<td>timestamp with time zone</td>
+            	<td>tsv</td>
+            	<td>tsvector</td>
                 <td><i>
 				
 
 				
-				DEFAULT now()
+				
 				</i>
 				
 				</td>
@@ -1734,6 +2130,11 @@
             </tr>
 			
             <tr class="tr0">
+				<td>malware_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr1">
 				<td>malware_severity_check</td>
                 <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
             </tr>
@@ -1834,7 +2235,7 @@
                 
                 </td>
             	<td>description</td>
-            	<td>character varying(140)</td>
+            	<td>text</td>
                 <td><i>
 				
 
@@ -2009,6 +2410,38 @@
 				<td>
                 
                 </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
             	<td>detecttime</td>
             	<td>timestamp with time zone</td>
                 <td><i>
@@ -2025,22 +2458,6 @@
 				<td>
                 
                 </td>
-            	<td>reporttime</td>
-            	<td>timestamp with time zone</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                </td>
             	<td>created</td>
             	<td>timestamp with time zone</td>
                 <td><i>
@@ -2053,7 +2470,7 @@
 				</td>
 			 </tr>
             
-            <tr class="tr0">
+            <tr class="tr1">
 				<td>
                 
                 </td>
@@ -2101,6 +2518,11 @@
             </tr>
 			
             <tr class="tr1">
+				<td>urls_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr0">
 				<td>urls_severity_check</td>
                 <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
             </tr>
@@ -2273,7 +2695,7 @@
                 
                 </td>
             	<td>description</td>
-            	<td>character varying(140)</td>
+            	<td>text</td>
                 <td><i>
 				
 
@@ -2336,22 +2758,6 @@
 				<td>
                 
                 </td>
-            	<td>reporttime</td>
-            	<td>timestamp with time zone</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
             	<td>created</td>
             	<td>timestamp with time zone</td>
                 <td><i>
@@ -2410,6 +2816,10 @@
 			</ul>
 		
 			<ul>
+				<li><a href="#public.table.emails">emails</a></li>
+			</ul>
+		
+			<ul>
 				<li><a href="#public.table.inet">inet</a></li>
 			</ul>
 		
@@ -2431,10 +2841,6 @@
 		
 			<ul>
 				<li><a href="#public.table.messages-unstructured">messages_unstructured</a></li>
-			</ul>
-		
-			<ul>
-				<li><a href="#public.table.phishing-replyto">phishing_replyto</a></li>
 			</ul>
 		
 			<ul>
@@ -2755,278 +3161,6 @@
 	
         <hr>
 		<h2>Table:
-			<a name="public.table.phishing-replyto">phishing_replyto</a>
-		</h2>
-        
-
-
-        <table width="100%" cellspacing="0" cellpadding="3">
-                <caption>phishing_replyto Structure</caption>
-                <tr>
-                <th>F-Key</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Description</th>
-                </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                  
-                
-                </td>
-            	<td>id</td>
-            	<td>bigserial</td>
-                <td><i>
-				
-					PRIMARY KEY
-					
-
-					
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                  
-                  <a href="#public.table.messages">messages.uuid</a>
-                  
-                
-                  
-                
-                </td>
-            	<td>uuid</td>
-            	<td>uuid</td>
-                <td><i>
-				
-					
-
-					
-				
-					
-
-					
-                       UNIQUE#1
-                    
-				
-
-				NOT NULL
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
-            	<td>description</td>
-            	<td>character varying(140)</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                  
-                
-                </td>
-            	<td>address</td>
-            	<td>text</td>
-                <td><i>
-				
-					
-
-					
-                       UNIQUE#1
-                    
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
-            	<td>source</td>
-            	<td>uuid</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                </td>
-            	<td>source_weight</td>
-            	<td>integer</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
-            	<td>confidence</td>
-            	<td>real</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                </td>
-            	<td>severity</td>
-            	<td>character varying(5)</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
-            	<td>restriction</td>
-            	<td>character varying(16)</td>
-                <td><i>
-				
-
-				NOT NULL
-				DEFAULT &#39;private&#39;::character varying
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                </td>
-            	<td>created</td>
-            	<td>timestamp with time zone</td>
-                <td><i>
-				
-
-				
-				DEFAULT now()
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
-            	<td>tsv</td>
-            	<td>tsvector</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-        </table>
-
-        <!-- Inherits -->
-		
-
-		
-		
-		
-
-        <!-- Constraint List -->
-		
-        <p>&nbsp;</p>
-		<table width="100%" cellspacing="0" cellpadding="3">
-            <caption>phishing_replyto Constraints</caption>
-            <tr>
-            	<th>Name</th>
-            	<th>Constraint</th>
-            </tr>
-			
-            <tr class="tr0">
-				<td>phishing_replyto_restriction_check</td>
-                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
-            </tr>
-			
-            <tr class="tr1">
-				<td>phishing_replyto_severity_check</td>
-                <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
-            </tr>
-			
-		</table>
-		
-
-        <!-- Foreign Key Discovery -->
-		
-
-    <!-- Indexes -->
-    
-
-	<!-- View Definition -->
-	
-
-	<!-- List off permissions -->
-	
-
-	<p>
-		<a href="#index">Index</a> -
-		<a href="#public.schema">Schema public</a>
-    </p>
-	
-        <hr>
-		<h2>Table:
 			<a name="public.table.phishing-urls">phishing_urls</a>
 		</h2>
         
@@ -3101,7 +3235,7 @@
                 
                 </td>
             	<td>description</td>
-            	<td>character varying(140)</td>
+            	<td>text</td>
                 <td><i>
 				
 
@@ -3276,6 +3410,38 @@
 				<td>
                 
                 </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
             	<td>detecttime</td>
             	<td>timestamp with time zone</td>
                 <td><i>
@@ -3292,22 +3458,6 @@
 				<td>
                 
                 </td>
-            	<td>reporttime</td>
-            	<td>timestamp with time zone</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                </td>
             	<td>created</td>
             	<td>timestamp with time zone</td>
                 <td><i>
@@ -3320,7 +3470,7 @@
 				</td>
 			 </tr>
             
-            <tr class="tr0">
+            <tr class="tr1">
 				<td>
                 
                 </td>
@@ -3368,11 +3518,268 @@
             </tr>
 			
             <tr class="tr1">
+				<td>urls_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr0">
 				<td>urls_severity_check</td>
                 <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
             </tr>
 			
 		</table>
+		
+
+        <!-- Foreign Key Discovery -->
+		
+
+    <!-- Indexes -->
+    
+
+	<!-- View Definition -->
+	
+
+	<!-- List off permissions -->
+	
+
+	<p>
+		<a href="#index">Index</a> -
+		<a href="#public.schema">Schema public</a>
+    </p>
+	
+        <hr>
+		<h2>Table:
+			<a name="public.table.routeviews">routeviews</a>
+		</h2>
+        
+
+
+        <table width="100%" cellspacing="0" cellpadding="3">
+                <caption>routeviews Structure</caption>
+                <tr>
+                <th>F-Key</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                  
+                
+                </td>
+            	<td>id</td>
+            	<td>bigserial</td>
+                <td><i>
+				
+					PRIMARY KEY
+					
+
+					
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                  
+                
+                </td>
+            	<td>sha1</td>
+            	<td>character varying(64)</td>
+                <td><i>
+				
+					
+
+					
+                       UNIQUE
+                    
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>asn</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>asn_desc</td>
+            	<td>character varying(140)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>cc</td>
+            	<td>character varying(2)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>rir</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>prefix</td>
+            	<td>inet</td>
+                <td><i>
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>cidr</td>
+            	<td>inet</td>
+                <td><i>
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>peer</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>peer_desc</td>
+            	<td>character varying(140)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>detecttime</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				DEFAULT now()
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>created</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				DEFAULT now()
+				</i>
+				
+				</td>
+			 </tr>
+            
+        </table>
+
+        <!-- Inherits -->
+		
+
+		
+		
+		
+
+        <!-- Constraint List -->
 		
 
         <!-- Foreign Key Discovery -->
@@ -3468,7 +3875,7 @@
                 
                 </td>
             	<td>description</td>
-            	<td>character varying(140)</td>
+            	<td>text</td>
                 <td><i>
 				
 
@@ -3691,6 +4098,38 @@
 				<td>
                 
                 </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
             	<td>whois</td>
             	<td>text</td>
                 <td><i>
@@ -3736,22 +4175,6 @@
 			 </tr>
             
             <tr class="tr1">
-				<td>
-                
-                </td>
-            	<td>reporttime</td>
-            	<td>timestamp with time zone</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
 				<td>
                 
                 </td>
@@ -3804,6 +4227,11 @@
             </tr>
 			
             <tr class="tr0">
+				<td>inet_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr1">
 				<td>inet_severity_check</td>
                 <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
             </tr>
@@ -3904,7 +4332,7 @@
                 
                 </td>
             	<td>description</td>
-            	<td>character varying(140)</td>
+            	<td>text</td>
                 <td><i>
 				
 
@@ -4127,6 +4555,38 @@
 				<td>
                 
                 </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
             	<td>whois</td>
             	<td>text</td>
                 <td><i>
@@ -4172,22 +4632,6 @@
 			 </tr>
             
             <tr class="tr1">
-				<td>
-                
-                </td>
-            	<td>reporttime</td>
-            	<td>timestamp with time zone</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
 				<td>
                 
                 </td>
@@ -4240,6 +4684,11 @@
             </tr>
 			
             <tr class="tr0">
+				<td>inet_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr1">
 				<td>inet_severity_check</td>
                 <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
             </tr>
@@ -4340,7 +4789,7 @@
                 
                 </td>
             	<td>description</td>
-            	<td>character varying(140)</td>
+            	<td>text</td>
                 <td><i>
 				
 
@@ -4563,6 +5012,38 @@
 				<td>
                 
                 </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
             	<td>whois</td>
             	<td>text</td>
                 <td><i>
@@ -4608,22 +5089,6 @@
 			 </tr>
             
             <tr class="tr1">
-				<td>
-                
-                </td>
-            	<td>reporttime</td>
-            	<td>timestamp with time zone</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
 				<td>
                 
                 </td>
@@ -4676,6 +5141,11 @@
             </tr>
 			
             <tr class="tr0">
+				<td>inet_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr1">
 				<td>inet_severity_check</td>
                 <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
             </tr>
@@ -4760,7 +5230,7 @@
 					
 
 					
-                       UNIQUE#1
+                       UNIQUE
                     
 				
 
@@ -4776,7 +5246,7 @@
                 
                 </td>
             	<td>description</td>
-            	<td>character varying(140)</td>
+            	<td>text</td>
                 <td><i>
 				
 
@@ -4790,18 +5260,10 @@
             <tr class="tr1">
 				<td>
                 
-                  
-                
                 </td>
             	<td>address</td>
             	<td>text</td>
                 <td><i>
-				
-					
-
-					
-                       UNIQUE#1
-                    
 				
 
 				
@@ -4959,6 +5421,38 @@
 				<td>
                 
                 </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
             	<td>detecttime</td>
             	<td>timestamp with time zone</td>
                 <td><i>
@@ -4975,22 +5469,6 @@
 				<td>
                 
                 </td>
-            	<td>reporttime</td>
-            	<td>timestamp with time zone</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                </td>
             	<td>created</td>
             	<td>timestamp with time zone</td>
                 <td><i>
@@ -5003,7 +5481,7 @@
 				</td>
 			 </tr>
             
-            <tr class="tr0">
+            <tr class="tr1">
 				<td>
                 
                 </td>
@@ -5044,6 +5522,11 @@
             </tr>
 			
             <tr class="tr1">
+				<td>urls_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr0">
 				<td>urls_severity_check</td>
                 <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
             </tr>
@@ -5121,7 +5604,7 @@
                 
                 </td>
             	<td>description</td>
-            	<td>character varying(140)</td>
+            	<td>text</td>
                 <td><i>
 				
 
@@ -5344,6 +5827,38 @@
 				<td>
                 
                 </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
             	<td>whois</td>
             	<td>text</td>
                 <td><i>
@@ -5392,22 +5907,6 @@
 				<td>
                 
                 </td>
-            	<td>reporttime</td>
-            	<td>timestamp with time zone</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
             	<td>created</td>
             	<td>timestamp with time zone</td>
                 <td><i>
@@ -5420,7 +5919,7 @@
 				</td>
 			 </tr>
             
-            <tr class="tr1">
+            <tr class="tr0">
 				<td>
                 
                 </td>
@@ -5436,7 +5935,7 @@
 				</td>
 			 </tr>
             
-            <tr class="tr0">
+            <tr class="tr1">
 				<td>
                 
                 </td>
@@ -5452,7 +5951,7 @@
 				</td>
 			 </tr>
             
-            <tr class="tr1">
+            <tr class="tr0">
 				<td>
                 
                 </td>
@@ -5468,7 +5967,7 @@
 				</td>
 			 </tr>
             
-            <tr class="tr0">
+            <tr class="tr1">
 				<td>
                 
                 </td>
@@ -5519,10 +6018,11 @@ SELECT inet.id
 , inet.source
 , inet.severity
 , inet.restriction
+, inet.alternativeid
+, inet.alternativeid_restriction
 , inet.whois
 , inet.tsv
 , inet.detecttime
-, inet.reporttime
 , inet.created
 , v_messages.type
 , v_messages.format
@@ -5677,7 +6177,7 @@ LEFT JOIN v_messages
                 
                 </td>
             	<td>description</td>
-            	<td>character varying(140)</td>
+            	<td>text</td>
                 <td><i>
 				
 
@@ -5740,22 +6240,6 @@ LEFT JOIN v_messages
 				<td>
                 
                 </td>
-            	<td>reporttime</td>
-            	<td>timestamp with time zone</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
             	<td>created</td>
             	<td>timestamp with time zone</td>
                 <td><i>
@@ -5768,7 +6252,7 @@ LEFT JOIN v_messages
 				</td>
 			 </tr>
             
-            <tr class="tr1">
+            <tr class="tr0">
 				<td>
                 
                 </td>
@@ -5784,7 +6268,7 @@ LEFT JOIN v_messages
 				</td>
 			 </tr>
             
-            <tr class="tr0">
+            <tr class="tr1">
 				<td>
                 
                 </td>
@@ -5800,7 +6284,7 @@ LEFT JOIN v_messages
 				</td>
 			 </tr>
             
-            <tr class="tr1">
+            <tr class="tr0">
 				<td>
                 
                 </td>
@@ -5846,7 +6330,6 @@ SELECT messages.id
 , messages.impact
 , messages.restriction
 , messages.detecttime
-, messages.reporttime
 , messages.created
 , messages_unstructured.message AS unstructured
 , messages_structured.message AS structured

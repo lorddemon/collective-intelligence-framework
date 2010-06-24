@@ -91,7 +91,7 @@
             <varlistentry>
               <term><structfield>description</structfield></term>
               <listitem><para>
-                <type>character varying(140)</type>
+                <type>text</type>
 
 
 
@@ -121,7 +121,7 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>rrtype</structfield></term>
+              <term><structfield>type</structfield></term>
               <listitem><para>
                 <type>character varying(10)</type>
 
@@ -331,6 +331,42 @@
           </varlistentry>
 
             <varlistentry>
+              <term><structfield>alternativeid</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
               <term><structfield>severity</structfield></term>
               <listitem><para>
                 <type>character varying(6)</type>
@@ -368,22 +404,6 @@
 
             <varlistentry>
               <term><structfield>detecttime</structfield></term>
-              <listitem><para>
-                <type>timestamp with time zone</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>reporttime</structfield></term>
               <listitem><para>
                 <type>timestamp with time zone</type>
 
@@ -447,7 +467,316 @@
 
 
           <varlistentry>
+            <term>domains_restriction_check1</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
             <term>domains_severity_check</term>
+            <listitem><para>CHECK (((severity)::text = ANY ((ARRAY[&apos;low&apos;::character varying, &apos;medium&apos;::character varying, &apos;high&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.emails"
+               xreflabel="public.emails">
+        <title id="public.table.emails-title">
+         Table:
+         
+         <structname>emails</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>emails</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+                <literal>REFERENCES</literal> <xref linkend="public.table.messages"/>
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>impact</structfield></term>
+              <listitem><para>
+                <type>character varying(140)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>character varying(6)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+        <variablelist>
+          <title>Constraints on emails</title>
+
+          <varlistentry>
+            <term>emails_restriction_check</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>emails_restriction_check1</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>emails_severity_check</term>
             <listitem><para>CHECK (((severity)::text = ANY ((ARRAY[&apos;low&apos;::character varying, &apos;medium&apos;::character varying, &apos;high&apos;::character varying])::text[])))</para></listitem>
           </varlistentry>
 
@@ -536,7 +865,7 @@
             <varlistentry>
               <term><structfield>description</structfield></term>
               <listitem><para>
-                <type>character varying(140)</type>
+                <type>text</type>
 
 
 
@@ -766,6 +1095,42 @@
           </varlistentry>
 
             <varlistentry>
+              <term><structfield>alternativeid</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
               <term><structfield>whois</structfield></term>
               <listitem><para>
                 <type>text</type>
@@ -814,22 +1179,6 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>reporttime</structfield></term>
-              <listitem><para>
-                <type>timestamp with time zone</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
               <term><structfield>created</structfield></term>
               <listitem><para>
                 <type>timestamp with time zone</type>
@@ -863,6 +1212,13 @@
 
           <varlistentry>
             <term>inet_restriction_check</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>inet_restriction_check1</term>
             <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
           </varlistentry>
 
@@ -968,7 +1324,7 @@
             <varlistentry>
               <term><structfield>description</structfield></term>
               <listitem><para>
-                <type>character varying(140)</type>
+                <type>text</type>
 
 
 
@@ -1198,6 +1554,42 @@
           </varlistentry>
 
             <varlistentry>
+              <term><structfield>alternativeid</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
               <term><structfield>whois</structfield></term>
               <listitem><para>
                 <type>text</type>
@@ -1246,22 +1638,6 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>reporttime</structfield></term>
-              <listitem><para>
-                <type>timestamp with time zone</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
               <term><structfield>created</structfield></term>
               <listitem><para>
                 <type>timestamp with time zone</type>
@@ -1295,6 +1671,13 @@
 
           <varlistentry>
             <term>inet_restriction_check</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>inet_restriction_check1</term>
             <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
           </varlistentry>
 
@@ -1398,7 +1781,7 @@
             <varlistentry>
               <term><structfield>description</structfield></term>
               <listitem><para>
-                <type>character varying(140)</type>
+                <type>text</type>
 
 
 
@@ -1544,9 +1927,9 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>detecttime</structfield></term>
+              <term><structfield>alternativeid</structfield></term>
               <listitem><para>
-                <type>timestamp with time zone</type>
+                <type>text</type>
 
 
 
@@ -1560,7 +1943,27 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>reporttime</structfield></term>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
               <listitem><para>
                 <type>timestamp with time zone</type>
 
@@ -1593,6 +1996,22 @@
             </listitem>
           </varlistentry>
 
+            <varlistentry>
+              <term><structfield>tsv</structfield></term>
+              <listitem><para>
+                <type>tsvector</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
         </variablelist>
 
 
@@ -1609,6 +2028,13 @@
 
           <varlistentry>
             <term>malware_restriction_check</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>malware_restriction_check1</term>
             <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
           </varlistentry>
 
@@ -1714,7 +2140,7 @@
             <varlistentry>
               <term><structfield>description</structfield></term>
               <listitem><para>
-                <type>character varying(140)</type>
+                <type>text</type>
 
 
 
@@ -1892,9 +2318,9 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>detecttime</structfield></term>
+              <term><structfield>alternativeid</structfield></term>
               <listitem><para>
-                <type>timestamp with time zone</type>
+                <type>text</type>
 
 
 
@@ -1908,7 +2334,27 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>reporttime</structfield></term>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
               <listitem><para>
                 <type>timestamp with time zone</type>
 
@@ -1966,6 +2412,13 @@
 
           <varlistentry>
             <term>urls_restriction_check</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>urls_restriction_check1</term>
             <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
           </varlistentry>
 
@@ -2147,7 +2600,7 @@
             <varlistentry>
               <term><structfield>description</structfield></term>
               <listitem><para>
-                <type>character varying(140)</type>
+                <type>text</type>
 
 
 
@@ -2198,22 +2651,6 @@
 
             <varlistentry>
               <term><structfield>detecttime</structfield></term>
-              <listitem><para>
-                <type>timestamp with time zone</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>reporttime</structfield></term>
               <listitem><para>
                 <type>timestamp with time zone</type>
 
@@ -2295,6 +2732,14 @@
 
           <listitem>
             <para>
+              <xref linkend="public.table.emails"/>
+            </para>
+          </listitem>
+
+
+
+          <listitem>
+            <para>
               <xref linkend="public.table.inet"/>
             </para>
           </listitem>
@@ -2336,14 +2781,6 @@
           <listitem>
             <para>
               <xref linkend="public.table.messages-unstructured"/>
-            </para>
-          </listitem>
-
-
-
-          <listitem>
-            <para>
-              <xref linkend="public.table.phishing-replyto"/>
             </para>
           </listitem>
 
@@ -2663,273 +3100,6 @@
       </para>
     </section>
 
-      <section id="public.table.phishing-replyto"
-               xreflabel="public.phishing_replyto">
-        <title id="public.table.phishing-replyto-title">
-         Table:
-         
-         <structname>phishing_replyto</structname>
-        </title>
- 
-
-
-        <para>
-          <variablelist>
-            <title>
-              Structure of <structname>phishing_replyto</structname>
-            </title>
-
-
-            <varlistentry>
-              <term><structfield>id</structfield></term>
-              <listitem><para>
-                <type>bigserial</type>
-
-
-                <literal>PRIMARY KEY</literal>
-
-
-
-
-
-
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>uuid</structfield></term>
-              <listitem><para>
-                <type>uuid</type>
-
-
-
-
-
-
-
-
-                      <literal>UNIQUE#1</literal>
-
-
-
-
-                <literal>NOT NULL</literal>
-
-
-
-
-
-
-                <literal>REFERENCES</literal> <xref linkend="public.table.messages"/>
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>description</structfield></term>
-              <listitem><para>
-                <type>character varying(140)</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>address</structfield></term>
-              <listitem><para>
-                <type>text</type>
-
-
-
-
-                      <literal>UNIQUE#1</literal>
-
-
-
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>source</structfield></term>
-              <listitem><para>
-                <type>uuid</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>source_weight</structfield></term>
-              <listitem><para>
-                <type>integer</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>confidence</structfield></term>
-              <listitem><para>
-                <type>real</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>severity</structfield></term>
-              <listitem><para>
-                <type>character varying(5)</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>restriction</structfield></term>
-              <listitem><para>
-                <type>character varying(16)</type>
-
-
-
-                <literal>NOT NULL</literal>
-
-
-
-                <literal>DEFAULT &apos;private&apos;::character varying</literal>
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>created</structfield></term>
-              <listitem><para>
-                <type>timestamp with time zone</type>
-
-
-
-
-
-                <literal>DEFAULT now()</literal>
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>tsv</structfield></term>
-              <listitem><para>
-                <type>tsvector</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-        </variablelist>
-
-
-
-        <variablelist>
-          <title>Constraints on phishing_replyto</title>
-
-          <varlistentry>
-            <term>phishing_replyto_restriction_check</term>
-            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
-          </varlistentry>
-
-
-
-          <varlistentry>
-            <term>phishing_replyto_severity_check</term>
-            <listitem><para>CHECK (((severity)::text = ANY ((ARRAY[&apos;low&apos;::character varying, &apos;medium&apos;::character varying, &apos;high&apos;::character varying])::text[])))</para></listitem>
-          </varlistentry>
-
-        </variablelist>
-
-
-
-
-
-
-
-
-
-
-      </para>
-    </section>
-
       <section id="public.table.phishing-urls"
                xreflabel="public.phishing_urls">
         <title id="public.table.phishing-urls-title">
@@ -3011,7 +3181,7 @@
             <varlistentry>
               <term><structfield>description</structfield></term>
               <listitem><para>
-                <type>character varying(140)</type>
+                <type>text</type>
 
 
 
@@ -3189,9 +3359,9 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>detecttime</structfield></term>
+              <term><structfield>alternativeid</structfield></term>
               <listitem><para>
-                <type>timestamp with time zone</type>
+                <type>text</type>
 
 
 
@@ -3205,7 +3375,27 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>reporttime</structfield></term>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
               <listitem><para>
                 <type>timestamp with time zone</type>
 
@@ -3269,8 +3459,269 @@
 
 
           <varlistentry>
+            <term>urls_restriction_check1</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
             <term>urls_severity_check</term>
             <listitem><para>CHECK (((severity)::text = ANY ((ARRAY[&apos;low&apos;::character varying, &apos;medium&apos;::character varying, &apos;high&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.routeviews"
+               xreflabel="public.routeviews">
+        <title id="public.table.routeviews-title">
+         Table:
+         
+         <structname>routeviews</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>routeviews</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>sha1</structfield></term>
+              <listitem><para>
+                <type>character varying(64)</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn_desc</structfield></term>
+              <listitem><para>
+                <type>character varying(140)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>cc</structfield></term>
+              <listitem><para>
+                <type>character varying(2)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>rir</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>prefix</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>cidr</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>peer</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>peer_desc</structfield></term>
+              <listitem><para>
+                <type>character varying(140)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
           </varlistentry>
 
         </variablelist>
@@ -3368,7 +3819,7 @@
             <varlistentry>
               <term><structfield>description</structfield></term>
               <listitem><para>
-                <type>character varying(140)</type>
+                <type>text</type>
 
 
 
@@ -3598,6 +4049,42 @@
           </varlistentry>
 
             <varlistentry>
+              <term><structfield>alternativeid</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
               <term><structfield>whois</structfield></term>
               <listitem><para>
                 <type>text</type>
@@ -3646,22 +4133,6 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>reporttime</structfield></term>
-              <listitem><para>
-                <type>timestamp with time zone</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
               <term><structfield>created</structfield></term>
               <listitem><para>
                 <type>timestamp with time zone</type>
@@ -3695,6 +4166,13 @@
 
           <varlistentry>
             <term>inet_restriction_check</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>inet_restriction_check1</term>
             <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
           </varlistentry>
 
@@ -3800,7 +4278,7 @@
             <varlistentry>
               <term><structfield>description</structfield></term>
               <listitem><para>
-                <type>character varying(140)</type>
+                <type>text</type>
 
 
 
@@ -4030,6 +4508,42 @@
           </varlistentry>
 
             <varlistentry>
+              <term><structfield>alternativeid</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
               <term><structfield>whois</structfield></term>
               <listitem><para>
                 <type>text</type>
@@ -4078,22 +4592,6 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>reporttime</structfield></term>
-              <listitem><para>
-                <type>timestamp with time zone</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
               <term><structfield>created</structfield></term>
               <listitem><para>
                 <type>timestamp with time zone</type>
@@ -4127,6 +4625,13 @@
 
           <varlistentry>
             <term>inet_restriction_check</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>inet_restriction_check1</term>
             <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
           </varlistentry>
 
@@ -4232,7 +4737,7 @@
             <varlistentry>
               <term><structfield>description</structfield></term>
               <listitem><para>
-                <type>character varying(140)</type>
+                <type>text</type>
 
 
 
@@ -4462,6 +4967,42 @@
           </varlistentry>
 
             <varlistentry>
+              <term><structfield>alternativeid</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
               <term><structfield>whois</structfield></term>
               <listitem><para>
                 <type>text</type>
@@ -4510,22 +5051,6 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>reporttime</structfield></term>
-              <listitem><para>
-                <type>timestamp with time zone</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
               <term><structfield>created</structfield></term>
               <listitem><para>
                 <type>timestamp with time zone</type>
@@ -4559,6 +5084,13 @@
 
           <varlistentry>
             <term>inet_restriction_check</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>inet_restriction_check1</term>
             <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
           </varlistentry>
 
@@ -4637,7 +5169,7 @@
 
 
 
-                      <literal>UNIQUE#1</literal>
+                      <literal>UNIQUE</literal>
 
 
 
@@ -4662,7 +5194,7 @@
             <varlistentry>
               <term><structfield>description</structfield></term>
               <listitem><para>
-                <type>character varying(140)</type>
+                <type>text</type>
 
 
 
@@ -4679,14 +5211,6 @@
               <term><structfield>address</structfield></term>
               <listitem><para>
                 <type>text</type>
-
-
-
-
-                      <literal>UNIQUE#1</literal>
-
-
-
 
 
 
@@ -4848,9 +5372,9 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>detecttime</structfield></term>
+              <term><structfield>alternativeid</structfield></term>
               <listitem><para>
-                <type>timestamp with time zone</type>
+                <type>text</type>
 
 
 
@@ -4864,7 +5388,27 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>reporttime</structfield></term>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
               <listitem><para>
                 <type>timestamp with time zone</type>
 
@@ -4922,6 +5466,13 @@
 
           <varlistentry>
             <term>urls_restriction_check</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>urls_restriction_check1</term>
             <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
           </varlistentry>
 
@@ -4998,7 +5549,7 @@
             <varlistentry>
               <term><structfield>description</structfield></term>
               <listitem><para>
-                <type>character varying(140)</type>
+                <type>text</type>
 
 
 
@@ -5220,6 +5771,38 @@
           </varlistentry>
 
             <varlistentry>
+              <term><structfield>alternativeid</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
               <term><structfield>whois</structfield></term>
               <listitem><para>
                 <type>text</type>
@@ -5253,22 +5836,6 @@
 
             <varlistentry>
               <term><structfield>detecttime</structfield></term>
-              <listitem><para>
-                <type>timestamp with time zone</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>reporttime</structfield></term>
               <listitem><para>
                 <type>timestamp with time zone</type>
 
@@ -5391,10 +5958,11 @@ SELECT inet.id
 , inet.source
 , inet.severity
 , inet.restriction
+, inet.alternativeid
+, inet.alternativeid_restriction
 , inet.whois
 , inet.tsv
 , inet.detecttime
-, inet.reporttime
 , inet.created
 , v_messages.type
 , v_messages.format
@@ -5545,7 +6113,7 @@ LEFT JOIN v_messages
             <varlistentry>
               <term><structfield>description</structfield></term>
               <listitem><para>
-                <type>character varying(140)</type>
+                <type>text</type>
 
 
 
@@ -5592,22 +6160,6 @@ LEFT JOIN v_messages
 
             <varlistentry>
               <term><structfield>detecttime</structfield></term>
-              <listitem><para>
-                <type>timestamp with time zone</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>reporttime</structfield></term>
               <listitem><para>
                 <type>timestamp with time zone</type>
 
@@ -5709,7 +6261,6 @@ SELECT messages.id
 , messages.impact
 , messages.restriction
 , messages.detecttime
-, messages.reporttime
 , messages.created
 , messages_unstructured.message AS unstructured
 , messages_structured.message AS structured
