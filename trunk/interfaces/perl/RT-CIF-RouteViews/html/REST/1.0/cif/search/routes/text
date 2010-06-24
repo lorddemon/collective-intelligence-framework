@@ -14,7 +14,7 @@ my $t = Text::Table->new(
     'cidr', { is_sep => 1, title => ' | ' },
     'peer', { is_sep => 1, title => ' | ' },
     'peer_desc', { is_sep => 1, title => ' | ' },
-    'reporttime', { is_sep => 1, title => ' | ' },
+    'detecttime', { is_sep => 1, title => ' | ' },
     'created', { is_sep => 1, title => ' | ' },
 );
 
@@ -28,7 +28,7 @@ foreach my $r (@recs){
         $r->cidr()        || 'NA',
         $r->peer() || 'NA',
         $r->peer_desc()  || 'NA',
-        $r->reporttime()    || 'NA',
+        $r->detecttime()    || 'NA',
         $r->created(),
     ]);
 }
