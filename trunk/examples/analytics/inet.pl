@@ -6,7 +6,7 @@ use CIF::Message::Inet;
 use Data::Dumper;
 use Text::Table;
 
-my @recs = CIF::Message::Inet->search_history_byreporttime("2008-04-01");
+my @recs = CIF::Message::Inet->retrieve_from_sql("detecttime >= '2008-01-01'");
 
 my $h;
 my $as;

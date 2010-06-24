@@ -13,6 +13,7 @@ use CIF::Message::Infrastructure;
 
 my $cache = "/tmp/phishtank.xml";
 
+#die('get your own key and remove this line');
 my $apikey = 'GET YOUR OWN KEY FROM phishtank.com!!!';
 
 my $url = "http://data.phishtank.com/data/$apikey/online-valid.xml";
@@ -59,9 +60,9 @@ foreach my $node (@nodes){
         severity    => $severity,
         confidence  => 7,
         restriction => 'need-to-know',
-        reporttime  => $created,
-        externalid  => $did,
-        externalid_restriction => 'public',
+        detecttime  => $created,
+        alternativeid  => $did,
+        alternativeid_restriction => 'public',
     });
 
     CIF::Message::Infrastructure->insert({
@@ -73,12 +74,12 @@ foreach my $node (@nodes){
         severity    => 'low',
         confidence  => 5,
         restriction => 'public',
-        reporttime  => $created,
+        detecttime  => $created,
         asn         => $asn,
         cidr        => $cidr,
         rir         => $rir,
-        externalid  => $did,
-        externalid_restriction => 'public',
+        alternativeid  => $did,
+        alternativeid_restriction => 'public',
     });
-    warn $uuid->uuid();
+    warn $uuid;
 }

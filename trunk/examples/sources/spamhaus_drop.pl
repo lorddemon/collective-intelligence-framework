@@ -39,7 +39,7 @@ while (<F>){
     $date       = undef if($date && $date eq 'NA');
     $desc       = undef if($desc && $desc eq 'NA');
 
-    my $reporttime = DateTime->from_epoch(epoch => time());
+    my $detecttime = DateTime->from_epoch(epoch => time());
 
     warn CIF::Message::SuspiciousNetwork->insert({
         address     => $addr,
@@ -55,9 +55,9 @@ while (<F>){
         cc          => $ccode,
         rir         => $rir,
         restriction => 'need-to-know',
-        externalid  => $ref,
-        externalid_restriction => 'public',
-        reporttime  => $reporttime,
+        alternativeid  => $site_ref.$ref,
+        alternativeid_restriction => 'public',
+        detecttime  => $detecttime,
     });
 #    last if $n++ == 2;
 }

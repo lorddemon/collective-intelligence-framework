@@ -36,11 +36,11 @@ foreach my $item (@{$rss->{items}}){
         $host = $1;
     }
 
-    my $reporttime;
-    if($item->{title} =~ /\((\d{4}\-\d{2}\-\d{2} \d{2}:\d{2}:\d{2})\)/){
-        $reporttime = DateTime::Format::DateParse->parse_datetime($1);
+    my $detecttime;
+    if($item->{title} =~ /\((\d{4}\-\d{2}\-\d{2})\)/){
+        $detecttime = DateTime::Format::DateParse->parse_datetime($1);
     }
-    $reporttime .= 'Z';
+    $detecttime .= 'Z';
 
     my $uuid;
     my $impact = 'malware zeus binary';
@@ -51,11 +51,11 @@ foreach my $item (@{$rss->{items}}){
             impact      => $impact,
             hash_md5    => $md5,
             restriction => 'need-to-know',
-            reporttime  => $reporttime,
+            detecttime  => $detecttime,
             confidence  => 7,
             severity    => $severity,
-            externalid  => 'https://zeustracker.abuse.ch/monitor.php?search='.$md5,
-            externalid_restriction => 'public',
+            alternativeid  => 'https://zeustracker.abuse.ch/monitor.php?search='.$md5,
+            alternativeid_restriction => 'public',
         });
         $uuid = $uuid->uuid();
     }
@@ -71,8 +71,9 @@ foreach my $item (@{$rss->{items}}){
         malware_md5 => $md5,
         severity    => $severity,
         restriction => 'need-to-know',
-        externalid  => 'https://zeustracker.abuse.ch/monitor.php?host='.$host,
-        externalid_restriction => 'public',
+        detecttime  => $detecttime,
+        alternativeid  => 'https://zeustracker.abuse.ch/monitor.php?host='.$host,
+        alternativeid_restriction => 'public',
     });
     warn $uuid;
 

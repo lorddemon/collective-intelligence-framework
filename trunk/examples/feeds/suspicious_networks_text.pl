@@ -9,7 +9,7 @@ use Text::Table;
 CIF::Message::SuspiciousNetwork->connection('DBI:Pg:database=cif;host=localhost','postgres','',{ AutoCommit => 1} );
 
 my $hash;
-my @recs = CIF::Message::SuspiciousNetwork->search_history_byreporttime("2010-06-01 00:00:00Z");
+my @recs = CIF::Message::SuspiciousNetwork->retrieve_from_sql('detecttime >= \'2010-06-01 00:00:00Z\'');
 
 foreach my $rec (@recs){
     next if(exists($hash->{$rec->address()}));
