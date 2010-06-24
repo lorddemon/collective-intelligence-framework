@@ -41,11 +41,11 @@ foreach my $item (@{$rss->{items}}){
         $level = 'hosted on a fastflux botnet' if(/^5$/);
     }
 
-    my $reporttime;
+    my $detecttime;
     if($item->{title} =~ /\((\d{4}\-\d{2}\-\d{2} \d{2}:\d{2}:\d{2})\)/){
-        $reporttime = DateTime::Format::DateParse->parse_datetime($1);
+        $detecttime = DateTime::Format::DateParse->parse_datetime($1);
     }
-    $reporttime .= 'Z';
+    $detecttime .= 'Z';
 
     my $uuid;
     if($host =~ /^$RE{net}{IPv4}$/){
@@ -57,17 +57,16 @@ foreach my $item (@{$rss->{items}}){
                 description => 'botnet infrastructure zeus level:'.$level.' - '.$addr,
                 confidence  => 5,
                 severity    => 'medium',
-                reporrtime  => $reporttime,
+                reporrtime  => $detecttime,
                 asn         => $as,
                 asn_desc    => $as_desc,
                 cidr        => $network,
                 cc          => $ccode,
                 rir         => $rir,
                 restriction => 'need-to-know',
-                externalid => 'https://zeustracker.abuse.ch/monitor.php?ipaddress='.$addr,
-                externalid_restriction => 'public',
+                alternativeid => 'https://zeustracker.abuse.ch/monitor.php?ipaddress='.$addr,
+                alternativeid_restriction => 'public',
         });
-        warn $uuid;
     } else {  
         my $bgsock = $res->bgsend($host);
         my $sel = IO::Select->new($bgsock);
@@ -105,9 +104,9 @@ foreach my $item (@{$rss->{items}}){
                 severity    => 'medium',
                 impact      => $impact,
                 description => $impact.' level:'.$level.' - '.$host,
-                reporttime  => $reporttime,
+                detecttime  => $detecttime,
                 class       => $r->{'class'},
-                rrtype      => $r->{'type'},
+                type        => $r->{'type'},
                 rdata       => $r->{'address'},
                 ttl         => $r->{'ttl'},
                 asn         => $as,
@@ -115,34 +114,33 @@ foreach my $item (@{$rss->{items}}){
                 cidr        => $network,
                 cc          => $ccode,
                 rir         => $rir,
-                externalid => 'https://zeustracker.abuse.ch/monitor.php?host='.$host,
-                externalid_restriction => 'public',
+                alternativeid => 'https://zeustracker.abuse.ch/monitor.php?host='.$host,
+                alternativeid_restriction => 'public',
                 restriction => 'need-to-know',
             });
-            $uuid = $uuid->uuid();
            
             next unless($r->{'address'} && $r->{'address'} =~ /^$RE{net}{IPv4}$/);
             CIF::Message::Infrastructure->insert({
-                relatedid   => $uuid,
+                relatedid   => $uuid->uuid(),
                 source      => $partner,
                 address     => $r->{'address'},
                 impact      => 'botnet infrastructure zeus',
                 description => 'botnet infrastructure zeus level:'.$level.' - '.$r->{'address'},
                 confidence  => 5,
                 severity    => 'medium',
-                reporttime  => $reporttime,
+                detecttime  => $detecttime,
                 asn         => $as,
                 asn_desc    => $as_desc,
                 cidr        => $network,
                 cc          => $ccode,
                 rir         => $rir,
                 restriction => 'need-to-know',
-                externalid => 'https://zeustracker.abuse.ch/monitor.php?ipaddress='.$addr,
-                externalid_restriction => 'public',
+                alternativeid => 'https://zeustracker.abuse.ch/monitor.php?ipaddress='.$addr,
+                alternatievid_restriction => 'public',
             });
-            warn $uuid;
         }
     }
+    warn $uuid;
 }
 
 sub asninfo {

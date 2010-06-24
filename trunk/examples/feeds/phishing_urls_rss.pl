@@ -7,7 +7,7 @@ use XML::RSS;
 use CIF::Message::Structured;
 
 my $hash;
-my @recs = CIF::Message::PhishingURL->search_history_byreporttime("2010-06-01 00:00:00Z");
+my @recs = CIF::Message::PhishingURL->retrieve_from_sql('detecttime >= \'2010-06-01 00:00:00Z\'');
 
 
 foreach my $rec (@recs){
@@ -37,13 +37,13 @@ foreach my $h (keys %$hash){
     $m = $m->message() if($m);
     $rss->add_item(
         title   => $r->restriction().','.$r->description(),
-        link   => 'example.com/messages/'.$r->uuid(),
+        link   => 'example.com/cif/uuid/'.$r->uuid(),
         guid    => $r->uuid(),
         category    => 'phishing url',
         description => $m,
         dc      => {
             creator => $r->source(),
-            date    => $r->reporttime(),
+            date    => $r->detecttime(),
         },
     );
     last if $x++ == 3;

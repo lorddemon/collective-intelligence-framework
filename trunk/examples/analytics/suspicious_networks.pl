@@ -6,7 +6,7 @@ use CIF::Message::SuspiciousNetwork;
 use Data::Dumper;
 use Text::Table;
 
-my @recs = CIF::Message::SuspiciousNetwork->search_history_byreporttime("2010-06-01");
+my @recs = CIF::Message::SuspiciousNetwork->retrieve_from_sql("detecttime >= '2010-01-01'");
 
 my $h;
 my $as;

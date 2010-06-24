@@ -7,7 +7,7 @@ use Data::Dumper;
 use Text::Table;
 
 my $hash;
-my @recs = CIF::Message::PhishingURL->search_history_byreporttime("2010-06-01 00:00:00Z");
+my @recs = CIF::Message::PhishingURL->retrieve_from_sql('detecttime >= \'2010-06-01 00:00:00Z\'');
 
 foreach my $rec (@recs){
     my $key = $rec->url_sha1();
