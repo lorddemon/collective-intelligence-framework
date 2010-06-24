@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DB="cif"
-SCHEMA="messages.sql domain.sql inet.sql malware.sql phishing_replyto.sql url.sql"
+SCHEMA="messages.sql domain.sql inet.sql malware.sql url.sql email.sql routeviews.sql"
 
 psql -U postgres -c "DROP DATABASE $DB"
 psql -U postgres -c "CREATE DATABASE $DB"
