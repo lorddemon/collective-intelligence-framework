@@ -18,13 +18,15 @@ unless($arg){
     goto OUTPUT;
 }
 
+$arg = lc($arg) if($arg);
+
 my $sql = '';
 if($detecttime){
     $sql .= "detecttime >= '$detecttime' AND ";
 }
 
 if($arg){
-    $sql .= "impact LIKE '%$arg%'";
+    $sql .= "lower(impact) LIKE '%$arg%'";
 }
 
 $sql =~ s/ AND $//;

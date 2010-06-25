@@ -19,13 +19,15 @@ unless($arg){
     goto OUTPUT;
 }
 
+$arg = lc($arg);
+
 my $sql = '';
 if($detecttime){
     $sql .= "detecttime >= '$detecttime' AND ";
 }
 
 if($arg){
-    $sql .= "description LIKE '%$arg%'";
+    $sql .= "lower(description) LIKE '%$arg%'";
 }
 
 $sql =~ s/ AND $//;
