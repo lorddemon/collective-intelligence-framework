@@ -6,6 +6,8 @@ use warnings;
 
 use XML::IODEF;
 use CIF::Message::IODEF;
+use Net::CIDR;
+use Net::Abuse::Utils qw(:all);
 
 __PACKAGE__->table('inet');
 __PACKAGE__->columns(Primary => 'id');
@@ -13,6 +15,41 @@ __PACKAGE__->columns(All => qw/id uuid description impact address cidr asn asn_d
 __PACKAGE__->columns(Essential => qw/id uuid description address restriction created/);
 __PACKAGE__->has_a(uuid   => 'CIF::Message');
 __PACKAGE__->sequence('inet_id_seq');
+
+my @list = (
+    "0.0.0.0/8",
+    "10.0.0.0/8",
+    "127.0.0.0/8",
+    "192.168.0.0/16",
+    "169.254.0.0/16",
+    "192.0.2.0/24",
+    "224.0.0.0/4",
+    "240.0.0.0/5",
+    "248.0.0.0/5"
+);
+
+sub isPrivateAddress {
+    my $addr = shift;
+    my $found =  Net::CIDR::cidrlookup($addr,@list);
+    return($found);
+}
+
+sub asninfo {
+    my $a = shift;
+    return undef unless($a);
+    my ($as,$network,$ccode,$rir,$date) = get_asn_info($a);
+    my $as_desc;
+    $as_desc = get_as_description($as) if($as);
+
+    $as         = undef if($as && $as eq 'NA');
+    $network    = undef if($network && $network eq 'NA');
+    $ccode      = undef if($ccode && $ccode eq 'NA');
+    $rir        = undef if($rir && $rir eq 'NA');
+    $date       = undef if($date && $date eq 'NA');
+    $as_desc    = undef if($as_desc && $as_desc eq 'NA');
+    $a          = undef if($a eq '');
+    return ($as,$network,$ccode,$rir,$date,$as_desc);
+}
 
 sub insert {
     my $self = shift;
@@ -141,14 +178,6 @@ sub toIODEF {
     }
     return $iodef->out();
 }
-
-__PACKAGE__->set_sql('history_bycreatetime', => qq{
-    SELECT *
-    FROM __TABLE__
-    WHERE createtime >= ?
-    ORDER BY createtime DESC
-});
-
 
 1;
 

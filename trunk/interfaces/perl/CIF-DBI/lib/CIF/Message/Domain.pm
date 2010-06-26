@@ -123,4 +123,60 @@ sub toIODEF {
     return $iodef->out();
 }
 
+# send in a Net::DNS $res and the domain
+# returns an array
+
+sub getrdata {
+    my ($res,$d) = @_;
+    return undef unless($d);
+
+    my @rdata;
+    my $q = $res->search($d);
+    if($q){
+        foreach my $rr ($q->answer()){
+            my $address;
+            for($rr->type()){
+                if(/^PTR$/){
+                    $address = $rr->ptrdname();
+                    push(@rdata,{ address => $rr->ptrdname(), type => $rr->type(), class => $rr->class(), ttl => $rr->ttl });
+                    last;
+                }
+                if(/^A/){
+                    push(@rdata,{ address => $rr->address(), type => $rr->type(), class => $rr->class(), ttl => $rr->ttl });
+                    last;
+                }
+                if(/^CNAME$/){
+                    push(@rdata,{ address => $rr->cname(), type => $rr->type(), class => $rr->class(), ttl => $rr->ttl });
+                    my $q2 = $res->search($rr->cname());
+                    foreach my $rrr (grep { $_->type() eq 'A' } $q2->answer()){
+                        push(@rdata,{ cname => $rr->cname(), address => $rrr->address(), type => 'A', class => $rrr->class(), ttl => $rr->ttl()});
+                    }
+                    last;
+                }
+            }
+        }
+    }
+
+    # snag the nameservers
+    $q = $res->query($d,'NS');
+    if($q){
+        foreach my $rr (grep { $_->type eq 'NS' } $q->answer()){
+            my $q2 = $res->search($rr->nsdname());
+            if($q2){
+                foreach my $rrr ( grep { $_->type eq 'A' } $q2->answer()){
+                    my $address = ($rr->type() eq 'CNAME') ? $rrr->cname() : $rrr->address();
+                    push(@rdata,{ nameserver => $rr->nsdname(), address => $address, type => $rrr->type(), class => $rrr->class(), ttl => $rrr->ttl });
+                }
+            }
+            push(@rdata,{ address => $rr->nsdname(), type => 'NS', class => 'IN', ttl => $rr->ttl() });
+        }
+    }
+
+    if($#rdata == -1){
+        push(@rdata, { address => undef, type => 'A', class => 'IN', ttl => undef });
+    }
+
+    return(@rdata);
+}
+
 1;
