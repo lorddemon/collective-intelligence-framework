@@ -6,6 +6,7 @@ DROP view v_inet;
 DROP TABLE scanners;
 DROP TABLE spammers;
 DROP TABLE infrastructure;
+DROP TABLE inet_whitelist;
 
 DROP TABLE inet;
 CREATE TABLE inet (
@@ -41,6 +42,15 @@ CREATE VIEW v_inet as
 SELECT inet.*,v_messages.type,v_messages.format,v_messages.structured,v_messages.tsv as message_tsv
 FROM inet
 LEFT JOIN v_messages ON (v_messages.uuid = inet.uuid);
+
+--
+-- inet_whitelist
+---
+
+CREATE TABLE inet_whitelist () INHERITS (inet);
+ALTER TABLE inet_whitelist ADD PRIMARY KEY (id);
+ALTER TABLE inet_whitelist ADD CONSTRAINT inet_whitelist_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE inet_whitelist ADD UNIQUE(uuid);
 
 --
 -- scanners
