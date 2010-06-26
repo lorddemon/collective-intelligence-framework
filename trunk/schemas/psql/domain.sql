@@ -1,3 +1,7 @@
+DROP TABLE domains_whitelist;
+DROP TABLE fastflux_domains;
+DROP TABLE suspicious_nameservers;
+DROP TABLE malicious_domains;
 DROP TABLE domains;
 CREATE TABLE domains (
     id BIGSERIAL PRIMARY KEY NOT NULL,
@@ -27,6 +31,34 @@ CREATE TABLE domains (
     UNIQUE (uuid)
 );
 
+CREATE TABLE domains_whitelist() INHERITS (domains);
+ALTER TABLE domains_whitelist ADD PRIMARY KEY (id);
+ALTER TABLE domains_whitelist ADD CONSTRAINT whitelist_domains_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE domains_whitelist ADD UNIQUE(uuid);
+
+CREATE TABLE fastflux_domains() INHERITS (domains);
+ALTER TABLE fastflux_domains ADD PRIMARY KEY (id);
+ALTER TABLE fastflux_domains ADD CONSTRAINT fastflux_domains_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE fastflux_domains ADD UNIQUE(uuid);
+
 CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-ON domains FOR EACH ROW EXECUTE PROCEDURE
-tsvector_update_trigger(tsv, 'pg_catalog.english', description,address,whois);
+ON fastflux_domains FOR EACH ROW EXECUTE PROCEDURE
+tsvector_update_trigger(tsv, 'pg_catalog.english', description,impact,asn_desc,whois);
+
+CREATE TABLE suspicious_nameservers() INHERITS (domains);
+ALTER TABLE suspicious_nameservers ADD PRIMARY KEY (id);
+ALTER TABLE suspicious_nameservers ADD CONSTRAINT suspicious_nameservers_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE suspicious_nameservers ADD UNIQUE(uuid);
+
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+ON suspicious_nameservers FOR EACH ROW EXECUTE PROCEDURE
+tsvector_update_trigger(tsv, 'pg_catalog.english', description,impact,asn_desc,whois);
+
+CREATE TABLE malicious_domains() INHERITS (domains);
+ALTER TABLE malicious_domains ADD PRIMARY KEY (id);
+ALTER TABLE malicious_domains ADD CONSTRAINT malicious_domains_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE malicious_domains ADD UNIQUE(uuid);
+
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+ON malicious_domains FOR EACH ROW EXECUTE PROCEDURE
+tsvector_update_trigger(tsv, 'pg_catalog.english', description,impact,asn_desc,whois);
