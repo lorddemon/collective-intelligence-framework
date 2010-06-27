@@ -12,6 +12,7 @@ use Net::DNS;
 
 use CIF::Message::Infrastructure;
 use CIF::Message::Domain;
+use CIF::Message::Inet;
 
 my $timeout = 5;
 my $res = Net::DNS::Resolver->new(
@@ -95,7 +96,7 @@ foreach my $item (@{$rss->{items}}){
         }
 
         foreach my $r (@rdata){
-            my ($as,$network,$ccode,$rir,$date,$as_desc) = asninfo($r->{'address'});
+            my ($as,$network,$ccode,$rir,$date,$as_desc) = CIF::Message::Inet::asninfo($r->{'address'});
             my $impact = 'malicious domain zeus';
             $uuid = CIF::Message::Domain->insert({
                 address     => $host,
@@ -141,21 +142,4 @@ foreach my $item (@{$rss->{items}}){
         }
     }
     warn $uuid;
-}
-
-sub asninfo {
-    my $a = shift;
-    return undef unless($a);
-    my ($as,$network,$ccode,$rir,$date) = get_asn_info($a);
-    my $as_desc;
-    $as_desc = get_as_description($as) if($as);
-
-    $as         = undef if($as && $as eq 'NA');
-    $network    = undef if($network && $network eq 'NA');
-    $ccode      = undef if($ccode && $ccode eq 'NA');
-    $rir        = undef if($rir && $rir eq 'NA');
-    $date       = undef if($date && $date eq 'NA');
-    $as_desc    = undef if($as_desc && $as_desc eq 'NA');
-    $a          = undef if($a eq '');
-    return ($as,$network,$ccode,$rir,$date,$as_desc);
 }
