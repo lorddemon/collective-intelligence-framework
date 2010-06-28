@@ -1,0 +1,46 @@
+<%INIT>
+use RT::Interface::REST;
+use CIF::APIKEY;
+use CIF::User;
+use Text::Table;
+
+my $arg = $m->dhandler_arg();
+
+my $email = $session{'CurrentUser'}->EmailAddress();
+my $u = CIF::User->retrieve(email => $email);
+unless($u){
+    $u = CIF::User->insert({
+        email   => $email,
+    });
+}
+
+my $new;
+if($arg){
+    for(lc($arg)){
+        if(/^new$/){
+            CIF::APIKEY->search(userid => $u->id())->delete_all();
+            $new = 1;
+            last;
+        }
+        if(/^add$/){
+            $new = 1;
+            last;
+        }
+    }
+}
+
+if($new){
+    CIF::APIKEY->genkey($u->id());
+}
+
+my @recs = CIF::APIKEY->search(userid => $u->id(), { order_by => 'created DESC' });
+if($#recs > -1){
+    my $t = Text::Table->new('key','created');
+    foreach (@recs){
+        $t->load([$_->apikey(),$_->created()]);
+    }
+    $m->out($t);
+} else {
+    $m->out('you have no api keys');
+}
+</%INIT>
