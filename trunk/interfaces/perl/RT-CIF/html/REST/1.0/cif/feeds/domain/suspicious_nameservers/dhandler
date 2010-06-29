@@ -1,0 +1,50 @@
+<%ARGS>
+$detecttime => undef
+$qlimit    => 1500
+$feedlimit  => 500
+$format     => 'text'
+</%ARGS>
+<%INIT>
+use RT::Interface::REST;
+use CIF::Message::SuspiciousNameserver;
+use CIF::Message::DomainWhitelist;
+
+my $w = 'CIF::Message::DomainWhitelist';
+
+my $output = '';
+my $status = '200 Ok';
+
+my $sql = '';
+if($detecttime){
+    $sql = "detecttime >= '$detecttime'";
+} else {
+    $sql = '1=1';
+}
+
+$sql .= " ORDER BY detecttime DESC, created DESC, id DESC LIMIT $qlimit";
+
+my @recs = CIF::Message::SuspiciousNameserver->retrieve_from_sql($sql);
+
+$status .= ' '.$#recs.'/'.$feedlimit.' (total recs / feed limit)';
+
+my @feed;
+my $x = 1;
+my $hash;
+foreach my $r (@recs){
+    my $a = $r->address();
+    next if($w->isWhitelisted($a));
+    next if(exists($hash->{$a}));
+    $hash->{$a} = $r;
+    push(@feed,$r);
+    last if($x++ == $feedlimit);
+}
+@recs = @feed;
+
+$output = eval { $m->comp('/REST/1.0/cif/search/domain/'.$format, recs => \@recs) };
+if($@){
+    $output = $m->comp('/REST/1.0/cif/search/domain/text', recs => \@recs);
+}
+
+$m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
+$m->out($output);
+</%INIT>
