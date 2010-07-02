@@ -15,6 +15,8 @@ WriteMakefile(
         LWP::Simple     => undef,
         Net::CIDR       => undef,
         Net::Abuse::Utils   => undef,
+        XML::Compile    => undef,
+        XML::Malware    => undef
     }, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/CIF/DBI.pm', # retrieve abstract from module

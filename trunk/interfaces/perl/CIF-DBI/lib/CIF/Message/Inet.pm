@@ -8,6 +8,7 @@ use XML::IODEF;
 use CIF::Message::IODEF;
 use Net::CIDR;
 use Net::Abuse::Utils qw(:all);
+#use CIF::Message::InetWhitelist;
 
 __PACKAGE__->table('inet');
 __PACKAGE__->columns(Primary => 'id');
@@ -32,6 +33,11 @@ sub isPrivateAddress {
     my $addr = shift;
     my $found =  Net::CIDR::cidrlookup($addr,@list);
     return($found);
+}
+
+sub isWhitelisted {
+    my $self = shift;
+#    return CIF::Message::InetWhitelist->isWhitelisted($self->address());
 }
 
 sub asninfo {
@@ -178,6 +184,25 @@ sub toIODEF {
     }
     return $iodef->out();
 }
+
+__PACKAGE__->set_sql('by_address' => qq{
+    SELECT * FROM __TABLE__
+    WHERE address <<= ?
+    AND NOT EXISTS (
+        SELECT address from inet_whitelist WHERE __TABLE__.address <<= inet_whitelist.address
+    )
+});
+
+__PACKAGE__->set_sql('by_asn' => qq{
+    SELECT *
+    FROM __TABLE__
+    WHERE asn = ?
+    AND NOT EXISTS (
+        SELECT address from inet_whitelist WHERE __TABLE__.address <<= inet_whitelist.address
+    )
+    ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT ?
+});
 
 1;
 

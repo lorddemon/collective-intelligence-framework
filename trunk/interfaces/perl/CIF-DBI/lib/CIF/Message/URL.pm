@@ -101,6 +101,22 @@ sub toIODEF {
     return $iodef->out();
 }
 
+__PACKAGE__->set_sql('by_impact' => qq{
+    SELECT *
+    FROM __TABLE__
+    WHERE lower(impact) LIKE ?
+    ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT ?
+});
+
+__PACKAGE__->set_sql('by_description' => qq{
+    SELECT *
+    FROM __TABLE__
+    WHERE lower(description) LIKE ?
+    ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT ?
+});
+
 1;
 
 __END__
