@@ -65,5 +65,14 @@ sub genSourceUUID {
     return($str);
 }
 
+__PACKAGE__->set_sql('by_impact' => qq{
+    SELECT * 
+    FROM __TABLE__
+    WHERE lower(impact) LIKE ?
+    ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT ?
+});
+
+
 1;
 __END__

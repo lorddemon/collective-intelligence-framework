@@ -91,6 +91,13 @@ sub toIODEF {
     return $iodef->out();
 }
 
+__PACKAGE__->set_sql('by_address' => qq{
+    SELECT *
+    FROM __TABLE__
+    WHERE lower(address) = lower(?)
+    ORDER BY detecttime DESC, created DESC, id DESC
+});
+
 1;
 
 __END__

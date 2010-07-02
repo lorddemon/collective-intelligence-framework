@@ -179,4 +179,25 @@ sub getrdata {
     return(@rdata);
 }
 
+__PACKAGE__->set_sql('by_address' => qq{
+    SELECT * 
+    FROM __TABLE__
+    WHERE lower(address) LIKE lower(?)
+    AND NOT EXISTS (
+        SELECT lower(address) FROM domains_whitelist WHERE lower(__TABLE__.address) = lower(domains_whitelist.address)
+    )
+    LIMIT ?
+});
+
+__PACKAGE__->set_sql('by_asn' => qq{
+    SELECT *
+    FROM __TABLE__
+    WHERE asn = ?
+    AND NOT EXISTS (
+        SELECT address from inet_whitelist WHERE __TABLE__.rdata::inet <<= inet_whitelist.address
+    )
+    ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT ?
+});
+
 1;

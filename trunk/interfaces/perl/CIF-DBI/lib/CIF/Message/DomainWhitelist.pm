@@ -26,7 +26,7 @@ sub isWhitelisted {
     ## TODO -- do this by my $parts = split(/\./,$a); foreach ....
     for($a){
         if(/([a-zA-Z0-9-]+\.[a-zA-Z]{2,4})$/){
-            $sql .= qq{ address LIKE '%$1'};
+            $sql .= qq{address LIKE '%$1'};
         }
         if(/((?:[a-zA-Z0-9-]+\.){2,2}[a-zA-Z]{2,4})$/){
             $sql .= qq{ OR address LIKE '%$1'};
@@ -39,10 +39,8 @@ sub isWhitelisted {
         }
 
     }
-    $sql .= qq{ ORDER BY detecttime DESC, created DESC, id DESC};
-
-    my @ret = $self->SUPER::retrieve_from_sql($sql);
-
-    return @ret;
+    $sql .= qq{\nORDER BY detecttime DESC, created DESC, id DESC};
+    
+    return $self->SUPER::retrieve_from_sql($sql);
 }
 1;
