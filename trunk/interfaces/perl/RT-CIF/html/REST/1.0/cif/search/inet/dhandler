@@ -6,31 +6,19 @@ $format     => 'text'
 <%INIT>
 use RT::Interface::REST;
 use CIF::Message::Inet;
+use DateTime;
 
 my $output = '';
 my $status = '200 Ok';
 my $arg = $m->dhandler_arg();
 
-unless($arg || $detecttime){
+unless($arg){
     $status = '409 Syntax Error';
-    $output = 'Missing required arguments: detecttime || arg';
+    $output = 'Missing required argument';
     goto OUTPUT;
 }
 
-my $sql = '';
-if($detecttime){
-    $sql .= "detecttime >= '$detecttime' AND ";
-}
-
-if($arg){
-    $sql .= "address <<= '$arg'";
-}
-
-$sql =~ s/ AND $//;
-
-$sql .= " ORDER BY detecttime DESC, created DESC, id DESC LIMIT $qlimit";
-
-my @recs = CIF::Message::Inet->retrieve_from_sql($sql);
+my @recs = CIF::Message::Inet->search_by_address($arg,$qlimit);
 
 $status .= ' '.($#recs + 1).'/'.$qlimit.' (total recs / query limit)';
 
