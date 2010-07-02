@@ -5,17 +5,19 @@
 use Text::Table;
 
 my $t = Text::Table->new(
-    { title => '# asn', align => 'left' }, { is_sep => 1, title => ' | ' },
-    "asn_desc", { is_sep => 1, title => ' | ' },
-    "cidr", { is_sep => 1, title => ' | ' },
-    "address", { is_sep => 1, title => ' | ' },
+    { title => '# impact', align => 'left' }, { is_sep => 1, title => ' | ' },
+    'description', { is_sep => 1, title => ' | ' },
+    'restriction', { is_sep => 1, title => ' | ' },
+    'severity', { is_sep => 1, title => ' | ' },
+    'source', { is_sep => 1, title => ' | ' },
+    'address', { is_sep => 1, title => ' | ' },
+    'asn', { is_sep => 1, title => ' | ' },
+    'asn_desc', { is_sep => 1, title => ' | ' },
+    'cidr', { is_sep => 1, title => ' | ' },
     'portlist', { is_sep => 1, title => ' | ' },
     'protocol', { is_sep => 1, title => ' | ' },
-    'description', { is_sep => 1, title => ' | ' },
     'country', { is_sep => 1, title => ' | ' },
     'confidence', { is_sep => 1, title => ' | ' },
-    'severity', { is_sep => 1, title => ' | ' },
-    'restriction', { is_sep => 1, title => ' | ' },
     'detecttime', { is_sep => 1, title => ' | ' },
     'created', { is_sep => 1, title => ' | ' },
     'reference',
@@ -23,19 +25,22 @@ my $t = Text::Table->new(
 
 foreach my $r (@recs){
     $t->load([
+        $r->impact(),
+        $r->description()   || 'NA',
+        $r->restriction()   || 'private',
+        $r->severity()      || 'NA',
+        $r->source(),
+        $r->address(),  
         $r->asn()           || 'NA',
         $r->asn_desc()      || 'NA',   
         $r->cidr()          || 'NA',
-        $r->address(),  
         $r->portlist()      || 'NA',
         $r->protocol()      || 'NA',
-        $r->description()   || 'NA',
         $r->cc()            || 'NA',
         $r->confidence()    || 'NA',
-        $r->severity()      || 'NA',
-        $r->restriction()   || 'private',
         $r->detecttime()    || 'NA',
         $r->created()       || 'NA',
+        $r->source(),
         RT->Config->Get("rtname").'/REST/1.0/cif/uuid/'.$r->uuid(),
     ]);
 }
