@@ -34,16 +34,16 @@ foreach my $r (@recs){
     my $a = $r->address();
     next if($r->type eq 'NS');
     next if($w->isWhitelisted($a));
-    #next if(exists($hash->{$a}));
+    next if(exists($hash->{$a}));
     $hash->{$a} = $r;
     push(@feed,$r);
     last if($x++ == $feedlimit);
 }
 @recs = @feed;
 
-$output = eval { $m->comp('/REST/1.0/cif/search/domain/'.$format, recs => \@recs) };
+$output = eval { $m->comp('/REST/1.0/cif/feeds/domain/'.$format, recs => \@recs) };
 if($@){
-    $output = $m->comp('/REST/1.0/cif/search/domain/text', recs => \@recs);
+    $output = $m->comp('/REST/1.0/cif/feeds/domain/text', recs => \@recs);
 }
 
 $m->out("RT/". $RT::VERSION . " " . $status ."\n\n");

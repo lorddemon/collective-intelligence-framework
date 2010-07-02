@@ -1,0 +1,52 @@
+<%INIT>
+use RT::Interface::REST;
+
+my $text = <<EOF;
+Usage:
+
+search                              search interface for data
+search/address
+search/asn                          
+search/domain
+search/email
+search/impact
+search/malware
+search/malware/impact
+search/malware/description
+search/url (will accept md5's or sha1's)
+
+feeds                               generate feed data, usually same as search with less duplication and removal of whitelisted items
+                                    all feeds urls include feeds/<TYPE>/impact and feeds/<TYPE>/description for more advanced filtering
+                                    eg: feeds/fastflux/impact/conficker, feeds/malicious_domains/impact/zeus
+
+feeds/domain                        umbrella feed all all domain related intel
+feeds/daomin/suspicious_nameservers 
+feeds/domain/malicious_domains      
+feeds/domain/fastflux
+
+feeds/email                         all email address related intel
+
+feeds/inet                          all inet (ip-address) related intel
+feeds/infrastructure
+feeds/suspiciousnetworks
+feeds/scanners
+feeds/spammers
+
+feeds/malware                       all malware related intel
+
+feeds/url                           all url related intel
+feeds/url/malware
+feeds/url/phishing
+
+uuid                                load a specific message uuid (eg: uuid/12345678-1234-1234-1234123412341234)
+
+Common Parameters:
+
+apikey=(your uuid-based apikey)
+format=(json|text|xml)
+detecttime=('2010-06-05T00:00:00Z')
+
+EOF
+
+$m->out($text);
+</%INIT>
