@@ -1,38 +1,31 @@
 <%ARGS>
-$detecttime => undef
 $qlimit     => 1500
 $format     => 'text'
 </%ARGS>
 <%INIT>
 use RT::Interface::REST;
 use CIF::Message::Domain;
+use CIF::Message::DomainWhitelist;
 
 my $output = '';
 my $status = '200 Ok';
 my $arg = $m->dhandler_arg();
 
-unless($arg || $detecttime){
+unless($arg){
     $status = '409 Syntax Error';
-    $output = 'Missing required arguments: detecttime || arg';
+    $output = 'Missing required argument';
     goto OUTPUT;
 }
 
-$arg = lc($arg);
+my @recs = CIF::Message::Domain->search_by_address('%'.$arg.'%',$qlimit);
 
-my $sql = '';
-if($detecttime){
-    $sql .= "detecttime >= '$detecttime' AND ";
+# extra whitelist processing since domains are tricky (eg: we want all of .google.com)
+my @rrecs;
+foreach (@recs){
+    next if(CIF::Message::DomainWhitelist->isWhitelisted($_->address()));
+    push(@rrecs,$_);
 }
-
-if($arg){
-    $sql .= "lower(address) LIKE '%$arg%'";
-}
-
-$sql =~ s/ AND $//;
-
-$sql .= " ORDER BY detecttime DESC, created DESC, id DESC LIMIT $qlimit";
-
-my @recs = CIF::Message::Domain->retrieve_from_sql($sql);
+@recs = @rrecs;
 
 $status .= ' '.($#recs + 1).'/'.$qlimit.' (total recs / query limit)';
 

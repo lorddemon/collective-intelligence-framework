@@ -8,15 +8,16 @@ my @a;
 
 foreach my $r (@recs){
     my $x = {
-        'asn'           => $r->asn()            || 'NA',
+        'impact'        => $r->impact(),
+        'description'   => $r->description()    || 'NA',
+        'restriction'   => $r->restriction()    || 'private',
+        'source'        => $r->source(),
         'asn_desc'      => $r->asn_desc()       || 'NA',   
         'cidr'          => $r->cidr()           || 'NA',
         'address'       => $r->address(),
-        'description'   => $r->description()    || 'NA',
         'cc'            => $r->cc()             || 'NA',
         'confidence'    => $r->confidence()     || 'NA',
         'severity'      => $r->severity()       || 'NA',
-        'restriction'   => $r->restriction()    || 'private',
         'detecttime'    => $r->detecttime()     || 'NA',
         'created'       => $r->created()        || 'NA',
         'reference'     => RT->Config->Get("rtname").'/REST/1.0/cif/uuid/'.$r->uuid(),
