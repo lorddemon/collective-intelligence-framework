@@ -8,6 +8,7 @@ my @a;
 
 foreach my $r (@recs){
     my $x = {
+        'source'        => $r->source(),
         'address'       => $r->address(),
         'impact'        => $r->impact()         || 'NA',
         'description'   => $r->description()    || 'NA',

@@ -1,24 +1,27 @@
 <%ARGS>
-$qlimit    => 1500
+$detecttime => undef
+$qlimit     => 1500
 $format     => 'text'
 </%ARGS>
 <%INIT>
 use RT::Interface::REST;
-use CIF::Message::Malware;
+use CIF::Message::URL;
 
 my $output = '';
 my $status = '200 Ok';
 my $arg = $m->dhandler_arg();
 
-unless($arg){
+unless($arg && $arg =~ /^[a-fA-F0-9]{32}$/){
     $status = '409 Syntax Error';
     $output = 'Missing required argument';
     goto OUTPUT;
 }
 
-$arg = '%'.$arg.'%';
-
-my @recs = CIF::Message::Malware->search_by_description($arg,$qlimit);
+my @recs = CIF::Message::URL->retrieve_from_sql(qq{
+    lower(url_md5) = lower('$arg')
+    ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT $qlimit
+});
 
 $status .= ' '.($#recs + 1).'/'.$qlimit.' (total recs / query limit)';
 

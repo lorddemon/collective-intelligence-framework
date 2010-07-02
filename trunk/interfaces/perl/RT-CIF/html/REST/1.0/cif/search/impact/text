@@ -6,13 +6,14 @@
 use Text::Table;
 
 my $t = Text::Table->new(
-    { title => '# uuid', align => 'left' }, { is_sep => 1, title => ' | ' },
+    { title => '# description', align => 'left' }, { is_sep => 1, title => ' | ' },
+    'restriction', { is_sep => 1, title => ' | ' },
+    'severity', { is_sep => 1, title => ' | ' },
+    'source', { is_sep => 1, title => ' | ' },
+    'uuid', { is_sep => 1, title => ' | ' },
     'type', { is_sep => 1, title => ' | ' },
     'format', { is_sep => 1, title => ' | ' },
-    "description", { is_sep => 1, title => ' | ' },
     'confidence', { is_sep => 1, title => ' | ' },
-    'severity', { is_sep => 1, title => ' | ' },
-    'restriction', { is_sep => 1, title => ' | ' },
     'detecttime', { is_sep => 1, title => ' | ' },
     'created', { is_sep => 1, title => ' | ' },
     'reference',
@@ -20,13 +21,14 @@ my $t = Text::Table->new(
 
 foreach my $r (@recs){
     $t->load([
+        $r->description() || 'NA',
+        $r->restriction()   || 'private',
+        $r->severity()  || 'NA',
+        $r->source(),
         $r->uuid(),
         $r->type(),
         $r->format(),
-        $r->description() || 'NA',
         $r->confidence() || 'NA',
-        $r->severity()  || 'NA',
-        $r->restriction()   || 'NA',
         $r->detecttime()    || 'NA',
         $r->created(),
         RT->Config->Get("rtname").'/REST/1.0/cif/uuid/'.$r->uuid(),

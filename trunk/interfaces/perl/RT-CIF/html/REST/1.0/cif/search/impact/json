@@ -9,6 +9,7 @@ my @a;
 foreach my $r (@recs){
     my $x = {
         'uuid'          => $r->uuid(),
+        'source'        => $r->source(),
         'impact'        => $r->impact()         || 'NA',   
         'format'        => $r->format()         || 'NA',
         'description'   => $r->description()    || 'NA',
