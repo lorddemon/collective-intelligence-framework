@@ -43,4 +43,6 @@ if($#recs > -1){
 } else {
     $m->out('you have no api keys');
 }
+
+$m->comp('doc');
 </%INIT>
