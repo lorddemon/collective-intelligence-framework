@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/CIF-Client.t
+lib/CIF/Client.pm
