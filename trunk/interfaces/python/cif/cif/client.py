@@ -28,9 +28,11 @@ class Client:
         p_domain    = re.compile('\w+\.\w+')
         p_malware   = re.compile('^[a-fA-F0-9]{32,40}$')
         p_url       = re.compile('^url:([a-fA-F0-9]{32,40})$')
+        p_impact    = re.compile('^\S+$')
 
         search_type = {
             1 == 1                      : 'unknown',
+            p_impact.match(q)   != None : 'impact',
             p_url.match(q)      != None : 'url',
             p_malware.match(q)  != None : 'malware',
             p_domain.match(q)   != None : 'domain',

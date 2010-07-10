@@ -53,6 +53,10 @@ sub search {
             $q = $1;
             last;
         }
+        if(/^\S+$/){
+            $type = 'impact';
+            last;
+        }
     }
 
     $self->type($type);
