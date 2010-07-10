@@ -4,7 +4,6 @@ use strict;
 
 use Data::Dumper;
 use Getopt::Std;
-use lib '/home/wes/projects/src/cif/interfaces/perl/CIF-Client/lib';
 use CIF::Client;
 
 my %opts;
