@@ -6,15 +6,16 @@ $format     => 'text'
 <%INIT>
 use RT::Interface::REST;
 use CIF::Message::Inet;
+use Regexp::Common qw/net/;
 use DateTime;
 
 my $output = '';
 my $status = '200 Ok';
 my $arg = $m->dhandler_arg();
 
-unless($arg){
+unless($arg && $arg =~ /^$RE{net}{IPv4}/){
     $status = '409 Syntax Error';
-    $output = 'Missing required argument';
+    $output = 'invaild argument';
     goto OUTPUT;
 }
 

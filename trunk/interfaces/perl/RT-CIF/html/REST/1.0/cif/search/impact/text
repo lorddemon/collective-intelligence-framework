@@ -6,7 +6,8 @@
 use Text::Table;
 
 my $t = Text::Table->new(
-    { title => '# description', align => 'left' }, { is_sep => 1, title => ' | ' },
+    { title => '# impact', align => 'left' }, { is_sep => 1, title => ' | ' },
+    'description', { is_sep => 1, title => ' | ' },
     'restriction', { is_sep => 1, title => ' | ' },
     'severity', { is_sep => 1, title => ' | ' },
     'source', { is_sep => 1, title => ' | ' },
@@ -21,6 +22,7 @@ my $t = Text::Table->new(
 
 foreach my $r (@recs){
     $t->load([
+        $r->impact(),
         $r->description() || 'NA',
         $r->restriction()   || 'private',
         $r->severity()  || 'NA',
@@ -31,7 +33,7 @@ foreach my $r (@recs){
         $r->confidence() || 'NA',
         $r->detecttime()    || 'NA',
         $r->created(),
-        RT->Config->Get("rtname").'/REST/1.0/cif/uuid/'.$r->uuid(),
+        RT->Config->Get("WebBaseURL").'/REST/1.0/cif/uuid/'.$r->uuid(),
     ]);
 }
 
