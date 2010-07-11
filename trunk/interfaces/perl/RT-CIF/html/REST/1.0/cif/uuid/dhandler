@@ -1,4 +1,5 @@
 <%ARGS>
+$format => 'text'
 </%ARGS>
 <%INIT>
 use RT::Interface::REST;
@@ -16,15 +17,14 @@ unless(CIF::Message::isUUID($uuid)){
 }
 
 my $r = CIF::Message->retrieve(uuid => $uuid);        
-my $type = $r->type();
-my $msg;
-if($type eq 'structured'){
-    $msg = CIF::Message::Structured->retrieve(uuid => $uuid);
-} else {
-    $msg = CIF::Message::Unstructured->retrieve(uuid => $uuid);
-}
 
-$output = $msg->message();
+my @recs;
+push(@recs,$r);
+$output = eval { $m->comp($format, recs => \@recs) };
+if($@){
+    $m->out($@);
+    $output = $m->comp('text', recs => \@recs);
+}
 
 OUTPUT:
 $m->out("RT/".$RT::VERSION ." ".$status ."\n\n$output\n") if ($output || $status !~ /^200/);
