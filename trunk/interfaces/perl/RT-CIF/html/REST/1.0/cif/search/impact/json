@@ -19,7 +19,7 @@ foreach my $r (@recs){
         'restriction'   => $r->restriction()    || 'private',
         'detecttime'    => $r->detecttime()     || 'NA',
         'created'       => $r->created()        || 'NA',
-        'reference'     => RT->Config->Get("rtname").'/REST/1.0/cif/uuid/'.$r->uuid(),
+        'reference'     => RT->Config->Get("WebBaseURL").'/REST/1.0/cif/uuid/'.$r->uuid(),
     };
     push(@a,$x);
 }

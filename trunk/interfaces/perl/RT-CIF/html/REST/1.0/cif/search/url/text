@@ -36,7 +36,7 @@ foreach my $r (@recs){
         $r->malware_sha1() || 'NA',
         $r->detecttime() || 'NA',
         $r->created(),
-        RT->Config->Get("rtname").'/REST/1.0/cif/uuid/'.$r->uuid(),
+        RT->Config->Get("WebBaseURL").'/REST/1.0/cif/uuid/'.$r->uuid(),
     ]);
 }
 

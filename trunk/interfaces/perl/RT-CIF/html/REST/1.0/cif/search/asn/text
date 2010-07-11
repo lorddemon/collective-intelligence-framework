@@ -34,7 +34,7 @@ foreach my $r (@recs){
         $r->severity()      || 'NA',
         $r->detecttime()    || 'NA',
         $r->created()       || 'NA',
-        RT->Config->Get("rtname").'/REST/1.0/cif/uuid/'.$r->uuid(),
+        RT->Config->Get("WebBaseUrl").'/REST/1.0/cif/uuid/'.$r->uuid(),
     ]);
 }
 
