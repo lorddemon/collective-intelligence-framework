@@ -1,0 +1,10 @@
+INSTALLATION
+
+Unix:
+
+1. sudo python setup.py install
+
+OS X:
+
+1. sudo easy_install -U setuptools
+2. sudo python setup.py install
