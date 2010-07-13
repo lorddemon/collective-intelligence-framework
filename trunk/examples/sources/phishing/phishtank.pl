@@ -10,6 +10,8 @@ use Digest::MD5 qw(md5_hex);
 
 use CIF::Message::PhishingURL;
 use CIF::Message::Infrastructure;
+use CIF::Message::InetWhitelist;
+use CIF::Message::Inet;
 
 my $cache = "/tmp/phishtank.xml";
 
@@ -47,11 +49,8 @@ foreach my $node (@nodes){
     my $id = $node->findvalue('./phish_id');
     my $did = $node->findvalue('./phish_detail_url');
 
-    my $address = $node->findvalue('./details/detail/ip_address');
-    my $asn     = $node->findvalue('./details/detail/announcing_network');
-    my $cidr    = $node->findvalue('./details/detail/cidr_block');
-    my $rir     = $node->findvalue('./details/detail/rir');
-
+    my @address = $node->findvalue('./details/detail/ip_address');
+    
     my $uuid = CIF::Message::PhishingURL->insert({
         address     => $key,
         impact      => 'phishing url',
@@ -65,21 +64,27 @@ foreach my $node (@nodes){
         alternativeid_restriction => 'public',
     });
 
-    CIF::Message::Infrastructure->insert({
-        address     => $address,
-        source      => 'phishtank.com',
-        relatedid   => $uuid->uuid(),
-        impact      => 'phishing infrastructure',
-        description => 'phishing infrastructure - '.$address,
-        severity    => 'low',
-        confidence  => 5,
-        restriction => 'public',
-        detecttime  => $created,
-        asn         => $asn,
-        cidr        => $cidr,
-        rir         => $rir,
-        alternativeid  => $did,
-        alternativeid_restriction => 'public',
-    });
+    foreach (@address){
+        next if(CIF::Message::Inet::isPrivateAddress($_) || CIF::Message::InetWhitelist::isWhitelisted($_));
+        my ($as,$network,$ccode,$rir,$date,$as_desc) = CIF::Message::Inet::asninfo($_);
+        CIF::Message::Infrastructure->insert({
+            address     => $_,
+            source      => 'phishtank.com',
+            relatedid   => $uuid->uuid(),
+            impact      => 'phishing infrastructure',
+            description => 'phishing infrastructure - '.$address,
+            severity    => 'low',
+            confidence  => 5,
+            restriction => 'public',
+            detecttime  => $created,
+            asn         => $as,
+            cidr        => $network,
+            rir         => $rir,
+            cc          => $ccode,
+            asn_desc    => $as_desc,
+            alternativeid  => $did,
+            alternativeid_restriction => 'public',
+        });
+    }
     warn $uuid;
 }
