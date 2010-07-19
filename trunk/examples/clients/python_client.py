@@ -4,7 +4,7 @@ import sys
 import re
 import os
 import getopt
-from cif.client import Client
+from cif.client import ClientINI
 
 def usage():
     print """Usage: python """ + sys.argv[0] + """ -q xyz.com -f table
@@ -15,6 +15,7 @@ def usage():
 
     configuration file ~/.cif should be readable and look something like:
     
+    [client]
     url=https://example.com:443/REST/1.0/cif
     apikey=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 
@@ -50,10 +51,15 @@ def main(argv):
         usage()
         sys.exit()
 
-    rclient.format(format)
+    do_search(query, format)
+
+def do_search(query, format):
+    rclient = ClientINI()
+    rclient.format = format
     r = rclient.search(query)
     array = r.split('\n')
         
+    #this stuff belongs in the client
     p_status = re.compile('^RT.* 200 Ok (\d+)\/\d+.*$')
     m = p_status.match(array[0])
 
@@ -64,22 +70,6 @@ def main(argv):
         else:
             print rclient.table(array[2])
 
-
-try:
-    config = open('%s/.cif' % os.getenv('HOME'), 'r').read().split('\n')
-except:
-    print '**unable to read ~/.cif config file**\n'
-    usage()
-    sys.exit()
-
-rclient = Client()
-
-for c in config:
-    c1 = c.split('=')
-    if c1[0] == 'url':
-        rclient.url(c1[1])
-    if c1[0] == 'apikey':
-        rclient.apikey(c1[1])
 
 if __name__ == "__main__":
     main(sys.argv[1:])
