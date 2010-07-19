@@ -2,26 +2,18 @@ from restclient import GET
 import re
 import simplejson as json
 from texttable import Texttable
+import os
+import ConfigParser
 
 class Client:
-    def apikey(self,v=None):
-        if v:
-            self._apikey = v
-        return self._apikey
-
-    def url(self,v=None):
-        if v:
-            self._url = v 
-        return self._url
-
-    def format(self,v=None):
-        if v:
-            self._format = v
-        return self._format
+    def __init__(self, url, apikey, format=None):
+        self.url = url
+        self.apikey = apikey
+        self.format = format
 
     def search(self,q,fmt='json'):
-        if self.format():
-            fmt = self.format()
+        if self.format:
+            fmt = self.format
         p_address   = re.compile('^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)')
         p_asn       = re.compile('^\d+$')
         p_email     = re.compile('\w+@\w+')
@@ -45,8 +37,8 @@ class Client:
             m = p_url.match(q)
             q = m.group(1)
 
-        s = self._url + '/search/' + search_type + '/' + q
-        return GET(s, params={'apikey':self._apikey, 'format':fmt})
+        s = self.url + '/search/' + search_type + '/' + q
+        return GET(s, params={'apikey':self.apikey, 'format':fmt})
 
     def table(self,j):
         j = json.loads(j)
@@ -62,3 +54,13 @@ class Client:
             t.add_row(cs)
         return t.draw()
 
+class ClientINI(Client):
+    def __init__(self, path=None):
+        if not path:
+            path = os.path.expanduser("~/.cif")
+        c = ConfigParser.ConfigParser()
+        c.read([path])
+        if not c.has_section('client'):
+            raise Exception("Unable to read ~/.cif config file")
+        vars = dict(c.items("client"))
+        Client.__init__(self, **vars)
