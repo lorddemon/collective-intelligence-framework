@@ -1,4 +1,6 @@
 <%ARGS>
+$detecttime => undef
+$qlimit     => 1500
 $format     => 'text'
 </%ARGS>
 <%INIT>

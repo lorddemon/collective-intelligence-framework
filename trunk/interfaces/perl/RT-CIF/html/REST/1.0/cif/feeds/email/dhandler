@@ -1,28 +1,28 @@
 <%ARGS>
 $detecttime => undef
 $qlimit    => 1500
-$feedlimit  => 1500
+$feedlimit  => 500
 $format     => 'text'
 </%ARGS>
 <%INIT>
 use RT::Interface::REST;
-use CIF::Message::MalwareURL;
+use CIF::Message::Email;
+use DateTime::Format::DateParse;
 
 my $output = '';
 my $status = '200 Ok';
-my $arg = lc($m->dhandler_arg());
 
 unless($detecttime){
     $detecttime = DateTime->from_epoch(epoch => (time() - (84600 * 30)));
 }
 
 my $sql = qq{
-    detecttime >= '$detecttime' AND lower(description) LIKE '%$arg%'
+    detecttime >= '$detecttime'
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT $qlimit
 };
 
-my @recs = CIF::Message::MalwareURL->retrieve_from_sql($sql);
+my @recs = CIF::Message::Email->retrieve_from_sql($sql);
 
 # extra whitelist processing since domains are tricky (eg: we want all of .google.com)
 my @rrecs;
@@ -32,19 +32,19 @@ foreach (@recs){
 }
 @recs = @rrecs;
 
-$status .= ' '.$#recs.'/'.$feedlimit.' (total recs / feed limit)';
+$status .= ' '.($#recs + 1).'/'.$feedlimit.' (total recs / feed limit)';
 
 my @feed;
 my $x = 1;
 my $hash;
 foreach my $r (@recs){
-    if(exists($hash->{$r->url_md5()})){
+    if(exists($hash->{$r->address()})){
         if($r->restriction eq 'need-to-know'){
             next unless($r->restriction() eq 'private');
         }
     }
 
-    $hash->{$r->url_md5()} = $r;
+    $hash->{$r->address()} = $r;
                       
     last if($x++ == $feedlimit);
 }
@@ -53,9 +53,9 @@ foreach (keys %$hash){
 }
 @recs = @feed;
 
-$output = eval { $m->comp('../../'.$format, recs => \@recs) };
+$output = eval { $m->comp($format, recs => \@recs) };
 if($@){
-    $output = $m->comp('../../text', recs => \@recs);
+    $output = $m->comp('text', recs => \@recs);
 }
 
 $m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
