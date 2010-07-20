@@ -6,24 +6,23 @@ $format     => 'text'
 </%ARGS>
 <%INIT>
 use RT::Interface::REST;
-use CIF::Message::Infrastructure;
+use CIF::Message::SuspiciousNetwork;
 use CIF::Message::InetWhitelist;
 
 my $output = '';
 my $status = '200 Ok';
-my $arg = lc($m->dhandler_arg()) || $m->abort('missing arg');
 
 unless($detecttime){
     $detecttime = DateTime->from_epoch(epoch => (time() - (84600 * 30)));
 }
 
 my $sql = qq{
-    detecttime >= '$detecttime' AND lower(description) LIKE '%$arg%'
+    detecttime >= '$detecttime'
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT $qlimit
 };
 
-my @recs = CIF::Message::Infrastructure->retrieve_from_sql($sql);
+my @recs = CIF::Message::SuspiciousNetwork->retrieve_from_sql($sql);
 
 # extra whitelist processing since domains are tricky (eg: we want all of .google.com)
 my @rrecs;
@@ -54,9 +53,9 @@ foreach (keys %$hash){
 }
 @recs = @feed;
 
-$output = eval { $m->comp('../../'.$format, recs => \@recs) };
+$output = eval { $m->comp('../'.$format, recs => \@recs) };
 if($@){
-    $output = $m->comp('../../text', recs => \@recs);
+    $output = $m->comp('../text', recs => \@recs);
 }
 
 $m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
