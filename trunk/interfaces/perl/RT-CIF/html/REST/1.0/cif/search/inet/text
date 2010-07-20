@@ -40,7 +40,7 @@ foreach my $r (@recs){
         $r->confidence()    || 'NA',
         $r->detecttime()    || 'NA',
         $r->created()       || 'NA',
-        RT->Config->Get("WebBaseUrl").'/REST/1.0/cif/uuid/'.$r->uuid(),
+        RT->Config->Get("WebBaseURL").'/REST/1.0/cif/uuid/'.$r->uuid(),
     ]);
 }
 

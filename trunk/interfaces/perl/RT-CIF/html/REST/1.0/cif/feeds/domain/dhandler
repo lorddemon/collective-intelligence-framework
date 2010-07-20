@@ -8,6 +8,7 @@ $format     => 'text'
 use RT::Interface::REST;
 use CIF::Message::Domain;
 use CIF::Message::DomainWhitelist;
+use DateTime::Format::DateParse;
 
 my $output = '';
 my $status = '200 Ok';
@@ -17,13 +18,12 @@ unless($detecttime){
 }
 
 my $sql = qq{
-    detecttime >= '$detecttime'
+    detecttime >= '$detecttime' AND type != 'NS'
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT $qlimit
 };
 
 my @recs = CIF::Message::Domain->retrieve_from_sql($sql);
-use Data::Dumper;
 
 # extra whitelist processing since domains are tricky (eg: we want all of .google.com)
 my @rrecs;
@@ -39,35 +39,18 @@ my @feed;
 my $x = 1;
 my $hash;
 foreach my $r (@recs){
-    my $a = $r->address();
-    my $conf = $r->confidence() || 0.001;
-    my $sev = $r->severity();
-    my $rest = $r->restriction();
-
-    unless($hash->{$a}){
-        $hash->{$a} = $r;
-        $hash->{$a}->{'conf'} = $r->confidence();
-        $hash->{$a}->{'sev'} = $r->severity();
-        $hash->{$a}->{'rest'} = $r->restriction();
-        push(@feed,$hash->{$a});
-    } else {
-        if($rest ne $hash->{$a}->{'rest'}){
-            $rest = 'private';
-            $rest = 'need-to-know' unless($rest eq 'private');
-            $hash->{$a}->{'rest'} = $rest;
-        }
-        $hash->{$a}->{'conf'} = ($conf + $hash->{$a}->{'conf'}) / 2;
-        if($sev ne $hash->{$a}->{'sev'}){
-            for($sev){
-                $sev = 'high' if(/^high$/);
-                $sev = 'medium' if(/^low$/);
-            }
-            $hash->{$a}->{'sev'} = $sev;
+    if(exists($hash->{$r->address()})){
+        if($r->restriction eq 'need-to-know'){
+            next unless($r->restriction() eq 'private');
         }
     }
 
+    $hash->{$r->address()} = $r;
                       
     last if($x++ == $feedlimit);
+}
+foreach (keys %$hash){
+    push(@feed,$hash->{$_});
 }
 @recs = @feed;
 
