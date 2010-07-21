@@ -30,7 +30,7 @@ Usage: perl $0 -s 1 -f suspicious_networks
 Examples:
     \$> perl $0 -f infrastructure/impact/botnet
     \$> perl $0 -f suspicious_networks
-    \$> perl $0 infrastructure/impact/malware
+    \$> perl $0 -f infrastructure/impact/malware
 
 EOF
 }
