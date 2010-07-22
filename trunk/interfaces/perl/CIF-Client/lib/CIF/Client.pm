@@ -26,42 +26,44 @@ sub search {
     my ($self,$q,$fmt) = @_;
     $fmt = $self->format() unless($fmt);
 
-    my $type;
-    for($q){
-        if(/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/){
-            $type = 'inet';
-            last;
+    if($q =~ /^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$/){
+        $self->GET('/uuid/'.$q.'?apikey='.$self->apikey().'&format='.$fmt);
+    } else {
+        my $type;
+        for($q){
+            if(/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/){
+                $type = 'inet';
+                last;
+            }
+            if(/^\d+$/){
+                $type = 'asn';
+                last;
+            }
+            if(/\w+@\w+/){
+                $type = 'email';
+                last;
+            }
+            if(/\w+\.\w+/){
+                $type = 'domain';
+                last;
+            }
+            if(/^[a-fA-F0-9]{32,40}$/){
+                $type = 'malware';
+                last;
+            }
+            if(/^url:([a-fA-F0-9]{32,40})$/){
+                $type = 'url';
+                $q = $1;
+                last;
+            }
+            if(/^\S+$/){
+                $type = 'impact';
+                last;
+            }
         }
-        if(/^\d+$/){
-            $type = 'asn';
-            last;
-        }
-        if(/\w+@\w+/){
-            $type = 'email';
-            last;
-        }
-        if(/\w+\.\w+/){
-            $type = 'domain';
-            last;
-        }
-        if(/^[a-fA-F0-9]{32,40}$/){
-            $type = 'malware';
-            last;
-        }
-        if(/^url:([a-fA-F0-9]{32,40})$/){
-            $type = 'url';
-            $q = $1;
-            last;
-        }
-        if(/^\S+$/){
-            $type = 'impact';
-            last;
-        }
+        $self->type($type);
+        $self->GET('/search/'.$type.'/'.$q.'?apikey='.$self->apikey().'&format='.$fmt);
     }
-
-    $self->type($type);
-
-    $self->GET('/search/'.$type.'/'.$q.'?apikey='.$self->apikey().'&format='.$fmt);
 }
 
 sub table {
