@@ -31,7 +31,7 @@ my @list = (
 
 sub isPrivateAddress {
     my $addr = shift;
-    my $found =  Net::CIDR::cidrlookup($addr,@list);
+    my $found = Net::CIDR::cidrlookup($addr,@list);
     return($found);
 }
 
@@ -187,10 +187,11 @@ sub toIODEF {
 
 __PACKAGE__->set_sql('by_address' => qq{
     SELECT * FROM __TABLE__
-    WHERE address <<= ?
+    WHERE address <<= ? 
     AND NOT EXISTS (
         SELECT address from inet_whitelist WHERE __TABLE__.address <<= inet_whitelist.address
     )
+    LIMIT ?
 });
 
 __PACKAGE__->set_sql('by_asn' => qq{

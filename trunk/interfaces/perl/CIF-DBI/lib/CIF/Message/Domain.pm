@@ -5,6 +5,8 @@ use strict;
 use warnings;
 
 use CIF::Message::IODEF;
+use Regexp::Common qw/net/;
+use Regexp::Common::net::CIDR;
 
 __PACKAGE__->table('domains');
 __PACKAGE__->columns(Primary => 'id');
@@ -103,7 +105,23 @@ sub toIODEF {
     $iodef->add('IncidentEventDataFlowSystemNodeAddress',$address);
     if($rdata){
         ## TODO -- autodetect Addresscategory with regex
-        $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','ipv4-addr');
+        my $cat = 'domain';
+        for($rdata){
+            if(/^$RE{net}{CIDR}{IPv4}$/){
+                $cat = 'ipv4-net';
+                last;
+            }
+            if(/^$RE{net}{IPv4}$/){
+                $cat = 'ipv4-addr';
+                last;
+            }
+        }
+        if($cat eq 'domain'){
+            $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','ext-value');
+            $iodef->add('IncidentEventDataFlowSystemNodeAddressext-category',$cat);
+        } else {
+            $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory',$cat);
+        }
         $iodef->add('IncidentEventDataFlowSystemNodeAddress',$rdata);
     }
     if($cidr){

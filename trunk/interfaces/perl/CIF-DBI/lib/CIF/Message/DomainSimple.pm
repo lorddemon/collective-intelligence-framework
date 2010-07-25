@@ -43,6 +43,11 @@ sub insert {
             $description = $impact;
             $description .= ' '.$rdata if($rdata);
         }
+        if(lc($info->{'impact'} =~ /nameserver/)){
+            $bucket = 'CIF::Message::SuspiciousNameserver';
+            $description = $impact.' '.$domain;
+            $description .= ' '.$rdata if($rdata);
+        }
 
         if($r->{'nameserver'}){
             $bucket = 'CIF::Message::SuspiciousNameserver';
