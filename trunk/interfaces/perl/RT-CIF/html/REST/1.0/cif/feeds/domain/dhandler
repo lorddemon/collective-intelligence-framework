@@ -19,6 +19,8 @@ unless($detecttime){
 
 my $sql = qq{
     detecttime >= '$detecttime' AND type != 'NS'
+    AND lower(impact) NOT LIKE '%passive dns%'
+    AND lower(impact) NOT LIKE '%whitelist%'
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT $qlimit
 };
