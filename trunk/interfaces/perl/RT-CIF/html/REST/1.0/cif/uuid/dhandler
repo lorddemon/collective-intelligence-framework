@@ -26,6 +26,8 @@ if($@){
     $output = $m->comp('text', recs => \@recs);
 }
 
+$status .= ' '.($#recs + 1).'/1 (total recs / query limit)';
+
 OUTPUT:
 $m->out("RT/".$RT::VERSION ." ".$status ."\n\n$output\n") if ($output || $status !~ /^200/);
 </%INIT>
