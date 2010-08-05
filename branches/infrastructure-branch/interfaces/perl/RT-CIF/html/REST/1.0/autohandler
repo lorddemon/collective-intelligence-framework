@@ -1,0 +1,26 @@
+<%ARGS>
+$apikey => undef
+</%ARGS>
+
+<%INIT>
+use RT::Interface::REST;
+use CIF::APIKEY;
+$r->content_type('text/plain; charset=utf-8');
+
+unless($session{'CurrentUser'}->EmailAddress()){
+    unless($apikey =~ m/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$/){
+        $m->abort();
+    }
+
+    my $rec = CIF::APIKEY->retrieve(apikey => $apikey);
+    unless($rec){
+        $m->abort();
+    }
+}
+
+$m->error_format('text');
+$m->call_next();
+
+$m->abort();
+
+</%INIT>

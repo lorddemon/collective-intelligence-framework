@@ -1,0 +1,34 @@
+<%INIT>
+use RT::Interface::REST;
+use CIF::APIKEY;
+use CIF::User;
+
+my $arg = $m->dhandler_arg();
+
+$arg = lc($arg);
+
+my $email = $session{'CurrentUser'}->EmailAddress();
+my $msg = 'invaild arg';
+
+for($arg){
+    if(/^all$/){
+        my $r = CIF::User->search(email => $email)->delete_all();
+        if($r){
+            $msg = 'delete successful for: '.$email;
+        } else {
+            $msg = 'delete unsuccessful for: '.$email;
+        }         
+        last;
+    }
+    unless(/^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$/){
+        $msg = 'invalid key';
+        last;
+    }
+    my $r = CIF::APIKEY->search(apikey => $arg)->delete_all();
+    $msg = 'delete unsucessful: '.$arg;
+    $msg = 'delete successful: '.$arg if($r);
+}
+
+$m->out($msg."\n");
+
+</%INIT>
