@@ -207,6 +207,17 @@ __PACKAGE__->set_sql('by_address' => qq{
     LIMIT ?
 });
 
+__PACKAGE__->set_sql('feed' => qq{
+    SELECT *
+    FROM __TABLE__
+    WHERE detecttime >= ?
+    AND type != 'NS'
+    AND lower(impact) NOT LIKE '%passive dns%'
+    AND lower(impact) NOT LIKE '%whitelist%'
+    ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT ?
+});
+
 __PACKAGE__->set_sql('by_asn' => qq{
     SELECT *
     FROM __TABLE__

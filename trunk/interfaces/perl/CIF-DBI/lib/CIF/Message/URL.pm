@@ -117,6 +117,13 @@ __PACKAGE__->set_sql('by_description' => qq{
     LIMIT ?
 });
 
+__PACKAGE__->set_sql('feed' => qq{
+    SELECT * FROM __TABLE__
+    WHERE detecttime >= ?
+    ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT ?
+});
+
 1;
 
 __END__
