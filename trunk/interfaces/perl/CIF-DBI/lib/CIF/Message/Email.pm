@@ -96,6 +96,15 @@ __PACKAGE__->set_sql('by_address' => qq{
     FROM __TABLE__
     WHERE lower(address) = lower(?)
     ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT ?
+});
+
+__PACKAGE__->set_sql('feed' => qq{
+    SELECT *
+    FROM __TABLE__
+    WHERE detecttime >= ?
+    ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT ?
 });
 
 1;

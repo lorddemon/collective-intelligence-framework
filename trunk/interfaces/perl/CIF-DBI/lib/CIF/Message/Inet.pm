@@ -194,6 +194,15 @@ __PACKAGE__->set_sql('by_address' => qq{
     LIMIT ?
 });
 
+__PACKAGE__->set_sql('feed' => qq{
+    SELECT * FROM __TABLE__
+    WHERE detecttime >= ?
+    AND NOT EXISTS (
+        SELECT address FROM inet_whitelist WHERE __TABLE__.address <<= inet_whitelist.address
+    )
+    LIMIT ?
+});
+
 __PACKAGE__->set_sql('by_asn' => qq{
     SELECT *
     FROM __TABLE__
