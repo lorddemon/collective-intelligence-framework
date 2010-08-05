@@ -9,20 +9,22 @@ use Snort::Rule;
 use JSON;
 
 my %opts;
-getopts('dhs:f:c:', \%opts);
+getopts('dhs:f:c:l:t:', \%opts);
 die(usage()) if($opts{'h'});
 
 my $feed = $opts{'f'} || '';
 my $debug = ($opts{'d'}) ? 1 : 0;
 my $sid = ($opts{'s'}) || '10000000';
 my $c = $opts{'c'} || $ENV{'HOME'}.'/.cif';
-
+my $limit = $opts{'l'} || 5000;
+my $timeout = $opts{'t'} || 30;
 sub usage {
     return <<EOF;
 Usage: perl $0 -s 1 -f suspicious_networks 
         -h  --help:     this message
         -d  --debug:    debug output
         -f  --feed:     type of feed
+        -l  --limit:    feed limit
         
         configuration file ~/.cif should be readable and look something like:
 
@@ -51,12 +53,12 @@ close(F);
 
 my $client = CIF::Client->new({ 
     host        => $url,
-    timeout     => 10,
+    timeout     => $timeout,
     apikey      => $apikey,
     format      => 'json',
 });
 
-$client->GET('/feeds/inet/'.$feed.'?apikey='.$client->apikey().'&format=json');
+$client->GET('/feeds/inet/'.$feed.'?apikey='.$client->apikey().'&format=json&qlimit='.$limit.'&feedlimit='.$limit);
 die('request failed with code: '.$client->responseCode()) unless($client->responseCode == 200);
 
 my $text = $client->responseContent();
@@ -86,4 +88,4 @@ foreach (@a){
     $r->opts('reference',$url.'/search/'.$_->{'address'});
     $rules .= $r->string()."\n";
 }
-warn $rules;
+print $rules;
