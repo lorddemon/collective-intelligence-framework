@@ -9,6 +9,7 @@ use Data::Dumper;
 CIF::Message::Inet->set_sql('top_15' => qq{
     SELECT count(distinct(address)),cidr,impact,asn,asn_desc from inet
     where cidr is not null
+    and severity = 'high' and confidence > 6
     and detecttime >= '2010-06-01'
     group by cidr,impact,asn,asn_desc
     order by count desc limit 15
