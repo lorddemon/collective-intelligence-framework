@@ -62,3 +62,12 @@ ALTER TABLE malicious_domains ADD UNIQUE(uuid);
 CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
 ON malicious_domains FOR EACH ROW EXECUTE PROCEDURE
 tsvector_update_trigger(tsv, 'pg_catalog.english', description,impact,asn_desc,whois);
+
+CREATE TABLE passive_domains() INHERITS (domains);
+ALTER TABLE passive_domains ADD PRIMARY KEY (id);
+ALTER TABLE passive_domains ADD CONSTRAINT passive_omains_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE passive_domains ADD UNIQUE(uuid);
+
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+ON passive_domains FOR EACH ROW EXECUTE PROCEDURE
+tsvector_update_trigger(tsv, 'pg_catalog.english', description,impact,asn_desc,whois);
