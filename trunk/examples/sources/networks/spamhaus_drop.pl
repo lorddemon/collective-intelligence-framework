@@ -40,6 +40,7 @@ while (<F>){
     $desc       = undef if($desc && $desc eq 'NA');
 
     my $detecttime = DateTime->from_epoch(epoch => time());
+    $detecttime = $detecttime->ymd().'T00:00:00';
 
     warn CIF::Message::SuspiciousNetwork->insert({
         address     => $addr,
