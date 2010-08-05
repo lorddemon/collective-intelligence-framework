@@ -112,12 +112,12 @@
   <body>
 
     <!-- Primary Index -->
-	<p><br><br>Dumped on 2010-06-24</p>
+	<p><br><br>Dumped on 2010-08-03</p>
 <h1><a name="index">Index of database - cif</a></h1>
 <ul>
     
     <li><a name="public.schema">public</a></li><ul>
-    	<li><a href="#public.table.domains">domains</a></li><li><a href="#public.table.emails">emails</a></li><li><a href="#public.table.inet">inet</a></li><li><a href="#public.table.infrastructure">infrastructure</a></li><li><a href="#public.table.malware">malware</a></li><li><a href="#public.table.malware-urls">malware_urls</a></li><li><a href="#public.table.messages">messages</a></li><li><a href="#public.table.messages-structured">messages_structured</a></li><li><a href="#public.table.messages-unstructured">messages_unstructured</a></li><li><a href="#public.table.phishing-urls">phishing_urls</a></li><li><a href="#public.table.routeviews">routeviews</a></li><li><a href="#public.table.scanners">scanners</a></li><li><a href="#public.table.spammers">spammers</a></li><li><a href="#public.table.suspicious-networks">suspicious_networks</a></li><li><a href="#public.table.urls">urls</a></li><li><a href="#public.view.v-inet">v_inet</a></li><li><a href="#public.view.v-messages">v_messages</a></li>
+    	<li><a href="#public.table.apikeys">apikeys</a></li><li><a href="#public.table.domains">domains</a></li><li><a href="#public.table.domains-whitelist">domains_whitelist</a></li><li><a href="#public.table.emails">emails</a></li><li><a href="#public.table.fastflux-domains">fastflux_domains</a></li><li><a href="#public.table.inet">inet</a></li><li><a href="#public.table.inet-whitelist">inet_whitelist</a></li><li><a href="#public.table.infrastructure">infrastructure</a></li><li><a href="#public.table.malicious-domains">malicious_domains</a></li><li><a href="#public.table.malware">malware</a></li><li><a href="#public.table.malware-urls">malware_urls</a></li><li><a href="#public.table.messages">messages</a></li><li><a href="#public.table.messages-structured">messages_structured</a></li><li><a href="#public.table.messages-unstructured">messages_unstructured</a></li><li><a href="#public.table.passive-domains">passive_domains</a></li><li><a href="#public.table.phishing-urls">phishing_urls</a></li><li><a href="#public.table.routeviews">routeviews</a></li><li><a href="#public.table.scanners">scanners</a></li><li><a href="#public.table.spammers">spammers</a></li><li><a href="#public.table.suspicious-nameservers">suspicious_nameservers</a></li><li><a href="#public.table.suspicious-networks">suspicious_networks</a></li><li><a href="#public.table.urls">urls</a></li><li><a href="#public.table.users">users</a></li><li><a href="#public.view.v-domains">v_domains</a></li><li><a href="#public.view.v-inet">v_inet</a></li><li><a href="#public.view.v-messages">v_messages</a></li>
   	
     </ul>
     
@@ -128,6 +128,146 @@
 
 		
 		
+        <hr>
+		<h2>Table:
+			<a name="public.table.apikeys">apikeys</a>
+		</h2>
+        
+
+
+        <table width="100%" cellspacing="0" cellpadding="3">
+                <caption>apikeys Structure</caption>
+                <tr>
+                <th>F-Key</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                  
+                
+                </td>
+            	<td>id</td>
+            	<td>bigserial</td>
+                <td><i>
+				
+					PRIMARY KEY
+					
+
+					
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                  
+                
+                </td>
+            	<td>apikey</td>
+            	<td>uuid</td>
+                <td><i>
+				
+					
+
+					
+                       UNIQUE#1
+                    
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                  
+                
+                  
+                  <a href="#public.table.users">users.id</a>
+                  
+                
+                </td>
+            	<td>userid</td>
+            	<td>bigint</td>
+                <td><i>
+				
+					
+
+					
+                       UNIQUE#1
+                    
+				
+					
+
+					
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>created</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				DEFAULT now()
+				</i>
+				
+				</td>
+			 </tr>
+            
+        </table>
+
+        <!-- Inherits -->
+		
+
+		
+		
+		
+
+        <!-- Constraint List -->
+		
+
+        <!-- Foreign Key Discovery -->
+		
+
+    <!-- Indexes -->
+    
+
+	<!-- View Definition -->
+	
+
+	<!-- List off permissions -->
+	
+
+	<p>
+		<a href="#index">Index</a> -
+		<a href="#public.schema">Schema public</a>
+    </p>
+	
         <hr>
 		<h2>Table:
 			<a name="public.table.domains">domains</a>
@@ -607,6 +747,490 @@
 	
         <hr>
 		<h2>Table:
+			<a name="public.table.domains-whitelist">domains_whitelist</a>
+		</h2>
+        
+
+
+        <table width="100%" cellspacing="0" cellpadding="3">
+                <caption>domains_whitelist Structure</caption>
+                <tr>
+                <th>F-Key</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                  
+                
+                </td>
+            	<td>id</td>
+            	<td>bigint</td>
+                <td><i>
+				
+					PRIMARY KEY
+					
+
+					
+				
+
+				
+				DEFAULT nextval(&#39;domains_id_seq&#39;::regclass)
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                  
+                
+                  
+                  <a href="#public.table.messages">messages.uuid</a>
+                  
+                
+                </td>
+            	<td>uuid</td>
+            	<td>uuid</td>
+                <td><i>
+				
+					
+
+					
+                       UNIQUE
+                    
+				
+					
+
+					
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>description</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>address</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>type</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>rdata</td>
+            	<td>character varying(255)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>cidr</td>
+            	<td>inet</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>asn</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>asn_desc</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>cc</td>
+            	<td>character varying(5)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>rir</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>class</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>ttl</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>whois</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>impact</td>
+            	<td>character varying(140)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>confidence</td>
+            	<td>real</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>source</td>
+            	<td>uuid</td>
+                <td><i>
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>severity</td>
+            	<td>character varying(6)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>detecttime</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>created</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				DEFAULT now()
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>tsv</td>
+            	<td>tsvector</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+        </table>
+
+        <!-- Inherits -->
+		
+        <p>Table domains_whitelist Inherits
+        
+            
+           <a href="#public.table.domains">domains</a>, 
+        
+        </p>
+		
+
+		
+		
+		
+
+        <!-- Constraint List -->
+		
+        <p>&nbsp;</p>
+		<table width="100%" cellspacing="0" cellpadding="3">
+            <caption>domains_whitelist Constraints</caption>
+            <tr>
+            	<th>Name</th>
+            	<th>Constraint</th>
+            </tr>
+			
+            <tr class="tr0">
+				<td>domains_restriction_check</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr1">
+				<td>domains_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr0">
+				<td>domains_severity_check</td>
+                <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
+            </tr>
+			
+		</table>
+		
+
+        <!-- Foreign Key Discovery -->
+		
+
+    <!-- Indexes -->
+    
+
+	<!-- View Definition -->
+	
+
+	<!-- List off permissions -->
+	
+
+	<p>
+		<a href="#index">Index</a> -
+		<a href="#public.schema">Schema public</a>
+    </p>
+	
+        <hr>
+		<h2>Table:
 			<a name="public.table.emails">emails</a>
 		</h2>
         
@@ -883,6 +1507,490 @@
 			
             <tr class="tr0">
 				<td>emails_severity_check</td>
+                <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
+            </tr>
+			
+		</table>
+		
+
+        <!-- Foreign Key Discovery -->
+		
+
+    <!-- Indexes -->
+    
+
+	<!-- View Definition -->
+	
+
+	<!-- List off permissions -->
+	
+
+	<p>
+		<a href="#index">Index</a> -
+		<a href="#public.schema">Schema public</a>
+    </p>
+	
+        <hr>
+		<h2>Table:
+			<a name="public.table.fastflux-domains">fastflux_domains</a>
+		</h2>
+        
+
+
+        <table width="100%" cellspacing="0" cellpadding="3">
+                <caption>fastflux_domains Structure</caption>
+                <tr>
+                <th>F-Key</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                  
+                
+                </td>
+            	<td>id</td>
+            	<td>bigint</td>
+                <td><i>
+				
+					PRIMARY KEY
+					
+
+					
+				
+
+				
+				DEFAULT nextval(&#39;domains_id_seq&#39;::regclass)
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                  
+                  <a href="#public.table.messages">messages.uuid</a>
+                  
+                
+                  
+                
+                </td>
+            	<td>uuid</td>
+            	<td>uuid</td>
+                <td><i>
+				
+					
+
+					
+				
+					
+
+					
+                       UNIQUE
+                    
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>description</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>address</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>type</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>rdata</td>
+            	<td>character varying(255)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>cidr</td>
+            	<td>inet</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>asn</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>asn_desc</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>cc</td>
+            	<td>character varying(5)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>rir</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>class</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>ttl</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>whois</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>impact</td>
+            	<td>character varying(140)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>confidence</td>
+            	<td>real</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>source</td>
+            	<td>uuid</td>
+                <td><i>
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>severity</td>
+            	<td>character varying(6)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>detecttime</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>created</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				DEFAULT now()
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>tsv</td>
+            	<td>tsvector</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+        </table>
+
+        <!-- Inherits -->
+		
+        <p>Table fastflux_domains Inherits
+        
+            
+           <a href="#public.table.domains">domains</a>, 
+        
+        </p>
+		
+
+		
+		
+		
+
+        <!-- Constraint List -->
+		
+        <p>&nbsp;</p>
+		<table width="100%" cellspacing="0" cellpadding="3">
+            <caption>fastflux_domains Constraints</caption>
+            <tr>
+            	<th>Name</th>
+            	<th>Constraint</th>
+            </tr>
+			
+            <tr class="tr0">
+				<td>domains_restriction_check</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr1">
+				<td>domains_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr0">
+				<td>domains_severity_check</td>
                 <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
             </tr>
 			
@@ -1303,6 +2411,463 @@
         <p>&nbsp;</p>
 		<table width="100%" cellspacing="0" cellpadding="3">
             <caption>inet Constraints</caption>
+            <tr>
+            	<th>Name</th>
+            	<th>Constraint</th>
+            </tr>
+			
+            <tr class="tr0">
+				<td>inet_confidence_check</td>
+                <td>CHECK (((confidence &gt;= (0.0)::double precision) AND ((10.0)::double precision &gt;= confidence)))</td>
+            </tr>
+			
+            <tr class="tr1">
+				<td>inet_restriction_check</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr0">
+				<td>inet_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr1">
+				<td>inet_severity_check</td>
+                <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
+            </tr>
+			
+		</table>
+		
+
+        <!-- Foreign Key Discovery -->
+		
+
+    <!-- Indexes -->
+    
+
+	<!-- View Definition -->
+	
+
+	<!-- List off permissions -->
+	
+
+	<p>
+		<a href="#index">Index</a> -
+		<a href="#public.schema">Schema public</a>
+    </p>
+	
+        <hr>
+		<h2>Table:
+			<a name="public.table.inet-whitelist">inet_whitelist</a>
+		</h2>
+        
+
+
+        <table width="100%" cellspacing="0" cellpadding="3">
+                <caption>inet_whitelist Structure</caption>
+                <tr>
+                <th>F-Key</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                  
+                
+                </td>
+            	<td>id</td>
+            	<td>bigint</td>
+                <td><i>
+				
+					PRIMARY KEY
+					
+
+					
+				
+
+				
+				DEFAULT nextval(&#39;inet_id_seq&#39;::regclass)
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                  
+                  <a href="#public.table.messages">messages.uuid</a>
+                  
+                
+                  
+                
+                </td>
+            	<td>uuid</td>
+            	<td>uuid</td>
+                <td><i>
+				
+					
+
+					
+				
+					
+
+					
+                       UNIQUE
+                    
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>description</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>impact</td>
+            	<td>character varying(140)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>address</td>
+            	<td>inet</td>
+                <td><i>
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>cidr</td>
+            	<td>inet</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>asn</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>asn_desc</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>cc</td>
+            	<td>character varying(5)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>rir</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>protocol</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>portlist</td>
+            	<td>character varying(255)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>confidence</td>
+            	<td>real</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>source</td>
+            	<td>uuid</td>
+                <td><i>
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>severity</td>
+            	<td>character varying(6)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>whois</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>tsv</td>
+            	<td>tsvector</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>detecttime</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>created</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				DEFAULT now()
+				</i>
+				
+				</td>
+			 </tr>
+            
+        </table>
+
+        <!-- Inherits -->
+		
+        <p>Table inet_whitelist Inherits
+        
+            
+           <a href="#public.table.inet">inet</a>, 
+        
+        </p>
+		
+
+		
+		
+		
+
+        <!-- Constraint List -->
+		
+        <p>&nbsp;</p>
+		<table width="100%" cellspacing="0" cellpadding="3">
+            <caption>inet_whitelist Constraints</caption>
             <tr>
             	<th>Name</th>
             	<th>Constraint</th>
@@ -1782,6 +3347,490 @@
 			
             <tr class="tr1">
 				<td>inet_severity_check</td>
+                <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
+            </tr>
+			
+		</table>
+		
+
+        <!-- Foreign Key Discovery -->
+		
+
+    <!-- Indexes -->
+    
+
+	<!-- View Definition -->
+	
+
+	<!-- List off permissions -->
+	
+
+	<p>
+		<a href="#index">Index</a> -
+		<a href="#public.schema">Schema public</a>
+    </p>
+	
+        <hr>
+		<h2>Table:
+			<a name="public.table.malicious-domains">malicious_domains</a>
+		</h2>
+        
+
+
+        <table width="100%" cellspacing="0" cellpadding="3">
+                <caption>malicious_domains Structure</caption>
+                <tr>
+                <th>F-Key</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                  
+                
+                </td>
+            	<td>id</td>
+            	<td>bigint</td>
+                <td><i>
+				
+					PRIMARY KEY
+					
+
+					
+				
+
+				
+				DEFAULT nextval(&#39;domains_id_seq&#39;::regclass)
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                  
+                  <a href="#public.table.messages">messages.uuid</a>
+                  
+                
+                  
+                
+                </td>
+            	<td>uuid</td>
+            	<td>uuid</td>
+                <td><i>
+				
+					
+
+					
+				
+					
+
+					
+                       UNIQUE
+                    
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>description</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>address</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>type</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>rdata</td>
+            	<td>character varying(255)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>cidr</td>
+            	<td>inet</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>asn</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>asn_desc</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>cc</td>
+            	<td>character varying(5)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>rir</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>class</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>ttl</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>whois</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>impact</td>
+            	<td>character varying(140)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>confidence</td>
+            	<td>real</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>source</td>
+            	<td>uuid</td>
+                <td><i>
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>severity</td>
+            	<td>character varying(6)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>detecttime</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>created</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				DEFAULT now()
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>tsv</td>
+            	<td>tsvector</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+        </table>
+
+        <!-- Inherits -->
+		
+        <p>Table malicious_domains Inherits
+        
+            
+           <a href="#public.table.domains">domains</a>, 
+        
+        </p>
+		
+
+		
+		
+		
+
+        <!-- Constraint List -->
+		
+        <p>&nbsp;</p>
+		<table width="100%" cellspacing="0" cellpadding="3">
+            <caption>malicious_domains Constraints</caption>
+            <tr>
+            	<th>Name</th>
+            	<th>Constraint</th>
+            </tr>
+			
+            <tr class="tr0">
+				<td>domains_restriction_check</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr1">
+				<td>domains_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr0">
+				<td>domains_severity_check</td>
                 <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
             </tr>
 			
@@ -2816,7 +4865,15 @@
 			</ul>
 		
 			<ul>
+				<li><a href="#public.table.domains-whitelist">domains_whitelist</a></li>
+			</ul>
+		
+			<ul>
 				<li><a href="#public.table.emails">emails</a></li>
+			</ul>
+		
+			<ul>
+				<li><a href="#public.table.fastflux-domains">fastflux_domains</a></li>
 			</ul>
 		
 			<ul>
@@ -2824,7 +4881,15 @@
 			</ul>
 		
 			<ul>
+				<li><a href="#public.table.inet-whitelist">inet_whitelist</a></li>
+			</ul>
+		
+			<ul>
 				<li><a href="#public.table.infrastructure">infrastructure</a></li>
+			</ul>
+		
+			<ul>
+				<li><a href="#public.table.malicious-domains">malicious_domains</a></li>
 			</ul>
 		
 			<ul>
@@ -2844,6 +4909,10 @@
 			</ul>
 		
 			<ul>
+				<li><a href="#public.table.passive-domains">passive_domains</a></li>
+			</ul>
+		
+			<ul>
 				<li><a href="#public.table.phishing-urls">phishing_urls</a></li>
 			</ul>
 		
@@ -2853,6 +4922,10 @@
 		
 			<ul>
 				<li><a href="#public.table.spammers">spammers</a></li>
+			</ul>
+		
+			<ul>
+				<li><a href="#public.table.suspicious-nameservers">suspicious_nameservers</a></li>
 			</ul>
 		
 			<ul>
@@ -3140,6 +5213,490 @@
 		
 
         <!-- Constraint List -->
+		
+
+        <!-- Foreign Key Discovery -->
+		
+
+    <!-- Indexes -->
+    
+
+	<!-- View Definition -->
+	
+
+	<!-- List off permissions -->
+	
+
+	<p>
+		<a href="#index">Index</a> -
+		<a href="#public.schema">Schema public</a>
+    </p>
+	
+        <hr>
+		<h2>Table:
+			<a name="public.table.passive-domains">passive_domains</a>
+		</h2>
+        
+
+
+        <table width="100%" cellspacing="0" cellpadding="3">
+                <caption>passive_domains Structure</caption>
+                <tr>
+                <th>F-Key</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                  
+                
+                </td>
+            	<td>id</td>
+            	<td>bigint</td>
+                <td><i>
+				
+					PRIMARY KEY
+					
+
+					
+				
+
+				
+				DEFAULT nextval(&#39;domains_id_seq&#39;::regclass)
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                  
+                
+                  
+                  <a href="#public.table.messages">messages.uuid</a>
+                  
+                
+                </td>
+            	<td>uuid</td>
+            	<td>uuid</td>
+                <td><i>
+				
+					
+
+					
+                       UNIQUE
+                    
+				
+					
+
+					
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>description</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>address</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>type</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>rdata</td>
+            	<td>character varying(255)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>cidr</td>
+            	<td>inet</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>asn</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>asn_desc</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>cc</td>
+            	<td>character varying(5)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>rir</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>class</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>ttl</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>whois</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>impact</td>
+            	<td>character varying(140)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>confidence</td>
+            	<td>real</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>source</td>
+            	<td>uuid</td>
+                <td><i>
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>severity</td>
+            	<td>character varying(6)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>detecttime</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>created</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				DEFAULT now()
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>tsv</td>
+            	<td>tsvector</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+        </table>
+
+        <!-- Inherits -->
+		
+        <p>Table passive_domains Inherits
+        
+            
+           <a href="#public.table.domains">domains</a>, 
+        
+        </p>
+		
+
+		
+		
+		
+
+        <!-- Constraint List -->
+		
+        <p>&nbsp;</p>
+		<table width="100%" cellspacing="0" cellpadding="3">
+            <caption>passive_domains Constraints</caption>
+            <tr>
+            	<th>Name</th>
+            	<th>Constraint</th>
+            </tr>
+			
+            <tr class="tr0">
+				<td>domains_restriction_check</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr1">
+				<td>domains_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr0">
+				<td>domains_severity_check</td>
+                <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
+            </tr>
+			
+		</table>
 		
 
         <!-- Foreign Key Discovery -->
@@ -4715,6 +7272,490 @@
 	
         <hr>
 		<h2>Table:
+			<a name="public.table.suspicious-nameservers">suspicious_nameservers</a>
+		</h2>
+        
+
+
+        <table width="100%" cellspacing="0" cellpadding="3">
+                <caption>suspicious_nameservers Structure</caption>
+                <tr>
+                <th>F-Key</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                  
+                
+                </td>
+            	<td>id</td>
+            	<td>bigint</td>
+                <td><i>
+				
+					PRIMARY KEY
+					
+
+					
+				
+
+				
+				DEFAULT nextval(&#39;domains_id_seq&#39;::regclass)
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                  
+                  <a href="#public.table.messages">messages.uuid</a>
+                  
+                
+                  
+                
+                </td>
+            	<td>uuid</td>
+            	<td>uuid</td>
+                <td><i>
+				
+					
+
+					
+				
+					
+
+					
+                       UNIQUE
+                    
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>description</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>address</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>type</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>rdata</td>
+            	<td>character varying(255)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>cidr</td>
+            	<td>inet</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>asn</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>asn_desc</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>cc</td>
+            	<td>character varying(5)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>rir</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>class</td>
+            	<td>character varying(10)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>ttl</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>whois</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>impact</td>
+            	<td>character varying(140)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>confidence</td>
+            	<td>real</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>source</td>
+            	<td>uuid</td>
+                <td><i>
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>alternativeid</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>alternativeid_restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>severity</td>
+            	<td>character varying(6)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>restriction</td>
+            	<td>character varying(16)</td>
+                <td><i>
+				
+
+				NOT NULL
+				DEFAULT &#39;private&#39;::character varying
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>detecttime</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>created</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				DEFAULT now()
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>tsv</td>
+            	<td>tsvector</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+        </table>
+
+        <!-- Inherits -->
+		
+        <p>Table suspicious_nameservers Inherits
+        
+            
+           <a href="#public.table.domains">domains</a>, 
+        
+        </p>
+		
+
+		
+		
+		
+
+        <!-- Constraint List -->
+		
+        <p>&nbsp;</p>
+		<table width="100%" cellspacing="0" cellpadding="3">
+            <caption>suspicious_nameservers Constraints</caption>
+            <tr>
+            	<th>Name</th>
+            	<th>Constraint</th>
+            </tr>
+			
+            <tr class="tr0">
+				<td>domains_restriction_check</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr1">
+				<td>domains_restriction_check1</td>
+                <td>CHECK (((restriction)::text = ANY ((ARRAY[&#39;default&#39;::character varying, &#39;private&#39;::character varying, &#39;need-to-know&#39;::character varying, &#39;public&#39;::character varying])::text[])))</td>
+            </tr>
+			
+            <tr class="tr0">
+				<td>domains_severity_check</td>
+                <td>CHECK (((severity)::text = ANY ((ARRAY[&#39;low&#39;::character varying, &#39;medium&#39;::character varying, &#39;high&#39;::character varying])::text[])))</td>
+            </tr>
+			
+		</table>
+		
+
+        <!-- Foreign Key Discovery -->
+		
+
+    <!-- Indexes -->
+    
+
+	<!-- View Definition -->
+	
+
+	<!-- List off permissions -->
+	
+
+	<p>
+		<a href="#index">Index</a> -
+		<a href="#public.schema">Schema public</a>
+    </p>
+	
+        <hr>
+		<h2>Table:
 			<a name="public.table.suspicious-networks">suspicious_networks</a>
 		</h2>
         
@@ -5552,14 +8593,14 @@
     </p>
 	
         <hr>
-		<h2>View:
-			<a name="public.view.v-inet">v_inet</a>
+		<h2>Table:
+			<a name="public.table.users">users</a>
 		</h2>
         
 
 
         <table width="100%" cellspacing="0" cellpadding="3">
-                <caption>v_inet Structure</caption>
+                <caption>users Structure</caption>
                 <tr>
                 <th>F-Key</th>
                 <th>Name</th>
@@ -5570,10 +8611,17 @@
             <tr class="tr0">
 				<td>
                 
+                  
+                
                 </td>
             	<td>id</td>
-            	<td>bigint</td>
+            	<td>bigserial</td>
                 <td><i>
+				
+					PRIMARY KEY
+					
+
+					
 				
 
 				
@@ -5586,9 +8634,49 @@
             <tr class="tr1">
 				<td>
                 
+                  
+                
                 </td>
-            	<td>uuid</td>
-            	<td>uuid</td>
+            	<td>email</td>
+            	<td>text</td>
+                <td><i>
+				
+					
+
+					
+                       UNIQUE
+                    
+				
+
+				NOT NULL
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>created</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				DEFAULT now()
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>firstname</td>
+            	<td>text</td>
                 <td><i>
 				
 
@@ -5603,7 +8691,7 @@
 				<td>
                 
                 </td>
-            	<td>description</td>
+            	<td>lastname</td>
             	<td>text</td>
                 <td><i>
 				
@@ -5616,6 +8704,74 @@
 			 </tr>
             
             <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>affiliation</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+        </table>
+
+        <!-- Inherits -->
+		
+
+		
+		
+		
+
+        <!-- Constraint List -->
+		
+
+        <!-- Foreign Key Discovery -->
+		
+			<p>Tables referencing this one via Foreign Key Constraints:</p>
+		
+			<ul>
+				<li><a href="#public.table.apikeys">apikeys</a></li>
+			</ul>
+		
+		
+
+    <!-- Indexes -->
+    
+
+	<!-- View Definition -->
+	
+
+	<!-- List off permissions -->
+	
+
+	<p>
+		<a href="#index">Index</a> -
+		<a href="#public.schema">Schema public</a>
+    </p>
+	
+        <hr>
+		<h2>View:
+			<a name="public.view.v-domains">v_domains</a>
+		</h2>
+        
+
+
+        <table width="100%" cellspacing="0" cellpadding="3">
+                <caption>v_domains Structure</caption>
+                <tr>
+                <th>F-Key</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                </tr>
+            
+            <tr class="tr0">
 				<td>
                 
                 </td>
@@ -5631,252 +8787,12 @@
 				</td>
 			 </tr>
             
-            <tr class="tr0">
-				<td>
-                
-                </td>
-            	<td>address</td>
-            	<td>inet</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
             <tr class="tr1">
 				<td>
                 
                 </td>
-            	<td>cidr</td>
-            	<td>inet</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
-            	<td>asn</td>
-            	<td>integer</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                </td>
-            	<td>asn_desc</td>
+            	<td>description</td>
             	<td>text</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
-            	<td>cc</td>
-            	<td>character varying(5)</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                </td>
-            	<td>rir</td>
-            	<td>character varying(10)</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
-            	<td>protocol</td>
-            	<td>integer</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                </td>
-            	<td>portlist</td>
-            	<td>character varying(255)</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
-            	<td>confidence</td>
-            	<td>real</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                </td>
-            	<td>source</td>
-            	<td>uuid</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
-            	<td>severity</td>
-            	<td>character varying(6)</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                </td>
-            	<td>restriction</td>
-            	<td>character varying(16)</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
-            	<td>alternativeid</td>
-            	<td>text</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                </td>
-            	<td>alternativeid_restriction</td>
-            	<td>character varying(16)</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
-            	<td>whois</td>
-            	<td>text</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                </td>
-            	<td>tsv</td>
-            	<td>tsvector</td>
                 <td><i>
 				
 
@@ -5907,8 +8823,40 @@
 				<td>
                 
                 </td>
-            	<td>created</td>
-            	<td>timestamp with time zone</td>
+            	<td>severity</td>
+            	<td>character varying(6)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>address</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>rdata</td>
+            	<td>character varying(255)</td>
                 <td><i>
 				
 
@@ -5924,7 +8872,7 @@
                 
                 </td>
             	<td>type</td>
-            	<td>character varying(16)</td>
+            	<td>character varying(10)</td>
                 <td><i>
 				
 
@@ -5939,40 +8887,8 @@
 				<td>
                 
                 </td>
-            	<td>format</td>
-            	<td>character varying(32)</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr0">
-				<td>
-                
-                </td>
-            	<td>structured</td>
-            	<td>xml</td>
-                <td><i>
-				
-
-				
-				
-				</i>
-				
-				</td>
-			 </tr>
-            
-            <tr class="tr1">
-				<td>
-                
-                </td>
-            	<td>message_tsv</td>
-            	<td>tsvector</td>
+            	<td>ttl</td>
+            	<td>integer</td>
                 <td><i>
 				
 
@@ -6002,38 +8918,231 @@
 	<!-- View Definition -->
 	
 	<pre>
-SELECT inet.id
-, inet.uuid
+SELECT domains.impact
+, domains.description
+, domains.detecttime
+, domains.severity
+, domains.address
+, domains.rdata
+, domains.type
+, domains.ttl 
+FROM domains;</pre>
+	
+
+	<!-- List off permissions -->
+	
+
+	<p>
+		<a href="#index">Index</a> -
+		<a href="#public.schema">Schema public</a>
+    </p>
+	
+        <hr>
+		<h2>View:
+			<a name="public.view.v-inet">v_inet</a>
+		</h2>
+        
+
+
+        <table width="100%" cellspacing="0" cellpadding="3">
+                <caption>v_inet Structure</caption>
+                <tr>
+                <th>F-Key</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>impact</td>
+            	<td>character varying(140)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>description</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>detecttime</td>
+            	<td>timestamp with time zone</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>severity</td>
+            	<td>character varying(6)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>address</td>
+            	<td>inet</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>portlist</td>
+            	<td>character varying(255)</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>protocol</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>asn</td>
+            	<td>integer</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr0">
+				<td>
+                
+                </td>
+            	<td>asn_desc</td>
+            	<td>text</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+            <tr class="tr1">
+				<td>
+                
+                </td>
+            	<td>cidr</td>
+            	<td>inet</td>
+                <td><i>
+				
+
+				
+				
+				</i>
+				
+				</td>
+			 </tr>
+            
+        </table>
+
+        <!-- Inherits -->
+		
+
+		
+
+        <!-- Constraint List -->
+		
+
+        <!-- Foreign Key Discovery -->
+		
+
+    <!-- Indexes -->
+    
+
+	<!-- View Definition -->
+	
+	<pre>
+SELECT inet.impact
 , inet.description
-, inet.impact
+, inet.detecttime
+, inet.severity
 , inet.address
-, inet.cidr
+, inet.portlist
+, inet.protocol
 , inet.asn
 , inet.asn_desc
-, inet.cc
-, inet.rir
-, inet.protocol
-, inet.portlist
-, inet.confidence
-, inet.source
-, inet.severity
-, inet.restriction
-, inet.alternativeid
-, inet.alternativeid_restriction
-, inet.whois
-, inet.tsv
-, inet.detecttime
-, inet.created
-, v_messages.type
-, v_messages.format
-, v_messages.structured
-, v_messages.tsv AS message_tsv 
-FROM (inet 
-LEFT JOIN v_messages 
-    ON (
-           (v_messages.uuid = inet.uuid)
-     )
-);</pre>
+, inet.cidr 
+FROM inet;</pre>
 	
 
 	<!-- List off permissions -->
