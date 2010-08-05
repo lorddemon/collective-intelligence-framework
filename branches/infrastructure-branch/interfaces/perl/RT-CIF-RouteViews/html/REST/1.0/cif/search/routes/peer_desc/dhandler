@@ -1,0 +1,27 @@
+<%ARGS>
+</%ARGS>
+<%INIT>
+use CIF::RouteViews;
+use RT::Interface::REST;
+
+my $output = "";
+my $status = "200 Ok";
+
+my $arg = $m->dhandler_arg();
+goto OUTPUT unless($arg);
+$arg = lc($arg);
+
+CIF::RouteViews->set_sql('custom', qq{
+    SELECT * FROM routeviews
+    WHERE (lower(peer_desc) LIKE '$arg%' OR lower(peer_desc) LIKE '%$arg%' OR lower(peer_desc) LIKE '$arg%')
+    ORDER BY created DESC
+});
+
+my @recs = CIF::RouteViews->search_custom();
+
+$output = $m->comp('../text', recs => \@recs);
+
+OUTPUT:
+$m->out("RT/". $RT::VERSION . " " . $status ."\n\n");
+$m->out($output);
+</%INIT>

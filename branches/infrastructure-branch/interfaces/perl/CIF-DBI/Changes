@@ -1,0 +1,6 @@
+Revision history for Perl extension CIF::DBI.
+
+0.00_00  Sun Jun 13 03:14:24 2010
+	- original version; created by h2xs 1.23 with options
+		-AXB -b 5.8.8 -n CIF::DBI
+

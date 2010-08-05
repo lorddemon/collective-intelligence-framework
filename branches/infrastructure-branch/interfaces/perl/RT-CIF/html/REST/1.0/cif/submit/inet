@@ -1,0 +1,51 @@
+<%ARGS>
+$POSTDATA => undef
+</%ARGS>
+<%INIT>
+use RT::Interface::REST;
+use CIF::Message::InetSimple;
+use Regexp::Common qw/net/;
+use JSON;
+my %tests;
+$tests{'address'} = qr/^$RE{net}{IPv4}/;
+$tests{'portlist'} = qr/\d+(\-\d+)?(,\d+(\-\d+)?)*/;
+$tests{'protocol'} = qr/\d+/;
+$tests{'restriction'} = qr/^(private|default|need-to-know|public)$/;
+$tests{'severity'} = qr/^(high|medium|low)$/;
+$tests{'confidence'} = qr/^[0-9]$/;
+
+my $content = $POSTDATA;
+my @a = @{decode_json($content)};
+
+my @ids;
+foreach (@a){
+    my $rec = $_;
+    foreach my $test (keys %tests){
+        unless($rec->{$test} =~ /$tests{$test}/){
+            $m->out('input validation failure: '.$test.'/'.$rec->{$test});
+            $m->abort();
+        }
+    }
+    my $description = $_->{'description'};
+    unless($description){
+        $m->out('missing description for: '.$_->{'address'});
+        $m->abort();
+    }
+    my $severity = (lc($_->{'severity'}) eq 'low') ? 'low' : 'medium';
+
+    my $id = CIF::Message::InetSimple->insert({
+        source      => $session{'CurrentUser'}->EmailAddress(),
+        address     => $_->{'address'},
+        severity    => $severity,
+        confidence  => $_->{'confidence'} || 3,
+        detecttime  => $_->{'detecttime'},
+        restriction => $_->{'restriction'} || 'private',
+        description => $_->{'description'},
+        portlist    => $_->{'portlist'},
+        protocol    => $_->{'protocol'},
+    });
+    push(@ids,$id) if($id);
+}
+$m->out('['.join(',', map { '{"uuid":'.'"'.$_->uuid().'"}' } @ids).']');
+
+</%INIT>

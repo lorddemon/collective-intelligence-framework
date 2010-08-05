@@ -1,0 +1,41 @@
+<%ARGS>
+$POSTDATA => undef
+</%ARGS>
+<%INIT>
+use RT::Interface::REST;
+use CIF::Message::DomainSimple;
+use Net::DNS;
+use JSON;
+
+my %tests;
+$tests{'restriction'} = qr/^(private|default|need-to-know|public)$/;
+$tests{'severity'} = qr/^(high|medium|low)$/;
+$tests{'confidence'} = qr/^[0-9]$/;
+$tests{'description'} = qr/(nameserver|domain|fastflux)/;
+
+my $res = Net::DNS::Resolver->new(
+    nameservers => ['8.8.8.8'],
+);
+
+my $content = $POSTDATA;
+my @a = @{decode_json($content)};
+my @ids;
+foreach (@a){
+    my $severity = (lc($_->{'severity'}) eq 'low') ? 'low' : 'medium';
+
+    my $id = CIF::Message::DomainSimple->insert({
+        nsres       => $res,
+        source      => $session{'CurrentUser'}->EmailAddress(),
+        address     => $_->{'address'},
+        impact      => 'malicious domain',
+        severity    => $severity,
+        confidence  => $_->{'confidence'} || 3,
+        detecttime  => $_->{'detecttime'},
+        restriction => $_->{'restriction'} || 'private',
+        description => $_->{'description'} || 'malicious domain',
+    });
+    push(@ids,$id);
+}
+$m->out('['.join(',', map { '{"uuid":'.'"'.$_->uuid().'"}' } @ids).']');
+
+</%INIT>

@@ -1,0 +1,16 @@
+<%ARGS>
+@recs => undef
+</%ARGS>
+<%INIT>
+use CIF::Message::Structured;
+
+my $o = '';
+foreach my $r (@recs){
+    my $rr = CIF::Message::Structured->retrieve(uuid => $r->uuid());
+    next unless($rr);
+    ## TODO -- fix this to handle unstructured messages
+    $o .= $rr->message();
+}
+
+return $o;
+</%INIT>

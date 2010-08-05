@@ -1,0 +1,17 @@
+<%INIT>
+use RT::Interface::REST;
+
+my $text = <<EOF;
+
+
+Usage:
+
+apikeys:        list current keys
+apikeys/add:    generate an additional key to be used with this userid
+apikeys/new:    wipe out any old keys and re-generate a new key
+apikeys/delete: wipe out all user api keys
+
+EOF
+
+$m->out($text);
+</%INIT>
