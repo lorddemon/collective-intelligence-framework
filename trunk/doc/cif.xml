@@ -12,6 +12,140 @@
     <para>standard public schema</para>
 
 
+      <section id="public.table.apikeys"
+               xreflabel="public.apikeys">
+        <title id="public.table.apikeys-title">
+         Table:
+         
+         <structname>apikeys</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>apikeys</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>apikey</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>userid</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+
+                <literal>REFERENCES</literal> <xref linkend="public.table.users"/>
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
       <section id="public.table.domains"
                xreflabel="public.domains">
         <title id="public.table.domains-title">
@@ -492,6 +626,488 @@
       </para>
     </section>
 
+      <section id="public.table.domains-whitelist"
+               xreflabel="public.domains_whitelist">
+        <title id="public.table.domains-whitelist-title">
+         Table:
+         
+         <structname>domains_whitelist</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>domains_whitelist</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;domains_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+
+                <literal>REFERENCES</literal> <xref linkend="public.table.messages"/>
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>rdata</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>cidr</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn_desc</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>cc</structfield></term>
+              <listitem><para>
+                <type>character varying(5)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>rir</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>class</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>ttl</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>whois</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>impact</structfield></term>
+              <listitem><para>
+                <type>character varying(140)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>character varying(6)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>tsv</structfield></term>
+              <listitem><para>
+                <type>tsvector</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+        <variablelist>
+          <title>Constraints on domains_whitelist</title>
+
+          <varlistentry>
+            <term>domains_restriction_check</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>domains_restriction_check1</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>domains_severity_check</term>
+            <listitem><para>CHECK (((severity)::text = ANY ((ARRAY[&apos;low&apos;::character varying, &apos;medium&apos;::character varying, &apos;high&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
       <section id="public.table.emails"
                xreflabel="public.emails">
         <title id="public.table.emails-title">
@@ -777,6 +1393,488 @@
 
           <varlistentry>
             <term>emails_severity_check</term>
+            <listitem><para>CHECK (((severity)::text = ANY ((ARRAY[&apos;low&apos;::character varying, &apos;medium&apos;::character varying, &apos;high&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.fastflux-domains"
+               xreflabel="public.fastflux_domains">
+        <title id="public.table.fastflux-domains-title">
+         Table:
+         
+         <structname>fastflux_domains</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>fastflux_domains</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;domains_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+                <literal>REFERENCES</literal> <xref linkend="public.table.messages"/>
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>rdata</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>cidr</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn_desc</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>cc</structfield></term>
+              <listitem><para>
+                <type>character varying(5)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>rir</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>class</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>ttl</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>whois</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>impact</structfield></term>
+              <listitem><para>
+                <type>character varying(140)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>character varying(6)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>tsv</structfield></term>
+              <listitem><para>
+                <type>tsvector</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+        <variablelist>
+          <title>Constraints on fastflux_domains</title>
+
+          <varlistentry>
+            <term>domains_restriction_check</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>domains_restriction_check1</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>domains_severity_check</term>
             <listitem><para>CHECK (((severity)::text = ANY ((ARRAY[&apos;low&apos;::character varying, &apos;medium&apos;::character varying, &apos;high&apos;::character varying])::text[])))</para></listitem>
           </varlistentry>
 
@@ -1202,6 +2300,465 @@
 
         <variablelist>
           <title>Constraints on inet</title>
+
+          <varlistentry>
+            <term>inet_confidence_check</term>
+            <listitem><para>CHECK (((confidence &gt;= (0.0)::double precision) AND ((10.0)::double precision &gt;= confidence)))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>inet_restriction_check</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>inet_restriction_check1</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>inet_severity_check</term>
+            <listitem><para>CHECK (((severity)::text = ANY ((ARRAY[&apos;low&apos;::character varying, &apos;medium&apos;::character varying, &apos;high&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.inet-whitelist"
+               xreflabel="public.inet_whitelist">
+        <title id="public.table.inet-whitelist-title">
+         Table:
+         
+         <structname>inet_whitelist</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>inet_whitelist</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;inet_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+                <literal>REFERENCES</literal> <xref linkend="public.table.messages"/>
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>impact</structfield></term>
+              <listitem><para>
+                <type>character varying(140)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>cidr</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn_desc</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>cc</structfield></term>
+              <listitem><para>
+                <type>character varying(5)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>rir</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>protocol</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>portlist</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>character varying(6)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>whois</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>tsv</structfield></term>
+              <listitem><para>
+                <type>tsvector</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+        <variablelist>
+          <title>Constraints on inet_whitelist</title>
 
           <varlistentry>
             <term>inet_confidence_check</term>
@@ -1685,6 +3242,488 @@
 
           <varlistentry>
             <term>inet_severity_check</term>
+            <listitem><para>CHECK (((severity)::text = ANY ((ARRAY[&apos;low&apos;::character varying, &apos;medium&apos;::character varying, &apos;high&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.malicious-domains"
+               xreflabel="public.malicious_domains">
+        <title id="public.table.malicious-domains-title">
+         Table:
+         
+         <structname>malicious_domains</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>malicious_domains</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;domains_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+                <literal>REFERENCES</literal> <xref linkend="public.table.messages"/>
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>rdata</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>cidr</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn_desc</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>cc</structfield></term>
+              <listitem><para>
+                <type>character varying(5)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>rir</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>class</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>ttl</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>whois</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>impact</structfield></term>
+              <listitem><para>
+                <type>character varying(140)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>character varying(6)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>tsv</structfield></term>
+              <listitem><para>
+                <type>tsvector</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+        <variablelist>
+          <title>Constraints on malicious_domains</title>
+
+          <varlistentry>
+            <term>domains_restriction_check</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>domains_restriction_check1</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>domains_severity_check</term>
             <listitem><para>CHECK (((severity)::text = ANY ((ARRAY[&apos;low&apos;::character varying, &apos;medium&apos;::character varying, &apos;high&apos;::character varying])::text[])))</para></listitem>
           </varlistentry>
 
@@ -2732,7 +4771,23 @@
 
           <listitem>
             <para>
+              <xref linkend="public.table.domains-whitelist"/>
+            </para>
+          </listitem>
+
+
+
+          <listitem>
+            <para>
               <xref linkend="public.table.emails"/>
+            </para>
+          </listitem>
+
+
+
+          <listitem>
+            <para>
+              <xref linkend="public.table.fastflux-domains"/>
             </para>
           </listitem>
 
@@ -2748,7 +4803,23 @@
 
           <listitem>
             <para>
+              <xref linkend="public.table.inet-whitelist"/>
+            </para>
+          </listitem>
+
+
+
+          <listitem>
+            <para>
               <xref linkend="public.table.infrastructure"/>
+            </para>
+          </listitem>
+
+
+
+          <listitem>
+            <para>
+              <xref linkend="public.table.malicious-domains"/>
             </para>
           </listitem>
 
@@ -2788,6 +4859,14 @@
 
           <listitem>
             <para>
+              <xref linkend="public.table.passive-domains"/>
+            </para>
+          </listitem>
+
+
+
+          <listitem>
+            <para>
               <xref linkend="public.table.phishing-urls"/>
             </para>
           </listitem>
@@ -2805,6 +4884,14 @@
           <listitem>
             <para>
               <xref linkend="public.table.spammers"/>
+            </para>
+          </listitem>
+
+
+
+          <listitem>
+            <para>
+              <xref linkend="public.table.suspicious-nameservers"/>
             </para>
           </listitem>
 
@@ -3084,6 +5171,488 @@
               </para>
 
             </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.passive-domains"
+               xreflabel="public.passive_domains">
+        <title id="public.table.passive-domains-title">
+         Table:
+         
+         <structname>passive_domains</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>passive_domains</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;domains_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+
+                <literal>REFERENCES</literal> <xref linkend="public.table.messages"/>
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>rdata</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>cidr</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn_desc</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>cc</structfield></term>
+              <listitem><para>
+                <type>character varying(5)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>rir</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>class</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>ttl</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>whois</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>impact</structfield></term>
+              <listitem><para>
+                <type>character varying(140)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>character varying(6)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>tsv</structfield></term>
+              <listitem><para>
+                <type>tsvector</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+        <variablelist>
+          <title>Constraints on passive_domains</title>
+
+          <varlistentry>
+            <term>domains_restriction_check</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>domains_restriction_check1</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>domains_severity_check</term>
+            <listitem><para>CHECK (((severity)::text = ANY ((ARRAY[&apos;low&apos;::character varying, &apos;medium&apos;::character varying, &apos;high&apos;::character varying])::text[])))</para></listitem>
           </varlistentry>
 
         </variablelist>
@@ -4656,6 +7225,488 @@
       </para>
     </section>
 
+      <section id="public.table.suspicious-nameservers"
+               xreflabel="public.suspicious_nameservers">
+        <title id="public.table.suspicious-nameservers-title">
+         Table:
+         
+         <structname>suspicious_nameservers</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>suspicious_nameservers</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;domains_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+                <literal>REFERENCES</literal> <xref linkend="public.table.messages"/>
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>rdata</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>cidr</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn_desc</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>cc</structfield></term>
+              <listitem><para>
+                <type>character varying(5)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>rir</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>class</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>ttl</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>whois</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>impact</structfield></term>
+              <listitem><para>
+                <type>character varying(140)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>alternativeid_restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>character varying(6)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>character varying(16)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>tsv</structfield></term>
+              <listitem><para>
+                <type>tsvector</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+        <variablelist>
+          <title>Constraints on suspicious_nameservers</title>
+
+          <varlistentry>
+            <term>domains_restriction_check</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>domains_restriction_check1</term>
+            <listitem><para>CHECK (((restriction)::text = ANY ((ARRAY[&apos;default&apos;::character varying, &apos;private&apos;::character varying, &apos;need-to-know&apos;::character varying, &apos;public&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>domains_severity_check</term>
+            <listitem><para>CHECK (((severity)::text = ANY ((ARRAY[&apos;low&apos;::character varying, &apos;medium&apos;::character varying, &apos;high&apos;::character varying])::text[])))</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
       <section id="public.table.suspicious-networks"
                xreflabel="public.suspicious_networks">
         <title id="public.table.suspicious-networks-title">
@@ -5497,12 +8548,12 @@
       </para>
     </section>
 
-      <section id="public.view.v-inet"
-               xreflabel="public.v_inet">
-        <title id="public.view.v-inet-title">
-         View:
+      <section id="public.table.users"
+               xreflabel="public.users">
+        <title id="public.table.users-title">
+         Table:
          
-         <structname>v_inet</structname>
+         <structname>users</structname>
         </title>
  
 
@@ -5510,14 +8561,23 @@
         <para>
           <variablelist>
             <title>
-              Structure of <structname>v_inet</structname>
+              Structure of <structname>users</structname>
             </title>
 
 
             <varlistentry>
               <term><structfield>id</structfield></term>
               <listitem><para>
-                <type>bigint</type>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
 
 
 
@@ -5531,9 +8591,147 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>uuid</structfield></term>
+              <term><structfield>email</structfield></term>
               <listitem><para>
-                <type>uuid</type>
+                <type>text</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>firstname</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>lastname</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>affiliation</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+        <itemizedlist>
+          <title>
+            Tables referencing apikeys via Foreign Key Constraints
+          </title>
+
+          <listitem>
+            <para>
+              <xref linkend="public.table.apikeys"/>
+            </para>
+          </listitem>
+
+        </itemizedlist>
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.view.v-domains"
+               xreflabel="public.v_domains">
+        <title id="public.view.v-domains-title">
+         View:
+         
+         <structname>v_domains</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>v_domains</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>impact</structfield></term>
+              <listitem><para>
+                <type>character varying(140)</type>
 
 
 
@@ -5563,9 +8761,198 @@
           </varlistentry>
 
             <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>character varying(6)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>rdata</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>ttl</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+        <figure>
+         <title>Definition of view v_domains</title>
+         <programlisting>
+SELECT domains.impact
+, domains.description
+, domains.detecttime
+, domains.severity
+, domains.address
+, domains.rdata
+, domains.type
+, domains.ttl 
+FROM domains;</programlisting>
+        </figure>
+
+
+
+      </para>
+    </section>
+
+      <section id="public.view.v-inet"
+               xreflabel="public.v_inet">
+        <title id="public.view.v-inet-title">
+         View:
+         
+         <structname>v_inet</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>v_inet</structname>
+            </title>
+
+
+            <varlistentry>
               <term><structfield>impact</structfield></term>
               <listitem><para>
                 <type>character varying(140)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>character varying(6)</type>
 
 
 
@@ -5595,9 +8982,25 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>cidr</structfield></term>
+              <term><structfield>portlist</structfield></term>
               <listitem><para>
-                <type>inet</type>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>protocol</structfield></term>
+              <listitem><para>
+                <type>integer</type>
 
 
 
@@ -5643,281 +9046,9 @@
           </varlistentry>
 
             <varlistentry>
-              <term><structfield>cc</structfield></term>
+              <term><structfield>cidr</structfield></term>
               <listitem><para>
-                <type>character varying(5)</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>rir</structfield></term>
-              <listitem><para>
-                <type>character varying(10)</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>protocol</structfield></term>
-              <listitem><para>
-                <type>integer</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>portlist</structfield></term>
-              <listitem><para>
-                <type>character varying(255)</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>confidence</structfield></term>
-              <listitem><para>
-                <type>real</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>source</structfield></term>
-              <listitem><para>
-                <type>uuid</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>severity</structfield></term>
-              <listitem><para>
-                <type>character varying(6)</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>restriction</structfield></term>
-              <listitem><para>
-                <type>character varying(16)</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>alternativeid</structfield></term>
-              <listitem><para>
-                <type>text</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>alternativeid_restriction</structfield></term>
-              <listitem><para>
-                <type>character varying(16)</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>whois</structfield></term>
-              <listitem><para>
-                <type>text</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>tsv</structfield></term>
-              <listitem><para>
-                <type>tsvector</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>detecttime</structfield></term>
-              <listitem><para>
-                <type>timestamp with time zone</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>created</structfield></term>
-              <listitem><para>
-                <type>timestamp with time zone</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>type</structfield></term>
-              <listitem><para>
-                <type>character varying(16)</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>format</structfield></term>
-              <listitem><para>
-                <type>character varying(32)</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>structured</structfield></term>
-              <listitem><para>
-                <type>xml</type>
-
-
-
-
-
-
-
-              </para>
-
-            </listitem>
-          </varlistentry>
-
-            <varlistentry>
-              <term><structfield>message_tsv</structfield></term>
-              <listitem><para>
-                <type>tsvector</type>
+                <type>inet</type>
 
 
 
@@ -5942,38 +9073,17 @@
         <figure>
          <title>Definition of view v_inet</title>
          <programlisting>
-SELECT inet.id
-, inet.uuid
+SELECT inet.impact
 , inet.description
-, inet.impact
+, inet.detecttime
+, inet.severity
 , inet.address
-, inet.cidr
+, inet.portlist
+, inet.protocol
 , inet.asn
 , inet.asn_desc
-, inet.cc
-, inet.rir
-, inet.protocol
-, inet.portlist
-, inet.confidence
-, inet.source
-, inet.severity
-, inet.restriction
-, inet.alternativeid
-, inet.alternativeid_restriction
-, inet.whois
-, inet.tsv
-, inet.detecttime
-, inet.created
-, v_messages.type
-, v_messages.format
-, v_messages.structured
-, v_messages.tsv AS message_tsv 
-FROM (inet 
-LEFT JOIN v_messages 
-    ON (
-           (v_messages.uuid = inet.uuid)
-     )
-);</programlisting>
+, inet.cidr 
+FROM inet;</programlisting>
         </figure>
 
 
