@@ -7,14 +7,6 @@ use warnings;
 __PACKAGE__->table('domains_whitelist');
 __PACKAGE__->has_a(uuid => 'CIF::Message');
 
-sub insert {
-    my $self = shift;
-    my $info = {%{+shift}};
-    
-    $info->{'impact'} = 'domain whitelist' unless($info->{'impact'});
-    $self->SUPER::insert($info);
-}
-
 sub isWhitelisted {
     my $self = shift;
     my $a = shift;

@@ -1,5 +1,5 @@
-DROP TABLE apikeys;
-DROP TABLE users;
+DROP TABLE IF EXISTS apikeys;
+DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     email text NOT NULL,

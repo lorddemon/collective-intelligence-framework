@@ -1,7 +1,8 @@
-DROP VIEW v_messages;
-DROP TABLE messages_structured;
-DROP TABLE messages_unstructured;
-DROP TABLE messages;
+DROP VIEW IF EXISTS v_messages;
+DROP TABLE IF EXISTS messages_structured;
+DROP TABLE IF EXISTS messages_unstructured;
+DROP TABLE IF EXISTS messages;
+
 CREATE TABLE messages (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     uuid uuid NOT NULL,
@@ -31,16 +32,11 @@ CREATE TABLE messages_unstructured (
     uuid uuid REFERENCES messages (uuid) ON DELETE CASCADE NOT NULL,
     source uuid NOT NULL,
     message text NOT NULL,
-    tsv tsvector,
     UNIQUE(uuid)
 );
 
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-ON messages_unstructured FOR EACH ROW EXECUTE PROCEDURE
-tsvector_update_trigger(tsv, 'pg_catalog.english', message);
-
 CREATE VIEW v_messages AS
-SELECT messages.*,messages_unstructured.message as unstructured, messages_structured.message as structured, messages_unstructured.tsv
+SELECT messages.*,messages_unstructured.message as unstructured, messages_structured.message as structured
 FROM messages 
 LEFT JOIN messages_unstructured ON (messages_unstructured.uuid = messages.uuid AND messages_unstructured.source = messages.source)
 LEFT JOIN messages_structured ON (messages_structured.uuid = messages.uuid AND messages_structured.source = messages.source);

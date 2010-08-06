@@ -1,4 +1,4 @@
-DROP TABLE emails;
+DROP TABLE IF EXISTS emails;
 CREATE TABLE emails (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     uuid uuid REFERENCES messages(uuid) ON DELETE CASCADE NOT NULL,

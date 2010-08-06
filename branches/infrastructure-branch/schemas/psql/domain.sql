@@ -1,8 +1,10 @@
-DROP TABLE domains_whitelist;
-DROP TABLE fastflux_domains;
-DROP TABLE suspicious_nameservers;
-DROP TABLE malicious_domains;
-DROP TABLE domains;
+DROP TABLE IF EXISTS domains_whitelist;
+DROP TABLE IF EXISTS domains_fastflux;
+DROP TABLE IF EXISTS domains_nameservers;
+DROP TABLE IF EXISTS domains_malicious;
+DROP TABLE IF EXISTS domains_passivedns;
+DROP TABLE IF EXISTS domains;
+
 CREATE TABLE domains (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     uuid uuid REFERENCES messages(uuid) ON DELETE CASCADE NOT NULL,
@@ -27,7 +29,6 @@ CREATE TABLE domains (
     restriction VARCHAR(16) CHECK (restriction IN ('default','private','need-to-know','public')) DEFAULT 'private' NOT NULL,
     detecttime timestamp with time zone,
     created timestamp with time zone DEFAULT NOW(),
-    tsv tsvector,
     UNIQUE (uuid)
 );
 
@@ -36,38 +37,22 @@ ALTER TABLE domains_whitelist ADD PRIMARY KEY (id);
 ALTER TABLE domains_whitelist ADD CONSTRAINT whitelist_domains_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
 ALTER TABLE domains_whitelist ADD UNIQUE(uuid);
 
-CREATE TABLE fastflux_domains() INHERITS (domains);
-ALTER TABLE fastflux_domains ADD PRIMARY KEY (id);
-ALTER TABLE fastflux_domains ADD CONSTRAINT fastflux_domains_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE fastflux_domains ADD UNIQUE(uuid);
+CREATE TABLE domains_fastflux() INHERITS (domains);
+ALTER TABLE domains_fastflux ADD PRIMARY KEY (id);
+ALTER TABLE domains_fastflux ADD CONSTRAINT domains_fastflux_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE domains_fastflux ADD UNIQUE(uuid);
 
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-ON fastflux_domains FOR EACH ROW EXECUTE PROCEDURE
-tsvector_update_trigger(tsv, 'pg_catalog.english', description,impact,asn_desc,whois);
+CREATE TABLE domains_nameservers() INHERITS (domains);
+ALTER TABLE domains_nameservers ADD PRIMARY KEY (id);
+ALTER TABLE domains_nameservers ADD CONSTRAINT domains_nameservers_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE domains_nameservers ADD UNIQUE(uuid);
 
-CREATE TABLE suspicious_nameservers() INHERITS (domains);
-ALTER TABLE suspicious_nameservers ADD PRIMARY KEY (id);
-ALTER TABLE suspicious_nameservers ADD CONSTRAINT suspicious_nameservers_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE suspicious_nameservers ADD UNIQUE(uuid);
+CREATE TABLE domains_malicious() INHERITS (domains);
+ALTER TABLE domains_malicious ADD PRIMARY KEY (id);
+ALTER TABLE domains_malicious ADD CONSTRAINT domains_malicious_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE domains_malicious ADD UNIQUE(uuid);
 
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-ON suspicious_nameservers FOR EACH ROW EXECUTE PROCEDURE
-tsvector_update_trigger(tsv, 'pg_catalog.english', description,impact,asn_desc,whois);
-
-CREATE TABLE malicious_domains() INHERITS (domains);
-ALTER TABLE malicious_domains ADD PRIMARY KEY (id);
-ALTER TABLE malicious_domains ADD CONSTRAINT malicious_domains_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE malicious_domains ADD UNIQUE(uuid);
-
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-ON malicious_domains FOR EACH ROW EXECUTE PROCEDURE
-tsvector_update_trigger(tsv, 'pg_catalog.english', description,impact,asn_desc,whois);
-
-CREATE TABLE passive_domains() INHERITS (domains);
-ALTER TABLE passive_domains ADD PRIMARY KEY (id);
-ALTER TABLE passive_domains ADD CONSTRAINT passive_omains_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE passive_domains ADD UNIQUE(uuid);
-
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-ON passive_domains FOR EACH ROW EXECUTE PROCEDURE
-tsvector_update_trigger(tsv, 'pg_catalog.english', description,impact,asn_desc,whois);
+CREATE TABLE domains_passivedns() INHERITS (domains);
+ALTER TABLE domains_passivedns ADD PRIMARY KEY (id);
+ALTER TABLE domains_passivedns ADD CONSTRAINT domains_passivedns_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE domains_passivedns ADD UNIQUE(uuid);

@@ -8,5 +8,5 @@ psql -U postgres -c "CREATE DATABASE $DB"
 
 cd schemas/psql
 for S in $SCHEMA; do
-    psql -U postgres -d $DB < $S
+    psql -q -U postgres -d $DB < $S
 done
