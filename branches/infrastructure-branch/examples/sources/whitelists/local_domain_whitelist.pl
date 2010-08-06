@@ -16,7 +16,7 @@ while(<F>){
     my $id = CIF::Message::DomainWhitelist->insert({
         source      => 'localhost',
         impact      => 'domain whitelist',
-        description => 'domain whitelist - '.$line,
+        description => 'domain whitelist '.$line,
         address     => $line,
         confidence  => 10,
         detecttime  => $date,

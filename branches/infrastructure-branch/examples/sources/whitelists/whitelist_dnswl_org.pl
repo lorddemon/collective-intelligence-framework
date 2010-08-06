@@ -5,7 +5,8 @@ use Data::Dumper;
 use DateTime;
 use Net::Abuse::Utils qw(:all);
 use CIF::Message::DomainWhitelist;
-use CIF::Message::InetWhitelist;
+use CIF::Message::InfrastructureWhitelist;
+use CIF::Message::Infrastructure;
 
 my $detecttime = DateTime->from_epoch(epoch => time());
 
@@ -36,7 +37,7 @@ while(<F>){
     my $line = $_;
     $line =~ s/\n//;
     my ($address,$c,$trust,$domain,$id) = split(/;/,$line);
-    my ($as,$network,$ccode,$rir,$date,$as_desc) = asninfo($address);
+    my ($as,$network,$ccode,$rir,$date,$as_desc) = CIF::Message::Infrastructure::asninfo($address);
 
     my $impact = 'domain whitelist';
     $impact .= ' '.$cat->{$c} if($c);
@@ -46,7 +47,7 @@ while(<F>){
         confidence      => 5,
         source          => 'dnswl.org',
         restriction     => 'need-to-know',
-        description     => $impact.' - '.$domain,
+        description     => $impact.' '.$domain,
         impact          => $impact,
         alternativeid   => 'http://www.dnswl.org/search.pl?s='.$id,
         alternativeid_restriction   => 'public',
@@ -59,16 +60,16 @@ while(<F>){
         rir             => $rir
     });
 
-    $impact = 'inet whitelist';
+    $impact = 'infrastructure whitelist';
     $impact .= ' '.$cat->{$c} if($c);
 
-    my $iid = CIF::Message::InetWhitelist->insert({
+    my $iid = CIF::Message::InfrastructureWhitelist->insert({
         relatedid         => $uid->uuid(),
         address         => $address,
         confidence      => 5,
         source          => 'dnswl.org',
         restriction     => 'need-to-know',
-        description     => $impact.' '.$domain.' - '.$address,
+        description     => $impact.' '.$domain.' '.$address,
         impact          => $impact,
         alternativeid   => 'http://www.dnswl.org/search.pl?s='.$id,
         alternativeid_restriction   => 'public',
@@ -83,20 +84,3 @@ while(<F>){
     warn $iid;
 }
 close(F);
-
-sub asninfo {
-    my $a = shift;
-    return undef unless($a);
-    my ($as,$network,$ccode,$rir,$date) = get_asn_info($a);
-    my $as_desc;
-    $as_desc = get_as_description($as) if($as);
-
-    $as         = undef if($as && $as eq 'NA');
-    $network    = undef if($network && $network eq 'NA');
-    $ccode      = undef if($ccode && $ccode eq 'NA');
-    $rir        = undef if($rir && $rir eq 'NA');
-    $date       = undef if($date && $date eq 'NA');
-    $as_desc    = undef if($as_desc && $as_desc eq 'NA');
-    $a          = undef if($a eq '');
-    return ($as,$network,$ccode,$rir,$date,$as_desc);
-}

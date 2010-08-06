@@ -17,7 +17,7 @@ foreach my $line (@lines){
         source          => $url,
         address         => $address,
         impact          => 'phishing replyto',
-        description     => 'phishing replyto - '.$address,
+        description     => 'phishing replyto '.$address,
         restriction     => 'need-to-know',
         confidence      => 3,
         severity        => 'low',
