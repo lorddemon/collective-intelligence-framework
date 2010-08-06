@@ -1,6 +1,7 @@
-DROP TABLE malware_urls;
-DROP TABLE phishing_urls;
-DROP TABLE urls;
+DROP TABLE IF EXISTS urls_malware;
+DROP TABLE IF EXISTS urls_phishing;
+DROP TABLE IF EXISTS urls;
+
 CREATE TABLE urls (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     uuid uuid REFERENCES messages(uuid) ON DELETE CASCADE NOT NULL,
@@ -19,24 +20,15 @@ CREATE TABLE urls (
     alternativeid_restriction VARCHAR(16) CHECK (restriction IN ('default','private','need-to-know','public')) DEFAULT 'private' NOT NULL,
     detecttime timestamp with time zone,
     created timestamp with time zone DEFAULT NOW(),
-    tsv tsvector,
     UNIQUE (uuid)
 );
 
-CREATE TABLE malware_urls () INHERITS (urls);
-ALTER TABLE malware_urls ADD PRIMARY KEY (id);
-ALTER TABLE malware_urls ADD UNIQUE(uuid);
-ALTER TABLE malware_urls ADD CONSTRAINT malware_url_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+CREATE TABLE urls_malware () INHERITS (urls);
+ALTER TABLE urls_malware ADD PRIMARY KEY (id);
+ALTER TABLE urls_malware ADD UNIQUE(uuid);
+ALTER TABLE urls_malware ADD CONSTRAINT urls_malware_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
 
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-ON malware_urls FOR EACH ROW EXECUTE PROCEDURE
-tsvector_update_trigger(tsv, 'pg_catalog.english', description,address);
-
-CREATE TABLE phishing_urls () INHERITS (urls);
-ALTER TABLE phishing_urls ADD PRIMARY KEY (id);
-ALTER TABLE phishing_urls ADD UNIQUE(uuid);
-ALTER TABLE phishing_urls ADD CONSTRAINT phishing_url_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-ON phishing_urls FOR EACH ROW EXECUTE PROCEDURE
-tsvector_update_trigger(tsv, 'pg_catalog.english', description,address);
+CREATE TABLE urls_phishing () INHERITS (urls);
+ALTER TABLE urls_phishing ADD PRIMARY KEY (id);
+ALTER TABLE urls_phishing ADD UNIQUE(uuid);
+ALTER TABLE urls_phishing ADD CONSTRAINT urls_phishing_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;

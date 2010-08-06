@@ -2,14 +2,18 @@
 -- parent table (for show only)
 --
 
-DROP view v_inet;
-DROP TABLE scanners;
-DROP TABLE spammers;
-DROP TABLE infrastructure;
-DROP TABLE inet_whitelist;
+DROP view IF EXISTS v_infrastructure;
+DROP TABLE IF EXISTS infrastructure_scanner;
+DROP TABLE IF EXISTS infrastructure_spam;
+DROP TABLE IF EXISTS infrastructure_malware;
+DROP TABLE IF EXISTS infrastructure_botnet;
+DROP TABLE IF EXISTS infrastructure_whitelist;
+DROP TABLE IF EXISTS infrastructure_network;
+DROP TABLE IF EXISTS infrastructure_suspicious;
+DROP TABLE IF EXISTS infrastructure_phishing;
 
-DROP TABLE inet;
-CREATE TABLE inet (
+DROP TABLE IF EXISTS infrastructure;
+CREATE TABLE infrastructure (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     uuid uuid REFERENCES messages(uuid) ON DELETE CASCADE NOT NULL,
     description text,
@@ -29,7 +33,6 @@ CREATE TABLE inet (
     alternativeid text,
     alternativeid_restriction VARCHAR(16) CHECK (restriction IN ('default','private','need-to-know','public')) DEFAULT 'private' NOT NULL,
     whois text,
-    tsv tsvector,
     detecttime timestamp with time zone,
     created timestamp with time zone DEFAULT NOW()
 );
@@ -38,68 +41,71 @@ CREATE TABLE inet (
 -- default view
 --
 
-CREATE VIEW v_inet as
-SELECT inet.*,v_messages.type,v_messages.format,v_messages.structured,v_messages.tsv as message_tsv
-FROM inet
-LEFT JOIN v_messages ON (v_messages.uuid = inet.uuid);
+CREATE VIEW v_infrastructure as
+SELECT infrastructure.*,v_messages.type,v_messages.format,v_messages.structured
+FROM infrastructure
+LEFT JOIN v_messages ON (v_messages.uuid = infrastructure.uuid);
 
 --
--- inet_whitelist
+-- infrastructure_botnet
 ---
 
-CREATE TABLE inet_whitelist () INHERITS (inet);
-ALTER TABLE inet_whitelist ADD PRIMARY KEY (id);
-ALTER TABLE inet_whitelist ADD CONSTRAINT inet_whitelist_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE inet_whitelist ADD UNIQUE(uuid);
+CREATE TABLE infrastructure_botnet () INHERITS (infrastructure);
+ALTER TABLE infrastructure_botnet ADD PRIMARY KEY (id);
+ALTER TABLE infrastructure_botnet ADD CONSTRAINT infrastructure_botnet_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE infrastructure_botnet ADD UNIQUE(uuid);
 
 --
--- scanners
---
+-- infrastructure_malware
+---
 
-CREATE TABLE scanners () INHERITS (inet);
-ALTER TABLE scanners ADD PRIMARY KEY (id);
-ALTER TABLE scanners ADD CONSTRAINT scanner_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE scanners ADD UNIQUE(uuid);
-
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-ON scanners FOR EACH ROW EXECUTE PROCEDURE
-tsvector_update_trigger(tsv, 'pg_catalog.english', description,impact,asn_desc,whois);
+CREATE TABLE infrastructure_malware () INHERITS (infrastructure);
+ALTER TABLE infrastructure_malware ADD PRIMARY KEY (id);
+ALTER TABLE infrastructure_malware ADD CONSTRAINT infrastructure_malware_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE infrastructure_malware ADD UNIQUE(uuid);
 
 --
--- infrastructure (C&C's, etc)
---
+-- infrastructure_whitelist
+---
 
-CREATE TABLE infrastructure () INHERITS (inet);
-ALTER TABLE infrastructure ADD PRIMARY KEY (id);
-ALTER TABLE infrastructure ADD CONSTRAINT infrastructure_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE infrastructure ADD UNIQUE(uuid);
-
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-ON infrastructure FOR EACH ROW EXECUTE PROCEDURE
-tsvector_update_trigger(tsv, 'pg_catalog.english', description,impact,asn_desc,whois);
+CREATE TABLE infrastructure_whitelist () INHERITS (infrastructure);
+ALTER TABLE infrastructure_whitelist ADD PRIMARY KEY (id);
+ALTER TABLE infrastructure_whitelist ADD CONSTRAINT infrastructure_whitelist_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE infrastructure_whitelist ADD UNIQUE(uuid);
 
 --
--- Spammers
+-- infrastructure_scanner
 --
 
-CREATE TABLE spammers () INHERITS (inet);
-ALTER TABLE spammers ADD PRIMARY KEY (id);
-ALTER TABLE spammers ADD CONSTRAINT spammer_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE spammers ADD UNIQUE(uuid);
-
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-ON spammers FOR EACH ROW EXECUTE PROCEDURE
-tsvector_update_trigger(tsv, 'pg_catalog.english', description,impact,asn_desc,whois);
+CREATE TABLE infrastructure_scanner () INHERITS (infrastructure);
+ALTER TABLE infrastructure_scanner ADD PRIMARY KEY (id);
+ALTER TABLE infrastructure_scanner ADD CONSTRAINT infrastructure_scanner_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE infrastructure_scanner ADD UNIQUE(uuid);
 
 --
--- suspicious_networks
+-- infrastructure_spam 
 --
 
-CREATE TABLE suspicious_networks () INHERITS (inet);
-ALTER TABLE suspicious_networks ADD PRIMARY KEY (id);
-ALTER TABLE suspicious_networks ADD CONSTRAINT suspicious_networks_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE suspicious_networks ADD UNIQUE(uuid);
+CREATE TABLE infrastructure_spam () INHERITS (infrastructure);
+ALTER TABLE infrastructure_spam ADD PRIMARY KEY (id);
+ALTER TABLE infrastructure_spam ADD CONSTRAINT infrastructure_spam_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE infrastructure_spam ADD UNIQUE(uuid);
 
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-ON suspicious_networks FOR EACH ROW EXECUTE PROCEDURE
-tsvector_update_trigger(tsv, 'pg_catalog.english', description,impact,asn_desc,whois);
+--
+-- infrastructure_network
+--
+
+CREATE TABLE infrastructure_network () INHERITS (infrastructure);
+ALTER TABLE infrastructure_network ADD PRIMARY KEY (id);
+ALTER TABLE infrastructure_network ADD CONSTRAINT infrastructure_network_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE infrastructure_network ADD UNIQUE(uuid);
+
+CREATE TABLE infrastructure_suspicious () INHERITS (infrastructure);
+ALTER TABLE infrastructure_suspicious ADD PRIMARY KEY (id);
+ALTER TABLE infrastructure_suspicious ADD CONSTRAINT infrastructure_suspicious_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE infrastructure_suspicious ADD UNIQUE(uuid);
+
+CREATE TABLE infrastructure_phishing () INHERITS (infrastructure);
+ALTER TABLE infrastructure_phishing ADD PRIMARY KEY (id);
+ALTER TABLE infrastructure_phishing ADD CONSTRAINT infrastructure_phishing_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE infrastructure_phishing ADD UNIQUE(uuid);
