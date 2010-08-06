@@ -2,12 +2,12 @@
 
 use strict;
 
-use CIF::Message::SuspiciousNetwork;
+use CIF::Message::InfrastructureNetwork;
 use XML::RSS;
 use CIF::Message::Structured;
 
 my $hash;
-my @recs = CIF::Message::SuspiciousNetwork->retrieve_from_sql('detecttime >= \'2010-06-01 00:00:00Z\'');
+my @recs = CIF::Message::InfrastructureNetwork->retrieve_from_sql('detecttime >= \'2010-06-01 00:00:00Z\'');
 
 foreach my $rec (@recs){
     next if(exists($hash->{$rec->address()}));
