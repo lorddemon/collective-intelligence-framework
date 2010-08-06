@@ -20,7 +20,7 @@ while(<F>){
     my $id = CIF::Message::InetWhitelist->insert({
         source      => 'localhost',
         impact      => 'inet whitelist',
-        description => 'inet whitelist - '.$line,
+        description => 'inet whitelist '.$line,
         address     => $line,
         confidence  => 10,
         detecttime  => $date,
