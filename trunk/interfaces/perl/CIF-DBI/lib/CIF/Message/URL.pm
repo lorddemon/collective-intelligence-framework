@@ -10,7 +10,7 @@ use Digest::MD5 qw(md5_hex);
 
 __PACKAGE__->table('urls');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid description address impact source url_md5 url_sha1 malware_md5 malware_sha1 confidence severity restriction alternativeid alternativeid_restriction tsv detecttime created/);
+__PACKAGE__->columns(All => qw/id uuid description address impact source url_md5 url_sha1 malware_md5 malware_sha1 confidence severity restriction alternativeid alternativeid_restriction detecttime created/);
 __PACKAGE__->columns(Essential => qw/id uuid description address restriction created/);
 __PACKAGE__->has_a(uuid   => 'CIF::Message');
 __PACKAGE__->sequence('urls_id_seq');

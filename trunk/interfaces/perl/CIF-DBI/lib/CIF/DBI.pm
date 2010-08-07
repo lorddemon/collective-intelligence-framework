@@ -4,7 +4,7 @@ use base Class::DBI;
 use strict;
 use warnings;
 
-our $VERSION = '0.00_01';
+our $VERSION = '0.00_02';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 __PACKAGE__->connection('DBI:Pg:database=cif;host=localhost','postgres','',{ AutoCommit => 1} );

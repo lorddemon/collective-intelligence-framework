@@ -1,4 +1,4 @@
-DROP TABLE routeviews;
+DROP TABLE IF EXISTS routeviews;
 CREATE TABLE routeviews (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     sha1 varchar(64) NOT NULL,

@@ -10,7 +10,7 @@ use Regexp::Common::net::CIDR;
 
 __PACKAGE__->table('domains');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid description address type rdata cidr asn asn_desc cc rir class ttl whois impact confidence source alternativeid alternativeid_restriction severity restriction detecttime created tsv/);
+__PACKAGE__->columns(All => qw/id uuid description address type rdata cidr asn asn_desc cc rir class ttl whois impact confidence source alternativeid alternativeid_restriction severity restriction detecttime created/);
 __PACKAGE__->columns(Essential => qw/id uuid description address rdata impact restriction created/);
 __PACKAGE__->has_a(uuid => 'CIF::Message');
 
