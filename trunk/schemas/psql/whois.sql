@@ -1,6 +1,6 @@
-DROP TABLE inet_whois;
-DROP TABLE domain_whois;
-DROP TABLE whois;
+DROP TABLE IF EXISTS inet_whois;
+DROP TABLE IF EXISTS domain_whois;
+DROP TABLE IF EXISTS whois;
 CREATE TABLE whois (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     uuid uuid REFERENCES messages(uuid) ON DELETE CASCADE NOT NULL,

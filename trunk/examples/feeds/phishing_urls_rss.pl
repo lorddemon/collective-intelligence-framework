@@ -2,12 +2,12 @@
 
 use strict;
 
-use CIF::Message::PhishingURL;
+use CIF::Message::URLPhishing;
 use XML::RSS;
 use CIF::Message::Structured;
 
 my $hash;
-my @recs = CIF::Message::PhishingURL->retrieve_from_sql('detecttime >= \'2010-06-01 00:00:00Z\'');
+my @recs = CIF::Message::URLPhishing->retrieve_from_sql('detecttime >= \'2010-06-01 00:00:00Z\'');
 
 
 foreach my $rec (@recs){

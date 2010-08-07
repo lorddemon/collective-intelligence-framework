@@ -1,19 +1,11 @@
-package CIF::Message::InetWhitelist;
-use base 'CIF::Message::Inet';
+package CIF::Message::InfrastructureWhitelist;
+use base 'CIF::Message::Infrastructure';
 
 use strict;
 use warnings;
 
-__PACKAGE__->table('inet_whitelist');
+__PACKAGE__->table('infrastructure_whitelist');
 __PACKAGE__->has_a(uuid => 'CIF::Message');
-
-sub insert {
-    my $self = shift;
-    my $info = {%{+shift}};
-    
-    $info->{'impact'} = 'inet whitelist' unless($info->{'impact'});
-    $self->SUPER::insert($info);
-}
 
 sub isWhitelisted {
     my $self = shift;

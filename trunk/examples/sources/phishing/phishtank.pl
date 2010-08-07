@@ -12,22 +12,20 @@ use DateTime::Format::DateParse;
 use LWP::Simple;
 use Digest::MD5 qw(md5_hex);
 
-use CIF::Message::PhishingURL;
-use CIF::Message::Infrastructure;
-use CIF::Message::InetWhitelist;
-use CIF::Message::Inet;
+use CIF::Message::URLPhishing;
+use CIF::Message::InfrastructureSimple;
 
 my %opts;
 getopt('pf:k:d', \%opts);
-my $apikey = $opts{'k'} || die('missing apikey');
+my $apikey = $opts{'k'};
 my $download = $opts{'d'} || 0;
 my $cache = $opts{'f'} || '/tmp/phishtank.xml';
-my $keepcache = $opts{'c'} || 0;
+my $keepcache = $opts{'c'} || 1;
 my $oldest = DateTime::Format::DateParse->parse_datetime($opts{'t'}) || DateTime->from_epoch(epoch => (time() - (7*84600)));
 
-my $url = "http://data.phishtank.com/data/$apikey/online-valid.xml";
-
 if(! -e $cache || $download){
+    die('missing apikey') unless($apikey);
+    my $url = "http://data.phishtank.com/data/$apikey/online-valid.xml";
     warn 'pulling xml from: '.$url;
     my $content = get($url);
 
@@ -65,7 +63,7 @@ foreach (@nodes){
 
     my @address = $node->findnodes('./details/detail/ip_address');
     
-    my $uuid = CIF::Message::PhishingURL->insert({
+    my $uuid = CIF::Message::URLPhishing->insert({
         address     => $key,
         impact      => 'phishing url',
         source      => 'phishtank.com',
@@ -80,23 +78,16 @@ foreach (@nodes){
 
     foreach (@address){
         $_ = $_->textContent();
-        next if(CIF::Message::Inet::isPrivateAddress($_) || CIF::Message::InetWhitelist::isWhitelisted($_));
-        my ($as,$network,$ccode,$rir,$date,$as_desc) = CIF::Message::Inet::asninfo($_);
-        CIF::Message::Infrastructure->insert({
+        CIF::Message::InfrastructureSimple->insert({
             address     => $_,
             source      => 'phishtank.com',
             relatedid   => $uuid->uuid(),
             impact      => 'phishing infrastructure',
-            description => 'phishing infrastructure target:'.$target.' - '.$_,
+            description => 'phishing infrastructure target:'.$target.' '.$_,
             severity    => 'low',
             confidence  => 5,
             restriction => 'public',
             detecttime  => $created,
-            asn         => $as,
-            cidr        => $network,
-            rir         => $rir,
-            cc          => $ccode,
-            asn_desc    => $as_desc,
             alternativeid  => $did,
             alternativeid_restriction => 'public',
         });
