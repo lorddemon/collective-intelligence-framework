@@ -1,13 +1,13 @@
 package CIF::WebAPI::infrastructure;
 use base 'CIF::WebAPI';
 
-use CIF::Message::Inet;
+use CIF::Message::Infrastructure;
 use CIF::WebAPI::infrastructure::address;
 use CIF::WebAPI::infrastructure::malware;
 use CIF::WebAPI::infrastructure::botnet;
 use CIF::WebAPI::infrastructure::scan;
 use CIF::WebAPI::infrastructure::spam;
-#use CIF::WebAPI::infrastructure::phishing;
+use CIF::WebAPI::infrastructure::phishing;
 use CIF::WebAPI::infrastructure::networks;
 use CIF::Message::Structured;
 
@@ -55,7 +55,7 @@ sub GET {
         ORDER BY detecttime DESC, created DESC, id DESC
     };
 
-    my @recs = CIF::Message::Inet->retrieve_from_sql($sql);
+    my @recs = CIF::Message::Infrastructure->retrieve_from_sql($sql);
     my @feed = @recs;
 
     $response->data()->{'result'} = \@feed;

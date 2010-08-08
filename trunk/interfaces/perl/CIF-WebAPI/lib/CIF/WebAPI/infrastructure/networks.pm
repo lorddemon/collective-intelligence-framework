@@ -4,7 +4,7 @@ use base 'CIF::WebAPI';
 use strict;
 use warnings;
 
-use CIF::Message::SuspiciousNetwork;
+use CIF::Message::InfrastructureNetwork;
 
 sub GET {
     my ($self, $request, $response) = @_;
