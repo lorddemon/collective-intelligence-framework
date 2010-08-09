@@ -8,7 +8,7 @@ use Apache2::Const qw(:common :http);
 
 =head1 NAME
 
-Apache2::REST::AppAuth - Base class for application authentication
+CIF::WebAPI::AppAuth - Base class for application authentication
 
 =cut
 
@@ -23,7 +23,7 @@ arguments by the framework.
 
 =cut
 
-sub new{
+sub new {
     my ( $class ) = @_ ;
     return bless {} , $class ;
 }

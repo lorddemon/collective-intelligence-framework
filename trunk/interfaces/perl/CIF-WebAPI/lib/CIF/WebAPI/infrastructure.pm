@@ -1,6 +1,9 @@
 package CIF::WebAPI::infrastructure;
 use base 'CIF::WebAPI';
 
+use strict;
+use warnings;
+
 use CIF::Message::Infrastructure;
 use CIF::WebAPI::infrastructure::address;
 use CIF::WebAPI::infrastructure::malware;
@@ -50,16 +53,8 @@ sub GET {
     my ($self, $request, $response) = @_;
 
     my $detecttime = DateTime->from_epoch(epoch => (time() - (84600 * 30)));
-    my $sql = qq{
-        detecttime >= '$detecttime'
-        ORDER BY detecttime DESC, created DESC, id DESC
-    };
-
-    my @recs = CIF::Message::Infrastructure->retrieve_from_sql($sql);
-    my @feed = @recs;
-
-    $response->data()->{'result'} = \@feed;
-    return Apache2::Const::HTTP_OK;
+    my @recs = CIF::Message::Infrastructure->search_feed($detecttime,10000);
+    return generateFeed($response,@recs);
 }
 
 sub buildNext {

@@ -1,6 +1,9 @@
 package CIF::WebAPI::domains;
 use base 'CIF::WebAPI';
 
+use strict;
+use warnings;
+
 use CIF::Message::Domain;
 use CIF::WebAPI::domains::domain;
 use CIF::WebAPI::domains::feed;
