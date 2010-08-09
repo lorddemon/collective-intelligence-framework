@@ -8,7 +8,8 @@ use CIF::Message::DomainWhitelist;
 use CIF::Message::Infrastructure;
 use CIF::Message::InfrastructureWhitelist;
 use CIF::Message::InfrastructureSimple;
-use CIF::Message::DomainMalicious;
+use CIF::Message::DomainMalware;
+use CIF::Message::DomainBotnet;
 use CIF::Message::DomainFastflux;
 use CIF::Message::DomainNameserver;
 
@@ -29,7 +30,7 @@ sub insert {
         my $description = $info->{'description'};
         my $impact = $info->{'impact'};
         my $severity = $info->{'severity'};
-        my $bucket = 'CIF::Message::DomainMalicious';
+        my $bucket = 'CIF::Message::DomainMalware';
 
         if($r->{'address'}){
             $rdata = $r->{'address'};
@@ -48,6 +49,9 @@ sub insert {
             $bucket = 'CIF::Message::DomainNameserver';
             $description = $impact.' '.$domain;
             $description .= ' '.$rdata if($rdata);
+        }
+        if(lc($info->{'impact'} =~ /botnet/)){
+            $bucket = 'CIF::Message::DomainBotnet';
         }
 
         if($r->{'nameserver'}){

@@ -1,7 +1,8 @@
 DROP TABLE IF EXISTS domains_whitelist;
 DROP TABLE IF EXISTS domains_fastflux;
 DROP TABLE IF EXISTS domains_nameservers;
-DROP TABLE IF EXISTS domains_malicious;
+DROP TABLE IF EXISTS domains_malware;
+DROP TABLE IF EXISTS domains_botnet;
 DROP TABLE IF EXISTS domains_passivedns;
 DROP TABLE IF EXISTS domains;
 
@@ -47,10 +48,15 @@ ALTER TABLE domains_nameservers ADD PRIMARY KEY (id);
 ALTER TABLE domains_nameservers ADD CONSTRAINT domains_nameservers_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
 ALTER TABLE domains_nameservers ADD UNIQUE(uuid);
 
-CREATE TABLE domains_malicious() INHERITS (domains);
-ALTER TABLE domains_malicious ADD PRIMARY KEY (id);
-ALTER TABLE domains_malicious ADD CONSTRAINT domains_malicious_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE domains_malicious ADD UNIQUE(uuid);
+CREATE TABLE domains_malware() INHERITS (domains);
+ALTER TABLE domains_malware ADD PRIMARY KEY (id);
+ALTER TABLE domains_malware ADD CONSTRAINT domains_malware_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE domains_malware ADD UNIQUE(uuid);
+
+CREATE TABLE domains_botnet() INHERITS (domains);
+ALTER TABLE domains_botnet ADD PRIMARY KEY (id);
+ALTER TABLE domains_botnet ADD CONSTRAINT domains_botnet_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE domains_botnet ADD UNIQUE(uuid);
 
 CREATE TABLE domains_passivedns() INHERITS (domains);
 ALTER TABLE domains_passivedns ADD PRIMARY KEY (id);
