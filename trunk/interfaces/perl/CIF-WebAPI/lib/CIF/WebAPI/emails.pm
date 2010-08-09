@@ -1,6 +1,9 @@
 package CIF::WebAPI::emails;
 use base 'CIF::WebAPI';
 
+use strict;
+use warnings;
+
 use CIF::Message::Email;
 use CIF::WebAPI::emails::email;
 

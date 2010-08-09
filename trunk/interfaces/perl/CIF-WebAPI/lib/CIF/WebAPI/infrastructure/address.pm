@@ -12,6 +12,7 @@ sub GET {
     my ($self, $request, $response) = @_;
 
     my $arg = $self->address();
+    return Apache2::Const::HTTP_BAD_REQUEST unless($arg =~ /^$RE{net}{IPv4}/);
     my @recs = CIF::Message::Infrastructure->search_by_address($arg,5000);
     unless(@recs){ return undef; }
 
