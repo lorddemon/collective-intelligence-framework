@@ -4,7 +4,6 @@ use strict;
 
 use Data::Dumper;
 use Getopt::Std;
-use lib '/home/wes/projects/src/cif/interfaces/perl/CIF-Client/lib';
 use CIF::Client;
 
 my %opts;
@@ -54,4 +53,4 @@ die('request failed with code: '.$client->responseCode()) unless($client->respon
 
 my $text = $client->responseContent();
 
-print $client->table($text);
+print $client->table($text) || die('no records');
