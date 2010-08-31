@@ -13,7 +13,7 @@ my %opts;
 getopts('dhs:f:c:', \%opts);
 die(usage()) if($opts{'h'});
 
-my $feed = $opts{'f'} || '';
+my $feed = $opts{'f'} || 'infrastructure';
 my $debug = ($opts{'d'}) ? 1 : 0;
 my $c = $opts{'c'} || $ENV{'HOME'}.'/.cif';
 
@@ -30,11 +30,7 @@ Usage: perl $0 -s 1 -f suspicious_networks
     apikey=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 
 Examples:
-    \$> perl $0 -f infrastructure/impact/botnet
-    \$> perl $0 -f suspicious_networks
-    \$> perl $0 -f infrastructure/impact/malware
-    \$> sudo /usr/sbin/tcpdump `perl $0 -f suspicious_networks`
-    \$> perl $0 -f suspicious_networks > suspicious.filter
+    \$> perl $0 -f infrastructure > suspicious.filter
 
 EOF
 }
@@ -53,22 +49,17 @@ close(F);
 
 my $client = CIF::Client->new({ 
     host        => $url,
-    timeout     => 10,
+    timeout     => 60,
     apikey      => $apikey,
-    format      => 'json',
 });
 
-$client->GET('/feeds/inet/'.$feed.'?apikey='.$client->apikey().'&format=json');
+$client->GET('/'.$feed.'?apikey='.$client->apikey());
 die('request failed with code: '.$client->responseCode()) unless($client->responseCode == 200);
 
 my $text = $client->responseContent();
 
-die ('request failed: '.$text) unless($text =~ /^RT.* 200 Ok (\d+)\/\d+ /);
-die ('no results found') unless($1 > 0);
-
-my @lines = split(/\n/,$text);
-
-my @a = @{from_json($lines[2])};
+my $hash = from_json($text);
+my @a = @{$hash->{'data'}->{'result'}};
 
 my $filter = '';
 foreach (@a){

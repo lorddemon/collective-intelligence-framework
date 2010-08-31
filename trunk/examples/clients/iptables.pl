@@ -11,7 +11,7 @@ my %opts;
 getopts('dhs:f:c:', \%opts);
 die(usage()) if($opts{'h'});
 
-my $feed = $opts{'f'} || '';
+my $feed = $opts{'f'} || 'infrastructure';
 my $debug = ($opts{'d'}) ? 1 : 0;
 my $c = $opts{'c'} || $ENV{'HOME'}.'/.cif';
 
@@ -24,13 +24,11 @@ Usage: perl $0 -s 1 -f suspicious_networks
         
         configuration file ~/.cif should be readable and look something like:
 
-    url=https://example.com:443/REST/1.0/cif
+    url=https://example.com:443/api
     apikey=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 
 Examples:
-    \$> perl $0 -f infrastructure/impact/botnet
-    \$> perl $0 -f suspicious_networks
-    \$> perl $0 -f infrastructure/impact/malware
+    \$> perl $0 -f infrastructure
 
 EOF
 }
@@ -54,17 +52,13 @@ my $client = CIF::Client->new({
     format      => 'json',
 });
 
-$client->GET('/feeds/inet/'.$feed.'?apikey='.$client->apikey().'&format=json');
+$client->GET('/'.$feed.'?apikey='.$client->apikey());
 die('request failed with code: '.$client->responseCode()) unless($client->responseCode == 200);
 
 my $text = $client->responseContent();
 
-die ('request failed: '.$text) unless($text =~ /^RT.* 200 Ok (\d+)\/\d+ /);
-die ('no results found') unless($1 > 0);
-
-my @lines = split(/\n/,$text);
-
-my @a = @{from_json($lines[2])};
+my $hash = from_json($text);
+my @a = @{$hash->{'data'}->{'result'}};
 
 my $rules = "iptables -N CIF_IN\n";
 $rules .= "iptables -F CIF_IN\n";
