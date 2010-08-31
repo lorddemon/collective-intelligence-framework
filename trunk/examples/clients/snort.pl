@@ -12,29 +12,28 @@ my %opts;
 getopts('dhs:f:c:l:t:', \%opts);
 die(usage()) if($opts{'h'});
 
-my $feed = $opts{'f'} || '';
+my $feed = $opts{'f'} || 'infrastructure';
 my $debug = ($opts{'d'}) ? 1 : 0;
 my $sid = ($opts{'s'}) || '10000000';
 my $c = $opts{'c'} || $ENV{'HOME'}.'/.cif';
-my $limit = $opts{'l'} || 5000;
-my $timeout = $opts{'t'} || 30;
+my $timeout = $opts{'t'} || 60;
+my $ref_url = 'https://example.com/Lookup.html?q=';
+
 sub usage {
     return <<EOF;
 Usage: perl $0 -s 1 -f suspicious_networks 
         -h  --help:     this message
         -d  --debug:    debug output
         -f  --feed:     type of feed
-        -l  --limit:    feed limit
         
         configuration file ~/.cif should be readable and look something like:
 
-    url=https://example.com:443/REST/1.0/cif
+    url=https://example.com:443/api
     apikey=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 
 Examples:
-    \$> perl snort.pl -f infrastructure/impact/botnet
-    \$> perl snort.pl -s 5000 -f suspicious_networks
-    \$> perl snort.pl -s 50000 infrastructure/impact/malware
+    \$> perl snort.pl -f infrastructure
+    \$> perl snort.pl -f infrastructure/networks > snort_networks.rules
 
 EOF
 }
@@ -55,24 +54,20 @@ my $client = CIF::Client->new({
     host        => $url,
     timeout     => $timeout,
     apikey      => $apikey,
-    format      => 'json',
 });
 
-$client->GET('/feeds/inet/'.$feed.'?apikey='.$client->apikey().'&format=json&qlimit='.$limit.'&feedlimit='.$limit);
+$client->GET('/'.$feed.'?apikey='.$client->apikey());
 die('request failed with code: '.$client->responseCode()) unless($client->responseCode == 200);
 
 my $text = $client->responseContent();
 
-die ('request failed: '.$text) unless($text =~ /^RT.* 200 Ok (\d+)\/\d+ /);
-die ('no results found') unless($1 > 0);
-
-my @lines = split(/\n/,$text);
-
-my @a = @{from_json($lines[2])};
+my $hash = from_json($text);
+my @a = @{$hash->{'data'}->{'result'}};
+exit 1 unless($#a);
 
 my $rules = '';
 foreach (@a){
-    my $portlist = ($_->{'portlist'} eq 'NA') ? 'any' : $_->{'portlist'};
+    my $portlist = ($_->{'portlist'}) ? 'any' : $_->{'portlist'};
     my $r = Snort::Rule->new(
         -action => 'alert',
         -proto  => 'ip',
@@ -85,7 +80,7 @@ foreach (@a){
     $r->opts('msg',$_->{'restriction'}.' - '.$_->{'impact'});
     $r->opts('threshold','type limit,track by_src,count 1,seconds 3600');
     $r->opts('sid',$sid++);
-    $r->opts('reference',$url.'/search/'.$_->{'address'});
+    $r->opts('reference',$ref_url.$_->{'address'});
     $rules .= $r->string()."\n";
 }
 print $rules;
