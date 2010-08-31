@@ -3,10 +3,7 @@
 use strict;
 use Data::Dumper;
 use DateTime;
-use Net::Abuse::Utils qw(:all);
-use CIF::Message::DomainWhitelist;
-use CIF::Message::InfrastructureWhitelist;
-use CIF::Message::Infrastructure;
+use threads;
 
 my $detecttime = DateTime->from_epoch(epoch => time());
 
@@ -32,10 +29,30 @@ my $cat = {
 };
 
 open(F,'/tmp/generic-dnswl');
+my @array;
 while(<F>){
     next if(/^(#|\n|$)/);
-    my $line = $_;
-    $line =~ s/\n//;
+    $_ =~ s/\n//;
+    push(@array,$_);
+#    threads->create('insert', $line)->join();
+}
+close(F);
+my $batch = 1000;
+for(my $x = 0; $x < $#array; $x += $batch+1){
+    my @a = @array[$x ... $x+$batch];
+    threads->create('insert',@a)->join();
+}
+
+sub insert {
+    my @lines = @_;
+
+    foreach (@lines){
+        my $line = $_;
+    
+    require CIF::Message::DomainWhitelist;
+    require CIF::Message::InfrastructureWhitelist;
+    require CIF::Message::Infrastructure;
+    
     my ($address,$c,$trust,$domain,$id) = split(/;/,$line);
     my ($as,$network,$ccode,$rir,$date,$as_desc) = CIF::Message::Infrastructure::asninfo($address);
 
@@ -81,6 +98,5 @@ while(<F>){
         rir             => $rir,
     });
     warn $uid;
-    warn $iid;
+    }
 }
-close(F);
