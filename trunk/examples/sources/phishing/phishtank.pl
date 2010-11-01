@@ -11,6 +11,7 @@ use DateTime;
 use DateTime::Format::DateParse;
 use LWP::Simple;
 use Digest::MD5 qw(md5_hex);
+use Unicode::String qw/utf8/;
 
 use CIF::Message::URLPhishing;
 use CIF::Message::InfrastructureSimple;
@@ -63,6 +64,8 @@ foreach (@nodes){
 
     my @address = $node->findnodes('./details/detail/ip_address');
     
+    $key = utf8($key);
+    $key = $key->utf8();
     my $uuid = CIF::Message::URLPhishing->insert({
         address     => $key,
         impact      => 'phishing url',

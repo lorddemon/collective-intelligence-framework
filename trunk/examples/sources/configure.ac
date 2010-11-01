@@ -19,6 +19,9 @@ AC_PREFIX_DEFAULT([/opt/cif-sources])
 AC_CONFIG_FILES([
     Makefile
     malware/Makefile
+    networks/Makefile
+    phishing/Makefile
+    whitelists/Makefile
 ])
 
 #dnl CIF_USER
