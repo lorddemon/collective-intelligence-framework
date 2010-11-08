@@ -117,26 +117,17 @@ CIF::Client - Perl extension that extends REST::Client for use with the CI-Frame
   use CIF::Client;
   my $client = CIF::Client->new({
     host        => $url,
-    timeout     => 10,
+    timeout     => 60,
     apikey      => $apikey,
-    format      => $format,
   });
 
-  $client->search($query,$format);
+  $client->search($query);
   die('request failed with code: '.$client->responseCode()) unless($client->responseCode == 200);
 
   my $text = $client->responseContent();
 
-  my @lines = split(/\n/,$text);
+  print $client->table($text) || die('no records')
 
-  if($format eq 'json'){
-    print $client->table($lines[2]);
-  } else {
-    foreach (@lines){
-        print $_."\n"
-    }
-  }
- 
 
 =head1 DESCRIPTION
 
