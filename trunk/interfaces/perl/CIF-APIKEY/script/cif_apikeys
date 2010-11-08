@@ -1,0 +1,36 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+use Getopt::Std;
+use CIF::APIKEY;
+use CIF::User;
+use Text::Table;
+
+my %opts;
+getopt('had:u:', \%opts);
+die(usage()) if($opts{'h'});
+my $user = $opts{'u'} || die('missing email address argument');
+
+$user = CIF::User->find_or_create({
+    email => $user
+});
+
+if(exists($opts{'a'})){
+    CIF::APIKEY->genkey($user->id());
+}
+
+if(exists($opts{'d'})){
+    CIF::APIKEY->retrieve(apikey => $opts{'d'})->delete();
+}
+
+my @recs = CIF::APIKEY->search(userid => $user->id(), { order_by => 'created DESC' });
+if($#recs > -1){
+    my $t = Text::Table->new('key','created');
+    foreach (@recs){
+        $t->load([$_->apikey(),$_->created()]);
+    }
+    print $t;
+} else {
+    die('you have no api keys');
+}

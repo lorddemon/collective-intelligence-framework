@@ -1,12 +1,10 @@
-use 5.008008;
-use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
-WriteMakefile(
-    NAME              => 'CIF::APIKEY',
-    VERSION_FROM      => 'lib/CIF/APIKEY.pm', # finds $VERSION
-    PREREQ_PM         => {}, # e.g., Module::Name => 1.1
-    ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-      (ABSTRACT_FROM  => 'lib/CIF/APIKEY.pm', # retrieve abstract from module
-       AUTHOR         => 'Wes Young <wes@>') : ()),
-);
+use inc::Module::Install;
+
+name        'CIF-APIKEY';
+all_from    'lib/CIF/APIKEY.pm';
+reuqires    'Text::Table' => 0;
+
+requires        'Class::DBI';
+install_script  'cif_apikeys';
+
+WriteAll();
