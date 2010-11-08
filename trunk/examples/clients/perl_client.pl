@@ -14,6 +14,7 @@ my $query = $opts{'q'} || die(usage());
 my $format = $opts{'f'} || 'table';
 my $debug = ($opts{'d'}) ? 1 : 0;
 my $c = $opts{'c'} || $ENV{'HOME'}.'/.cif';
+my $ref_url = 'https://example.com/Lookup.html?q=';
 
 sub usage {
     return <<EOF;
@@ -43,9 +44,9 @@ $apikey =~ s/\n//;
 close(F);
 
 my $client = CIF::Client->new({ 
-    host        => $url,
-    timeout     => 60,
-    apikey      => $apikey,
+    host    => $url,
+    timeout => 60,
+    apikey  => $apikey,
 });
 
 $client->search($query);
