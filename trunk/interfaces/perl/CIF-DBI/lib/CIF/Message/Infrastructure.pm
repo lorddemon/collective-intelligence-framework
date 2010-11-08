@@ -190,7 +190,7 @@ __PACKAGE__->set_sql('feed' => qq{
     SELECT * FROM __TABLE__
     WHERE detecttime >= ?
     AND NOT EXISTS (
-        SELECT address FROM infrastructure_whitelist WHERE __TABLE__.address <<= infrastructure_whitelist.address
+        SELECT address FROM infrastructure_whitelist WHERE __TABLE__.address = infrastructure_whitelist.address
     )
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
