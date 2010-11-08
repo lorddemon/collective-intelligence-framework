@@ -9,46 +9,44 @@ class Client:
     def __init__(self, url, apikey, format=None):
         self.url = url
         self.apikey = apikey
-        self.format = format
 
-    def search(self,q,fmt='json'):
-        if self.format:
-            fmt = self.format
+    def search(self,q):
         p_address   = re.compile('^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)')
-        p_asn       = re.compile('^\d+$')
         p_email     = re.compile('\w+@\w+')
         p_domain    = re.compile('\w+\.\w+')
         p_malware   = re.compile('^[a-fA-F0-9]{32,40}$')
         p_url       = re.compile('^url:([a-fA-F0-9]{32,40})$')
-        p_impact    = re.compile('^\S+$')
 
         search_type = {
             1 == 1                      : 'unknown',
-            p_impact.match(q)   != None : 'impact',
-            p_url.match(q)      != None : 'url',
+            p_url.match(q)      != None : 'urls',
             p_malware.match(q)  != None : 'malware',
-            p_domain.match(q)   != None : 'domain',
+            p_domain.match(q)   != None : 'domains',
             p_email.match(q)    != None : 'email',
-            p_asn.match(q)      != None : 'asn',
-            p_address.match(q)  != None : 'inet'
+            p_address.match(q)  != None : 'infrastructure'
         } [1]
 
         if (search_type == 'url'):
             m = p_url.match(q)
             q = m.group(1)
 
-        s = self.url + '/search/' + search_type + '/' + q
-        return GET(s, params={'apikey':self.apikey, 'format':fmt})
+        s = self.url + '/' + search_type + '/' + q
+        return GET(s, params={'apikey':self.apikey})
 
     def table(self,j):
         j = json.loads(j)
+        if 'result' not in j['data']
+            return 0
+
+        j = j['data']['result']
+
         t = Texttable(max_width=255)
-        cols = ['restriction','impact','description','detecttime','reference']
+        cols = ['restriction','impact','description','detecttime']
         if j[0].get('address'):
             cols.append('address')
         t.add_row(cols)
         for key in j:
-            cs = [key['restriction'],key['impact'],key['description'],key['detecttime'],key['reference']]
+            cs = [key['restriction'],key['impact'],key['description'],key['detecttime']]
             if key.get('address'):
                 cs.append(key['address'])
             t.add_row(cs)
