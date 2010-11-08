@@ -135,7 +135,7 @@ Simple extension of REST::Client for use with the CI-Framework REST based interf
 
 =head1 SEE ALSO
 
-CIF::DBI, REST::Client, RT-CIF
+CIF::DBI, REST::Client
 
 http://code.google.com/p/collective-intelligence-framework/
 
