@@ -64,35 +64,24 @@ sub table {
     my @a = @{$hash->{'data'}->{'result'}};
     return('invalid json input') unless($#a > -1);
     my @cols = (
-        'restriction',  { is_sep => 1, title => '|', },
-        'impact',       { is_sep => 1, title => '|', },
-        'description',  { is_sep => 1, title => '|', },
+        'address',      { is_sep => 1, title => '|', },
         'detecttime',   { is_sep => 1, title => '|', },
+        'restriction',  { is_sep => 1, title => '|', },
+        'description',  { is_sep => 1, title => '|', },
+        'alternative id'
     );
 
-    # test to see if 'address' key is in here
-    if(exists($a[0]->{'address'})){
-        push(@cols,{ is_sep => 1, title => '|' },'address');
-    }
     my $table = Text::Table->new(@cols);
 
-    foreach (@a){
-        if(exists($_->{'address'})){
-            $table->load([
-                $_->{'restriction'},
-                $_->{'impact'},
-                $_->{'description'},
-                $_->{'detecttime'},
-                $_->{'address'},
-            ]);
-       } else {
-            $table->load([
-                $_->{'restriction'},
-                $_->{'impact'},
-                $_->{'description'},
-                $_->{'detecttime'},
-            ]);
-        }
+    my @sorted = sort { $a->{'detecttime'} cmp $b->{'detecttime'} } @a;
+    foreach (@sorted){
+        $table->load([
+            $_->{'address'} || 'NA',
+            $_->{'detecttime'},
+            $_->{'restriction'},
+            $_->{'description'},
+            $_->{'alternativeid'},
+        ]);
     }
     return $table;
 }
