@@ -7,7 +7,7 @@ use warnings;
 use JSON;
 use Text::Table;
 
-our $VERSION = '0.00_01';
+our $VERSION = '0.00_02';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 # Preloaded methods go here.
@@ -26,58 +26,48 @@ sub search {
     my ($self,$q,$fmt) = @_;
     $fmt = $self->format() unless($fmt);
 
-    if($q =~ /^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$/){
-        $self->GET('/uuid/'.$q.'?apikey='.$self->apikey().'&format='.$fmt);
-    } else {
-        my $type;
-        for($q){
-            if(/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/){
-                $type = 'inet';
-                last;
-            }
-            if(/^\d+$/){
-                $type = 'asn';
-                last;
-            }
-            if(/\w+@\w+/){
-                $type = 'email';
-                last;
-            }
-            if(/\w+\.\w+/){
-                $type = 'domain';
-                last;
-            }
-            if(/^[a-fA-F0-9]{32,40}$/){
-                $type = 'malware';
-                last;
-            }
-            if(/^url:([a-fA-F0-9]{32,40})$/){
-                $type = 'url';
-                $q = $1;
-                last;
-            }
-            if(/^\S+$/){
-                $type = 'impact';
-                last;
-            }
+    my $type;
+    for($q){
+        if(/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/){
+            $type = 'infrastructure';
+            last;
         }
-        $self->type($type);
-        $self->GET('/search/'.$type.'/'.$q.'?apikey='.$self->apikey().'&format='.$fmt);
+        if(/\w+@\w+/){
+            $type = 'email';
+            last;
+        }
+        if(/\w+\.\w+/){
+            $type = 'domains';
+            last;
+        }
+        if(/^[a-fA-F0-9]{32,40}$/){
+            $type = 'malware';
+            last;
+        }
+        if(/^url:([a-fA-F0-9]{32,40})$/){
+            $type = 'urls';
+            $q = $1;
+            last;
+        }
     }
+    return undef unless($type);
+    $self->type($type);
+    $self->GET('/'.$type.'/'.$q.'?apikey='.$self->apikey());
 }
 
 sub table {
     my $self = shift;
     my $resp = shift;
     
-    my @a = @{from_json($resp)};
+    my $hash = from_json($resp);
+    return undef unless($hash->{'data'}->{'result'});
+    my @a = @{$hash->{'data'}->{'result'}};
     return('invalid json input') unless($#a > -1);
     my @cols = (
         'restriction',  { is_sep => 1, title => '|', },
         'impact',       { is_sep => 1, title => '|', },
         'description',  { is_sep => 1, title => '|', },
         'detecttime',   { is_sep => 1, title => '|', },
-        'reference'
     );
 
     # test to see if 'address' key is in here
@@ -93,7 +83,6 @@ sub table {
                 $_->{'impact'},
                 $_->{'description'},
                 $_->{'detecttime'},
-                $_->{'reference'},
                 $_->{'address'},
             ]);
        } else {
@@ -102,7 +91,6 @@ sub table {
                 $_->{'impact'},
                 $_->{'description'},
                 $_->{'detecttime'},
-                $_->{'reference'}
             ]);
         }
     }
@@ -175,7 +163,7 @@ Wes Young, E<lt>wes@barely3am.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2010 by Wes Young
+Copyright (C) 2010 REN-ISAC and The Trustees of Indiana University 
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.0 or,
