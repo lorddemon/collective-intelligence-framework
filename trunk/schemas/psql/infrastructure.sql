@@ -109,3 +109,8 @@ CREATE TABLE infrastructure_phishing () INHERITS (infrastructure);
 ALTER TABLE infrastructure_phishing ADD PRIMARY KEY (id);
 ALTER TABLE infrastructure_phishing ADD CONSTRAINT infrastructure_phishing_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
 ALTER TABLE infrastructure_phishing ADD UNIQUE(uuid);
+
+CREATE TABLE infrastructure_asn () INHERITS (infrastructure);
+ALTER TABLE infrastructure_asn ADD PRIMARY KEY (id);
+ALTER TABLE infrastructure_asn ADD CONSTRAINT infrastructure_asn_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
+ALTER TABLE infrastructure_asn ADD UNIQUE(uuid);
