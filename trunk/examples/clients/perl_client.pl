@@ -2,7 +2,6 @@
 
 use strict;
 
-use Data::Dumper;
 use Getopt::Std;
 use CIF::Client;
 
