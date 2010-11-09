@@ -2,7 +2,7 @@ package CIF::WebAPI::AppAuth ;
 
 use warnings ;
 use strict ;
-use CIF::APIKEY;
+use CIF::WebAPI::APIKey;
 
 use Apache2::Const qw(:common :http);
 
@@ -65,7 +65,7 @@ sub authorize {
     my ( $self , $req , $resp ) = @_ ;
     my $key = lc($req->param('apikey'));
     if($key && $key =~ /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/){
-        my $rec = CIF::APIKEY->retrieve(apikey => $key);
+        my $rec = CIF::WebAPI::APIKey->retrieve(apikey => $key);
         if($rec){
             return 1;
         }

@@ -1,0 +1,50 @@
+#!/usr/bin/perl -w
+
+use strict;
+use lib '/home/wes/projects/src/cif/server/trunk/CIF-WebAPI/lib';
+
+use Getopt::Std;
+use CIF::WebAPI::APIKey;
+use Text::Table;
+
+my %opts;
+getopt('had:u:', \%opts);
+die(usage()) if($opts{'h'});
+my $user = $opts{'u'} || die(usage());
+
+sub usage {
+    return <<EOF;
+Usage: perl $0 -u joe\@example.com
+    -h  --help:     this meessage
+    -d  --delete:   delete key
+    -a  --add:      add key
+
+Examples:
+    \$> perl $0 -u joe\@example.com
+    \$> perl $0 -a -u joe\@example.com
+    \$> perl $0 -d 96818121-f1b6-482e-8851-8fb49cb2f6c0
+
+EOF
+}
+
+if(exists($opts{'a'})){
+    CIF::WebAPI::APIKey->genkey($user);
+}
+
+if(exists($opts{'d'})){
+    my @recs = CIF::WebAPI::APIKey->search(apikey => $opts{'d'}, userid => $user);
+    foreach (@recs){
+        $_->delete();
+    }
+}
+
+my @recs = CIF::WebAPI::APIKey->search(userid => $user, { order_by => 'created DESC' });
+if($#recs > -1){
+    my $t = Text::Table->new('key','created');
+    foreach (@recs){
+        $t->load([$_->apikey(),$_->created()]);
+    }
+    print $t;
+} else {
+    die('you have no api keys');
+}

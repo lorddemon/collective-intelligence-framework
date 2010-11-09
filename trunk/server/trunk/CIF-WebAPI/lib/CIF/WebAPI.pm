@@ -8,7 +8,7 @@ use warnings;
 use Data::Dumper;
 use CIF::Message::Structured;
 
-our $VERSION = '0.00_01';
+our $VERSION = '0.00_02';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 sub GET {
@@ -107,6 +107,7 @@ Wes Young, E<lt>wes@E<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
+Copyright (C) 2010 by Wes Young
 Copyright (C) 2010 by REN-ISAC and The Trustees of Indiana University 
 
 This library is free software; you can redistribute it and/or modify
