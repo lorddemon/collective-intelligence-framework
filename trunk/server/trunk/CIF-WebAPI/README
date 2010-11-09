@@ -1,5 +1,5 @@
-CIF-WebAPI version 0.00_01
-==========================
+CIF-WebAPI
+==========
 
 The README is used to introduce the module and provide instructions on
 how to install the module, any machine dependencies it may have (for
@@ -20,18 +20,26 @@ To install this module type the following:
    make
    make test
    make install
+   psql -U postgres -d cif < apikeys.sql
+   sudo cp api.conf /etc/apache2/sites-available/ (or wherever your apache sites dir is)
+
+MISC
+
+    script/cif_apikeys is a command line interface to the apikeys table
+    api.conf should be modified to suit your needs
 
 DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-  blah blah blah
+See Makefile.PL
 
 COPYRIGHT AND LICENCE
 
 Put the correct copyright and licence information here.
 
 Copyright (C) 2010 by Wes Young
+Copyright (C) 2010 the REN-ISAC and the Trustees of Indiana University
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.0 or,
