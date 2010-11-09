@@ -181,8 +181,9 @@ __PACKAGE__->set_sql('by_address' => qq{
     SELECT * FROM __TABLE__
     WHERE (address >>= ? OR address <<= ?)
     AND NOT EXISTS (
-        SELECT address from infrastructure_whitelist WHERE __TABLE__.address <<= infrastructure_whitelist.address
+        SELECT address from infrastructure_whitelist WHERE __TABLE__.address = infrastructure_whitelist.address
     )
+    ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });
 
@@ -201,7 +202,7 @@ __PACKAGE__->set_sql('by_asn' => qq{
     FROM __TABLE__
     WHERE asn = ?
     AND NOT EXISTS (
-        SELECT address from infrastructure_whitelist WHERE __TABLE__.address <<= infrastructure_whitelist.address
+        SELECT address from infrastructure_whitelist WHERE __TABLE__.address = infrastructure_whitelist.address
     )
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
