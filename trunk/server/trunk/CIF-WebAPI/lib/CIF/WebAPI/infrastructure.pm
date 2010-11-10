@@ -12,6 +12,7 @@ use CIF::WebAPI::infrastructure::scan;
 use CIF::WebAPI::infrastructure::spam;
 use CIF::WebAPI::infrastructure::phishing;
 use CIF::WebAPI::infrastructure::networks;
+use CIF::WebAPI::infrastructure::cache;
 use CIF::Message::Structured;
 
 sub mapIndex {
@@ -62,34 +63,9 @@ sub buildNext {
 
     my $subh;
     for(lc($frag)){
-        if(/^malware$/){
-            $subh = CIF::WebAPI::infrastructure::malware->new($self);
-            return $subh;
-            last;
-        }
-        if(/^botnet$/){
-            $subh = CIF::WebAPI::infrastructure::botnet->new($self);
-            return $subh;
-            last;
-        }
-        if(/^scan$/){
-            $subh = CIF::WebAPI::infrastructure::scan->new($self);
-            return $subh;
-            last;
-        }
-        if(/^spam$/){
-            $subh = CIF::WebAPI::infrastructure::spam->new($self);
-            return $subh;
-            last;
-        }
-        if(/^phishing$/){
-            $subh = CIF::WebAPI::infrastructure::phishing->new($self);
-            return $subh;
-            last;
-        }
-        if(/^networks$/){
-            $subh = CIF::WebAPI::infrastructure::networks->new($self);
-            return $subh;
+        if(/^(malware|botnet|scan|spam|phishing|networks|cache)$/){
+            my $mod = "CIF::WebAPI::infrastructure::$frag";
+            return $mod->new($self);
             last;
         }
         $subh = CIF::WebAPI::infrastructure::address->new($self);

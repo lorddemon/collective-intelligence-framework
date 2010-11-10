@@ -6,6 +6,7 @@ use warnings;
 
 use CIF::Message::URL;
 use CIF::WebAPI::urls::url;
+use CIF::WebAPI::urls::cache;
 use CIF::WebAPI::urls::malware;
 use CIF::WebAPI::urls::phishing;
 
@@ -49,14 +50,9 @@ sub buildNext {
 
     my $subh;
     for(lc($frag)){
-        if(/^malware$/){
-            $subh = CIF::WebAPI::urls::malware->new($self);
-            return $subh;
-            last;
-        }
-        if(/^phishing$/){
-            $subh = CIF::WebAPI::urls::phishing->new($self);
-            return $subh;
+        if(/^(cache|malware|phishing)$/){
+            my $mod = 'CIF::WebAPI::urls::'.$frag;
+            return $mod->new($self);
             last;
         }
         $subh = CIF::WebAPI::urls::url->new($self);

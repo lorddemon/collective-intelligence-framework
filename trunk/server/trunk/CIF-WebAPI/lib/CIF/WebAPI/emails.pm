@@ -6,6 +6,7 @@ use warnings;
 
 use CIF::Message::Email;
 use CIF::WebAPI::emails::email;
+use CIF::WebAPI::emails::cache;
 
 sub mapIndex {
     my $r = shift;
@@ -51,6 +52,10 @@ sub GET {
 
 sub buildNext {
     my ($self,$frag,$req) = @_;
+
+    if(lc($frag) eq 'cache'){
+        return CIF::WebAPI::emails::cache->new($self);
+    }
 
     my $subh = CIF::WebAPI::emails::email->new($self);
     $subh->{'address'} = $frag;
