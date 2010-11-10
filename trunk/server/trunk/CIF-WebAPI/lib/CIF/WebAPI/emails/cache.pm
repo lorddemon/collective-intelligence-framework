@@ -1,10 +1,10 @@
-package CIF::WebAPI::emails::email::cache;
+package CIF::WebAPI::emails::cache;
 use base 'CIF::WebAPI';
 
 use strict;
 use warnings;
 
-my $feed = 'emails_email.feed';
+my $feed = 'emails.feed';
 
 sub GET {
     my ($self,$req,$resp) = @_;
