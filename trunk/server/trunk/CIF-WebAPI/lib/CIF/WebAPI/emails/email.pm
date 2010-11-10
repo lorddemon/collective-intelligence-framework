@@ -8,12 +8,14 @@ use CIF::Message::Email;
 
 sub GET {
     my ($self, $request, $response) = @_;
+    my $maxdays = $request->{'r'}->param('age') || $request->dir_config->{'CIFFeedAgeDefault'} || 30;
+    my $maxresults = $request->{'r'}->param('maxresults') || $request->dir_config->{'CIFFeedResultsDefault'} || 10000;
 
     my $arg = $self->address();
     my $sql = qq{
         WHERE lower(address) LIKE lower('%$arg%')
         ORDER BY detecttime DESC, created DESC, id DESC
-        LIMIT 5000
+        LIMIT $maxresults
     };
     my @recs = CIF::Message::Email->retrieve_from_sql($sql);
     unless(@recs){ return undef; }

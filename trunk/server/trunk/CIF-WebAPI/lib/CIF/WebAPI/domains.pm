@@ -7,13 +7,10 @@ use warnings;
 use CIF::Message::Domain;
 use CIF::WebAPI::domains::domain;
 use CIF::WebAPI::domains::nameservers;
-use CIF::Message::DomainSimple;
-use Net::DNS;
+use CIF::WebAPI::domains::malware;
+use CIF::WebAPI::domains::fastflux;
+use CIF::WebAPI::domains::cache;
 use JSON;
-
-my $nsres = Net::DNS::Resolver->new(
-    nameservers => ['8.8.8.8'],
-);
 
 sub isAuth {
     my ($self,$method,$req) = @_;
@@ -71,78 +68,14 @@ sub GET {
     return generateFeed($response,@recs);
 }
 
-sub POST {
-    my ($self, $req, $resp) = @_;
-    my $json;
-    $req->read($json,$req->headers_in->{'Content-Length'});
-
-    my @array = @{from_json($json)}; # or return invaild
-    warn $self->{'userid'};
-    use Data::Dumper;
-    warn Dumper($self);
-
-    my @ids;
-    foreach (@array){
-        my ($address,$impact,$confidence,$severity,$description,$detecttime,$restriction) = (
-            $_->{'address'},
-            $_->{'impact'} || 'suspicious domain',
-            $_->{'confidence'} || 5,
-            $_->{'severity'} || 'medium',
-            $_->{'description'}, 
-            $_->{'detecttime'},
-            $_->{'restriction'} || 'private',
-        );
-
-        unless($address && $description && $detecttime){
-            return Apache2::Const::SERVER_ERROR;
-        }
-
-        $severity = ($severity eq 'low') ? 'low' : 'medium';
-        my $source = 'example.com';
-    
-        my $id = submit(
-            address                     => $address,
-            source                      => 'example.com',
-            confidence                  => $confidence,
-            severity                    => $severity,
-            impact                      => $impact,
-            description                 => $description,
-            detecttime                  => $detecttime,
-            restriction                 => $restriction,
-        );
-        push(@ids,$id->uuid->id());
-    }
-    $resp->data()->{'result'} = \@ids;
-    return Apache2::Const::HTTP_OK;
-}
-
-sub submit {
-    my %args = @_;
-
-    my $uuid = CIF::Message::DomainSimple->insert({
-        nsres                       => $nsres,
-        source                      => $args{'source'},
-        address                     => $args{'address'},
-        confidence                  => $args{'confidence'},
-        severity                    => $args{'severity'},
-        impact                      => $args{'impact'},
-        description                 => $args{'description'},
-        detecttime                  => $args{'detecttime'},
-        alternativeid               => $args{'alternativeid'},
-        alternativeid_restriction   => $args{'alternativeid_restriction'},
-        restriction                 => $args{'restriction'},
-    });
-    return $uuid;
-}
-
 sub buildNext {
     my ($self,$frag,$req) = @_;
 
     my $subh;
     for(lc($frag)){
-        if(/^nameservers$/){
-            $subh = CIF::WebAPI::domains::nameservers->new($self);
-            return $subh;
+        if(/^(nameservers|malware|fastflux|cache)$/){
+            my $mod = "CIF::WebAPI::domains::$frag";
+            return $mod->new($self);
             last;
         }
         $subh = CIF::WebAPI::domains::domain->new($self);
