@@ -15,4 +15,9 @@ sub GET {
     return CIF::WebAPI::domains::generateFeed($response,@recs);
 }
 
+sub buildNext {
+    my ($self,$req,$resp) = @_;
+    warn $self->dir_conf('CIFCacheDir');
+}
+
 1;
