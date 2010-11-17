@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 use XML::IODEF;
+use CIF::Message::IODEF;
 use Digest::SHA1 qw(sha1_hex);
 use Digest::MD5 qw(md5_hex);
 
