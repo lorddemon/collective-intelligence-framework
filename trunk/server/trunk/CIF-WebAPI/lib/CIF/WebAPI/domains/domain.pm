@@ -9,9 +9,13 @@ use CIF::Message::Domain;
 sub GET {
     my ($self, $request, $response) = @_;
 
+    my $maxresults = $request->{'r'}->param('maxresults') || $request->dir_config->{'CIFFeedResultsDefault'} || 10000;
     my $arg = $self->domain();
-    my @recs = CIF::Message::Domain->search_by_address('%'.$arg.'%',5000);
-    unless(@recs){ return undef; }
+    my $apikey = $request->{'r'}->param('apikey');
+    my @recs = CIF::Message::Domain->lookup($arg,$apikey,$maxresults);
+    unless(@recs){ 
+        return Apache2::Const::HTTP_OK; 
+    }
 
     my @res = map { CIF::WebAPI::domains::mapIndex($_) } @recs;
 

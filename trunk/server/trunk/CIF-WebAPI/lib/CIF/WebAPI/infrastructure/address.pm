@@ -12,8 +12,14 @@ sub GET {
     my ($self, $request, $response) = @_;
 
     my $arg = $self->address();
-    return Apache2::Const::HTTP_BAD_REQUEST unless($arg =~ /^$RE{net}{IPv4}/);
-    my @recs = CIF::Message::Infrastructure->search_by_address($arg,$arg,5000);
+    my @recs;
+    if($arg =~ /^$RE{net}{IPv4}/){
+        @recs = CIF::Message::Infrastructure->lookup($arg);
+    } elsif($arg =~ /^AS(\d+)/){
+        @recs = CIF::Message::Infrastructure->lookup($1,5000);
+    } else {
+        return Apache2::Const::HTTP_BAD_REQUEST;
+    }
     unless(@recs){ return Apache2::Const::HTTP_OK; }
 
     my @res = map { CIF::WebAPI::infrastructure::mapIndex($_) } @recs;

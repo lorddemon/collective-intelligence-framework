@@ -5,7 +5,7 @@ our $VERSION = '0.00_02';
 
 __PACKAGE__->table('apikeys');
 __PACKAGE__->columns(Primary => 'apikey');
-__PACKAGE__->columns(All => qw/apikey userid created/);
+__PACKAGE__->columns(All => qw/apikey userid revoked write created/);
 __PACKAGE__->sequence('apikeys_id_seq');
 
 use OSSP::uuid;
