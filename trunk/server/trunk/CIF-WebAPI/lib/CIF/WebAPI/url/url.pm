@@ -1,4 +1,4 @@
-package CIF::WebAPI::urls::url;
+package CIF::WebAPI::url::url;
 use base 'CIF::WebAPI';
 
 use strict;
