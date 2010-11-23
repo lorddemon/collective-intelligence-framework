@@ -10,13 +10,31 @@ use CIF::WebAPI::domains::nameservers;
 use CIF::WebAPI::domains::malware;
 use CIF::WebAPI::domains::fastflux;
 use CIF::WebAPI::domains::cache;
+use CIF::WebAPI::domains::searches;
+use CIF::Message::DomainSimple;
+use Net::DNS;
 use JSON;
 
-sub isAuth {
-    my ($self,$method,$req) = @_;
-    return ($method eq 'GET' || $method eq 'POST');
-}
+my $nsres = Net::DNS::Resolver->new(
+    nameservers => ['8.8.8.8'],
+);
 
+sub submit {
+    my ($self,%args) = @_;
+
+    return CIF::Message::DomainSimple->insert({
+        nsres                       => $nsres,
+        source                      => $self->parent->source(), 
+        address                     => $args{'address'},
+        confidence                  => $args{'confidence'},
+        severity                    => $args{'severity'},
+        impact                      => $args{'impact'},
+        description                 => $args{'description'},
+        detecttime                  => $args{'detecttime'},
+        alternativeid               => $args{'alternativeid'},
+        alternativeid_restriction   => $args{'alternativeid_restriction'},
+    });
+}
 
 sub mapIndex {
     my $r = shift;
@@ -73,7 +91,7 @@ sub buildNext {
 
     my $subh;
     for(lc($frag)){
-        if(/^(nameservers|malware|fastflux|cache)$/){
+        if(/^(nameservers|malware|fastflux|cache|searches)$/){
             my $mod = "CIF::WebAPI::domains::$frag";
             return $mod->new($self);
             last;

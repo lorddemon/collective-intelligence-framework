@@ -66,10 +66,9 @@ sub authorize {
     my $key = lc($req->param('apikey'));
     if($key && $key =~ /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/){
         my $rec = CIF::WebAPI::APIKey->retrieve(apikey => $key);
-        if($rec){
+        if($rec && !$rec->revoked()){
             return 1;
         }
-        return 1 if($rec);
     }
     $resp->status( Apache2::Const::HTTP_UNAUTHORIZED );
     return 0;

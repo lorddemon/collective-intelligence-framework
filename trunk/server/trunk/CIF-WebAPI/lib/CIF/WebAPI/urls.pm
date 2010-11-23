@@ -9,6 +9,7 @@ use CIF::WebAPI::urls::url;
 use CIF::WebAPI::urls::cache;
 use CIF::WebAPI::urls::malware;
 use CIF::WebAPI::urls::phishing;
+use CIF::WebAPI::urls::searches;
 
 sub mapIndex {
     my $r = shift;
@@ -50,7 +51,7 @@ sub buildNext {
 
     my $subh;
     for(lc($frag)){
-        if(/^(cache|malware|phishing)$/){
+        if(/^(cache|malware|phishing|searches)$/){
             my $mod = 'CIF::WebAPI::urls::'.$frag;
             return $mod->new($self);
             last;

@@ -13,7 +13,27 @@ use CIF::WebAPI::infrastructure::spam;
 use CIF::WebAPI::infrastructure::phishing;
 use CIF::WebAPI::infrastructure::networks;
 use CIF::WebAPI::infrastructure::cache;
+use CIF::WebAPI::infrastructure::searches;
 use CIF::Message::Structured;
+use CIF::Message::InfrastructureSimple;
+
+sub submit {
+    my ($self,%args) = @_;
+
+    return CIF::Message::InfrastructureSimple->insert({
+        source                      => $self->parent->source(),
+        address                     => $args{'address'},
+        confidence                  => $args{'confidence'},
+        severity                    => $args{'severity'},
+        impact                      => $args{'impact'},
+        description                 => $args{'description'},
+        detecttime                  => $args{'detecttime'},
+        alternativeid               => $args{'alternativeid'},
+        alternativeid_restriction   => $args{'alternativeid_restriction'},
+        protocol                    => $args{'protocol'},
+        portlist                    => $args{'portlist'},
+    });
+}
 
 sub mapIndex {
     my $r = shift;
@@ -52,9 +72,7 @@ sub generateFeed {
 
 sub GET {
     my ($self, $request, $response) = @_;
-
-    my $detecttime = DateTime->from_epoch(epoch => (time() - (84600 * 30)));
-    my @recs = CIF::Message::Infrastructure->search_feed($detecttime,10000);
+    my @recs = $self->SUPER::GET($request,$response);
     return generateFeed($response,@recs);
 }
 
@@ -63,7 +81,7 @@ sub buildNext {
 
     my $subh;
     for(lc($frag)){
-        if(/^(malware|botnet|scan|spam|phishing|networks|cache)$/){
+        if(/^(malware|botnet|scan|spam|phishing|networks|cache|searches)$/){
             my $mod = "CIF::WebAPI::infrastructure::$frag";
             return $mod->new($self);
             last;
