@@ -1,4 +1,4 @@
-package CIF::WebAPI::domain::nameservers::cache;
+package CIF::WebAPI::domain::nameserver::cache;
 use base 'CIF::WebAPI';
 
 use strict;

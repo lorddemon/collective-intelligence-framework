@@ -1,4 +1,4 @@
-package CIF::WebAPI::domain::nameservers;
+package CIF::WebAPI::domain::nameserver;
 use base 'CIF::WebAPI';
 
 use strict;
