@@ -1,16 +1,11 @@
-package CIF::WebAPI::domains;
+package CIF::WebAPI::domain;
 use base 'CIF::WebAPI';
 
 use strict;
 use warnings;
 
 use CIF::Message::Domain;
-use CIF::WebAPI::domains::domain;
-use CIF::WebAPI::domains::nameservers;
-use CIF::WebAPI::domains::malware;
-use CIF::WebAPI::domains::fastflux;
-use CIF::WebAPI::domains::cache;
-use CIF::WebAPI::domains::searches;
+use CIF::WebAPI::domain::domain;
 use CIF::Message::DomainSimple;
 use Net::DNS;
 use JSON;
@@ -92,11 +87,15 @@ sub buildNext {
     my $subh;
     for(lc($frag)){
         if(/^(nameservers|malware|fastflux|cache|searches)$/){
-            my $mod = "CIF::WebAPI::domains::$frag";
+            my $mod = "CIF::WebAPI::domain::$frag";
+            eval "require $mod";
+            if($@){
+                return Apache2::Const::FORBIDDEN;
+            }
             return $mod->new($self);
             last;
         }
-        $subh = CIF::WebAPI::domains::domain->new($self);
+        $subh = CIF::WebAPI::domain::domain->new($self);
         $subh->{'domain'} = $frag;
         return $subh;
     }
