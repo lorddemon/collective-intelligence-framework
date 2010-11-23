@@ -1,4 +1,4 @@
-package CIF::WebAPI::domain::domain;
+package CIF::WebAPI::domain::address;
 use base 'CIF::WebAPI';
 
 use strict;
@@ -10,7 +10,7 @@ sub GET {
     my ($self, $request, $response) = @_;
 
     my $maxresults = $request->{'r'}->param('maxresults') || $request->dir_config->{'CIFFeedResultsDefault'} || 10000;
-    my $arg = $self->domain();
+    my $arg = $self->address();
     unless(lc($arg) =~ /[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}/){
         return Apache2::Const::FORBIDDEN;
     }

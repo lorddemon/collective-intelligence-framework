@@ -1,4 +1,4 @@
-package CIF::WebAPI::domains::searches;
+package CIF::WebAPI::domain::searches;
 use base 'CIF::WebAPI';
 
 use strict;
