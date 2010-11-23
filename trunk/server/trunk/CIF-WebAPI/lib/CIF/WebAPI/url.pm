@@ -1,15 +1,11 @@
-package CIF::WebAPI::urls;
+package CIF::WebAPI::url;
 use base 'CIF::WebAPI';
 
 use strict;
 use warnings;
 
 use CIF::Message::URL;
-use CIF::WebAPI::urls::url;
-use CIF::WebAPI::urls::cache;
-use CIF::WebAPI::urls::malware;
-use CIF::WebAPI::urls::phishing;
-use CIF::WebAPI::urls::searches;
+use CIF::WebAPI::url::url;
 
 sub mapIndex {
     my $r = shift;
@@ -53,6 +49,10 @@ sub buildNext {
     for(lc($frag)){
         if(/^(cache|malware|phishing|searches)$/){
             my $mod = 'CIF::WebAPI::urls::'.$frag;
+            eval "require $mod";
+            if($@){
+                return Apache2::Const::FORBIDDEN;
+            }
             return $mod->new($self);
             last;
         }
