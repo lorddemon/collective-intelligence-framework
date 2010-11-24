@@ -21,9 +21,8 @@ sub insert {
     my $self = shift;
     my $info = {%{+shift}};
 
-    return 0 unless($info->{'address'} =~ /^$RE{net}{IPv4}/);
-    return 0 if(CIF::Message::Infrastructure::isPrivateAddress($info->{'address'}));
-    return 0 if(CIF::Message::InfrastructureWhitelist::isWhitelisted($info->{'address'}));
+    return (undef,'invaild address: private address') if(CIF::Message::Infrastructure::isPrivateAddress($info->{'address'}));
+    return (undef,'invalid address: whitelisted address') if(CIF::Message::InfrastructureWhitelist::isWhitelisted($info->{'address'}));
 
     my ($as,$network,$ccode,$rir,$date,$as_desc) = CIF::Message::Infrastructure::asninfo($info->{'address'});
 
@@ -34,42 +33,36 @@ sub insert {
         $description .= ' '.$info->{'address'};
     }
     my $impact = $info->{'impact'};
-    for(lc($info->{'description'})){
+    for(lc($impact)){
         if(/botnet/){
             $bucket = 'CIF::Message::InfrastructureBotnet';
-            $impact = 'botnet infrastructure' unless($impact);
             last;
         }
-        if(/malware/){
+        if(/malware|malicious/){
             $bucket = 'CIF::Message::InfrastructureMalware';
-            $impact = 'malware infrastructure' unless($impact);
             last;
         }
         if(/scanner/){
             $bucket = 'CIF::Message::InfrastructureScanner';
-            $impact = 'scanner infrastructure' unless($impact);
             last;
         }
         if(/spammer/){
             $bucket = 'CIF::Message::InfrastructureSpam';
-            $impact = 'spam infrastructure' unless($impact);
             last;
         }
         if(/network/){
             $bucket = 'CIF::Message::InfrastructureNetwork';
-            $impact = 'suspicious network infrastructure' unless($impact);
             last;
         }
         if(/phish/){
             $bucket = 'CIF::Message::InfrastructurePhishing';
-            $impact = 'phishing infrastructure' unless($impact);
             last;
         }
         $bucket = 'CIF::Message::InfrastructureSuspicious';
         $impact = 'suspicious infrastructure' unless($impact);
     }
 
-    my $id = $bucket->insert({
+    return $bucket->insert({
         relatedid   => $info->{'relatedid'},
         address     => $info->{'address'},
         source      => $info->{'source'},
@@ -89,7 +82,6 @@ sub insert {
         alternativeid => $info->{'alternativeid'},
         alternativeid_restriction => $info->{'alternativeid_restriction'},
     });
-    return $id;
 }
 
 1;
