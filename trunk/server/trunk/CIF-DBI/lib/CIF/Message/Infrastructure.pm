@@ -8,6 +8,7 @@ use XML::IODEF;
 use CIF::Message::IODEF;
 use Net::CIDR;
 use Net::Abuse::Utils qw(:all);
+use Regexp::Common qw/net/;
 
 __PACKAGE__->table('infrastructure');
 __PACKAGE__->columns(Primary => 'id');
@@ -51,13 +52,23 @@ sub asninfo {
     return ($as,$network,$ccode,$rir,$date,$as_desc);
 }
 
+my $tests = {
+    'severity'      => qr/^(low|medium|high)$/,
+    'address'       => qr/^$RE{'net'}{'IPv4'}/,
+    'confidence'    => qr/\d+/,
+};
+
 sub insert {
     my $self = shift;
     my $info = {%{+shift}};
 
+    my ($ret,$err) = $self->check_params($tests,$info);
+    return($ret,$err) unless($ret);
+
     my $proto = convertProto($info->{'protocol'});
     my $uuid = $info->{'uuid'};
     my $source = $info->{'source'};
+    
     $source = CIF::Message::genSourceUUID($source) unless(CIF::Message::isUUID($source));
     $info->{'source'} = $source;
     $info->{'protocol'} = $proto;
@@ -91,7 +102,7 @@ sub insert {
         alternativeid_restriction => $info->{'alternativeid_restriction'} || 'private',
     }) };
     if($@){
-        die unless($@ =~ /duplicate key value violates unique constraint/);
+        return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
         $id = $self->retrieve(uuid => $uuid);
     }
     return($id);
@@ -116,8 +127,8 @@ sub toIODEF {
     my $info = {%{+shift}};
 
     my $impact      = $info->{'impact'};
-    my $address     = $info->{'address'} || die('no address given');
-    my $description = $info->{'description'} || $impact.' - '.$address;
+    my $address     = $info->{'address'};
+    my $description = $info->{'description'};
     my $cidr        = $info->{'cidr'};
     my $asn         = $info->{'asn'};
     my $asn_desc    = $info->{'asn_desc'};
@@ -125,8 +136,8 @@ sub toIODEF {
     my $rir         = $info->{'rir'},
     my $protocol    = $info->{'protocol'};
     my $portlist    = $info->{'portlist'};
-    my $confidence  = $info->{'confidence'} || 'low';
-    my $severity    = $info->{'severity'} || 'low';
+    my $confidence  = $info->{'confidence'};
+    my $severity    = $info->{'severity'};
     my $restriction = $info->{'restriction'} || 'private';
     my $source      = $info->{'source'};
     my $detecttime  = $info->{'detecttime'};
@@ -150,9 +161,11 @@ sub toIODEF {
 
     $iodef->add('IncidentDetectTime',$detecttime) if($detecttime);
     $iodef->add('IncidentAssessmentImpact',$impact);
-    $iodef->add('IncidentAssessmentConfidencerating','numeric');
-    $iodef->add('IncidentAssessmentConfidence',$confidence);
-    $iodef->add('IncidentAssessmentImpactseverity',$severity);
+    if($confidence){
+        $iodef->add('IncidentAssessmentConfidencerating','numeric');
+        $iodef->add('IncidentAssessmentConfidence',$confidence);
+    }
+    $iodef->add('IncidentAssessmentImpactseverity',$severity) if($severity);
     $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','ipv4-addr'); ## TODO -- regext this
     $iodef->add('IncidentEventDataFlowSystemNodeAddress',$address);
     $iodef->add('IncidentEventDataFlowSystemServicePortlist',$portlist) if($portlist);
@@ -177,9 +190,43 @@ sub toIODEF {
     return $iodef->out();
 }
 
+sub lookup {
+    my ($self,$address,$apikey,$limit) = @_;
+    $limit = 5000 unless($limit);
+    my $source = CIF::Message::genMessageUUID('api',$apikey);
+    my $asn;
+    my $description = 'search '.$address;
+    if($address !~ /^$RE{net}{IPv4}/){
+        $asn = $address;
+        $address = '0/0';
+        $description = 'search AS'.$asn;
+    }
+    my $dt = DateTime->from_epoch(epoch => time());
+    $dt = $dt->ymd().'T'.$dt->hour().':00:00Z';
+
+    my @recs;
+    if($asn){
+        @recs = $self->search_by_asn($asn,$limit);
+    } else {
+        @recs = $self->search_by_address($address,$address,$limit);
+    }
+    $self->table('infrastructure_search');
+    my $sid = $self->insert({
+        address => $address,
+        asn     => $asn,
+        impact  => 'search',
+        source  => $source,
+        description => $description,
+        detecttime  => $dt,
+    });
+    $self->table('infrastructure');
+    return @recs;
+}
+
 __PACKAGE__->set_sql('by_address' => qq{
     SELECT * FROM __TABLE__
     WHERE (address >>= ? OR address <<= ?)
+    AND address != '0/0'
     AND NOT EXISTS (
         SELECT address from infrastructure_whitelist WHERE __TABLE__.address = infrastructure_whitelist.address
     )
@@ -190,6 +237,7 @@ __PACKAGE__->set_sql('by_address' => qq{
 __PACKAGE__->set_sql('feed' => qq{
     SELECT * FROM __TABLE__
     WHERE detecttime >= ?
+    AND impact NOT LIKE 'search'
     AND NOT EXISTS (
         SELECT address FROM infrastructure_whitelist WHERE __TABLE__.address = infrastructure_whitelist.address
     )

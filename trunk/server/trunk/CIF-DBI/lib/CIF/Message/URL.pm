@@ -20,8 +20,6 @@ sub insert {
     my $self = shift;
     my $info = {%{+shift}};
 
-    die('missing address/url') unless($info->{'address'});
-
     my $uuid    = $info->{'uuid'};
     my $source  = $info->{'source'};
     my $address = $info->{'address'};
@@ -29,15 +27,23 @@ sub insert {
     $source = CIF::Message::genSourceUUID($source) unless(CIF::Message::isUUID($source));
     $info->{'source'} = $source;
 
+    my $md5     = $info->{'md5'};
+    my $sha1    = $info->{'sha1'};
+    
+    if($address){
+        $md5 = md5_hex($address) unless($md5);
+        $sha1 = sha1_hex($address) unless($sha1);
+    } else {
+        $info->{'address'} = $md5 || $sha1;
+    }
+
     unless($uuid){
         $uuid = CIF::Message::IODEF->insert({
             message => $self->toIODEF($info)
         });
         $uuid = $uuid->uuid();
     }
-
-    my ($md5,$sha1) = (md5_hex($address),sha1_hex($address));
-
+    
     my $id = eval { $self->SUPER::insert({
         uuid            => $uuid,
         description     => $info->{'description'},
@@ -67,12 +73,12 @@ sub toIODEF {
     my $info = {%{+shift}};
 
     my $impact      = $info->{'impact'};
-    die('invalid impact type') unless(lc($impact) =~ /^(phishing|malware|spam|botnet)/);
+    die('invalid impact type') unless(lc($impact) =~ /^(search|phishing|malware|spam|botnet)/);
 
-    my $address     = $info->{'address'} || die('no address given');
-    my $description = $info->{'description'} || $impact.' - '.$address;
-    my $confidence  = $info->{'confidence'} || 'low';
-    my $severity    = $info->{'severity'} || 'low';
+    my $address     = $info->{'address'};
+    my $description = $info->{'description'} || $impact.' '.$address;
+    my $confidence  = $info->{'confidence'};
+    my $severity    = $info->{'severity'};
     my $restriction = $info->{'restriction'} || 'private';
     my $source      = $info->{'source'};
     my $sourceid    = $info->{'sourceid'};
@@ -92,35 +98,57 @@ sub toIODEF {
     $iodef->add('Incidentrestriction',$restriction);
     $iodef->add('IncidentDescription',$description);
     $iodef->add('IncidentAssessmentImpact',$impact);
-    $iodef->add('IncidentAssessmentConfidencerating','numeric');
-    $iodef->add('IncidentAssessmentConfidence',$confidence);
-    $iodef->add('IncidentAssessmentImpactseverity',$severity);
+    if($confidence){
+        $iodef->add('IncidentAssessmentConfidencerating','numeric');
+        $iodef->add('IncidentAssessmentConfidence',$confidence);
+    }
+    if($severity){
+        $iodef->add('IncidentAssessmentImpactseverity',$severity);
+    }
     $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','ext-value');
     $iodef->add('IncidentEventDataFlowSystemNodeAddressext-category','url');
-    $iodef->add('IncidentEventDataFlowSystemNodeAddress',$address);
+    $iodef->add('IncidentEventDataFlowSystemNodeAddress',$address) if($address);
 
     return $iodef->out();
 }
 
-__PACKAGE__->set_sql('by_impact' => qq{
-    SELECT *
-    FROM __TABLE__
-    WHERE lower(impact) LIKE ?
-    ORDER BY detecttime DESC, created DESC, id DESC
-    LIMIT ?
-});
-
-__PACKAGE__->set_sql('by_description' => qq{
-    SELECT *
-    FROM __TABLE__
-    WHERE lower(description) LIKE ?
-    ORDER BY detecttime DESC, created DESC, id DESC
-    LIMIT ?
-});
+sub lookup {
+    my ($self,$arg,$apikey) = @_;
+    my $source = CIF::Message::genMessageUUID('api',$apikey);
+    my $desc = 'search '.$arg;
+    my $col = 'address';
+    my ($address,$md5,$sha1);
+    if($arg =~ /^[a-fA-F0-9]{32}$/){
+        $col = 'url_md5';
+        $md5 = $arg;
+    } elsif($arg =~ /^[a-fA-F0-9]{40}$/){
+        $col = 'url_sha1';
+        $sha1 = $arg;
+    } else {
+        $col = 'address';
+        $address = $arg;
+    }
+    my @recs = $self->search($col => $arg);
+    my $dt = DateTime->from_epoch(epoch => time());
+    $dt = $dt->ymd().'T'.$dt->hour().':00:00Z'; 
+    $self->table('urls_search');
+    my $sid = $self->insert({
+        source      => $source,
+        address     => $address,
+        impact      => 'search',
+        description => $desc,
+        md5         => $md5,
+        sha1        => $sha1,
+        detecttime  => $dt,
+    });
+    $self->table('urls');
+    return @recs;
+}
 
 __PACKAGE__->set_sql('feed' => qq{
     SELECT * FROM __TABLE__
     WHERE detecttime >= ?
+    AND impact NOT LIKE 'search'
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });

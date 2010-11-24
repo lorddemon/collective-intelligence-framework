@@ -61,7 +61,7 @@ sub toIODEF {
 
     my $address     = $info->{'address'} || die('no address given');
     my $description = $info->{'description'} || $impact.' - '.$address;
-    my $confidence  = $info->{'confidence'} || 'low';
+    my $confidence  = $info->{'confidence'} || 0;
     my $severity    = $info->{'severity'} || 'low';
     my $restriction = $info->{'restriction'} || 'private';
     my $source      = $info->{'source'};

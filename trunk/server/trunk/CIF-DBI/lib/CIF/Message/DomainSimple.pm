@@ -21,7 +21,7 @@ sub insert {
     my $info = {%{+shift}};
 
     my $domain = $info->{'address'};
-    return 0 if(CIF::Message::DomainWhitelist::isWhitelisted($domain));
+    return (undef,'invalid address: whitelisted') if(CIF::Message::DomainWhitelist::isWhitelisted($domain));
 
     my @ids;
     my @results = CIF::Message::Domain::getrdata($info->{'nsres'},$domain);
@@ -41,7 +41,7 @@ sub insert {
         }
         if(lc($info->{'impact'} =~ /fastflux/)){
             $bucket = 'CIF::Message::DomainFastflux';
-            $impact = 'fastflux domain '.$domain;
+            $impact = 'fastflux domain';
             $description = $impact;
             $description .= ' '.$rdata if($rdata);
         }
@@ -58,7 +58,6 @@ sub insert {
             $bucket = 'CIF::Message::DomainNameserver';
             $impact = 'suspicious nameserver';
             $impact .= ' fastflux' if(lc($info->{'impact'}) =~ /fastflux/);
-            $impact .= ' '.$domain;
             $description = $impact.' '.$rdata;
             $severity = 'low';
         }
@@ -74,7 +73,7 @@ sub insert {
             next if(CIF::Message::DomainWhitelist::isWhitelisted($rdata));
         }
 
-        my $id = $bucket->insert({
+        my ($id,$err) = $bucket->insert({
             relatedid   => $info->{'relatedid'},
             address     => $domain,
             source      => $info->{'source'},
@@ -96,6 +95,7 @@ sub insert {
             alternativeid => $info->{'alternativeid'},
             alternativeid_restriction => $info->{'alternativeid_restriction'},
         });
+        return(undef,$err) unless($id);
         push(@ids,$id);
         my $confidence = ($info->{'confidence'}) ? ($info->{'confidence'} - 2) : 0;
         $severity = ($severity eq 'high') ? 'medium' : 'low';

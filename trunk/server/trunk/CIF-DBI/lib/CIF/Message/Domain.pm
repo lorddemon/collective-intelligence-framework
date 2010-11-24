@@ -7,6 +7,8 @@ use warnings;
 use CIF::Message::IODEF;
 use Regexp::Common qw/net/;
 use Regexp::Common::net::CIDR;
+use DateTime::Format::DateParse;
+use DateTime;
 
 __PACKAGE__->table('domains');
 __PACKAGE__->columns(Primary => 'id');
@@ -14,15 +16,33 @@ __PACKAGE__->columns(All => qw/id uuid description address type rdata cidr asn a
 __PACKAGE__->columns(Essential => qw/id uuid description address rdata impact restriction created/);
 __PACKAGE__->has_a(uuid => 'CIF::Message');
 
+my $tests = {
+    'severity'      => qr/^(low|medium|high)$/,
+    'confidence'    => qr/^\d+/,
+    'address'       => qr/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+};
+
 sub insert {
     my $self = shift;
     my $info = {%{+shift}};
-    
+
+    my ($ret,$err) = $self->check_params($tests,$info);
+    return($ret,$err) unless($ret);
+
     my $uuid    = $info->{'uuid'};
     my $source  = $info->{'source'};
     
     $source = CIF::Message::genSourceUUID($source) unless(CIF::Message::isUUID($source));
     $info->{'source'} = $source;
+
+    my $dt = $info->{'detecttime'};
+    if($dt){
+        $dt = DateTime::Format::DateParse->parse_datetime($dt);
+        unless($dt){
+            return(undef,'invalid datetime');
+        }
+        $dt = $dt->dmy().'T'.$dt->hms().'Z';
+    }
 
     unless($uuid){
         $uuid = CIF::Message::IODEF->insert({
@@ -54,7 +74,7 @@ sub insert {
         alternativeid_restriction => $info->{'alternativeid_restriction'} || 'private',
     }) };
     if($@){
-        die unless($@ =~ /duplicate key value violates unique constraint/);
+        return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
         $id = $self->retrieve(uuid => $uuid);
     }
     return($id);    
@@ -66,10 +86,10 @@ sub toIODEF {
     my $info = {%{+shift}};
 
     my $impact      = $info->{'impact'};
-    my $address     = $info->{'address'} || die('no address given');
-    my $description = $info->{'description'} || $impact.' - '.$address;
-    my $confidence  = $info->{'confidence'} || 'low';
-    my $severity    = $info->{'severity'} || 'low';
+    my $address     = $info->{'address'} || return(undef,'no address given');
+    my $description = $info->{'description'};
+    my $confidence  = $info->{'confidence'};
+    my $severity    = $info->{'severity'};
     my $restriction = $info->{'restriction'} || 'private';
     my $source      = $info->{'source'};
     my $detecttime    = $info->{'detecttime'};
@@ -96,9 +116,11 @@ sub toIODEF {
         $iodef->add('IncidentAlternativeIDIncidentIDrestriction',$alternativeid_restriction);
     }
     $iodef->add('IncidentAssessmentImpact',$impact);
-    $iodef->add('IncidentAssessmentConfidencerating','numeric');
-    $iodef->add('IncidentAssessmentConfidence',$confidence);
-    $iodef->add('IncidentAssessmentImpactseverity',$severity);
+    if($confidence){
+        $iodef->add('IncidentAssessmentConfidencerating','numeric');
+        $iodef->add('IncidentAssessmentConfidence',$confidence);
+    }
+    $iodef->add('IncidentAssessmentImpactseverity',$severity) if($severity);
     $iodef->add('IncidentEventDataFlowSystemNodeLocation',$cc) if($cc);
     $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','ext-value');
     $iodef->add('IncidentEventDataFlowSystemNodeAddressext-category','domain');
@@ -197,6 +219,29 @@ sub getrdata {
     return(@rdata);
 }
 
+sub lookup {
+    my ($self,$address,$apikey,$limit) = @_;
+    $limit = 5000 unless($limit);
+    my @recs = $self->search_by_address('%'.$address.'%',$limit);
+
+    $self->table('domains_search');
+    my $source = CIF::Message::genMessageUUID('api',$apikey);
+    my $asn;
+    my $description = 'search '.$address;
+    my $dt = DateTime->from_epoch(epoch => time());
+    $dt = $dt->ymd().'T'.$dt->hour().':00:00Z';
+
+    my $sid = $self->insert({
+        address => $address,
+        impact  => 'search',
+        source  => $source,
+        description => $description,
+        detecttime  => $dt,
+    });
+    $self->table('domains');
+    return @recs;
+}
+
 __PACKAGE__->set_sql('by_address' => qq{
     SELECT * 
     FROM __TABLE__
@@ -211,6 +256,7 @@ __PACKAGE__->set_sql('feed' => qq{
     SELECT *
     FROM __TABLE__
     WHERE detecttime >= ?
+    AND impact != 'search'
     AND type != 'NS'
     AND lower(impact) NOT LIKE '%passive dns%'
     AND lower(impact) NOT LIKE '%whitelist%'
