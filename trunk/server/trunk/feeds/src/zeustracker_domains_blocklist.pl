@@ -1,0 +1,46 @@
+#!/usr/bin/perl -w
+
+use strict;
+use LWP::Simple;
+use DateTime::Format::DateParse;
+use DateTime;
+use Net::DNS;
+
+use CIF::Message::DomainSimple;
+
+my $timeout = 5;
+my $res = Net::DNS::Resolver->new(
+    nameservers => ['8.8.8.8'],
+);
+
+my $partner = 'zeustracker.abuse.ch';
+my $url = 'https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist';
+
+my $content = get($url);
+
+my @lines = split(/\n/,$content);
+foreach (@lines){
+    next if(/^(#|$)/);
+    my $domain = $_;
+
+    my $detecttime = DateTime->from_epoch(epoch => time());
+    $detecttime = $detecttime->ymd().'T00:00:00Z';
+
+    my $impact = 'zeus malware domain';
+    my $description = $impact.' '.$domain;
+
+    my $u = CIF::Message::DomainSimple->insert({
+        nsres       => $res,
+        address     => $domain,
+        source      => $partner,
+        confidence  => 7,
+        severity    => 'medium',
+        impact      => $impact,
+        description => $description,
+        detecttime  => $detecttime,
+        restriction => 'need-to-know',
+        alternativeid => 'https://zeustracker.abuse.ch/monitor.php?host='.$domain,
+        alternativeid_restriction => 'public',
+    });
+    warn $u;
+}
