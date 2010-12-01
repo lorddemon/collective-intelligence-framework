@@ -53,7 +53,7 @@ warn 'inserting '.$#nodes.'+ nodes';
 foreach (@nodes){
     my $node = $_;
     my $created = DateTime::Format::DateParse->parse_datetime($node->findvalue('./submission/submission_time'));
-    next if($created->epoch() < $oldest->epoch());
+#    next if($created->epoch() < $oldest->epoch());
     my $key = $node->findvalue('./url');
     my $status = $node->findvalue('./status/online');
     my $target = $node->findvalue('./target');
