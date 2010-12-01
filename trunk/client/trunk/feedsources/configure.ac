@@ -2,9 +2,9 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.64])
-AC_INIT([cif-sources], [0.01], [bugs@cif.com])
-AM_INIT_AUTOMAKE(cif-sources,0.01)
-AC_PREFIX_DEFAULT([/opt/cif-sources])
+AC_INIT([cif-feeds-public], [0.01], [ci-framework@googlegroups.com])
+AM_INIT_AUTOMAKE(cif-feeds-public,0.01)
+AC_PREFIX_DEFAULT([/opt/cif-feeds-public])
 
 # Checks for programs.
 
@@ -18,10 +18,7 @@ AC_PREFIX_DEFAULT([/opt/cif-sources])
 
 AC_CONFIG_FILES([
     Makefile
-    malware/Makefile
-    networks/Makefile
-    phishing/Makefile
-    whitelists/Makefile
+    src/Makefile
 ])
 
 #dnl CIF_USER
