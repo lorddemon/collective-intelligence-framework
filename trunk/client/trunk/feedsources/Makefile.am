@@ -1,22 +1,33 @@
 AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = \
-    malware/fire_block.pl \
-    malware/malwaredomainlist.pl \
-    malware/malwaredomains.pl \
-    malware/zt_binaries.pl \
-    malware/zt_configs.pl \
-    malware/zt_domains_blocklist.pl \
-    malware/zt_domains.pl \
-    malware/zt_ip_blocklist.pl \
-    networks/spamhaus_drop.pl \
-    phishing/phishtank.pl \
-    phishing/phishing_replyto.pl \
-    whitelists/whitelist_dnswl_org.pl \
-    whitelists/local_domain_whitelist.pl \
-    whitelists/local_inet_whitelist.pl
+    src/maliciousnetworks.org_firelist.pl \
+    src/malwaredomainlist.pl \
+    src/malwaredomains.pl \
+    src/zeustracker_binaries.pl \
+    src/zeustracker_configs.pl \
+    src/zeustracker_domains_blocklist.pl \
+    src/zeustracker_domains.pl \
+    src/zeustracker_ip_blocklist.pl \
+    src/spamhaus_drop.pl \
+    src/phishtank.pl \
+    src/google_phishing_replyto.pl \
+    src/whitelist_dnswl_org.pl \
+    src/local_domain_whitelist.pl \
+    src/local_inet_whitelist.pl \
+    src/alexa_whitelist.pl \
+    src/hosts-file.net.pl \
+    src/mpatrol_hashes.pl \
+    src/mpatrol_urls.pl \
+    src/spyeye_binaries.pl \
+    src/spyeye_configs.pl \
+    src/spyeye_domains_blocklist.pl \
+    src/spyeye_domains.pl \
+    src/spyeye_ip_blocklist.pl \
+    src/sshbl.pl \
+    src/threatexpert.pl
 
-SUBDIRS = malware networks phishing whitelists
+SUBDIRS = src 
 
 install: install-recursive fixperms
 

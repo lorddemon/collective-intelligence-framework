@@ -1,8 +1,26 @@
-bin_SCRIPTS = zt_binaries.pl \
-zt_domains.pl \
-zt_configs.pl \
-malwaredomainlist.pl \
-malwaredomains.pl \
-zt_domains_blocklist.pl \
-fire_block.pl \
-zt_ip_blocklist.pl
+bin_SCRIPTS = \
+    maliciousnetworks.org_firelist.pl \
+    malwaredomainlist.pl \
+    malwaredomains.pl \
+    zeustracker_binaries.pl \
+    zeustracker_configs.pl \
+    zeustracker_domains_blocklist.pl \
+    zeustracker_domains.pl \
+    zeustracker_ip_blocklist.pl \
+    spamhaus_drop.pl \
+    phishtank.pl \
+    google_phishing_replyto.pl \
+    whitelist_dnswl_org.pl \
+    local_domain_whitelist.pl \
+    local_inet_whitelist.pl \
+    alexa_whitelist.pl \
+    hosts-file.net.pl \
+    mpatrol_hashes.pl \
+    mpatrol_urls.pl \
+    spyeye_binaries.pl \
+    spyeye_configs.pl \
+    spyeye_domains_blocklist.pl \
+    spyeye_domains.pl \
+    spyeye_ip_blocklist.pl \
+    sshbl.pl \
+    threatexpert.pl
