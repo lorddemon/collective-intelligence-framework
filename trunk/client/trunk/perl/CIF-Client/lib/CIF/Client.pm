@@ -7,7 +7,7 @@ use warnings;
 use JSON;
 use Text::Table;
 
-our $VERSION = '0.00_02';
+our $VERSION = '0.00_03';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 # Preloaded methods go here.
@@ -26,7 +26,7 @@ sub search {
     my ($self,$q,$fmt) = @_;
     $fmt = $self->format() unless($fmt);
 
-    my $type;
+    my $type = '';
     for($q){
         if(/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/){
             $type = 'infrastructure';
@@ -37,7 +37,7 @@ sub search {
             last;
         }
         if(/\w+\.\w+/){
-            $type = 'domains';
+            $type = 'domain';
             last;
         }
         if(/^[a-fA-F0-9]{32,40}$/){
@@ -45,12 +45,15 @@ sub search {
             last;
         }
         if(/^url:([a-fA-F0-9]{32,40})$/){
-            $type = 'urls';
+            $type = 'url';
             $q = $1;
             last;
         }
+        if(/^AS\d+/){
+            $type = 'infrastructure';
+            last;
+        }
     }
-    return undef unless($type);
     $self->type($type);
     $self->GET('/'.$type.'/'.$q.'?apikey='.$self->apikey());
 }
