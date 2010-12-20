@@ -6,16 +6,9 @@ use warnings;
 
 use CIF::Message::Infrastructure;
 use CIF::WebAPI::infrastructure::address;
-use CIF::WebAPI::infrastructure::malware;
-use CIF::WebAPI::infrastructure::botnet;
-use CIF::WebAPI::infrastructure::scan;
-use CIF::WebAPI::infrastructure::spam;
-use CIF::WebAPI::infrastructure::phishing;
-use CIF::WebAPI::infrastructure::networks;
-use CIF::WebAPI::infrastructure::cache;
-use CIF::WebAPI::infrastructure::searches;
 use CIF::Message::Structured;
 use CIF::Message::InfrastructureSimple;
+use Regexp::Common qw/net/;
 
 sub submit {
     my ($self,%args) = @_;
@@ -64,8 +57,10 @@ sub generateFeed {
     my $response = shift;
     my @recs = @_;
 
+    my $start = time();
     my @feed = aggregateFeed(@recs);
-
+    my $end = time();
+    warn ($end - $start);
     $response->data()->{'result'} = \@feed;
     return Apache2::Const::HTTP_OK;
 }
@@ -79,16 +74,12 @@ sub GET {
 sub buildNext {
     my ($self,$frag,$req) = @_;
 
-    my $subh;
-    for(lc($frag)){
-        if(/^(malware|botnet|scan|spam|phishing|networks|cache|searches)$/){
-            my $mod = "CIF::WebAPI::infrastructure::$frag";
-            return $mod->new($self);
-            last;
-        }
-        $subh = CIF::WebAPI::infrastructure::address->new($self);
+    if($frag =~ /^$RE{net}{IPv4}/){
+        my $subh = CIF::WebAPI::infrastructure::address->new($self);
         $subh->{'address'} = $frag;
         return $subh;
+    } else {
+        return $self->SUPER::buildNext($frag,$req);
     }
 }
 

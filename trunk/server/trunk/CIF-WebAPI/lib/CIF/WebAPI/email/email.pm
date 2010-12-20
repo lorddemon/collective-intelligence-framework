@@ -1,4 +1,4 @@
-package CIF::WebAPI::emails::email;
+package CIF::WebAPI::email::email;
 use base 'CIF::WebAPI';
 
 use strict;
@@ -20,7 +20,7 @@ sub GET {
     my @recs = CIF::Message::Email->retrieve_from_sql($sql);
     unless(@recs){ return undef; }
 
-    my @res = map { CIF::WebAPI::emails::mapIndex($_) } @recs;
+    my @res = map { CIF::WebAPI::email::mapIndex($_) } @recs;
 
     $response->data()->{'result'} = \@res;
     return Apache2::Const::HTTP_OK;

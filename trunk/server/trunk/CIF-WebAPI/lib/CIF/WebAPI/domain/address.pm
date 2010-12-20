@@ -21,7 +21,7 @@ sub GET {
         return Apache2::Const::HTTP_OK; 
     }
 
-    my @res = map { CIF::WebAPI::domains::mapIndex($_) } @recs;
+    my @res = map { CIF::WebAPI::domain::mapIndex($_) } @recs;
 
     $response->data()->{'result'} = \@res;
     return Apache2::Const::HTTP_OK;

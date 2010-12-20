@@ -13,7 +13,7 @@ sub GET {
         my $arg = $self->domain();
         my @recs = CIF::Message::DomainSearch->search_by_address('%'.$arg.'%',10);
         if(@recs){
-            my @res = map { CIF::WebAPI::domains::mapIndex($_) } @recs;
+            my @res = map { CIF::WebAPI::domain::mapIndex($_) } @recs;
             $response->data()->{'result'} = \@res;
         }
         return Apache2::Const::HTTP_OK;
@@ -22,7 +22,7 @@ sub GET {
         my $maxresults = $request->{'r'}->param('maxresults') || $request->dir_config->{'CIFFeedResultsDefault'} || 10000;
         my $detecttime = DateTime->from_epoch(epoch => (time() - (84600 * $maxdays)));
         my @recs = CIF::Message::DomainSearch->search_feed($detecttime,$maxresults);
-        return CIF::WebAPI::domains::generateFeed($response,@recs);
+        return CIF::WebAPI::domain::generateFeed($response,@recs);
     }
 
 }
@@ -30,7 +30,7 @@ sub GET {
 sub buildNext {
     my ($self,$frag,$req) = @_;
     
-    my $h = CIF::WebAPI::domains::searches->new($self);
+    my $h = CIF::WebAPI::domain::searches->new($self);
     $h->{'domain'} = $frag;
     return $h;
 }

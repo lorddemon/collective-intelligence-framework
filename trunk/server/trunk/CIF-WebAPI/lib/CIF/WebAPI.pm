@@ -5,15 +5,157 @@ use 5.008008;
 use strict;
 use warnings;
 
-use Data::Dumper;
-use CIF::Message::Structured;
-
 our $VERSION = '0.00_02';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
+use CIF::Message::Structured;
+use CIF::WebAPI::APIKey;
+use JSON;
+use Regexp::Common qw/net/;
+
+sub POST {
+    my ($self,$req,$resp,%args) = @_;
+    
+    # who's calling me
+    my @bits = split(/\:\:/,ref($self));
+    my $impact = $bits[$#bits];
+    my $type = $bits[$#bits-1];
+    if($type eq 'WebAPI'){
+        return Apache2::Const::FORBIDDEN;
+    }
+
+    # see if we have this implemented
+    my $bucket = 'CIF::WebAPI::'.$type;
+    eval "require $bucket";
+    my $f = '&CIF::WebAPI::'.$type.'::submit';
+    if($@ || !defined($f)){
+        $resp->{'message'} = $@ if($@);
+        return Apache2::Const::FORBIDDEN;
+    }
+
+    my $json;
+    $req->read($json,$req->headers_in->{'Content-Length'});
+    my $h = from_json($json);
+    $h->{'impact'} = $impact;
+
+    my $handle = $bucket->new($self);
+    my ($ret,$err) = $handle->submit(%$h);
+    if($ret){
+        $resp->data->{'result'} = $ret->uuid->id();
+    } else {
+        $resp->{'message'} = 'submission failed: '.$err;
+    }
+    return Apache2::Const::HTTP_OK;
+}
+
+sub isAuth {
+    my ($self,$meth,$req) = @_;
+    return(1) if($meth eq 'GET');
+    my $key = lc($req->param('apikey'));
+    my $rec = CIF::WebAPI::APIKey->retrieve(apikey => $key);
+    return(0) unless($rec && $rec->write());
+    my $src = $rec->userid();
+    $src = CIF::Message::genSourceUUID($src);
+    $self->{'source'} = $src;
+    return(1);
+}
+
 sub GET {
     my ($self,$request,$response) = @_;
-    $request->requestedFormat('json');
+
+    unless($request->{'r'}->param('fmt')){
+        my $agent = $request->{'r'}->headers_in->{'User-Agent'};
+        warn $agent;
+        if(lc($agent) =~ /(mozilla|msie|chrome|safari)/){
+            $request->requestedFormat('table');
+        }
+    }
+
+    # figure out who's calling us
+    my @bits    = split(/\:\:/,ref($self));
+    my $impact  = ucfirst($bits[$#bits]);
+    my $type    = ucfirst($bits[$#bits-1]);
+    if($type eq 'WebAPI'){
+        $type = $impact;
+        $impact = '';
+    }
+
+    # see if we have that method
+    my $bucket = 'CIF::Message::'.$type.$impact;
+    eval "require $bucket";
+    if($@){
+        $response->{'message'} = $@ if($@);
+        return Apache2::Const::FORBIDDEN;
+    }
+    
+    my $maxdays     = $request->{'r'}->param('age') || $request->dir_config->{'CIFFeedAgeDefault'} || 30;
+    my $maxresults  = $request->{'r'}->param('maxresults') || $request->dir_config->{'CIFFeedResultsDefault'} || 10000;
+    my $detecttime  = DateTime->from_epoch(epoch => (time() - (84600 * $maxdays)));
+    my @recs = $bucket->search_feed($detecttime,$maxresults);
+    return(@recs);
+}
+
+sub buildNext {
+    my ($self,$frag,$req) = @_;
+    $frag = lc($frag);
+
+    foreach (qw/domain infrastructure malware email url/){
+        eval 'require CIF::WebAPI::'.$_;
+    }
+
+    my $type;
+    for($frag){
+        if(/^url:/){
+            $type = 'url';
+            $frag =~ s/^url://;
+            last;
+        }
+        if(/^($RE{'net'}{'IPv4'}|AS\d+)/){
+            $type = 'infrastructure';
+            last;
+        }
+        if(/^\w+@\w+/){
+            $type = 'email';
+            last;
+        }
+        if(/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/){
+            $type = 'domain';
+            last;
+        }
+        if(/^[a-fA-F0-9]{32,40}$/){
+            $type = 'malware';
+            last;
+        }
+    }
+    return $self->SUPER::buildNext($frag,$req) unless($type);
+    my $bucket = 'CIF::WebAPI::'.$type;
+    my $h = $bucket->new($self);
+    return($h->buildNext($frag,$req));
+}
+
+sub cachedFeed {
+    my ($self,$req,$resp) = @_;
+    my $dir = $req->dir_config->{'CIFCacheDir'};
+    my @bits = split(/\:\:/,ref($self));
+    my $impact = $bits[$#bits-1];
+    my $type = $bits[$#bits-2].'_';
+    if($type eq 'WebAPI_'){
+        $type = $impact;
+        $impact = '';
+    }
+    my $feed = $type.$impact.'.feed';
+    my $file = $dir.'/'.$feed;
+    my $content = '';
+    
+    return Apache2::Const::HTTP_OK unless(-s $file);
+
+    open(F,$dir.'/'.$feed) || return Apache2::Const::SERVER_ERROR;
+    while(<F>){
+        chomp();
+        $content = $_;
+    }
+    close(F);
+    $resp->data->{'result'} = from_json($content);
     return Apache2::Const::HTTP_OK;
 }
 
@@ -56,11 +198,6 @@ sub mapIndex {
         created     => $rec->created(),
         message     => $msg,
     };
-}
-
-sub isAuth {
-    my ($self,$method,$req) = @_;
-    return ($method eq 'GET');
 }
 
 1;

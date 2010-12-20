@@ -4,22 +4,26 @@ use base 'CIF::DBI';
 our $VERSION = '0.00_02';
 
 __PACKAGE__->table('apikeys');
-__PACKAGE__->columns(Primary => 'apikey');
-__PACKAGE__->columns(All => qw/apikey userid revoked write created/);
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(All => qw/id apikey userid parentid revoked write access created/);
 __PACKAGE__->sequence('apikeys_id_seq');
 
 use OSSP::uuid;
 
 sub genkey {
-    my ($self,$uid) = @_;
+    my ($self,%args) = @_;
     my $uuid    = OSSP::uuid->new();
     $uuid->make('v4');
     my $str = $uuid->export('str');
     undef $uuid;
 
     my $r = $self->insert({
-        apikey  => $str,
-        userid  => $uid,
+        apikey      => $str,
+        userid      => $args{'userid'},
+        access      => $args{'access'} || 'all',
+        parentid    => $args{'parentid'},
+        write       => $args{'write'},
+        revoked     => $args{'revoked'}
     });
     return($r);
 } 
