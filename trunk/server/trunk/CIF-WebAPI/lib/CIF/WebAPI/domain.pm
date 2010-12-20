@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use CIF::Message::Domain;
-use CIF::WebAPI::domain::domain;
+use CIF::WebAPI::domain::address;
 use CIF::Message::DomainSimple;
 use Net::DNS;
 use JSON;
@@ -75,29 +75,21 @@ sub generateFeed {
 
 sub GET {
     my ($self, $request, $response) = @_;
-
-    my $detecttime = DateTime->from_epoch(epoch => (time() - (84600 * 30)));
-    my @recs = CIF::Message::Domain->search_feed($detecttime,10000);
-    return generateFeed($response,@recs);
+    my @recs = $self->SUPER::GET($request,$response);
+    return generateFeed($response,@recs) if($#recs > -1);
 }
 
 sub buildNext {
     my ($self,$frag,$req) = @_;
 
     my $subh;
-    for(lc($frag)){
-        if(/^(nameservers|malware|fastflux|cache|searches)$/){
-            my $mod = "CIF::WebAPI::domain::$frag";
-            eval "require $mod";
-            if($@){
-                return Apache2::Const::FORBIDDEN;
-            }
-            return $mod->new($self);
-            last;
-        }
-        $subh = CIF::WebAPI::domain::domain->new($self);
-        $subh->{'domain'} = $frag;
+    if(uc($frag) =~ /^[A-Z0-9.-]+\.[A-Z]{2,4}$/){
+        my $subh;
+        $subh = CIF::WebAPI::domain::address->new($self);
+        $subh->{'address'} = $frag;
         return $subh;
+    } else {
+        return $self->SUPER::buildNext($frag,$req);
     }
 }
 

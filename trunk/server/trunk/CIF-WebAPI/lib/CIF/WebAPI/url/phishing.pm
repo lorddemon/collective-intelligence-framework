@@ -4,7 +4,7 @@ use base 'CIF::WebAPI';
 use strict;
 use warnings;
 
-use CIF::Message::URLPhishing;
+use CIF::Message::UrlPhishing;
 
 sub GET {
     my ($self, $request, $response) = @_;
@@ -13,7 +13,7 @@ sub GET {
 
     my $detecttime = DateTime->from_epoch(epoch => (time() - (84600 * $maxdays)));
 
-    my @recs = CIF::Message::URLPhishing->search_feed($detecttime,$maxresults);
+    my @recs = CIF::Message::UrlPhishing->search_feed($detecttime,$maxresults);
     return CIF::WebAPI::urls::generateFeed($response,@recs);
 }
 

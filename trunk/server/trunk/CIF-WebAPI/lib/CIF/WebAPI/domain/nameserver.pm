@@ -6,7 +6,7 @@ use warnings;
 
 sub GET {
     my ($self, $request, $response) = @_;
-    return CIF::WebAPI::domains::generateFeed($response,$self->SUPER::GET($request,$response));
+    return CIF::WebAPI::domain::generateFeed($response,$self->SUPER::GET($request,$response));
 }
 
 1;

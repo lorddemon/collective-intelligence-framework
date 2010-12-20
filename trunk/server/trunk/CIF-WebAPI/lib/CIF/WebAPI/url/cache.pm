@@ -1,14 +1,12 @@
-package CIF::WebAPI::urls::cache;
+package CIF::WebAPI::url::cache;
 use base 'CIF::WebAPI';
 
 use strict;
 use warnings;
 
-my $feed = 'urls.feed';
-
 sub GET {
     my ($self,$req,$resp) = @_;
-    return $self->cachedFeed($req,$resp,$feed);
+    return $self->cachedFeed($req,$resp);
 }
 
 1;

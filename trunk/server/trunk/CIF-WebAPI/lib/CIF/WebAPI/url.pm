@@ -4,8 +4,8 @@ use base 'CIF::WebAPI';
 use strict;
 use warnings;
 
-use CIF::Message::URL;
-use CIF::WebAPI::url::url;
+use CIF::Message::Url;
+use CIF::WebAPI::url::address;
 
 sub mapIndex {
     my $r = shift;
@@ -36,30 +36,18 @@ sub generateFeed {
 
 sub GET {
     my ($self, $request, $response) = @_;
-
-    my $detecttime = DateTime->from_epoch(epoch => (time() - (84600 * 30)));
-    my @recs = CIF::Message::URL->search_feed($detecttime,10000);
-    return generateFeed($response,@recs);
+    return generateFeed($response,$self->SUPER::GET($request,$response));
 }
 
 sub buildNext {
-    my ($self,$frag,$req) = @_;
+    my ($self,$frag,$req) = @_;    
 
-    my $subh;
-    for(lc($frag)){
-        if(/^(cache|malware|phishing|searches)$/){
-            my $mod = 'CIF::WebAPI::urls::'.$frag;
-            eval "require $mod";
-            if($@){
-                return Apache2::Const::FORBIDDEN;
-            }
-            return $mod->new($self);
-            last;
-        }
-        $subh = CIF::WebAPI::urls::url->new($self);
-        $subh->{'url'} = $frag;
+    if(lc($frag) =~ /^([a-f0-9]{32})|([a-f0-9]{40})$/){
+        my $subh = CIF::WebAPI::url::address->new($self);
+        $subh->{'address'} = lc($frag);
         return $subh;
     }
+    return $self->SUPER::buildNext($frag,$req);
 }
 
 1;

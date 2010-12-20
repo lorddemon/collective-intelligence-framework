@@ -11,12 +11,14 @@ use Regexp::Common::net::CIDR;
 sub GET {
     my ($self, $request, $response) = @_;
 
+    my $maxresults = $request->{'r'}->param('maxresults') || $request->dir_config->{'CIFFeedResultsDefault'} || 10000;
     my $arg = $self->address();
+    my $apikey = $request->{'r'}->param('apikey');
     my @recs;
     if($arg =~ /^$RE{net}{IPv4}/){
-        @recs = CIF::Message::Infrastructure->lookup($arg);
+        @recs = CIF::Message::Infrastructure->lookup($arg,$apikey,$maxresults);
     } elsif($arg =~ /^AS(\d+)/){
-        @recs = CIF::Message::Infrastructure->lookup($1,5000);
+        @recs = CIF::Message::Infrastructure->lookup($1,$apikey,$maxresults);
     } else {
         return Apache2::Const::HTTP_BAD_REQUEST;
     }

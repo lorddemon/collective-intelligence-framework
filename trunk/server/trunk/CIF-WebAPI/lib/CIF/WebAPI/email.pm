@@ -1,12 +1,12 @@
-package CIF::WebAPI::emails;
+package CIF::WebAPI::email;
 use base 'CIF::WebAPI';
 
 use strict;
 use warnings;
 
 use CIF::Message::Email;
-use CIF::WebAPI::emails::email;
-use CIF::WebAPI::emails::cache;
+use CIF::WebAPI::email::email;
+use CIF::WebAPI::email::cache;
 
 sub mapIndex {
     my $r = shift;
@@ -53,13 +53,13 @@ sub GET {
 sub buildNext {
     my ($self,$frag,$req) = @_;
 
-    if(lc($frag) eq 'cache'){
-        return CIF::WebAPI::emails::cache->new($self);
+    if(uc($frag) =~ /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/){
+        my $subh = CIF::WebAPI::email::email->new($self);
+        $subh->{'address'} = $frag;
+        return $subh;
+    } else {
+        return $self->SUPER::buildNext($frag,$req);
     }
-
-    my $subh = CIF::WebAPI::emails::email->new($self);
-    $subh->{'address'} = $frag;
-    return $subh;
 }
 
 1;
