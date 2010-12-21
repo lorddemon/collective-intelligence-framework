@@ -1,5 +1,5 @@
-package CIF::Message::URLSearch;
-use base 'CIF::Message::URL';
+package CIF::Message::UrlSearch;
+use base 'CIF::Message::Url';
 
 use strict;
 use warnings;

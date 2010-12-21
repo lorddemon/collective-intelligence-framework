@@ -1,5 +1,5 @@
-package CIF::Message::URLPhishing;
-use base 'CIF::Message::URL';
+package CIF::Message::UrlPhishing;
+use base 'CIF::Message::Url';
 
 use strict;
 use warnings;

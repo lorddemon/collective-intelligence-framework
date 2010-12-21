@@ -1,4 +1,4 @@
-package CIF::Message::URL;
+package CIF::Message::Url;
 use base 'CIF::DBI';
 
 use strict;
