@@ -1,21 +1,21 @@
-package CIF::Message::URLSimple;
-use base 'CIF::Message::URL';
+package CIF::Message::UrlSimple;
+use base 'CIF::Message::Url';
 
 use strict;
 use warnings;
 
-use CIF::Message::URLMalware;
-use CIF::Message::URLPhishing;
+use CIF::Message::UrlMalware;
+use CIF::Message::UrlPhishing;
 
 sub insert {
     my $self = shift;
     my $info = {%{+shift}};
 
-    my $bucket = 'CIF::Message::URLMalware';
+    my $bucket = 'CIF::Message::UrlMalware';
     my $impact = 'malware url';
     my $description = $info->{'description'};
     if($description =~ /phish/){
-        $bucket = 'CIF::Message::URLPhishing';
+        $bucket = 'CIF::Message::UrlPhishing';
         $impact = 'phishing url';
     }
 

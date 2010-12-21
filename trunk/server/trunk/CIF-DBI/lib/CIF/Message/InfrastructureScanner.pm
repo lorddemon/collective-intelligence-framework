@@ -1,4 +1,4 @@
-package CIF::Message::InfrastructureScanner;
+package CIF::Message::InfrastructureScan;
 use base 'CIF::Message::Infrastructure';
 
 use strict;

@@ -1,4 +1,4 @@
-package CIF::Message::FeedDomainBotnet
+package CIF::Message::FeedDomainBotnet;
 use base 'CIF::Message::FeedDomain';
 
 use strict;
