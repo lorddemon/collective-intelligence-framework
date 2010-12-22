@@ -7,12 +7,17 @@ use Getopt::Std;
 use CIF::Client;
 
 my %opts;
-getopt('hq:c:', \%opts);
+getopt('hf:q:c:s:r:', \%opts);
 die(usage()) if($opts{'h'});
 
-my $query = $opts{'q'} || shift || die(usage());
+my $query = $opts{'q'} || shift;
 my $debug = ($opts{'d'}) ? 1 : 0;
 my $c = $opts{'c'} || $ENV{'HOME'}.'/.cif';
+my $feed = $opts{'f'};
+my $severity = $opts{'s'};
+my $restriction = $opts{'r'};
+
+die(usage()) if(($feed && $query) || !($feed || $query));
 
 sub usage {
     return <<EOF;
@@ -41,10 +46,10 @@ die($err) unless($client);
 
 my @q = split(/\,/,$query);
 foreach (@q){
-    $client->GET($_);
+    $client->GET($_,$severity,$restriction);
     die('request failed with code: '.$client->responseCode()) unless($client->responseCode == 200);
     my $text = $client->responseContent();
     print "Query: ".$_."\n";
-    print $client->table($text) || print 'no records'."\n";
-    print "\n";
+    $text = $client->table($text) || 'no records'."\n";
+    print $text;
 }
