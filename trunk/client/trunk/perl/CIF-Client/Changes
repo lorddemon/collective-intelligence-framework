@@ -1,5 +1,11 @@
 Revision history for Perl extension CIF::Client.
 
+0.00_03  2010-12-31
+    - updated for use with new CIF::WebAPI
+    - CIF::WebAPI now handles the regex
+    - added transparent gzip layer for use with CIF::WebAPI compression
+    - added ability to modify default ->table() display
+
 0.00_02  2010-11-08
     - updated to be used with CIF::WebAPI
 

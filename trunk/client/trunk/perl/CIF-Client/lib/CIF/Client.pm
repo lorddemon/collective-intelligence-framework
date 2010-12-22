@@ -13,7 +13,8 @@ use Config::Simple;
 use Compress::Zlib;
 use Data::Dumper;
 use Digest::SHA1 qw/sha1_hex/;
-__PACKAGE__->mk_accessors(qw/apikey format/);
+
+__PACKAGE__->mk_accessors(qw/apikey config/);
 
 our $VERSION = '0.00_03';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
@@ -28,7 +29,6 @@ sub new {
     $cfg = $cfg->param(-block => 'client');
 
     my $apikey = $args->{'apikey'} || $cfg->{'apikey'} || return(undef,'missing apikey');
-    my $fmt = $args->{'format'} || $cfg->{'format'} || 'json';
     unless($args->{'host'}){
         $args->{'host'} = $cfg->{'host'} || return(undef,'missing host');
     }
