@@ -10,6 +10,9 @@ WriteMakefile(
         Text::Table     => undef,
         JSON            => undef,
         Getopt::Std     => undef,
+        Compress::Zlib  => 2.030,
+        File::Type      => 0.22,
+        Config::Simple  => 4.59,
     }, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/CIF/Client.pm', # retrieve abstract from module

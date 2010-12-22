@@ -1,11 +1,19 @@
 package CIF::Client;
 use base 'REST::Client';
+use base qw(Class::Accessor);
 
 use 5.008008;
 use strict;
 use warnings;
+
 use JSON;
 use Text::Table;
+use File::Type;
+use Config::Simple;
+use Compress::Zlib;
+use Data::Dumper;
+use Digest::SHA1 qw/sha1_hex/;
+__PACKAGE__->mk_accessors(qw/apikey format/);
 
 our $VERSION = '0.00_03';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
@@ -13,98 +21,89 @@ $VERSION = eval $VERSION;  # see L<perlmodstyle>
 # Preloaded methods go here.
 
 sub new {
-    my ($class,$args) = @_;
+    my $class = shift;
+    my $args = shift;
+
+    my $cfg = Config::Simple->new($args->{'config'}) || return(undef,'missing config file');
+    $cfg = $cfg->param(-block => 'client');
+
+    my $apikey = $args->{'apikey'} || $cfg->{'apikey'} || return(undef,'missing apikey');
+    my $fmt = $args->{'format'} || $cfg->{'format'} || 'json';
+    unless($args->{'host'}){
+        $args->{'host'} = $cfg->{'host'} || return(undef,'missing host');
+    }
+
     my $self = REST::Client->new($args);
     bless($self,$class);
 
-    $self->apikey($args->{'apikey'});
-    $self->format($args->{'format'});
+    $self->{'apikey'} = $apikey;
+    $self->{'config'} = $cfg;
+
     return($self);
 }
 
-sub search {
-    my ($self,$q,$fmt) = @_;
-    $fmt = $self->format() unless($fmt);
+sub GET  {
+    my ($self,$q,$s,$r) = @_;
 
-    my $type = '';
-    for($q){
-        if(/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/){
-            $type = 'infrastructure';
-            last;
-        }
-        if(/\w+@\w+/){
-            $type = 'email';
-            last;
-        }
-        if(/\w+\.\w+/){
-            $type = 'domain';
-            last;
-        }
-        if(/^[a-fA-F0-9]{32,40}$/){
-            $type = 'malware';
-            last;
-        }
-        if(/^url:([a-fA-F0-9]{32,40})$/){
-            $type = 'url';
-            $q = $1;
-            last;
-        }
-        if(/^AS\d+/){
-            $type = 'infrastructure';
-            last;
+    my $rest = '/'.$q.'?apikey='.$self->apikey();
+    $rest .= '&severity='.$s if($s);
+    $rest .= '&restriction='.$r if($r);
+
+    $self->SUPER::GET($rest);
+    my $content = $self->{'_res'}->{'_content'};
+    return unless($content);
+    my $ft = File::Type->new();
+    my $type = $ft->mime_type($content);
+    if($type =~ /gzip/){
+        $content = Compress::Zlib::memGunzip($content);
+        $self->{'_res'}->{'_content'} = $content;
+    }
+    my $text = $self->responseContent();
+    my $json = from_json($content, {utf8 => 1});
+    if(my $r = $json->{'data'}->{'result'}){
+        $type = $ft->mime_type($r);
+        if($type =~ /gzip/){
+            my $sha1 = $json->{'data'}->{'hash_sha1'};
+            die("sha1's don't match, possible data corruption... try again") unless($sha1 eq sha1_hex($r));
+            $r = Compress::Zlib::memGunzip($r);
+            $json->{'data'}->{'result'} = from_json($r);
+            $self->{'_res'}->{'_content'} = to_json($json);
         }
     }
-    $self->type($type);
-    $self->GET('/'.$type.'/'.$q.'?apikey='.$self->apikey());
-}
+}       
 
 sub table {
     my $self = shift;
     my $resp = shift;
-    
-    my $hash = from_json($resp);
-    return undef unless($hash->{'data'}->{'result'});
-    my @a = @{$hash->{'data'}->{'result'}};
-    return('invalid json input') unless($#a > -1);
-    my @cols = (
-        'address',      { is_sep => 1, title => '|', },
-        'detecttime',   { is_sep => 1, title => '|', },
-        'restriction',  { is_sep => 1, title => '|', },
-        'description',  { is_sep => 1, title => '|', },
-        'alternative id'
-    );
 
-    my $table = Text::Table->new(@cols);
+    my $hash = from_json($resp);
+    return 0 unless($hash->{'data'}->{'result'});
+    my @a = @{$hash->{'data'}->{'result'}};
+    return(undef,'invalid json input') unless($#a > -1);
+    my @cols = (
+        'address',
+        'severity',
+        'detecttime',
+        'restriction',
+        'description',
+        'alternativeid'
+    );
+    if(my $c = $self->{'config'}->{'display'}){
+        @cols = @$c;
+    }
+
+    my @header = map { $_, { is_sep => 1, title => '|' } } @cols;
+    pop(@header);
+    my $table = Text::Table->new(@header);
 
     my @sorted = sort { $a->{'detecttime'} cmp $b->{'detecttime'} } @a;
-    foreach (@sorted){
-        $table->load([
-            $_->{'address'} || 'NA',
-            $_->{'detecttime'},
-            $_->{'restriction'},
-            $_->{'description'},
-            $_->{'alternativeid'},
-        ]);
+    foreach my $r (@sorted){
+        $table->load([ map { $r->{$_} } @cols]);
+    }
+    if(my $created = $hash->{'data'}->{'created'}){
+        $table = "Feed Created: ".$created."\n\n".$table;
     }
     return $table;
-}
-
-sub type {
-    my ($self,$v) = @_;
-    $self->{_type} = $v if(defined($v));
-    return($self->{_type});
-}
-
-sub format {
-    my ($self,$v) = @_; 
-    $self->{_format} = $v if(defined($v));
-    return($self->{_format});
-}
-
-sub apikey {
-    my ($self,$v) = @_;
-    $self->{_apikey} = $v if(defined($v));
-    return($self->{_apikey});
 }
 
 1;
