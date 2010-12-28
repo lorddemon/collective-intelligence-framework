@@ -1,56 +1,85 @@
 from restclient import GET
-import re
 import simplejson as json
 from texttable import Texttable
 import os
 import ConfigParser
+import magic
+from base64 import b64decode
+import re
+import cStringIO
+import hashlib
+import gzip
 
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
 class Client:
-    def __init__(self, url, apikey, format=None):
-        self.url = url
-        self.apikey = apikey
+    def __init__(self, **vars):
+        self.host = vars['host']
+        self.apikey = vars['apikey']
+        
+    def GET(self,q,severity=None,restriction=None):
+        s = self.host + '/' + q
+        
+        params={'apikey':self.apikey}
+        if restriction:
+            params['restriction'] = restriction
+        if severity:
+            params['severity'] = severity
 
-    def search(self,q):
-        p_address   = re.compile('^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)')
-        p_email     = re.compile('\w+@\w+')
-        p_domain    = re.compile('\w+\.\w+')
-        p_malware   = re.compile('^[a-fA-F0-9]{32,40}$')
-        p_url       = re.compile('^url:([a-fA-F0-9]{32,40})$')
+        ret = GET(s, params)
+        ret = json.loads(ret)
+        feed = ret['data']['result']
+        hash = hashlib.sha1()
+        hash.update(feed)
+        if hash.hexdigest() != ret['data']['hash_sha1']:
+            print "sha1's don't match, possible data corruption... try again"
+            return
 
-        search_type = {
-            1 == 1                      : 'unknown',
-            p_url.match(q)      != None : 'urls',
-            p_malware.match(q)  != None : 'malware',
-            p_domain.match(q)   != None : 'domains',
-            p_email.match(q)    != None : 'email',
-            p_address.match(q)  != None : 'infrastructure'
-        } [1]
+        feed = b64decode(feed)
+        m = magic.Magic()
+        mime = m.from_buffer(feed)
+        if re.search('gzip',mime):
+            compressedstream = cStringIO.StringIO(feed)
+            gzipper = gzip.GzipFile(fileobj=compressedstream)
+            feed = gzipper.read()
+            ret['data']['result'] = json.loads(feed)
+            ret = json.dumps(ret)
 
-        if (search_type == 'url'):
-            m = p_url.match(q)
-            q = m.group(1)
+        return ret
 
-        s = self.url + '/' + search_type + '/' + q
-        return GET(s, params={'apikey':self.apikey})
+    def getkey(self,key,val):
+        return key[val]
 
     def table(self,j):
         j = json.loads(j)
-        if 'result' not in j['data']
+        if not j['data'].get('result'): 
             return 0
 
+        if j['data'].get('created'):
+            created = j['data'].get('created') 
+        
         j = j['data']['result']
 
-        t = Texttable(max_width=255)
-        cols = ['restriction','impact','description','detecttime']
+        t = Texttable(max_width=0)
+        t.set_deco(Texttable.VLINES)
+        cols = ['restriction','severity']
         if j[0].get('address'):
             cols.append('address')
+
+        cols.extend(['detecttime','description','alternativeid_restriction','alternativeid'])
         t.add_row(cols)
         for key in j:
-            cs = [key['restriction'],key['impact'],key['description'],key['detecttime']]
-            if key.get('address'):
-                cs.append(key['address'])
-            t.add_row(cs)
-        return t.draw()
+            row = []
+            for col in cols:
+                row.append(key[col])
+            t.add_row(row)
+
+        table = t.draw()
+        
+        if created:
+            table = 'feed created: ' + created + "\n\n" + table
+
+        return table
 
 class ClientINI(Client):
     def __init__(self, path=None):
