@@ -10,12 +10,22 @@ import cStringIO
 import hashlib
 import gzip
 
+version = '0.00_04'
+
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
-class Client:
+class Client(object):
     def __init__(self, **vars):
         self.host = vars['host']
         self.apikey = vars['apikey']
+
+        if vars.get('fields'):
+            assert isinstance(vars['fields'],list)
+            self.fields = vars['fields']
+
+    def set_fields(self, **vars):
+        assert isinstance(vars['fields'],list)
+        self.fields = vars['fields']
         
     def GET(self,q,severity=None,restriction=None):
         s = self.host + '/' + q
@@ -47,9 +57,6 @@ class Client:
 
         return ret
 
-    def getkey(self,key,val):
-        return key[val]
-
     def table(self,j):
         j = json.loads(j)
         if not j['data'].get('result'): 
@@ -62,11 +69,15 @@ class Client:
 
         t = Texttable(max_width=0)
         t.set_deco(Texttable.VLINES)
-        cols = ['restriction','severity']
-        if j[0].get('address'):
-            cols.append('address')
 
-        cols.extend(['detecttime','description','alternativeid_restriction','alternativeid'])
+        if hasattr(self,'fields'):
+            cols = self.fields
+        else:
+            cols = ['restriction','severity']
+            if j[0].get('address'):
+                cols.append('address')
+            cols.extend(['detecttime','description','alternativeid_restriction','alternativeid'])
+        
         t.add_row(cols)
         for key in j:
             row = []
@@ -82,7 +93,7 @@ class Client:
         return table
 
 class ClientINI(Client):
-    def __init__(self, path=None):
+    def __init__(self, path=None, fields=None):
         if not path:
             path = os.path.expanduser("~/.cif")
         c = ConfigParser.ConfigParser()
@@ -90,4 +101,6 @@ class ClientINI(Client):
         if not c.has_section('client'):
             raise Exception("Unable to read ~/.cif config file")
         vars = dict(c.items("client"))
+        if fields:
+            vars['fields'] = fields
         Client.__init__(self, **vars)
