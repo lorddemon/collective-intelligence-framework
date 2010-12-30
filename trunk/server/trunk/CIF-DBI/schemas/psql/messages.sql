@@ -1,8 +1,4 @@
-DROP VIEW IF EXISTS v_messages;
-DROP TABLE IF EXISTS messages_structured;
-DROP TABLE IF EXISTS messages_unstructured;
-DROP TABLE IF EXISTS messages_blob;
-DROP TABLE IF EXISTS messages;
+DROP TABLE IF EXISTS messages CASCADE;
 
 CREATE TABLE messages (
     id BIGSERIAL PRIMARY KEY NOT NULL,
@@ -34,13 +30,6 @@ CREATE TABLE messages_unstructured (
     source uuid NOT NULL,
     message text NOT NULL,
     UNIQUE(uuid)
-);
-
-CREATE TABLE messages_blob (
-    id BIGSERIAL PRIMARY KEY NOT NULL,
-    uuid uuid references messages(uuid) on delete cascade not null,
-    message bytea not null,
-    unique(uuid)
 );
 
 CREATE VIEW v_messages AS
