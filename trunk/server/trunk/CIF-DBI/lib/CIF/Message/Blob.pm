@@ -12,6 +12,7 @@ __PACKAGE__->columns(All => qw/id uuid message/);
 __PACKAGE__->columns(Essential => qw/id uuid message/);
 __PACKAGE__->sequence('messages_unstructured_id_seq');
 __PACKAGE__->has_a(uuid => 'CIF::Message');
+__PACKAGE__->data_type(message => {pg_type => DBD::Pg::PG_BYTEA});
 
 sub insert {
     my $self = shift;
@@ -50,3 +51,5 @@ sub insert {
     }
     return($id);
 }
+
+1;
