@@ -1,4 +1,4 @@
-package CIF::WebAPI::url::malware;
+package CIF::WebAPI::url::botnet;
 use base 'CIF::WebAPI';
 
 use strict;
