@@ -19,41 +19,6 @@ use DateTime;
 use DateTime::Format::DateParse;
 use Data::Dumper;
 
-sub POST {
-    my ($self,$req,$resp,%args) = @_;
-    
-    # who's calling me
-    my @bits = split(/\:\:/,ref($self));
-    my $impact = $bits[$#bits];
-    my $type = $bits[$#bits-1];
-    if($type eq 'WebAPI'){
-        return Apache2::Const::FORBIDDEN;
-    }
-
-    # see if we have this implemented
-    my $bucket = 'CIF::WebAPI::'.$type;
-    eval "require $bucket";
-    my $f = '&CIF::WebAPI::'.$type.'::submit';
-    if($@ || !defined($f)){
-        $resp->{'message'} = $@ if($@);
-        return Apache2::Const::FORBIDDEN;
-    }
-
-    my $json;
-    $req->read($json,$req->headers_in->{'Content-Length'});
-    my $h = from_json($json);
-    $h->{'impact'} = $impact;
-
-    my $handle = $bucket->new($self);
-    my ($ret,$err) = $handle->submit(%$h);
-    if($ret){
-        $resp->data->{'result'} = $ret->uuid->id();
-    } else {
-        $resp->{'message'} = 'submission failed: '.$err;
-    }
-    return Apache2::Const::HTTP_OK;
-}
-
 sub isAuth {
     my ($self,$meth,$req) = @_;
     return(1) if($meth eq 'GET');
