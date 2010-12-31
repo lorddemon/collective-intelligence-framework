@@ -67,7 +67,7 @@ sub isAuth {
 }
 
 sub GET {
-    my ($self,$request,$response,@feed) = @_;
+    my ($self,$request,$response) = @_;
 
     unless($request->{'r'}->param('fmt')){
         my $agent = $request->{'r'}->headers_in->{'User-Agent'};
@@ -75,31 +75,9 @@ sub GET {
             $request->requestedFormat('table');
         }
     }
-    my $msg;
-    my $restriction = 'private';
-    if(my $x = $request->{'r'}->param('restriction')){
-        if(my %m = $request->{'r'}->dir_config->get('CIFRestrictionMap')){
-            foreach (keys %m){
-                $x = $_ if(lc($m{$_}) eq lc($x));
-            }
-            $restriction = $x;
-        }
-    }
 
-    my $created = DateTime->from_epoch(epoch => time());
-    if(@feed){
-        my $res;
-        ($res,@feed) = $self->map_restrictions($request,'private',@feed);
-        use CIF::Message::FeedInfrastructure;
-        my $f = CIF::Message::FeedInfrastructure->new();
-        @feed = map { $f->mapIndex($_) } @feed;
-        @{$msg->{'items'}} = @feed;
-        $msg->{'restriction'} = $res;
-    } else {
-    my $severity = 'high';
-    if(my $x = $request->{'r'}->param('severity')){
-        $severity = $x;
-    }
+    my $maxresults = $request->{'r'}->param('maxresults') || $request->dir_config->{'CIFFeedResultsDefault'} || 10000;
+    my $apikey = $request->{'r'}->param('apikey');
 
     # figure out who's calling us
     my @bits    = split(/\:\:/,ref($self));
@@ -109,24 +87,52 @@ sub GET {
         $type = $impact;
         $impact = '';
     }
-
+    
+    my $created = DateTime->from_epoch(epoch => time());
     # see if we have that method
     my $bucket = 'CIF::Message::Feed'.$type.$impact;
     eval "require $bucket";
     if($@){
-        $response->{'message'} = $@ if($@);
+        warn $@;
         return Apache2::Const::FORBIDDEN;
     }
-    
-    my @recs = $bucket->search(severity => $severity, restriction => $restriction, { order_by => 'id DESC', limit => 1 });
-    return Apache2::Const::HTTP_OK if($#recs == -1);
-    ($restriction,@recs) = $self->map_restrictions($request,$restriction,@recs);
-    
-    $msg = $recs[0]->message();
-    my $sha1 = sha1_hex($msg);;
 
-    $response->{'data'}->{'result'}->{'hash_sha1'} = $sha1;
-    $created = DateTime::Format::DateParse->parse_datetime($recs[0]->created());
+    my $msg;
+    if(my $q = $self->{'query'}){
+        my $qbucket = 'CIF::Message::'.$type;
+        eval "require $qbucket";
+        if($@){
+            warn $@;
+            return Apache2::Const::FORBIDDEN;
+        }
+        
+        my @recs = $qbucket->lookup($q,$apikey,$maxresults);
+        unless(@recs){ return Apache2::Const::HTTP_OK; }
+        my $res;
+        @recs = map { $bucket->mapIndex($_) } @recs;
+        ($res,@recs) = $self->map_restrictions($request,'private',@recs);
+        @{$msg->{'items'}} = @recs;
+        $msg->{'restriction'} = $res;
+    } else {
+        my $restriction = $request->{'r'}->param('restriction') || 'private';
+        if($restriction){
+            if(my %m = $request->{'r'}->dir_config->get('CIFRestrictionMap')){
+                foreach (keys %m){
+                    $restriction = $_ if(lc($m{$_}) eq lc($restriction));
+                }
+            }
+        }
+
+        my $severity = $request->{'r'}->param('severity') || 'high';
+
+        my @recs = $bucket->search(severity => $severity, restriction => $restriction, { order_by => 'id DESC', limit => 1 });
+        return Apache2::Const::HTTP_OK if($#recs == -1);
+        
+        ($restriction,@recs) = $self->map_restrictions($request,$restriction,@recs);
+
+        $msg = $recs[0]->message();
+        $response->{'data'}->{'result'}->{'hash_sha1'} = sha1_hex($msg);
+        $created = DateTime::Format::DateParse->parse_datetime($recs[0]->created());
     }
 
     $created = $created->ymd().'T'.$created->hms().'Z';
@@ -142,12 +148,13 @@ sub map_restrictions {
     if(my %m = $req->{'r'}->dir_config->get('CIFRestrictionMap')){
         foreach my $r (keys %m){
             $res = $m{$r} if(lc($res) eq lc($r));
-            # map the restriction classes
-            foreach (@feed){
-                if(lc($_->restriction()) eq lc($r)){
-                    $_->{'restriction'} = $m{$r};
-             }
-            }
+        }
+        foreach (@feed){
+            my $r = lc($_->{'restriction'});
+            my $ar = lc($_->{'alternativeid_restriction'});
+
+            $_->{'restriction'} = $m{$r} if(exists($m{$r}));
+            $_->{'alternativeid_restriction'} = $m{$ar} if(exists($m{$ar}));
         }
     }
     return ($res,@feed);
@@ -163,11 +170,6 @@ sub buildNext {
 
     my $type;
     for($frag){
-        if(/^url:/){
-            $type = 'url';
-            $frag =~ s/^url://;
-            last;
-        }
         if(/^($RE{'net'}{'IPv4'}|AS\d+)/){
             $type = 'infrastructure';
             last;
@@ -189,73 +191,6 @@ sub buildNext {
     my $bucket = 'CIF::WebAPI::'.$type;
     my $h = $bucket->new($self);
     return($h->buildNext($frag,$req));
-}
-
-sub cachedFeed {
-    my ($self,$req,$resp) = @_;
-    my $dir = $req->dir_config->{'CIFCacheDir'};
-    my @bits = split(/\:\:/,ref($self));
-    my $impact = $bits[$#bits-1];
-    my $type = $bits[$#bits-2].'_';
-    if($type eq 'WebAPI_'){
-        $type = $impact;
-        $impact = '';
-    }
-    my $feed = $type.$impact.'.feed';
-    my $file = $dir.'/'.$feed;
-    my $content = '';
-    
-    return Apache2::Const::HTTP_OK unless(-s $file);
-
-    open(F,$dir.'/'.$feed) || return Apache2::Const::SERVER_ERROR;
-    while(<F>){
-        chomp();
-        $content = $_;
-    }
-    close(F);
-    $resp->data->{'result'} = from_json($content);
-    return Apache2::Const::HTTP_OK;
-}
-
-sub aggregateFeed {
-    my $key = shift;
-    my @recs = @_;
-    
-    my $hash;
-    my @feed;
-    foreach (@recs){
-        if(exists($hash->{$_->$key()})){
-            if($_->restriction() eq 'private'){
-                next unless($_->restriction() eq 'need-to-know');
-            }
-        }
-        $hash->{$_->$key()} = $_;
-    }
-    foreach (keys %$hash){
-        my $rec = $hash->{$_};
-        push(@feed, mapIndex($rec));
-    }
-    return(\@feed);
-}
-
-sub mapIndex {
-    my $rec = shift;
-    my $msg = CIF::Message::Structured->retrieve(uuid => $rec->uuid->id());
-    $msg = $msg->message();
-    return {
-        rec         => $rec,
-        restriction => $rec->restriction(),
-        severity    => $rec->severity(),
-        impact      => $rec->impact(),
-        confidence  => $rec->confidence(),
-        description => $rec->description(),
-        detecttime  => $rec->detecttime(),
-        uuid        => $rec->uuid->id(),
-        alternativeid   => $rec->alternativeid(),
-        alternativeid_restriction   => $rec->alternativeid_restriction(),
-        created     => $rec->created(),
-        message     => $msg,
-    };
 }
 
 1;
