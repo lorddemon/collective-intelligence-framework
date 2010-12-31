@@ -1,7 +1,13 @@
 package CIF::WebAPI::Writer::table;
 use strict;
+use warnings;
 
 use Text::Table;
+use JSON;
+use MIME::Base64;
+use Compress::Zlib;
+use Encode qw/encode_utf8/;
+use Data::Dumper;
 
 =head1 NAME
 
@@ -37,21 +43,53 @@ Returns the response as json UTF8 bytes for output.
 sub asBytes{
     my ($self,  $resp ) = @_ ;
     
-    #Shallow unblessed copy of response
-    my @array = @{$resp->{'data'}->{'result'}};
-    my @cols = (
-        'restriction',
-        'asn',
-        'asn_desc',
-        'cidr',
-        'address',
-        'rdata',
-        'portlist',
-        'description',
-        'severity',
-        'detecttime',
-        'created'
-    );
+    return 'no records, check back later' unless($resp->{'data'}->{'result'});
+    my $hash = $resp->{'data'}->{'result'};
+    if($hash->{'hash_sha1'}){
+        $hash->{'feed'} = from_json(uncompress(decode_base64($hash->{'feed'})));
+    }
+    my @array = @{$hash->{'feed'}->{'items'}};
+
+    my @cols;
+    if(my $f = $resp->{'fields'}){
+        @cols = split(/,/,$f);
+    } else {
+        @cols = (
+            'restriction',
+            'asn',
+            'asn_desc',
+            'cidr',
+            'address',
+        );
+        if(exists($array[0]->{'rdata'})){
+            push(@cols,'rdata');
+        } elsif(exists($array[0]->{'url_md5'})){
+            push(@cols,(
+                    'url_md5',
+                    'url_sha1',
+                    'malware_md5',
+                    'malware_sha1'
+                )
+            );
+        } elsif(exists($array[0]->{'hash_md5'})){
+            push(@cols,(
+                    'hash_md5',
+                    'hash_sha1',
+                )
+            );
+        } else {
+            push(@cols,'portlist');
+        }
+        push(@cols,(
+                'description',
+                'severity',
+                'detecttime',
+                'created',
+                'alternativeid_restriction',
+                'alternativeid'
+            )
+        );
+    }
     my @header;
     foreach (@cols){
          push(@header,($_,{ is_sep => 1, title => '|', }));
@@ -60,6 +98,15 @@ sub asBytes{
     my $t = Text::Table->new(@header);
     foreach my $r (@array){
         $t->load([map { $r->{$_} } @cols]);
+    }
+    if(my $c = $hash->{'created'}){
+        $t = 'Feed Created: '.$c."\n\n".$t;
+    }
+    if(my $r = $hash->{'feed'}->{'restriction'}){
+        $t = 'Feed Restriction: '.$r."\n".$t;
+    }
+    if(my $s = $hash->{'feed'}->{'severity'}){
+        $t = 'Feed Severity: '.$s."\n".$t;
     }
     return(Encode::encode_utf8($t));
 }
