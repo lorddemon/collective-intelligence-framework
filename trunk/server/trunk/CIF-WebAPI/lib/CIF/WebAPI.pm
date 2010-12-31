@@ -12,6 +12,12 @@ use CIF::Message::Structured;
 use CIF::WebAPI::APIKey;
 use JSON;
 use Regexp::Common qw/net/;
+use Digest::SHA1 qw/sha1_hex/;
+use Encode qw/decode_utf8/;
+use MIME::Base64;
+use DateTime;
+use DateTime::Format::DateParse;
+use Data::Dumper;
 
 sub POST {
     my ($self,$req,$resp,%args) = @_;
@@ -61,14 +67,38 @@ sub isAuth {
 }
 
 sub GET {
-    my ($self,$request,$response) = @_;
+    my ($self,$request,$response,@feed) = @_;
 
     unless($request->{'r'}->param('fmt')){
         my $agent = $request->{'r'}->headers_in->{'User-Agent'};
-        warn $agent;
         if(lc($agent) =~ /(mozilla|msie|chrome|safari)/){
             $request->requestedFormat('table');
         }
+    }
+    my $msg;
+    my $restriction = 'private';
+    if(my $x = $request->{'r'}->param('restriction')){
+        if(my %m = $request->{'r'}->dir_config->get('CIFRestrictionMap')){
+            foreach (keys %m){
+                $x = $_ if(lc($m{$_}) eq lc($x));
+            }
+            $restriction = $x;
+        }
+    }
+
+    my $created = DateTime->from_epoch(epoch => time());
+    if(@feed){
+        my $res;
+        ($res,@feed) = $self->map_restrictions($request,'private',@feed);
+        use CIF::Message::FeedInfrastructure;
+        my $f = CIF::Message::FeedInfrastructure->new();
+        @feed = map { $f->mapIndex($_) } @feed;
+        @{$msg->{'items'}} = @feed;
+        $msg->{'restriction'} = $res;
+    } else {
+    my $severity = 'high';
+    if(my $x = $request->{'r'}->param('severity')){
+        $severity = $x;
     }
 
     # figure out who's calling us
@@ -81,18 +111,46 @@ sub GET {
     }
 
     # see if we have that method
-    my $bucket = 'CIF::Message::'.$type.$impact;
+    my $bucket = 'CIF::Message::Feed'.$type.$impact;
     eval "require $bucket";
     if($@){
         $response->{'message'} = $@ if($@);
         return Apache2::Const::FORBIDDEN;
     }
     
-    my $maxdays     = $request->{'r'}->param('age') || $request->dir_config->{'CIFFeedAgeDefault'} || 30;
-    my $maxresults  = $request->{'r'}->param('maxresults') || $request->dir_config->{'CIFFeedResultsDefault'} || 10000;
-    my $detecttime  = DateTime->from_epoch(epoch => (time() - (84600 * $maxdays)));
-    my @recs = $bucket->search_feed($detecttime,$maxresults);
-    return(@recs);
+    my @recs = $bucket->search(severity => $severity, restriction => $restriction, { order_by => 'id DESC', limit => 1 });
+    return Apache2::Const::HTTP_OK if($#recs == -1);
+    ($restriction,@recs) = $self->map_restrictions($request,$restriction,@recs);
+    
+    $msg = $recs[0]->message();
+    my $sha1 = sha1_hex($msg);;
+
+    $response->{'data'}->{'result'}->{'hash_sha1'} = $sha1;
+    $created = DateTime::Format::DateParse->parse_datetime($recs[0]->created());
+    }
+
+    $created = $created->ymd().'T'.$created->hms().'Z';
+    $response->{'data'}->{'result'}->{'created'} = $created;
+    $response->{'data'}->{'result'}->{'feed'} = $msg;
+     
+    return Apache2::Const::HTTP_OK;
+}
+
+sub map_restrictions {
+    my ($self,$req,$res,@feed) = @_;
+
+    if(my %m = $req->{'r'}->dir_config->get('CIFRestrictionMap')){
+        foreach my $r (keys %m){
+            $res = $m{$r} if(lc($res) eq lc($r));
+            # map the restriction classes
+            foreach (@feed){
+                if(lc($_->restriction()) eq lc($r)){
+                    $_->{'restriction'} = $m{$r};
+             }
+            }
+        }
+    }
+    return ($res,@feed);
 }
 
 sub buildNext {
