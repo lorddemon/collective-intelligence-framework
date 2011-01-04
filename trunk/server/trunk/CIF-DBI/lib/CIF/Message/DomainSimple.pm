@@ -74,9 +74,8 @@ sub _insert {
 
     $hash{'address'} = $r->{'name'};
     my $rdata = $r->{'address'} || $r->{'cname'} || $r->{'ptrdname'} || $r->{'nsdname'} || $r->{'exchange'};
-    my ($as,$network,$ccode,$rir,$date,$as_desc);
     if($rdata && $rdata =~ /^$RE{net}{IPv4}/){
-        ($as,$network,$ccode,$rir,$date,$as_desc) = CIF::Message::Infrastructure::asninfo($rdata);
+        ($hash{'asn'},$hash{'cidr'},$hash{'cc'},$hash{'rir'},$hash{'date'},$hash{'as_desc'}) = CIF::Message::Infrastructure::asninfo($rdata);
     } else {
         next if(CIF::Message::Domain::isWhitelisted($rdata));
     }
