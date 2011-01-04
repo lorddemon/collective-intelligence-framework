@@ -8,6 +8,7 @@ use CIF::Message::IODEF;
 use Regexp::Common qw/net/;
 use Regexp::Common::net::CIDR;
 use DateTime::Format::DateParse;
+use Data::Dumper;
 use DateTime;
 
 __PACKAGE__->table('domains');
@@ -172,48 +173,17 @@ sub getrdata {
 
     my @rdata;
     my $q = $res->search($d);
-    if($q){
-        foreach my $rr ($q->answer()){
-            my $address;
-            for($rr->type()){
-                if(/^PTR$/){
-                    $address = $rr->ptrdname();
-                    push(@rdata,{ address => $rr->ptrdname(), type => $rr->type(), class => $rr->class(), ttl => $rr->ttl });
-                    last;
-                }
-                if(/^A/){
-                    push(@rdata,{ address => $rr->address(), type => $rr->type(), class => $rr->class(), ttl => $rr->ttl });
-                    last;
-                }
-                if(/^CNAME$/){
-                    push(@rdata,{ address => $rr->cname(), type => $rr->type(), class => $rr->class(), ttl => $rr->ttl });
-                    my $q2 = $res->search($rr->cname());
-                    foreach my $rrr (grep { $_->type() eq 'A' } $q2->answer()){
-                        push(@rdata,{ cname => $rr->cname(), address => $rrr->address(), type => 'A', class => $rrr->class(), ttl => $rr->ttl()});
-                    }
-                    last;
-                }
-            }
-        }
-    }
+    push(@rdata,$q->answer()) if($q);
 
-    # snag the nameservers
     $q = $res->query($d,'NS');
-    if($q){
-        foreach my $rr (grep { $_->type eq 'NS' } $q->answer()){
-            my $q2 = $res->search($rr->nsdname());
-            if($q2){
-                foreach my $rrr ( grep { $_->type eq 'A' } $q2->answer()){
-                    my $address = ($rr->type() eq 'CNAME') ? $rrr->cname() : $rrr->address();
-                    push(@rdata,{ nameserver => $rr->nsdname(), address => $address, type => $rrr->type(), class => $rrr->class(), ttl => $rrr->ttl });
-                }
-            }
-            push(@rdata,{ address => $rr->nsdname(), type => 'NS', class => 'IN', ttl => $rr->ttl() });
-        }
-    }
+    push(@rdata,$q->answer()) if($q);
+
+
+    $q = $res->query($d,'MX');
+    push(@rdata,$q->answer()) if($q);
 
     if($#rdata == -1){
-        push(@rdata, { address => undef, type => 'A', class => 'IN', ttl => undef });
+        push(@rdata, { name => $d, address => undef, type => 'A', class => 'IN', ttl => undef });
     }
 
     return(@rdata);
@@ -222,8 +192,14 @@ sub getrdata {
 sub lookup {
     my ($self,$address,$apikey,$limit) = @_;
     $limit = 5000 unless($limit);
-    my @recs = $self->search_by_address('%'.$address.'%',$limit);
+    my @recs;
+    if($address =~ /^$RE{'net'}{'IPv4'}/){
+        @recs = $self->search_rdata($address,$limit);
+    } else {
+        @recs = $self->search_by_address('%'.$address.'%',$limit);
+    }
 
+    my $t = $self->table();
     $self->table('domains_search');
     my $source = CIF::Message::genMessageUUID('api',$apikey);
     my $asn;
@@ -238,28 +214,72 @@ sub lookup {
         description => $description,
         detecttime  => $dt,
     });
-    $self->table('domains');
+    $self->table($t);
+    return @recs;
+}
+
+sub isWhitelisted {
+    my $self = shift;
+    my $a = shift;
+
+    return undef unless($a);
+
+    my $sql = '';
+
+    ## TODO -- do this by my $parts = split(/\./,$a); foreach ....
+    for($a){
+        if(/([a-zA-Z0-9-]+\.[a-zA-Z]{2,4})$/){
+            $sql .= qq{address LIKE '%$1'};
+        }
+        if(/((?:[a-zA-Z0-9-]+\.){2,2}[a-zA-Z]{2,4})$/){
+            $sql .= qq{ OR address LIKE '%$1'};
+        }
+        if(/((?:[a-zA-Z0-9-]+\.){3,3}[a-zA-Z]{2,4})$/){
+            $sql .= qq{ OR address LIKE '%$1'};
+        }
+        if(/((?:[a-zA-Z0-9-]+\.){4,4}[a-zA-Z]{2,4})$/){
+            $sql .= qq{ OR address LIKE '%$1'};
+        }
+
+    }
+    $sql .= qq{\nORDER BY detecttime DESC, created DESC, id DESC};
+    my $t = $self->table();
+    $self->table('domains_whitelist');
+    my @recs = $self->retrieve_from_sql($sql);
+    $self->table($t);
     return @recs;
 }
 
 __PACKAGE__->set_sql('by_address' => qq{
-    SELECT * 
-    FROM __TABLE__
+    SELECT * FROM __TABLE__
     WHERE lower(address) LIKE lower(?)
-    AND NOT EXISTS (
-        SELECT lower(address) FROM domains_whitelist WHERE lower(__TABLE__.address) = lower(domains_whitelist.address)
-    )
     LIMIT ?
 });
 
-__PACKAGE__->set_sql('feed' => qq{
-    SELECT *
-    FROM __TABLE__
+__PACKAGE__->set_sql('by_rdata' => qq{
+    SELECT * FROM __TABLE__
+    WHERE lower(rdata) LIKE lower(?)
+    ORDER BY detecttime DESC, created DESC, id DESC,
+    LIMIT ?
+});
+
+sub search_feed {
+    my ($self,$detecttime,$limit) = @_;
+    my @recs = $self->search__feed($detecttime,$limit);
+    my @feed;
+    foreach (@recs){
+        my @whitelisted = $self->isWhitelisted($_->address());
+        push(@feed,$_) unless($#whitelisted > -1);
+    }
+    return @feed;
+}
+
+__PACKAGE__->set_sql('_feed' => qq{
+    SELECT * FROM __TABLE__
     WHERE detecttime >= ?
-    AND impact != 'search'
-    AND type != 'NS'
-    AND lower(impact) NOT LIKE '%passive dns%'
-    AND lower(impact) NOT LIKE '%whitelist%'
+    AND NOT EXISTS (
+        SELECT address FROM domains_whitelist WHERE __TABLE__.address = domains_whitelist.address 
+    )
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });
