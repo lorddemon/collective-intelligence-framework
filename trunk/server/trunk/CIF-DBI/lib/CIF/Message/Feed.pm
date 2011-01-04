@@ -7,10 +7,9 @@ use warnings;
 use DBD::Pg;
 
 __PACKAGE__->table('feeds');
-__PACKAGE__->columns(All => qw/id uuid description source hash_sha1 signature impact severity restriction created message/);
-__PACKAGE__->data_type(message => {pg_type => DBD::Pg::PG_BYTEA});
+__PACKAGE__->columns(All => qw/id uuid description source hash_sha1 signature impact severity restriction detecttime created message/);
 
-use CIF::Message::Blob;
+use CIF::Message::Unstructured;
 
 sub insert {
     my $self = shift;
@@ -20,7 +19,7 @@ sub insert {
         $info->{'source'} = CIF::Message::genSourceUUID($info->{'source'});
     };
 
-    my $bid = CIF::Message::Blob->insert(
+    my $bid = CIF::Message::Unstructured->insert(
         $info,
     );
     delete($info->{'format'});
