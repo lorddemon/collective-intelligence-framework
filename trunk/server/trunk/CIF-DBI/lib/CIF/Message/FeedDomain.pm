@@ -22,6 +22,7 @@ sub mapIndex {
         ttl         => $r->ttl(),
         class       => $r->class(),
         rdata       => $r->rdata(),
+        type        => $r->type(),
     };
 }
 
