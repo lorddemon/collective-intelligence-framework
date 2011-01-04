@@ -6,12 +6,12 @@ use warnings;
 
 use CIF::Message::DomainWhitelist;
 use CIF::Message::Infrastructure;
-use CIF::Message::InfrastructureWhitelist;
 use CIF::Message::InfrastructureSimple;
 use CIF::Message::DomainMalware;
 use CIF::Message::DomainBotnet;
 use CIF::Message::DomainFastflux;
 use CIF::Message::DomainNameserver;
+use Data::Dumper;
 
 use Regexp::Common qw/net/;
 use Regexp::Common::net::CIDR;
@@ -21,7 +21,7 @@ sub insert {
     my $info = {%{+shift}};
 
     my $domain = $info->{'address'};
-    return (undef,'invalid address: whitelisted') if(CIF::Message::DomainWhitelist::isWhitelisted($domain));
+    return (undef,'invalid address: whitelisted') if(CIF::Message::Domain::isWhitelisted($domain));
 
     my @ids;
     my @results = CIF::Message::Domain::getrdata($info->{'nsres'},$domain);
@@ -70,7 +70,7 @@ sub insert {
         if($rdata && $rdata =~ /^$RE{net}{IPv4}/){
             ($as,$network,$ccode,$rir,$date,$as_desc) = CIF::Message::Infrastructure::asninfo($rdata);
         } else {
-            next if(CIF::Message::DomainWhitelist::isWhitelisted($rdata));
+            next if(CIF::Message::Domain::isWhitelisted($rdata));
         }
 
         my ($id,$err) = $bucket->insert({
@@ -103,7 +103,7 @@ sub insert {
         next if($r->{'type'} eq 'CNAME');
         next unless($rdata && $rdata =~ /^$RE{net}{IPv4}/);
         next if(CIF::Message::Infrastructure::isPrivateAddress($rdata));
-        next if(CIF::Message::InfrastructureWhitelist::isWhitelisted($rdata));
+        next if(CIF::Message::Infrastructure::isWhitelisted($rdata));
         CIF::Message::InfrastructureSimple->insert({
             relatedid   => $id->uuid(),
             address     => $rdata,
