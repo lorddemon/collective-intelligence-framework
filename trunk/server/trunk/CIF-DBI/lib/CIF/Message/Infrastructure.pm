@@ -54,7 +54,7 @@ sub asninfo {
 }
 
 my $tests = {
-    'severity'      => qr/^(low|medium|high)$/,
+    'severity'      => qr/^(low|medium|high||)$/,
     'address'       => qr/^$RE{'net'}{'IPv4'}/,
     'confidence'    => qr/\d+/,
 };
@@ -194,13 +194,13 @@ sub toIODEF {
 sub lookup {
     my ($self,$address,$apikey,$limit) = @_;
     $limit = 5000 unless($limit);
-    my $source = CIF::Message::genMessageUUID('api',$apikey);
+    #my $source = CIF::Message::genSourceUUID('api',$apikey);
     my $asn;
     my $description = 'search '.$address;
     if($address !~ /^$RE{net}{IPv4}/){
         $asn = $address;
+        $asn =~ s/^AS//;
         $address = '0/0';
-        $description = 'search AS'.$asn;
     }
     my $dt = DateTime->from_epoch(epoch => time());
     $dt = $dt->ymd().'T'.$dt->hour().':00:00Z';
@@ -211,34 +211,60 @@ sub lookup {
     } else {
         @recs = $self->search_by_address($address,$address,$limit);
     }
+    my $t = $self->table();
     $self->table('infrastructure_search');
     my $sid = $self->insert({
         address => $address,
         asn     => $asn,
         impact  => 'search',
-        source  => $source,
+        source  => 'api'.$apikey,
         description => $description,
         detecttime  => $dt,
     });
-    $self->table('infrastructure');
+    $self->table($t);
     return @recs;
 }
 
+sub isWhitelisted {
+    my $self = shift;
+    my $a = shift;
+
+    return undef unless($a);
+
+    my $sql = qq{
+        family(address) = 4 AND masklen(address) < 32 AND '$a' <<= address 
+        ORDER BY detecttime DESC, created DESC, id DESC
+    };
+
+    my $t = $self->table();
+    $self->table('infrastructure_whitelist');
+    my @ret = $self->retrieve_from_sql($sql);
+    $self->table($t);
+    return @ret;
+}
+
+sub search_feed {
+    my ($self,$detecttime,$limit) = @_;
+    my @recs = $self->search__feed($detecttime,$limit);
+    my @feed;
+    foreach (@recs){
+        my @white = $self->isWhitelisted($_->address());
+        push(@feed,$_) unless($#white > -1);
+    }
+    return @feed;
+}
+        
 __PACKAGE__->set_sql('by_address' => qq{
     SELECT * FROM __TABLE__
-    WHERE (address >>= ? OR address <<= ?)
-    AND address != '0/0'
-    AND NOT EXISTS (
-        SELECT address from infrastructure_whitelist WHERE __TABLE__.address = infrastructure_whitelist.address
-    )
+    WHERE address != '0/0'
+    AND (address >>= ? OR address <<= ?)
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });
 
-__PACKAGE__->set_sql('feed' => qq{
+__PACKAGE__->set_sql('_feed' => qq{
     SELECT * FROM __TABLE__
     WHERE detecttime >= ?
-    AND impact NOT LIKE 'search'
     AND NOT EXISTS (
         SELECT address FROM infrastructure_whitelist WHERE __TABLE__.address = infrastructure_whitelist.address
     )
