@@ -22,6 +22,7 @@ sub insert {
     die('source must be a vaild v3 uuid') unless(CIF::Message::isUUID($source));
 
     my $uuid = CIF::Message::genMessageUUID($source,$msg);
+    use Data::Dumper;
 
     my $mid = CIF::Message->insert({
         uuid        => $uuid,
