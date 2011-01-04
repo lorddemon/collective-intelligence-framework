@@ -10,7 +10,7 @@ use CIF::Message::InfrastructureBotnet;
 use CIF::Message::InfrastructureMalware;
 use CIF::Message::InfrastructureNetwork;
 use CIF::Message::InfrastructureSpam;
-use CIF::Message::InfrastructureScanner;
+use CIF::Message::InfrastructureScan;
 use CIF::Message::InfrastructurePhishing;
 use CIF::Message::InfrastructureSuspicious;
 
@@ -22,7 +22,7 @@ sub insert {
     my $info = {%{+shift}};
 
     return (undef,'invaild address: private address') if(CIF::Message::Infrastructure::isPrivateAddress($info->{'address'}));
-    return (undef,'invalid address: whitelisted address') if(CIF::Message::InfrastructureWhitelist::isWhitelisted($info->{'address'}));
+    return (undef,'invalid address: whitelisted address') if(CIF::Message::Infrastructure::isWhitelisted($info->{'address'}));
 
     my ($as,$network,$ccode,$rir,$date,$as_desc) = CIF::Message::Infrastructure::asninfo($info->{'address'});
 
@@ -43,7 +43,7 @@ sub insert {
             last;
         }
         if(/scanner/){
-            $bucket = 'CIF::Message::InfrastructureScanner';
+            $bucket = 'CIF::Message::InfrastructureScan';
             last;
         }
         if(/spammer/){
@@ -56,6 +56,10 @@ sub insert {
         }
         if(/phish/){
             $bucket = 'CIF::Message::InfrastructurePhishing';
+            last;
+        }
+        if(/whitelist/){
+            $bucket = 'CIF::Message::InfrastructureWhitelist';
             last;
         }
         $bucket = 'CIF::Message::InfrastructureSuspicious';
