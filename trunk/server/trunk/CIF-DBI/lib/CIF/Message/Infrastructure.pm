@@ -199,7 +199,7 @@ sub lookup {
     my $description = 'search '.$address;
     if($address !~ /^$RE{net}{IPv4}/){
         $asn = $address;
-        $asn =~ s/^AS//;
+        $asn =~ s/^(AS|as)//;
         $address = '0/0';
     }
     my $dt = DateTime->from_epoch(epoch => time());
