@@ -8,11 +8,12 @@ use warnings;
 
 use JSON;
 use Text::Table;
-use File::Type;
 use Config::Simple;
 use Compress::Zlib;
 use Data::Dumper;
+use Encode qw/decode_utf8/;
 use Digest::SHA1 qw/sha1_hex/;
+use MIME::Base64;
 
 __PACKAGE__->mk_accessors(qw/apikey config/);
 
@@ -38,6 +39,10 @@ sub new {
 
     $self->{'apikey'} = $apikey;
     $self->{'config'} = $cfg;
+    
+    if($args->{'fields'}){
+        @{$self->{'fields'}} = split(/,/,$args->{'fields'}); 
+    }
 
     return($self);
 }
@@ -52,23 +57,15 @@ sub GET  {
     $self->SUPER::GET($rest);
     my $content = $self->{'_res'}->{'_content'};
     return unless($content);
-    my $ft = File::Type->new();
-    my $type = $ft->mime_type($content);
-    if($type =~ /gzip/){
-        $content = Compress::Zlib::memGunzip($content);
-        $self->{'_res'}->{'_content'} = $content;
-    }
+    return unless($self->responseCode == 200);
     my $text = $self->responseContent();
     my $json = from_json($content, {utf8 => 1});
-    if(my $r = $json->{'data'}->{'result'}){
-        $type = $ft->mime_type($r);
-        if($type =~ /gzip/){
-            my $sha1 = $json->{'data'}->{'hash_sha1'};
-            die("sha1's don't match, possible data corruption... try again") unless($sha1 eq sha1_hex($r));
-            $r = Compress::Zlib::memGunzip($r);
-            $json->{'data'}->{'result'} = from_json($r);
-            $self->{'_res'}->{'_content'} = to_json($json);
-        }
+    if(my $sha1 = $json->{'data'}->{'result'}->{'hash_sha1'}){
+        my $r = $json->{'data'}->{'result'}->{'feed'};
+        die("sha1's don't match, possible data corruption... try again") unless($sha1 eq sha1_hex($r));
+        $r = uncompress(decode_base64($r));
+        $json->{'data'}->{'result'}->{'feed'} = from_json($r);
+        $self->{'_res'}->{'_content'} = to_json($json);
     }
 }       
 
@@ -78,16 +75,23 @@ sub table {
 
     my $hash = from_json($resp);
     return 0 unless($hash->{'data'}->{'result'});
-    my @a = @{$hash->{'data'}->{'result'}};
+    $hash = $hash->{'data'}->{'result'};
+    my $created = $hash->{'created'};
+    my $feedid = $hash->{'id'};
+    my @a = @{$hash->{'feed'}->{'items'}};
     return(undef,'invalid json input') unless($#a > -1);
     my @cols = (
-        'address',
-        'severity',
-        'detecttime',
         'restriction',
+        'severity',
+        'address',
+        'detecttime',
         'description',
+        'alternativeid_restriction',
         'alternativeid'
     );
+    if($self->{'fields'}){
+        @cols = @{$self->{'fields'}};
+    }
     if(my $c = $self->{'config'}->{'display'}){
         @cols = @$c;
     }
@@ -100,10 +104,19 @@ sub table {
     foreach my $r (@sorted){
         $table->load([ map { $r->{$_} } @cols]);
     }
-    if(my $created = $hash->{'data'}->{'created'}){
+    if($created){
         $table = "Feed Created: ".$created."\n\n".$table;
     }
-    return $table;
+    if(my $r = $hash->{'feed'}->{'restriction'}){
+        $table = "Feed Restriction: ".$r."\n".$table;
+    }
+    if(my $s = $hash->{'feed'}->{'severity'}){
+        $table = 'Feed Severity: '.$s."\n".$table;
+    }
+    if($feedid){
+        $table = 'Feed Id: '.$feedid."\n".$table;
+    }
+    return "\n".$table;
 }
 
 1;
