@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS emails;
-CREATE TABLE emails (
+DROP TABLE IF EXISTS email CASCADE;
+CREATE TABLE email (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     uuid uuid REFERENCES messages(uuid) ON DELETE CASCADE NOT NULL,
     description text,
@@ -7,11 +7,11 @@ CREATE TABLE emails (
     source uuid,
     impact varchar(140),
     confidence real,
-    severity varchar(6) CHECK (severity IN ('low','medium','high')),
-    restriction VARCHAR(16) CHECK (restriction IN ('default','private','need-to-know','public')) DEFAULT 'private' NOT NULL,
+    severity severity,
+    restriction restriction not null default 'private',
     alternativeid text,
-    alternativeid_restriction VARCHAR(16) CHECK (restriction IN ('default','private','need-to-know','public')) DEFAULT 'private' NOT NULL,
-    detecttime timestamp with time zone,
+    alternativeid_restriction restriction not null default 'private',
+    detecttime timestamp with time zone DEFAULT NOW(),
     created timestamp with time zone DEFAULT NOW(),
     UNIQUE (uuid)
 );

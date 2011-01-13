@@ -1,39 +1,41 @@
-DROP TABLE IF EXISTS messages CASCADE;
+DROP TABLE IF EXISTS message CASCADE;
+CREATE TYPE severity AS ENUM ('low','medium','high');
+CREATE TYPE restriction AS ENUM ('public','need-to-know','private','default');
 
-CREATE TABLE messages (
+CREATE TABLE message (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     uuid uuid NOT NULL,
     source uuid NOT NULL,
     type VARCHAR(16) not null,
     format VARCHAR(32), -- IODEF, MetaSharing, IRC, Email, etc...
     confidence REAL,
-    severity VARCHAR(6) CHECK (severity IN ('low','medium','high')),
+    severity severity,
     description text,
     impact VARCHAR(140),
-    restriction VARCHAR(16) CHECK (restriction IN ('default','private','need-to-know','public')) DEFAULT 'private' NOT NULL,
+    restriction restriction not null default 'private',
     detecttime timestamp with time zone DEFAULT NOW(),
     created timestamp with time zone DEFAULT NOW(),
     UNIQUE (uuid)
 );
 
-CREATE TABLE messages_structured (
+CREATE TABLE message_structured (
     id BIGSERIAL PRIMARY KEY NOT NULL,
-    uuid uuid REFERENCES messages (uuid) ON DELETE CASCADE NOT NULL,
+    uuid uuid REFERENCES message (uuid) ON DELETE CASCADE NOT NULL,
     source uuid NOT NULL,
     message xml,
     UNIQUE(uuid)
 );
 
-CREATE TABLE messages_unstructured (
+CREATE TABLE message_unstructured (
     id BIGSERIAL PRIMARY KEY NOT NULL,
-    uuid uuid REFERENCES messages (uuid) ON DELETE CASCADE NOT NULL,
+    uuid uuid REFERENCES message (uuid) ON DELETE CASCADE NOT NULL,
     source uuid NOT NULL,
     message text NOT NULL,
     UNIQUE(uuid)
 );
 
-CREATE VIEW v_messages AS
-SELECT messages.*,messages_unstructured.message as unstructured, messages_structured.message as structured
-FROM messages 
-LEFT JOIN messages_unstructured ON (messages_unstructured.uuid = messages.uuid AND messages_unstructured.source = messages.source)
-LEFT JOIN messages_structured ON (messages_structured.uuid = messages.uuid AND messages_structured.source = messages.source);
+CREATE VIEW v_message AS
+SELECT message.*,message_unstructured.message as unstructured, message_structured.message as structured
+FROM message 
+LEFT JOIN message_unstructured ON (message_unstructured.uuid = message.uuid AND message_unstructured.source = message.source)
+LEFT JOIN message_structured ON (message_structured.uuid = message.uuid AND message_structured.source = message.source);
