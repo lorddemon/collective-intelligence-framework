@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS asn;
+DROP TABLE IF EXISTS asn CASCADE;
 
 CREATE TABLE asn (
     id BIGSERIAL PRIMARY KEY NOT NULL,
@@ -10,8 +10,8 @@ CREATE TABLE asn (
     rir varchar(10),
     confidence REAL CHECK (confidence >= 0.0 AND 10.0 >= confidence),
     source uuid NOT NULL,
-    severity VARCHAR(6) CHECK (severity IN ('low','medium','high')),
-    restriction VARCHAR(16) CHECK (restriction IN ('default','private','need-to-know','public')) DEFAULT 'private' NOT NULL,
+    severity severity,
+    restriction restriction not null default 'private',
     whois text,
     detecttime timestamp with time zone,
     created timestamp with time zone DEFAULT NOW()

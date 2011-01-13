@@ -1,111 +1,131 @@
-DROP TABLE IF EXISTS feeds CASCADE;
-CREATE TABLE feeds (
+DROP TABLE IF EXISTS feed CASCADE;
+CREATE TABLE feed (
     id BIGSERIAL PRIMARY KEY NOT NULL,
-    uuid uuid NOT NULL REFERENCES messages(uuid) ON DELETE CASCADE,
+    uuid uuid NOT NULL REFERENCES message(uuid) ON DELETE CASCADE,
     description text default 'feed',
     source uuid,
     hash_sha1 varchar(40),
     signature text,
     impact VARCHAR(140) default 'feed',
-    severity VARCHAR(6) CHECK (severity IN ('low','medium','high')),
-    restriction VARCHAR(16) CHECK (restriction IN ('default','private','need-to-know','public')) DEFAULT 'private' NOT NULL,
+    severity severity,
+    restriction restriction not null default 'private',
+    detecttime timestamp with time zone default NOW(),
     created timestamp with time zone DEFAULT NOW(),
-    message bytea not null,
+    message text not null,
     UNIQUE (uuid)
 );
 
-CREATE TABLE feeds_infrastructure () INHERITS (feeds);
-ALTER TABLE feeds_infrastructure ADD PRIMARY KEY (id);
-ALTER TABLE feeds_infrastructure ADD CONSTRAINT feeds_infrastructure_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_infrastructure ADD UNIQUE(uuid);
+CREATE TABLE feed_infrastructure () INHERITS (feed);
+ALTER TABLE feed_infrastructure ADD PRIMARY KEY (id);
+ALTER TABLE feed_infrastructure ADD CONSTRAINT feed_infrastructure_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_infrastructure ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_infrastructure_botnet () INHERITS (feeds);
-ALTER TABLE feeds_infrastructure_botnet ADD PRIMARY KEY (id);
-ALTER TABLE feeds_infrastructure_botnet ADD CONSTRAINT feeds_infrastructure_botnet_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_infrastructure_botnet ADD UNIQUE(uuid);
+CREATE TABLE feed_infrastructure_botnet () INHERITS (feed);
+ALTER TABLE feed_infrastructure_botnet ADD PRIMARY KEY (id);
+ALTER TABLE feed_infrastructure_botnet ADD CONSTRAINT feed_infrastructure_botnet_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_infrastructure_botnet ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_infrastructure_malware () INHERITS (feeds);
-ALTER TABLE feeds_infrastructure_malware ADD PRIMARY KEY (id);
-ALTER TABLE feeds_infrastructure_malware ADD CONSTRAINT feeds_infrastructure_malware_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_infrastructure_malware ADD UNIQUE(uuid);
+CREATE TABLE feed_infrastructure_malware () INHERITS (feed);
+ALTER TABLE feed_infrastructure_malware ADD PRIMARY KEY (id);
+ALTER TABLE feed_infrastructure_malware ADD CONSTRAINT feed_infrastructure_malware_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_infrastructure_malware ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_infrastructure_network () INHERITS (feeds);
-ALTER TABLE feeds_infrastructure_network ADD PRIMARY KEY (id);
-ALTER TABLE feeds_infrastructure_network ADD CONSTRAINT feeds_infrastructure_network_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_infrastructure_network ADD UNIQUE(uuid);
+CREATE TABLE feed_infrastructure_network () INHERITS (feed);
+ALTER TABLE feed_infrastructure_network ADD PRIMARY KEY (id);
+ALTER TABLE feed_infrastructure_network ADD CONSTRAINT feed_infrastructure_network_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_infrastructure_network ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_infrastructure_phishing () INHERITS (feeds);
-ALTER TABLE feeds_infrastructure_phishing ADD PRIMARY KEY (id);
-ALTER TABLE feeds_infrastructure_phishing ADD CONSTRAINT feeds_infrastructure_phishing_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_infrastructure_phishing ADD UNIQUE(uuid);
+CREATE TABLE feed_infrastructure_phishing () INHERITS (feed);
+ALTER TABLE feed_infrastructure_phishing ADD PRIMARY KEY (id);
+ALTER TABLE feed_infrastructure_phishing ADD CONSTRAINT feed_infrastructure_phishing_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_infrastructure_phishing ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_infrastructure_spam () INHERITS (feeds);
-ALTER TABLE feeds_infrastructure_spam ADD PRIMARY KEY (id);
-ALTER TABLE feeds_infrastructure_spam ADD CONSTRAINT feeds_infrastructure_spam_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_infrastructure_spam ADD UNIQUE(uuid);
+CREATE TABLE feed_infrastructure_spam () INHERITS (feed);
+ALTER TABLE feed_infrastructure_spam ADD PRIMARY KEY (id);
+ALTER TABLE feed_infrastructure_spam ADD CONSTRAINT feed_infrastructure_spam_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_infrastructure_spam ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_infrastructure_scan () INHERITS (feeds);
-ALTER TABLE feeds_infrastructure_scan ADD PRIMARY KEY (id);
-ALTER TABLE feeds_infrastructure_scan ADD CONSTRAINT feeds_infrastructure_scan_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_infrastructure_scan ADD UNIQUE(uuid);
+CREATE TABLE feed_infrastructure_scan () INHERITS (feed);
+ALTER TABLE feed_infrastructure_scan ADD PRIMARY KEY (id);
+ALTER TABLE feed_infrastructure_scan ADD CONSTRAINT feed_infrastructure_scan_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_infrastructure_scan ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_infrastructure_suspicious () INHERITS (feeds);
-ALTER TABLE feeds_infrastructure_suspicious ADD PRIMARY KEY (id);
-ALTER TABLE feeds_infrastructure_suspicious ADD CONSTRAINT feeds_infrastructure_suspicious_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_infrastructure_suspicious ADD UNIQUE(uuid);
+CREATE TABLE feed_infrastructure_suspicious () INHERITS (feed);
+ALTER TABLE feed_infrastructure_suspicious ADD PRIMARY KEY (id);
+ALTER TABLE feed_infrastructure_suspicious ADD CONSTRAINT feed_infrastructure_suspicious_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_infrastructure_suspicious ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_infrastructure_whitelist () INHERITS (feeds);
-ALTER TABLE feeds_infrastructure_whitelist ADD PRIMARY KEY (id);
-ALTER TABLE feeds_infrastructure_whitelist ADD CONSTRAINT feeds_infrastructure_whitelist_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_infrastructure_whitelist ADD UNIQUE(uuid);
+CREATE TABLE feed_infrastructure_asn () INHERITS (feed);
+ALTER TABLE feed_infrastructure_asn ADD PRIMARY KEY (id);
+ALTER TABLE feed_infrastructure_asn ADD CONSTRAINT feed_infrastructure_asn_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_infrastructure_asn ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_domains () INHERITS (feeds);
-ALTER TABLE feeds_domains ADD PRIMARY KEY (id);
-ALTER TABLE feeds_domains ADD CONSTRAINT feeds_domains_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_domains ADD UNIQUE(uuid);
+CREATE TABLE feed_infrastructure_whitelist () INHERITS (feed);
+ALTER TABLE feed_infrastructure_whitelist ADD PRIMARY KEY (id);
+ALTER TABLE feed_infrastructure_whitelist ADD CONSTRAINT feed_infrastructure_whitelist_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_infrastructure_whitelist ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_domains_botnet () INHERITS (feeds);
-ALTER TABLE feeds_domains_botnet ADD PRIMARY KEY (id);
-ALTER TABLE feeds_domains_botnet ADD CONSTRAINT feeds_domains_botnet_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_domains_botnet ADD UNIQUE(uuid);
+CREATE TABLE feed_infrastructure_search () INHERITS (feed);
+ALTER TABLE feed_infrastructure_search ADD PRIMARY KEY (id);
+ALTER TABLE feed_infrastructure_search ADD CONSTRAINT feed_infrastructure_search_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_infrastructure_search ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_domains_malware () INHERITS (feeds);
-ALTER TABLE feeds_domains_malware ADD PRIMARY KEY (id);
-ALTER TABLE feeds_domains_malware ADD CONSTRAINT feeds_domains_malware_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_domains_malware ADD UNIQUE(uuid);
+CREATE TABLE feed_domain () INHERITS (feed);
+ALTER TABLE feed_domain ADD PRIMARY KEY (id);
+ALTER TABLE feed_domain ADD CONSTRAINT feed_domain_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_domain ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_domains_nameservers () INHERITS (feeds);
-ALTER TABLE feeds_domains_nameservers ADD PRIMARY KEY (id);
-ALTER TABLE feeds_domains_nameservers ADD CONSTRAINT feeds_domains_nameservers_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_domains_nameservers ADD UNIQUE(uuid);
+CREATE TABLE feed_domain_botnet () INHERITS (feed);
+ALTER TABLE feed_domain_botnet ADD PRIMARY KEY (id);
+ALTER TABLE feed_domain_botnet ADD CONSTRAINT feed_domain_botnet_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_domain_botnet ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_domains_whitelist () INHERITS (feeds);
-ALTER TABLE feeds_domains_whitelist ADD PRIMARY KEY (id);
-ALTER TABLE feeds_domains_whitelist ADD CONSTRAINT feeds_domains_whitelist_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_domains_whitelist ADD UNIQUE(uuid);
+CREATE TABLE feed_domain_malware () INHERITS (feed);
+ALTER TABLE feed_domain_malware ADD PRIMARY KEY (id);
+ALTER TABLE feed_domain_malware ADD CONSTRAINT feed_domain_malware_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_domain_malware ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_urls () INHERITS (feeds);
-ALTER TABLE feeds_urls ADD PRIMARY KEY (id);
-ALTER TABLE feeds_urls ADD CONSTRAINT feeds_urls_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_urls ADD UNIQUE(uuid);
+CREATE TABLE feed_domain_nameserver () INHERITS (feed);
+ALTER TABLE feed_domain_nameserver ADD PRIMARY KEY (id);
+ALTER TABLE feed_domain_nameserver ADD CONSTRAINT feed_domain_nameserver_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_domain_nameserver ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_urls_malware () INHERITS (feeds);
-ALTER TABLE feeds_urls_malware ADD PRIMARY KEY (id);
-ALTER TABLE feeds_urls_malware ADD CONSTRAINT feeds_urls_malware_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_urls_malware ADD UNIQUE(uuid);
+CREATE TABLE feed_domain_fastflux () INHERITS (feed);
+ALTER TABLE feed_domain_fastflux ADD PRIMARY KEY (id);
+ALTER TABLE feed_domain_fastflux ADD CONSTRAINT feed_domain_fastflux_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_domain_fastflux ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_urls_botnet () INHERITS (feeds);
-ALTER TABLE feeds_urls_botnet ADD PRIMARY KEY (id);
-ALTER TABLE feeds_urls_botnet ADD CONSTRAINT feeds_urls_botnet_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_urls_botnet ADD UNIQUE(uuid);
+CREATE TABLE feed_domain_whitelist () INHERITS (feed);
+ALTER TABLE feed_domain_whitelist ADD PRIMARY KEY (id);
+ALTER TABLE feed_domain_whitelist ADD CONSTRAINT feed_domain_whitelist_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_domain_whitelist ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_urls_phishing () INHERITS (feeds);
-ALTER TABLE feeds_urls_phishing ADD PRIMARY KEY (id);
-ALTER TABLE feeds_urls_phishing ADD CONSTRAINT feeds_urls_phishing_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_urls_phishing ADD UNIQUE(uuid);
+CREATE TABLE feed_url () INHERITS (feed);
+ALTER TABLE feed_url ADD PRIMARY KEY (id);
+ALTER TABLE feed_url ADD CONSTRAINT feed_url_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_url ADD UNIQUE(uuid);
 
-CREATE TABLE feeds_malware () INHERITS (feeds);
-ALTER TABLE feeds_malware ADD PRIMARY KEY (id);
-ALTER TABLE feeds_malware ADD CONSTRAINT feeds_malware_uuid_fkey FOREIGN KEY (uuid) REFERENCES messages(uuid) ON DELETE CASCADE;
-ALTER TABLE feeds_malware ADD UNIQUE(uuid);
+CREATE TABLE feed_url_malware () INHERITS (feed);
+ALTER TABLE feed_url_malware ADD PRIMARY KEY (id);
+ALTER TABLE feed_url_malware ADD CONSTRAINT feed_url_malware_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_url_malware ADD UNIQUE(uuid);
 
+CREATE TABLE feed_url_botnet () INHERITS (feed);
+ALTER TABLE feed_url_botnet ADD PRIMARY KEY (id);
+ALTER TABLE feed_url_botnet ADD CONSTRAINT feed_url_botnet_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_url_botnet ADD UNIQUE(uuid);
+
+CREATE TABLE feed_url_phishing () INHERITS (feed);
+ALTER TABLE feed_url_phishing ADD PRIMARY KEY (id);
+ALTER TABLE feed_url_phishing ADD CONSTRAINT feed_url_phishing_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_url_phishing ADD UNIQUE(uuid);
+
+CREATE TABLE feed_malware () INHERITS (feed);
+ALTER TABLE feed_malware ADD PRIMARY KEY (id);
+ALTER TABLE feed_malware ADD CONSTRAINT feed_malware_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_malware ADD UNIQUE(uuid);
+
+CREATE TABLE feed_email () INHERITS (feed);
+ALTER TABLE feed_email ADD PRIMARY KEY (id);
+ALTER TABLE feed_email ADD CONSTRAINT feed_email_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
+ALTER TABLE feed_email ADD UNIQUE(uuid);
