@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS asn CASCADE;
 
 CREATE TABLE asn (
     id BIGSERIAL PRIMARY KEY NOT NULL,
-    uuid uuid REFERENCES messages(uuid) ON DELETE CASCADE NOT NULL,
+    uuid uuid REFERENCES message(uuid) ON DELETE CASCADE NOT NULL,
     description text,
     address integer NOT NULL,
     peers text,
