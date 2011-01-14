@@ -7,9 +7,15 @@ use Data::Dumper;
 sub write_out {
     my $self = shift;
     my @array = @_;
+    return '' unless(exists($array[0]->{'address'}));
+    my $rules = '';
     foreach (@array){
-        next unless($_->{'address'} =~ /^$RE{'net'}{'IPv4'}/);
-        my $portlist = ($_->{'portlist'}) ? 'any' : $_->{'portlist'};
+        #next unless($_->{'address'} =~ /^$RE{'net'}{'IPv4'}/);
+        next unless($_->{'address'});
+        if(exists($_->{'rdata'})){
+            $_->{'portlist'} = 53;
+        }
+        my $portlist = ($_->{'portlist'}) ? $_->{'portlist'} : 'any';
 
         my $r = Snort::Rule->new(
             -action => 'alert',

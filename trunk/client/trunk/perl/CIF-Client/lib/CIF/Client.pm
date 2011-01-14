@@ -14,6 +14,7 @@ use Data::Dumper;
 use Encode qw/decode_utf8/;
 use Digest::SHA1 qw/sha1_hex/;
 use MIME::Base64;
+use Module::Pluggable search_path => ['CIF::Client::Plugin'];
 
 __PACKAGE__->mk_accessors(qw/apikey config/);
 
@@ -21,6 +22,15 @@ our $VERSION = '0.00_03';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 # Preloaded methods go here.
+
+sub _plugins {
+    my @plugs = plugins();
+    foreach (@plugs){
+        $_ =~ s/CIF::Client::Plugin:://;
+        $_ = lc($_);
+    }
+    return (@plugs);
+}
 
 sub new {
     my $class = shift;
@@ -39,6 +49,7 @@ sub new {
 
     $self->{'apikey'} = $apikey;
     $self->{'config'} = $cfg;
+    $self->{'max_desc'} = $args->{'max_desc'};
     
     if($args->{'fields'}){
         @{$self->{'fields'}} = split(/,/,$args->{'fields'}); 
@@ -83,12 +94,20 @@ sub table {
     my @cols = (
         'restriction',
         'severity',
-        'address',
+    );
+    if(exists($a[0]->{'hash_md5'})){
+        push(@cols,('hash_md5','hash_sha1'));
+    } elsif(exists($a[0]->{'rdata'})) {
+        push(@cols,('address','rdata','type'));
+    } else {
+        push(@cols,'address');
+    }
+    push(@cols,(
         'detecttime',
         'description',
         'alternativeid_restriction',
-        'alternativeid'
-    );
+        'alternativeid',
+    ));
     if($self->{'fields'}){
         @cols = @{$self->{'fields'}};
     }
@@ -101,6 +120,9 @@ sub table {
     my $table = Text::Table->new(@header);
 
     my @sorted = sort { $a->{'detecttime'} cmp $b->{'detecttime'} } @a;
+    if(my $max = $self->{'max_desc'}){
+        map { $_->{'description'} = substr($_->{'description'},0,$max) } @sorted;
+    }
     foreach my $r (@sorted){
         $table->load([ map { $r->{$_} } @cols]);
     }
