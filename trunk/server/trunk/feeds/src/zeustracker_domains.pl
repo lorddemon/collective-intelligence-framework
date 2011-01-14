@@ -14,10 +14,6 @@ use CIF::Message::DomainSimple;
 use CIF::Message::InfrastructureSimple;
 
 my $timeout = 5;
-my $res = Net::DNS::Resolver->new(
-    nameservers => ['8.8.8.8'],
-);
-
 my $partner = 'zeustracker.abuse.ch';
 my $url = 'https://zeustracker.abuse.ch/rss.php';
 my $content;
@@ -63,7 +59,7 @@ foreach my $item (@{$rss->{items}}){
         $impact .= ' fastflux' if($level =~ /fastflux/);
         my $desc = $impact.' '.$level.' '.$host;
         $uuid = CIF::Message::DomainSimple->insert({
-            nsres       => $res,
+            nsres       => Net::DNS::Resolver->new(['8.8.8.8','8.8.8.4']),
             address     => $host,
             source      => $partner,
             confidence  => 5,

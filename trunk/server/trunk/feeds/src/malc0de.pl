@@ -15,8 +15,6 @@ use CIF::Message::UrlMalware;
 use CIF::Message::InfrastructureSimple;
 use CIF::Message::DomainSimple;
 
-my $nsres = Net::DNS::Resolver->new(nameservers => ['8.8.8.8','8.8.8.4']);
-
 my $partner = 'malc0de.com';
 my $url = 'http://malc0de.com/rss/';
 my $ref = 'http://malc0de.com/database/index.php?search=';
@@ -95,7 +93,7 @@ foreach my $item (@{$rss->{items}}){
     }
     if($host && $host =~ /^[a-z0-9-\.]+\.[a-z]{2,4}$/){
         CIF::Message::DomainSimple->insert({
-#            nsres       => $nsres,
+            nsres       => Net::DNS::Resolver->new(['8.8.8.8','8.8.8.4']),
             address     => $host,
             source      => $partner,
             relatedid   => $uuid->uuid(),

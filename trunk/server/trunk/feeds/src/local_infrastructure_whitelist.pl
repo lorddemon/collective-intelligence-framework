@@ -2,13 +2,15 @@
 
 use CIF::Message::InfrastructureSimple;
 use DateTime;
-my $date = DateTime->from_epoch(epoch => time());
-$date = $date->ymd().'T00:00:00Z';
 
 # your own personal whitelist;
-my $list = '/tmp/inet_whitelist.txt';
+my $cfg = Config::Simple->new($ENV{'HOME'}.'/.cif') || die($!);
+my $feed = $cfg->param(-block => 'feed_sources')->{'infrastructure_whitelist'} || die('missing feed: '.$!);
 
-open(F,$list);
+open(F,$feed) || die($!);
+
+my $date = DateTime->from_epoch(epoch => time());
+$date = $date->ymd().'T00:00:00Z';
 
 while(<F>){
     my $line = $_;
@@ -25,6 +27,6 @@ while(<F>){
         alternativeid => '',
         alternativeid_restriction => '',
     });
-    warn $id;
+    print $id->uuid()."\n";
 }
 close(F);
