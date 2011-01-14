@@ -9,10 +9,6 @@ use Net::DNS;
 use CIF::Message::DomainSimple;
 
 my $timeout = 5;
-my $res = Net::DNS::Resolver->new(
-    nameservers => ['8.8.8.8'],
-);
-
 my $partner = 'spyeyetracker.abuse.ch';
 my $url = 'https://spyeyetracker.abuse.ch/blocklist.php?download=domainblocklist';
 
@@ -30,7 +26,7 @@ foreach (@lines){
     my $description = $impact.' '.$domain;
 
     my $u = CIF::Message::DomainSimple->insert({
-        nsres       => $res,
+        nsres       => Net::DNS::Resolver->new(['8.8.8.8','8.8.8.4']),
         address     => $domain,
         source      => $partner,
         confidence  => 7,

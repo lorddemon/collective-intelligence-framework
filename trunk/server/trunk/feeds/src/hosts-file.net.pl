@@ -16,10 +16,6 @@ my $confidence  = 5;
 my $severity    = 'low';
 my $impact      = 'malicious domain';
 
-my $res = Net::DNS::Resolver->new(
-    nameservers => ['8.8.8.8'],
-);
-
 my $content = get($url) || die($!);
 my $rss = XML::RSS->new();
 $rss->parse($content);
@@ -33,7 +29,7 @@ foreach (@{$rss->{'items'}}){
     next unless($1);
 
     my $id = CIF::Message::DomainSimple->insert({
-        nsres       => $res,
+        nsres       => Net::DNS::Resolver->new(['8.8.8.8','8.8.8.4']),
         address     => $domain,
         restriction => $restriction,
         detecttime  => $dt,
