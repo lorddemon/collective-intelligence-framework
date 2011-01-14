@@ -11,6 +11,7 @@ setup(
     packages=find_packages(),
     zip_safe = False,
     install_requires= ['restclient','simplejson','Texttable','python-magic','argparse'],
+    ## TODO -- change this to entry points instead of scripts
     scripts = [
         'scripts/cifcli.py'
     ]

@@ -8,7 +8,7 @@ from base64 import b64decode
 import re
 import cStringIO
 import hashlib
-import gzip
+import zlib
 
 version = '0.00_04'
 
@@ -38,35 +38,47 @@ class Client(object):
 
         ret = GET(s, params)
         ret = json.loads(ret)
-        feed = ret['data']['result']
-        hash = hashlib.sha1()
-        hash.update(feed)
-        if hash.hexdigest() != ret['data']['hash_sha1']:
-            print "sha1's don't match, possible data corruption... try again"
-            return
+        self.responseCode = ret['status']
 
-        feed = b64decode(feed)
-        m = magic.Magic()
-        mime = m.from_buffer(feed)
-        if re.search('gzip',mime):
-            compressedstream = cStringIO.StringIO(feed)
-            gzipper = gzip.GzipFile(fileobj=compressedstream)
-            feed = gzipper.read()
-            ret['data']['result'] = json.loads(feed)
-            ret = json.dumps(ret)
+        if ret['data'].get('result') and ret['data']['result'].get('hash_sha1'):
+            hash = hashlib.sha1()
+            feed = ret['data']['result']['feed']
+            hash.update(feed)
+            if hash.hexdigest() != ret['data']['result']['hash_sha1']:
+                print "sha1's don't match, possible data corruption... try re-downloading"
+                return
 
-        return ret
+            feed = zlib.decompress(b64decode(feed))
+            ret['data']['result']['feed'] = json.loads(feed)
+        
+        self.responseContent = json.dumps(ret)
 
     def table(self,j):
         j = json.loads(j)
         if not j['data'].get('result'): 
             return 0
 
-        if j['data'].get('created'):
-            created = j['data'].get('created') 
-        
         j = j['data']['result']
+        
+        created = None
+        restriction = None
+        severity = None
+        feedid = None
 
+        if j.get('created'):
+            created = j.get('created') 
+       
+        if j['feed'].get('restriction'):
+            restriction = j['feed'].get('restriction')
+
+        if j['feed'].get('severity'):
+            severity = j['feed'].get('severity')
+
+        if j.get('id'):
+            feedid = j.get('id')
+
+        feed = j['feed']['items']
+        
         t = Texttable(max_width=0)
         t.set_deco(Texttable.VLINES)
 
@@ -74,12 +86,16 @@ class Client(object):
             cols = self.fields
         else:
             cols = ['restriction','severity']
-            if j[0].get('address'):
+            if feed[0].get('address'):
                 cols.append('address')
+                if feed[0].get('rdata'):
+                    cols.extend(['rdata','type'])
+            if feed[0].get('hash_md5'):
+                cols.extend(['hash_md5','hash_sha1'])
             cols.extend(['detecttime','description','alternativeid_restriction','alternativeid'])
         
         t.add_row(cols)
-        for key in j:
+        for key in feed:
             row = []
             for col in cols:
                 row.append(key[col])
@@ -88,7 +104,16 @@ class Client(object):
         table = t.draw()
         
         if created:
-            table = 'feed created: ' + created + "\n\n" + table
+            table = 'Feed Created: ' + created + "\n\n" + table
+
+        if restriction:
+            table = 'Feed Restriction: ' + restriction + "\n" + table
+
+        if severity:
+            table = 'Feed Severity: ' + severity + "\n" + table
+
+        if feedid:
+            table = 'Feed Id: ' + feedid + "\n" + table
 
         return table
 
