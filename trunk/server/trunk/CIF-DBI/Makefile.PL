@@ -1,25 +1,16 @@
-use 5.008008;
-use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
-WriteMakefile(
-    NAME              => 'CIF::DBI',
-    VERSION_FROM      => 'lib/CIF/DBI.pm', # finds $VERSION
-    PREREQ_PM         => {
-        Class::DBI      => undef,
-        XML::IODEF      => 0.07,
-        XML::LibXML     => 1.70,
-        OSSP::uuid      => undef,
-        Digest::SHA1    => undef,
-        Digest::MD5     => undef,
-        LWP::Simple     => undef,
-        Net::CIDR       => undef,
-        Net::Abuse::Utils   => undef,
-        XML::Compile    => undef,
-        XML::Malware    => undef,
-        Config::Simple  => undef,
-    }, # e.g., Module::Name => 1.1
-    ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-      (ABSTRACT_FROM  => 'lib/CIF/DBI.pm', # retrieve abstract from module
-       AUTHOR         => 'Wes Young <wes@barely3am.com>') : ()),
-);
+use inc::Module::Installer;
+
+name        'CIF-DBI';
+all_from    'lib/CIF/DBI.pm';
+
+requires    'Class::DBI'    => '3.0.17';
+requires    'XML::IODEF'    => '0.07';
+requires    'XML::LibXML'   => '1.70';
+requires    'OSSP::uuid'    => '1.5.1';
+requires    'Digest::SHA1'  => '2.12';
+requires    'Digest::MD5'   => '2.39';
+requires    'Net::CIDR'     => '0.13';
+requires    'Net::Abuse::Utils' => '0.11';
+requires    'XML::Malware'  => '0.00_4';
+
+WriteAll();
