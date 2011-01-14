@@ -8,9 +8,23 @@ use LWP::Simple;
 
 use CIF::Message::InfrastructureSimple;
 
-my $site_ref = 'http://www.spamhaus.org/sbl/sbl.lasso?query=';
+my $feed = 'http://www.spamhaus.org/drop/drop.lasso';
 my $dt = DateTime->from_epoch(epoch => time());
-my $content = get('http://www.spamhaus.org/drop/drop.lasso') || die $!;
+$dt = $dt->ymd().'T00:00:00Z';
+my $hash = {
+    source                      => 'spamhaus.org',
+    restriction                 => 'need-to-know',
+    description                 => 'hijacked network infrastructure',
+    impact                      => 'hijacked network infrastructure',
+    confidence                  => 9,
+    severity                    => 'high',
+    alternativeid               => 'http://www.spamhaus.org/sbl/sbl.lasso?query=',
+    alternativeid_restriction   => 'public',
+    detecttime                  => $dt,
+};
+
+
+my $content = get($feed) || die $!;
 my @lines = split(/\n/,$content);
 
 foreach (@lines){
@@ -20,22 +34,11 @@ foreach (@lines){
 	$addr =~ s/(\n|\s+)//;
     $ref =~ s/\n$//;
 
-    my $id = $ref;
-
-    my $detecttime = DateTime->from_epoch(epoch => time());
-    $detecttime = $detecttime->ymd().'T00:00:00';
-
-    warn CIF::Message::InfrastructureSimple->insert({
-        address     => $addr,
-        source      => 'spamhaus.org',
-        description => 'hijacked network infrastructure '.$addr,
-        impact      => 'hijacked network infrastructure',
-        confidence  => 7,
-        severity    => 'high',
-        sourceid     => $ref,
-        restriction => 'need-to-know',
-        alternativeid  => $site_ref.$ref,
-        alternativeid_restriction => 'public',
-        detecttime  => $detecttime,
-    });
+    my %info = %$hash;
+    $info{'description'}    = $info{'description'}.' '.$addr;
+    $info{'address'}        = $addr;
+    $info{'alternativeid'}  = $info{'alternativeid'}.$ref;
+    my ($id,$err) = CIF::Message::InfrastructureSimple->insert({%info});
+    warn $id;
+    die($err) if($err);
 }

@@ -28,9 +28,7 @@ $rss->parse($content);
 
 foreach my $item (@{$rss->{items}}){
     $_ = $item->{'description'};
-    my ($host,$addr,$sbl,$status,$level) = m/^Host: (\S+), IP address: (\S*\s*)+, SBL: (\S*\s*)+, status: (\S+), level: (\d+)/;
-
-
+    my ($host,$addr,$sbl,$status,$level) = m/^Host: ($RE{'net'}{IPv4}|[A-Za-z0-9.-]+\.[A-Za-z]{2,6}), IP address: ($RE{'net'}{IPv4}|[A-Za-z0-9.-]+\.[A-Za-z]{2,6}|\s+), SBL: (\S*\s*)+, status: (\S+), level: (\d+)/;
     next unless($host && $status);
     for($level){
         $level = 'bulletproof hosted' if(/^1$/);
@@ -54,7 +52,7 @@ foreach my $item (@{$rss->{items}}){
                 impact      => 'zeus botnet infrastructure',
                 description => 'zeus botnet infrastructure '.$level.' '.$addr,
                 confidence  => 5,
-                severity    => 'medium',
+                severity    => 'low',
                 reporrtime  => $detecttime,
                 restriction => 'need-to-know',
                 alternativeid => 'https://zeustracker.abuse.ch/monitor.php?ipaddress='.$addr,
@@ -69,7 +67,7 @@ foreach my $item (@{$rss->{items}}){
             address     => $host,
             source      => $partner,
             confidence  => 5,
-            severity    => 'medium',
+            severity    => 'low',
             impact      => $impact,
             description => $desc,
             detecttime  => $detecttime,

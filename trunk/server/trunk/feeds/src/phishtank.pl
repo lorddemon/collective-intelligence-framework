@@ -3,9 +3,7 @@
 use strict;
 
 use Getopt::Std;
-use threads;
-use threads::shared;
-use XML::LibXML 1.70 qw(:threads_shared);
+use XML::LibXML 1.70;
 use Data::Dumper;
 use DateTime;
 use DateTime::Format::DateParse;
@@ -13,19 +11,27 @@ use LWP::Simple;
 use Digest::MD5 qw(md5_hex);
 use Unicode::String qw/utf8/;
 
-use CIF::Message::URLPhishing;
+use CIF::Message::UrlPhishing;
 use CIF::Message::InfrastructureSimple;
 
 my %opts;
-getopt('pf:k:d', \%opts);
-my $apikey = $opts{'k'};
+getopt('pc:f:', \%opts);
+my $config = $opts{'c'} || '/etc/cif/phishtank';
 my $download = $opts{'d'} || 0;
 my $cache = $opts{'f'} || '/tmp/phishtank.xml';
-my $keepcache = $opts{'c'} || 1;
+my $keepcache = $opts{'k'} || 1;
 my $oldest = DateTime::Format::DateParse->parse_datetime($opts{'t'}) || DateTime->from_epoch(epoch => (time() - (7*84600)));
+my $apikey;
+
+open(F,$config) || die('could not read configuration file: '.$opts{'c'}.' '.$!);
+while(<F>){
+    chomp;
+    $apikey = $_;
+}
+close(F);
+die('missing apikey') unless($apikey);
 
 if(! -e $cache || $download){
-    die('missing apikey') unless($apikey);
     my $url = "http://data.phishtank.com/data/$apikey/online-valid.xml";
     warn 'pulling xml from: '.$url;
     my $content = get($url);
@@ -53,7 +59,7 @@ warn 'inserting '.$#nodes.'+ nodes';
 foreach (@nodes){
     my $node = $_;
     my $created = DateTime::Format::DateParse->parse_datetime($node->findvalue('./submission/submission_time'));
-#    next if($created->epoch() < $oldest->epoch());
+    next if($created->epoch() < $oldest->epoch());
     my $key = $node->findvalue('./url');
     my $status = $node->findvalue('./status/online');
     my $target = $node->findvalue('./target');
@@ -66,7 +72,7 @@ foreach (@nodes){
     
     $key = utf8($key);
     $key = $key->utf8();
-    my $uuid = CIF::Message::URLPhishing->insert({
+    my $uuid = CIF::Message::UrlPhishing->insert({
         address     => $key,
         impact      => 'phishing url',
         source      => 'phishtank.com',

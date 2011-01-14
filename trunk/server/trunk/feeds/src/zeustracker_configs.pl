@@ -10,7 +10,7 @@ use DateTime;
 use Digest::MD5 qw(md5_hex);
 
 use CIF::Message::Malware;
-use CIF::Message::URLMalware;
+use CIF::Message::UrlMalware;
 
 my $partner = 'zeustracker.abuse.ch';
 my $url = 'https://zeustracker.abuse.ch/monitor.php?urlfeed=configs';
@@ -59,7 +59,7 @@ foreach my $item (@{$rss->{items}}){
     }
 
     $impact = 'malware url zeus config '.$version;
-    $uuid = CIF::Message::URLMalware->insert({
+    $uuid = CIF::Message::UrlMalware->insert({
         address     => $url,
         source      => $partner,
         relatedid   => $uuid,
