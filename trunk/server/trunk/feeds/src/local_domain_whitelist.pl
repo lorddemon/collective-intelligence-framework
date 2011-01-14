@@ -2,13 +2,16 @@
 
 use CIF::Message::DomainWhitelist;
 use DateTime;
+use Config::Simple;
+
 my $date = DateTime->from_epoch(epoch => time());
 $date = $date->ymd().'T00:00:00Z';
 
 # your own personal whitelist;
-my $list = '/tmp/domain_whitelist.txt';
+my $cfg = Config::Simple->new($ENV{'HOME'}.'/.cif') || die($!);
+my $feed = $cfg->param(-block => 'feed_sources')->{'domains_whitelist'} || die('missing feed: '.$!);
 
-open(F,$list);
+open(F,$feed) || die($!);
 
 while(<F>){
     my $line = $_;

@@ -10,7 +10,7 @@ use LWP::Simple;
 use Digest::MD5 qw(md5_hex);
 use Unicode::String qw/utf8/;
 
-use CIF::Message::URLMalware;
+use CIF::Message::UrlMalware;
 
 my $feed = 'http://www.malware.com.br/cgi/submit?action=list_xml';
 
@@ -32,7 +32,7 @@ foreach (@nodes){
     $url = utf8($url);
     $url = $url->utf8();
 
-    my $uuid = CIF::Message::URLMalware->insert({
+    my $uuid = CIF::Message::UrlMalware->insert({
         address     => $url,
         impact      => 'malware url',
         source      => 'malware.com.br',

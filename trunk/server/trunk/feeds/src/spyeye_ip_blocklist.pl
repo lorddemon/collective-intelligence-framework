@@ -28,7 +28,7 @@ foreach (@lines){
         impact      => $impact,
         description => $impact.' '.$address,
         confidence  => 5,
-        severity    => 'medium',
+        severity    => 'low',
         detecttime  => $detecttime,
         restriction => 'need-to-know',
         alternativeid => 'https://zeustracker.abuse.ch/monitor.php?ipaddress='.$address,

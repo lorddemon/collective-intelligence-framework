@@ -34,7 +34,7 @@ foreach (@lines){
         address     => $domain,
         source      => $partner,
         confidence  => 7,
-        severity    => 'medium',
+        severity    => 'low',
         impact      => $impact,
         description => $description,
         detecttime  => $detecttime,

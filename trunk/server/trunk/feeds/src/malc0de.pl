@@ -8,11 +8,14 @@ use Regexp::Common qw/net/;
 use DateTime::Format::DateParse;
 use DateTime;
 use Digest::MD5 qw(md5_hex);
+use Net::DNS;
 
 use CIF::Message::Malware;
 use CIF::Message::UrlMalware;
 use CIF::Message::InfrastructureSimple;
 use CIF::Message::DomainSimple;
+
+my $nsres = Net::DNS::Resolver->new(nameservers => ['8.8.8.8','8.8.8.4']);
 
 my $partner = 'malc0de.com';
 my $url = 'http://malc0de.com/rss/';
@@ -41,7 +44,6 @@ foreach my $item (@{$rss->{items}}){
         $host =~ /^([A-Za-z0-9.-]+\.[a-zA-Z]{2,6})/;
         $host = $1;
     }
-
     my $impact = 'malware url';
 
     my $uuid;
@@ -91,8 +93,9 @@ foreach my $item (@{$rss->{items}}){
             alternativeid_restriction => 'public',
         });
     }
-    if($host){
+    if($host && $host =~ /^[a-z0-9-\.]+\.[a-z]{2,4}$/){
         CIF::Message::DomainSimple->insert({
+#            nsres       => $nsres,
             address     => $host,
             source      => $partner,
             relatedid   => $uuid->uuid(),

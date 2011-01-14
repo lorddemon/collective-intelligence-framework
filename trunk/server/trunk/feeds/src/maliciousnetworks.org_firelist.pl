@@ -12,6 +12,17 @@ my $url = 'http://maliciousnetworks.org/fire-blocklist.txt';
 my $dt = DateTime->from_epoch(epoch => time());
 $dt = $dt->ymd().'T00:00:00Z';
 
+my $hash = {
+        source      => 'maliciousnetworks.org',
+        impact      => 'suspicious address',
+        confidence  => 3,
+        severity    => 'medium',
+        restriction => 'need-to-know',
+        alternativeid  => 'http://maliciousnetworks.org/ipinfo.php?as=',
+        alternativeid_restriction => 'public',
+        detecttime  => $dt,
+};
+
 my $content = get($url) || die('failed to get url: '.$!);
 my @lines = split(/\n/,$content);
 
@@ -21,16 +32,11 @@ foreach (@lines){
     next if(/^\r/);
     my ($addr,$asn) = split(/\s+/,$_);
 
-    warn CIF::Message::InfrastructureSimple->insert({
-        address     => $addr,
-        source      => 'maliciousnetworks.org',
-        description => 'suspicious address '.$addr,
-        impact      => 'suspicious address',
-        confidence  => 3,
-        severity    => 'medium',
-        restriction => 'need-to-know',
-        alternativeid  => 'http://maliciousnetworks.org/ipinfo.php?as='.$asn,
-        alternativeid_restriction => 'public',
-        detecttime  => $dt,
-    });
+    my %info = %$hash;  
+    $info{'alternativeid'} = $info{'alternativeid'}.$asn;
+    $info{'address'} = $addr;
+    $info{'description'} = $info{'impact'}.' '.$addr;
+    my ($id,$err) = CIF::Message::InfrastructureSimple->insert({%info});
+    die($err) if($err);
+    warn $id;
 }

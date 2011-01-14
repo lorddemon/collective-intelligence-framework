@@ -1,7 +1,6 @@
 #!/usr/bin/perl -w
 
-use CIF::Message::InetWhitelist;
-use CIF::Message::Inet;
+use CIF::Message::InfrastructureSimple;
 use DateTime;
 my $date = DateTime->from_epoch(epoch => time());
 $date = $date->ymd().'T00:00:00Z';
@@ -15,21 +14,16 @@ while(<F>){
     my $line = $_;
     $line =~ s/\n//;
 
-    my ($as,$network,$ccode,$rir,$date,$as_desc) = CIF::Message::Inet::asninfo($line);
-
-    my $id = CIF::Message::InetWhitelist->insert({
+    my $id = CIF::Message::InfrastructureSimple->insert({
         source      => 'localhost',
-        impact      => 'inet whitelist',
-        description => 'inet whitelist '.$line,
+        impact      => 'infrastructure whitelist',
+        description => 'infrastructure whitelist '.$line,
         address     => $line,
         confidence  => 10,
         detecttime  => $date,
         restriction => 'need-to-know',
-        asn         => $as,
-        asn_desc    => $as_desc,
-        cc          => $ccode,
-        rir         => $rir,
-        cidr        => $network
+        alternativeid => '',
+        alternativeid_restriction => '',
     });
     warn $id;
 }
