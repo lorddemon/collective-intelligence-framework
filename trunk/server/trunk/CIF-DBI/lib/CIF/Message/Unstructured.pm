@@ -6,11 +6,11 @@ use warnings;
 
 use Digest::SHA1 qw/sha1_hex/;
 
-__PACKAGE__->table('messages_unstructured');
+__PACKAGE__->table('message_unstructured');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid source message/);
 __PACKAGE__->columns(Essential => qw/id uuid message/);
-__PACKAGE__->sequence('messages_unstructured_id_seq');
+__PACKAGE__->sequence('message_unstructured_id_seq');
 __PACKAGE__->has_a(uuid => 'CIF::Message');
 
 sub insert {

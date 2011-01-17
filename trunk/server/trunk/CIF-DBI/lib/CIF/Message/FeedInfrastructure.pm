@@ -4,7 +4,7 @@ use base 'CIF::Message::Feed';
 use strict;
 use warnings;
 
-__PACKAGE__->table('feeds_infrastructure');
+__PACKAGE__->table('feed_infrastructure');
 
 sub mapIndex {
     my $self = shift;

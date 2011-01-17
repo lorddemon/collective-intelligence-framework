@@ -4,10 +4,10 @@ use base 'CIF::DBI';
 use strict;
 use warnings;
 
-use DBD::Pg;
-
-__PACKAGE__->table('feeds');
+__PACKAGE__->table('feed');
 __PACKAGE__->columns(All => qw/id uuid description source hash_sha1 signature impact severity restriction detecttime created message/);
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->sequence('feed_id_seq');
 
 use CIF::Message::Unstructured;
 
@@ -60,6 +60,7 @@ sub mapIndex {
     my $self = shift;
     my $rec = shift;
     my $msg = CIF::Message::Structured->retrieve(uuid => $rec->uuid->id());
+    die ::Dumper($rec) unless($msg);
     $msg = $msg->message();
     return {
         rec         => $rec,

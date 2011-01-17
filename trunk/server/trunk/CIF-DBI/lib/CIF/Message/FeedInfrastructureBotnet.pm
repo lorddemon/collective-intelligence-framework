@@ -4,6 +4,6 @@ use base 'CIF::Message::FeedInfrastructure';
 use strict;
 use warnings;
 
-__PACKAGE__->table('feeds_infrastructure_botnet');
+__PACKAGE__->table('feed_infrastructure_botnet');
 
 1;

@@ -243,17 +243,6 @@ sub isWhitelisted {
     return @ret;
 }
 
-sub search_feed {
-    my ($self,$detecttime,$limit) = @_;
-    my @recs = $self->search__feed($detecttime,$limit);
-    my @feed;
-    foreach (@recs){
-        my @white = $self->isWhitelisted($_->address());
-        push(@feed,$_) unless($#white > -1);
-    }
-    return @feed;
-}
-        
 __PACKAGE__->set_sql('by_address' => qq{
     SELECT * FROM __TABLE__
     WHERE address != '0/0'
@@ -262,23 +251,9 @@ __PACKAGE__->set_sql('by_address' => qq{
     LIMIT ?
 });
 
-__PACKAGE__->set_sql('_feed' => qq{
-    SELECT * FROM __TABLE__
-    WHERE detecttime >= ?
-    AND NOT EXISTS (
-        SELECT address FROM infrastructure_whitelist WHERE __TABLE__.address = infrastructure_whitelist.address
-    )
-    ORDER BY detecttime DESC, created DESC, id DESC
-    LIMIT ?
-});
-
 __PACKAGE__->set_sql('by_asn' => qq{
-    SELECT *
-    FROM __TABLE__
+    SELECT * FROM __TABLE__
     WHERE asn = ?
-    AND NOT EXISTS (
-        SELECT address from infrastructure_whitelist WHERE __TABLE__.address = infrastructure_whitelist.address
-    )
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });

@@ -4,7 +4,7 @@ use base 'CIF::Message::Url';
 use strict;
 use warnings;
 
-__PACKAGE__->table('urls_search');
+__PACKAGE__->table('url_search');
 __PACKAGE__->has_a(uuid => 'CIF::Message');
 
 __PACKAGE__->set_sql('feed' => qq{
