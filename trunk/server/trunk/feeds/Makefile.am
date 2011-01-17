@@ -25,7 +25,8 @@ EXTRA_DIST = \
     src/spyeye_domains.pl \
     src/spyeye_ip_blocklist.pl \
     src/sshbl.pl \
-    src/threatexpert.pl
+    src/threatexpert.pl \
+    src/cron.sh
 
 SUBDIRS = src 
 
