@@ -4,6 +4,6 @@ use base 'CIF::Message::FeedUrl';
 use strict;
 use warnings;
 
-__PACKAGE__->table('feeds_urls_phishing');
+__PACKAGE__->table('feed_url_phishing');
 
 1;

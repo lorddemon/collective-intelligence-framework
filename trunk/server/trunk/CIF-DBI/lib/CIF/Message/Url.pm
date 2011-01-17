@@ -9,12 +9,12 @@ use CIF::Message::IODEF;
 use Digest::SHA1 qw(sha1_hex);
 use Digest::MD5 qw(md5_hex);
 
-__PACKAGE__->table('urls');
+__PACKAGE__->table('url');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid description address impact source url_md5 url_sha1 malware_md5 malware_sha1 confidence severity restriction alternativeid alternativeid_restriction detecttime created/);
 __PACKAGE__->columns(Essential => qw/id uuid description address restriction created/);
 __PACKAGE__->has_a(uuid   => 'CIF::Message');
-__PACKAGE__->sequence('urls_id_seq');
+__PACKAGE__->sequence('url_id_seq');
 
 sub insert {
     my $self = shift;
@@ -131,7 +131,8 @@ sub lookup {
     my @recs = $self->search($col => $arg);
     my $dt = DateTime->from_epoch(epoch => time());
     $dt = $dt->ymd().'T'.$dt->hour().':00:00Z'; 
-    $self->table('urls_search');
+    my $t = $self->table();
+    $self->table('url_search');
     my $sid = $self->insert({
         source      => $source,
         address     => $address,
@@ -141,17 +142,9 @@ sub lookup {
         sha1        => $sha1,
         detecttime  => $dt,
     });
-    $self->table('urls');
+    $self->table($t);
     return @recs;
 }
-
-__PACKAGE__->set_sql('feed' => qq{
-    SELECT * FROM __TABLE__
-    WHERE detecttime >= ?
-    AND impact NOT LIKE 'search'
-    ORDER BY detecttime DESC, created DESC, id DESC
-    LIMIT ?
-});
 
 1;
 

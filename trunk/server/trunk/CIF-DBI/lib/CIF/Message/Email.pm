@@ -7,11 +7,11 @@ use warnings;
 use XML::IODEF;
 use CIF::Message::IODEF;
 
-__PACKAGE__->table('emails');
+__PACKAGE__->table('email');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid description address impact source confidence severity restriction alternativeid alternativeid_restriction detecttime created/);
 __PACKAGE__->has_a(uuid   => 'CIF::Message');
-__PACKAGE__->sequence('emails_id_seq');
+__PACKAGE__->sequence('email_id_seq');
 
 sub insert {
     my $self = shift;
@@ -91,18 +91,34 @@ sub toIODEF {
     return $iodef->out();
 }
 
+sub lookup {
+    my ($self,$arg,$apikey) = @_;
+    my $source = CIF::Message::genMessageUUID('api',$apikey);
+    my $desc = 'search '.$arg;
+    my $col = 'address';
+    my $address = $arg;
+    my @recs = $self->search($col => $arg);
+    my $dt = DateTime->from_epoch(epoch => time());
+    $dt = $dt->ymd().'T'.$dt->hour().':00:00Z';
+    my $t = $self->table();
+    $self->table('email_search');
+    my $sid = $self->insert({
+        source      => $source,
+        address     => $address,
+        impact      => 'search',
+        description => $desc,
+        md5         => $md5,
+        sha1        => $sha1,
+        detecttime  => $dt,
+    });
+    $self->table($t);
+    return @recs;
+}
+
 __PACKAGE__->set_sql('by_address' => qq{
     SELECT *
     FROM __TABLE__
     WHERE lower(address) = lower(?)
-    ORDER BY detecttime DESC, created DESC, id DESC
-    LIMIT ?
-});
-
-__PACKAGE__->set_sql('feed' => qq{
-    SELECT *
-    FROM __TABLE__
-    WHERE detecttime >= ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });

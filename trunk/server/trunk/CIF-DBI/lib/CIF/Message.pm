@@ -6,16 +6,18 @@ use warnings;
 
 use OSSP::uuid;
 
-__PACKAGE__->table('messages');
+__PACKAGE__->table('message');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid type format source confidence severity description impact restriction detecttime created/);
 __PACKAGE__->columns(Essential => qw/id uuid type created/);
-__PACKAGE__->sequence('messages_id_seq');
+__PACKAGE__->sequence('message_id_seq');
 __PACKAGE__->might_have(unstructured => 'CIF::Message::Unstructured');
 __PACKAGE__->might_have(structured => 'CIF::Message::Structured');
 
 sub isUUID {
-    return undef unless(shift =~ /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
+    my $arg = shift;
+    return undef unless($arg);
+    return undef unless($arg =~ /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
     return(1);
 }
 

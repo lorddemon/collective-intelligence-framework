@@ -1,17 +1,17 @@
 package CIF::Message::Structured;
 use base 'CIF::DBI';
 
-use CIF::Message;
-
 use strict;
 use warnings;
 
-__PACKAGE__->table('messages_structured');
+__PACKAGE__->table('message_structured');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid source message/);
 __PACKAGE__->columns(Essential => qw/id uuid source message/);
-__PACKAGE__->sequence('messages_structured_id_seq');
+__PACKAGE__->sequence('message_structured_id_seq');
 __PACKAGE__->has_a(uuid => 'CIF::Message');
+
+use CIF::Message;
 
 sub insert {
     my $self = shift;

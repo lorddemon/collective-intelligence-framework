@@ -10,17 +10,19 @@ use Regexp::Common::net::CIDR;
 use DateTime::Format::DateParse;
 use Data::Dumper;
 use DateTime;
+use IO::Select;
 
-__PACKAGE__->table('domains');
+__PACKAGE__->table('domain');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid description address type rdata cidr asn asn_desc cc rir class ttl whois impact confidence source alternativeid alternativeid_restriction severity restriction detecttime created/);
 __PACKAGE__->columns(Essential => qw/id uuid description address rdata impact restriction created/);
 __PACKAGE__->has_a(uuid => 'CIF::Message');
+__PACKAGE__->sequence('domain_id_seq');
 
 my $tests = {
     'severity'      => qr/^(low|medium|high)$/,
     'confidence'    => qr/^\d+/,
-    'address'       => qr/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+    'address'       => qr/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,5}$/,
 };
 
 sub insert {
@@ -172,15 +174,34 @@ sub getrdata {
     return undef unless($d);
 
     my @rdata;
-    my $q = $res->search($d);
-    push(@rdata,$q->answer()) if($q);
 
-    $q = $res->query($d,'NS');
-    push(@rdata,$q->answer()) if($q);
-
-
-    $q = $res->query($d,'MX');
-    push(@rdata,$q->answer()) if($q);
+    if($res){
+        my $default = $res->bgsend($d);
+        my $ns      = $res->bgsend($d,'NS');
+        my $mx      = $res->bgsend($d,'MX');
+        
+        my $sel = IO::Select->new([$mx,$ns,$default]);
+        my @ready = $sel->can_read(5);
+        
+        if(@ready){
+            foreach my $sock (@ready){
+                for($sock){
+                    $default    = $res->bgread($default) if($default);
+                    $ns         = $res->bgread($ns) if($ns);
+                    $mx         = $res->bgread($mx) if($mx);
+                }
+                $sel->remove($sock);
+                $sock = undef;
+            }
+        }
+        if(ref($default) eq 'Net::DNS::Packet' && $default->answer()){
+            push(@rdata,$default->answer());
+        } else {
+            push(@rdata, { name => $d, address => undef, type => 'A', class => 'IN', ttl => undef });
+        }
+        push(@rdata,$ns->answer()) if(ref($ns) eq 'Net::DNS::Packet');
+        push(@rdata,$mx->answer()) if(ref($mx) eq 'Net::DNS::Packet');
+    }
 
     if($#rdata == -1){
         push(@rdata, { name => $d, address => undef, type => 'A', class => 'IN', ttl => undef });
@@ -200,7 +221,7 @@ sub lookup {
     }
 
     my $t = $self->table();
-    $self->table('domains_search');
+    $self->table('domain_search');
     my $source = CIF::Message::genMessageUUID('api',$apikey);
     my $asn;
     my $description = 'search '.$address;
@@ -222,29 +243,29 @@ sub isWhitelisted {
     my $self = shift;
     my $a = shift;
 
-    return undef unless($a);
+    return undef unless($a && $a =~ /\.[a-zA-Z]{2,4}$/);
+    return(1) unless($a =~ /\.[a-zA-Z]{2,4}$/);
 
     my $sql = '';
 
     ## TODO -- do this by my $parts = split(/\./,$a); foreach ....
     for($a){
         if(/([a-zA-Z0-9-]+\.[a-zA-Z]{2,4})$/){
-            $sql .= qq{address LIKE '%$1'};
+            $sql .= qq{address LIKE '$1'};
         }
         if(/((?:[a-zA-Z0-9-]+\.){2,2}[a-zA-Z]{2,4})$/){
-            $sql .= qq{ OR address LIKE '%$1'};
+            $sql .= qq{ OR address LIKE '$1'};
         }
         if(/((?:[a-zA-Z0-9-]+\.){3,3}[a-zA-Z]{2,4})$/){
-            $sql .= qq{ OR address LIKE '%$1'};
+            $sql .= qq{ OR address LIKE '$1'};
         }
         if(/((?:[a-zA-Z0-9-]+\.){4,4}[a-zA-Z]{2,4})$/){
-            $sql .= qq{ OR address LIKE '%$1'};
+            $sql .= qq{ OR address LIKE '$1'};
         }
-
     }
     $sql .= qq{\nORDER BY detecttime DESC, created DESC, id DESC};
     my $t = $self->table();
-    $self->table('domains_whitelist');
+    $self->table('domain_whitelist');
     my @recs = $self->retrieve_from_sql($sql);
     $self->table($t);
     return @recs;
@@ -253,6 +274,7 @@ sub isWhitelisted {
 __PACKAGE__->set_sql('by_address' => qq{
     SELECT * FROM __TABLE__
     WHERE lower(address) LIKE lower(?)
+    AND lower(impact) NOT LIKE '% whitelist %'
     LIMIT ?
 });
 
@@ -263,34 +285,9 @@ __PACKAGE__->set_sql('by_rdata' => qq{
     LIMIT ?
 });
 
-sub search_feed {
-    my ($self,$detecttime,$limit) = @_;
-    my @recs = $self->search__feed($detecttime,$limit);
-    my @feed;
-    foreach (@recs){
-        my @whitelisted = $self->isWhitelisted($_->address());
-        push(@feed,$_) unless($#whitelisted > -1);
-    }
-    return @feed;
-}
-
-__PACKAGE__->set_sql('_feed' => qq{
-    SELECT * FROM __TABLE__
-    WHERE detecttime >= ?
-    AND NOT EXISTS (
-        SELECT address FROM domains_whitelist WHERE __TABLE__.address = domains_whitelist.address 
-    )
-    ORDER BY detecttime DESC, created DESC, id DESC
-    LIMIT ?
-});
-
 __PACKAGE__->set_sql('by_asn' => qq{
-    SELECT *
-    FROM __TABLE__
+    SELECT * FROM __TABLE__
     WHERE asn = ?
-    AND NOT EXISTS (
-        SELECT address from inet_whitelist WHERE __TABLE__.rdata::inet <<= inet_whitelist.address
-    )
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });

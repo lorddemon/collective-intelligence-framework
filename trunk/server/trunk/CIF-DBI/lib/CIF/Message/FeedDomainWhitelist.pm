@@ -1,9 +1,6 @@
 package CIF::Message::FeedDomainWhitelist;
 use base 'CIF::Message::FeedDomain';
 
-use strict;
-use warnings;
-
-__PACKAGE__->table('feeds_domains_whitelist');
+__PACKAGE__->table('feed_domain_whitelist');
 
 1;
