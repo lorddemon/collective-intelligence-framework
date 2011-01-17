@@ -62,6 +62,7 @@ sub asBytes{
             'address',
         );
         if(exists($array[0]->{'rdata'})){
+            push(@cols,'type');
             push(@cols,'rdata');
         } elsif(exists($array[0]->{'url_md5'})){
             push(@cols,(
@@ -97,6 +98,9 @@ sub asBytes{
     pop(@header);
     my $t = Text::Table->new(@header);
     foreach my $r (@array){
+        if(exists($r->{'asn_desc'})){
+            $r->{'asn_desc'} = substr($r->{'asn_desc'},0,40) if($r->{'asn_desc'});
+        }
         $t->load([map { $r->{$_} } @cols]);
     }
     if(my $c = $hash->{'created'}){
@@ -107,6 +111,9 @@ sub asBytes{
     }
     if(my $s = $hash->{'feed'}->{'severity'}){
         $t = 'Feed Severity: '.$s."\n".$t;
+    }
+    if(my $feedid = $hash->{'id'}){
+        $t = 'Feed Id: '.$feedid."\n".$t;
     }
     return(Encode::encode_utf8($t));
 }

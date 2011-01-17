@@ -38,6 +38,9 @@ sub GET {
         my $agent = $request->{'r'}->headers_in->{'User-Agent'};
         if(lc($agent) =~ /(mozilla|msie|chrome|safari)/){
             $request->requestedFormat('table');
+            if(my $f = $request->{'r'}->param('fields')){
+                $response->{'fields'} = $f;
+            }
         }
     }
 
@@ -76,10 +79,11 @@ sub GET {
         my $res;
         @recs = map { $bucket->mapIndex($_) } @recs;
         ($res,@recs) = $self->map_restrictions($request,'private',@recs);
+        @recs = sort { $a->{'detecttime'} cmp $b->{'detecttime'} } @recs;
         @{$msg->{'items'}} = @recs;
         $msg->{'restriction'} = $res;
     } else {
-        my $restriction = $request->{'r'}->param('restriction') || 'private';
+        my $restriction = $request->{'r'}->param('restriction') || $request->{'r'}->dir_config->get('CIFDefaultFeedRestriction') ||'private';
         if($restriction){
             if(my %m = $request->{'r'}->dir_config->get('CIFRestrictionMap')){
                 foreach (keys %m){
@@ -88,7 +92,7 @@ sub GET {
             }
         }
 
-        my $severity = $request->{'r'}->param('severity') || 'high';
+        my $severity = $request->{'r'}->param('severity') || $request->{'r'}->dir_config->get('CIFDefaultFeedSeverity') || 'high';
 
         my @recs = $bucket->search(severity => $severity, restriction => $restriction, { order_by => 'id DESC', limit => 1 });
         return Apache2::Const::HTTP_OK if($#recs == -1);
@@ -98,6 +102,7 @@ sub GET {
         $msg = $recs[0]->message();
         $response->{'data'}->{'result'}->{'hash_sha1'} = sha1_hex($msg);
         $created = DateTime::Format::DateParse->parse_datetime($recs[0]->created());
+        $response->{'data'}->{'result'}->{'id'} = $recs[0]->uuid();
     }
 
     $created = $created->ymd().'T'.$created->hms().'Z';
@@ -135,7 +140,7 @@ sub buildNext {
 
     my $type;
     for($frag){
-        if(/^($RE{'net'}{'IPv4'}|AS\d+)/){
+        if(/^($RE{'net'}{'IPv4'}|as\d+)/){
             $type = 'infrastructure';
             last;
         }

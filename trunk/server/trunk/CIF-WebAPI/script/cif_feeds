@@ -7,18 +7,70 @@ use Getopt::Std;
 use DateTime;
 use JSON;
 use Digest::SHA1 qw/sha1_hex/;
-use Digest::MD5 qw/md5_hex/;
-use Encode qw/encode_utf8/;
 use MIME::Base64;
 use Config::Simple;
 use Data::Dumper;
 use Compress::Zlib;
-
-my $cfg = $ENV{'HOME'}.'/.cif';
-$cfg = Config::Simple->new($cfg) || die('missing config file');
+use CIF::FeedTables;
 
 my %opts;
-getopts('d:f:s:r:m:',\%opts);
+getopts('hDc:d:f:s:r:m:F:',\%opts);
+
+my $feed        = $opts{'f'} || shift || '';
+my $severity    = $opts{'s'} || 'high';
+my $restriction = $opts{'r'} || 'private';
+my $maxdays     = $opts{'d'} || 30;
+my $debug       = $opts{'D'};
+my $config      = $opts{'c'} || $ENV{'HOME'}.'/.cif';
+my $last_feeds  = $opts{'F'} || 5;
+
+my $cfg = Config::Simple->new($config) || die('missing config file');
+my $maxrecords  = $opts{'m'} || $cfg->param(-block => 'cif_feeds')->{'maxrecords'} || 50000;
+
+unless($feed ne '') {
+    if(my $x = $cfg->param(-block => 'cif_feeds')->{'feeds'}){
+        $feed = join(',',@{$x});
+    } else {
+        # auto generate the feeds from the warehouse tables
+
+        my $t = CIF::FeedTables->new();
+        my @x = map { $_->relname() } $t->search__feed_tables();
+        my @y;
+        foreach (@x){ $_ =~ s/feed_//; $_ =~ s/\_/\//; }
+        $feed = join(',',@x);
+    }
+}
+
+my @feeds = split(/,/,$feed);
+
+die usage() if($opts{'h'} || $#feeds < 0);
+
+sub usage {
+    my $usage_feeds = join("\n\t",@feeds);
+    return <<EOF;
+Usage: perl $0 -s medium -f infrastructure/botnet
+    -h  --help:         this meessage
+    -c  --config:       specify config file, default: $config
+    -f  --feed:         feed to pull, comma seperated, default:
+
+        $usage_feeds
+
+    -s  --severity:     feed severity (low|medium|high), default: $severity
+    -r  --restriction:  feed restriction (default|public|need-to-know|private), default: $restriction
+    -m  --maxrecords:   max feed records, default: $maxrecords
+    -d  --maxdays:      max days to go back in feed search, default: $maxdays
+
+
+Examples:
+    \$> perl $0 -f infrastructure
+    \$> perl $0 -f infrastructure/botnet -s low
+    \$> perl $0 -f domain/malware -D
+
+EOF
+}
+
+my $restriction_map = $cfg->param(-block => 'restrictions');
+
 my %sev = (
     'high'      => 3,
     'medium'    => 2,
@@ -27,18 +79,10 @@ my %sev = (
 my $dt = DateTime->from_epoch(epoch => time());
 $dt = $dt->ymd().'T'.$dt->hms().'Z';
 
-my $feed = $opts{'f'} || shift || 'infrastructure,infrastructure/botnet,infrastructure/malware,infrastructure/whitelist,domain/whitelist,domain,domain/malware,domain/botnet,domain/nameserver,domain/fastflux,malware,url,url/malware,url/botnet,url/phishing,email';
-my $severity = $opts{'s'} || 'high';
-my $restriction = $opts{'r'} || 'private';
-my $maxdays     = $opts{'d'} || 30;
-my $maxrecords  = $opts{'m'} || 10000;
-
-my $restriction_map = $cfg->param(-block => 'restrictions');
-
-my @feeds = split(/,/,$feed);
 foreach (@feeds){
     my $start = time();
-    warn 'processing: '.$_;
+
+    _debug('processing: '.$_);
     my @bits    = split(/\//,$_);
     my $impact  = ucfirst($bits[$#bits]);
     my $type    = ucfirst($bits[$#bits-1]);
@@ -56,7 +100,7 @@ foreach (@feeds){
 
     my $detecttime = DateTime->from_epoch(epoch => (time() - (84600 * $maxdays)));
     my @recs;
-    warn '('.(time() - $start).') searching';
+    _profile('searching',$start);
     if(lc($impact) =~ /whitelist/){
         @recs = $bucket->retrieve_from_sql(qq{
             detecttime >= '$detecttime'
@@ -64,23 +108,20 @@ foreach (@feeds){
             LIMIT $maxrecords
         });
     } else {
-        @recs = $bucket->search_feed($detecttime,$maxrecords);
+        @recs = $bucket->search_feed($detecttime,$severity,$restriction,$maxrecords);
+
     }
-    warn '('.(time() - $start).') generating';
+    _profile('generating',$start);
     @recs = $feed_bucket->generate(@recs);
     my @res;
-    foreach (@recs){
-        push(@res,$_) if(lc($impact) =~ /search|whitelist/ || ($_->{'severity'} && $sev{$_->{'severity'}} >= $sev{$severity}));
-    }
-    @recs = @res;
     unless($#recs > -1){
-        warn 'no records';
-        exit();
+        _debug('no records');
+        next();
     }
-    warn 'records: '.$#recs;
-    warn '('.(time() - $start).') sorting';
+    _debug('records: '.$#recs);
+    _profile('sorting',$start);
     @recs = sort { $a->{'detecttime'} cmp $b->{'detecttime'} } @recs;
-    warn '('.(time() - $start).') mapping';
+    _profile('mapping',$start);
     if($restriction_map){
         foreach my $r (@recs){
             if(exists($restriction_map->{$r->{'restriction'}})){
@@ -91,8 +132,12 @@ foreach (@feeds){
            }
         }
     }
-    $impact = $type if($impact eq '');
     $severity = 'low' if(lc($impact) eq 'search');
+    if($impact eq ''){
+        $impact = $type;
+    } else {
+        $impact = $type.' '.$impact;
+    }
     my $hash = {
         restriction => $restriction_map->{lc($restriction)},
         impact      => lc($impact),
@@ -101,12 +146,8 @@ foreach (@feeds){
         detecttime  => $dt,
     };
     
-    warn '('.(time() - $start).') to_json';
     my $json = to_json($hash);
-    warn '('.(time() - $start).') compressing';
     my $zcontent = encode_base64(compress($json));
-
-    warn '('.(time() - $start).') inserting';
     my $id = $feed_bucket->insert({
         format      => 'application/json',
         source      => 'ren-isac.net',
@@ -117,6 +158,32 @@ foreach (@feeds){
         impact      => lc($impact),
         restriction => lc($restriction),
     });
+
+    print 'feed: '.$id.' created -- '.$id->uuid()."\n";
+    my @feeds = $feed_bucket->retrieve_from_sql(qq{
+        severity = '$severity'
+        ORDER BY id DESC
+    });
+    if($#feeds >= $last_feeds){
+        foreach (0 ... $last_feeds-1){
+            pop(@feeds);
+        }
+        foreach (@feeds){
+            print 'removing feed: '.$_->id().' -- '.$_->uuid()."\n";
+            CIF::Message->retrieve(uuid => $_->uuid())->delete();
+        }
+    }
+        
     ## TODO -- if $id is < than most recent feed (of this type), we need to re-insert this as a new feed (or delete the old feed)
-    warn $id;
+    _profile('finished',$start);
+}
+
+sub _debug {
+    return unless($debug);
+    warn shift;
+}
+
+sub _profile {
+    #my ($msg,$start) = @_;
+    #_debug('('.(time() - $start).') '.$msg);
 }
