@@ -40,8 +40,6 @@ my @lines = split(/\n/,$unzipped);
 foreach (0 ... ($limit-1)){
     my $line = $lines[$_];
     my ($rank,$address) = split(/,/,$line);
-    next unless($address =~ /ashampoo/);
-    warn $address;
     my $id = CIF::Message::DomainWhitelist->insert({
         source     => 'alexa.com',
         impact      => 'domain whitelist',
@@ -53,6 +51,6 @@ foreach (0 ... ($limit-1)){
         alternativeid   => 'http://www.alexa.com/siteinfo/'.$address,
         alternativeid_restriction   => 'public',
     });
-    warn $id;
+    print $id."\n";
 }
 $bucket->dbi_commit();
