@@ -4,11 +4,8 @@ use base 'CIF::WebAPI';
 use strict;
 use warnings;
 
-use CIF::Message::Domain;
-use CIF::WebAPI::domain::address;
 use CIF::Message::DomainSimple;
 use Net::DNS;
-use JSON;
 
 my $nsres = Net::DNS::Resolver->new(
     nameservers => ['8.8.8.8'],

@@ -2,14 +2,15 @@ use inc::Module::Install;
 
 name        'CIF-WebAPI';
 all_from    'lib/CIF/WebAPI.pm';
-requires    'Text::Table';
-requires    'Class::DBI';
-requires    'Apache2::REST';
-requires    'CIF::DBI';
-requires    'JSON';
-requires    'Net::DNS';
+
+requires    'Text::Table'   => '1.114';
+requires    'Class::DBI'    => '3.0.17';
+requires    'Apache2::REST' => '0.06';
+requires    'CIF::DBI'      => '0.03';
+requires    'JSON'          => '2.07';
+requires    'Net::DNS'      => '0.65';
 
 install_script  'cif_apikeys';
-install_script  'cif_feed';
+install_script  'cif_feeds';
 
 WriteAll();
