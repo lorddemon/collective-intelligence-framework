@@ -27,6 +27,8 @@ CREATE TABLE domain (
     UNIQUE (uuid)
 );
 
+create view v_domain as select address,rdata,type,ttl,impact,severity,detecttime,created from domain;
+
 CREATE TABLE domain_whitelist() INHERITS (domain);
 ALTER TABLE domain_whitelist ADD PRIMARY KEY (id);
 ALTER TABLE domain_whitelist ADD CONSTRAINT whitelist_domain_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
