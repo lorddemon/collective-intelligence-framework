@@ -18,6 +18,7 @@ use MIME::Base64;
 use DateTime;
 use DateTime::Format::DateParse;
 use Data::Dumper;
+use CIF::WebAPI::doc;
 
 sub isAuth {
     my ($self,$meth,$req) = @_;
@@ -33,6 +34,12 @@ sub isAuth {
 
 sub GET {
     my ($self,$request,$response) = @_;
+
+    # if we call the top level, show the doc
+    if(ref($self) eq 'CIF::WebAPI'){
+        my $h = CIF::WebAPI::doc->new($self);
+        return $h->GET($request,$response);
+    }
 
     unless($request->{'r'}->param('fmt')){
         my $agent = $request->{'r'}->headers_in->{'User-Agent'};
@@ -140,6 +147,10 @@ sub buildNext {
 
     my $type;
     for($frag){
+        if(/^doc$/){
+            return CIF::WebAPI::doc->new($self);
+            last;
+        }
         if(/^($RE{'net'}{'IPv4'}|as\d+)/){
             $type = 'infrastructure';
             last;
