@@ -122,7 +122,7 @@ foreach (@feeds){
     _profile('sorting',$start);
     @recs = sort { $a->{'detecttime'} cmp $b->{'detecttime'} } @recs;
     _profile('mapping',$start);
-    if($restriction_map){
+    if(keys %$restriction_map){
         foreach my $r (@recs){
             if(exists($restriction_map->{$r->{'restriction'}})){
                 $r->{'restriction'} = $restriction_map->{$r->{'restriction'}};
