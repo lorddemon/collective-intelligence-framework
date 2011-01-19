@@ -16,7 +16,6 @@ __PACKAGE__->table('domain');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid description address type rdata cidr asn asn_desc cc rir class ttl whois impact confidence source alternativeid alternativeid_restriction severity restriction detecttime created/);
 __PACKAGE__->columns(Essential => qw/id uuid description address rdata impact restriction created/);
-__PACKAGE__->has_a(uuid => 'CIF::Message');
 __PACKAGE__->sequence('domain_id_seq');
 
 my $tests = {
@@ -270,6 +269,16 @@ sub isWhitelisted {
     $self->table($t);
     return @recs;
 }
+
+__PACKAGE__->set_sql('feed' => qq{
+    SELECT * FROM __TABLE__
+    WHERE type = 'A'
+    AND severity >= ?
+    AND restriction <= ?
+    AND NOT (lower(impact) = 'search' OR lower(impact) = 'domain whitelist' OR lower(impact) LIKE '% whitelist %')
+    ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT ?
+});
 
 __PACKAGE__->set_sql('by_address' => qq{
     SELECT * FROM __TABLE__

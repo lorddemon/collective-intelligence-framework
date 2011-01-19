@@ -46,6 +46,9 @@ sub insert {
     my @results = CIF::Message::Domain::getrdata($info->{'nsres'},$info->{'address'});
     foreach my $r (@results){
         my %hash = %$info;
+        if($r->{'type'} ne 'A'){
+            $hash{'detecttime'} = DateTime->from_epoch(epoch => time());
+        }
         my ($id,$err) = $self->_insert($bucket,{%hash},$r);
         return(undef,$err) unless($id);
         push(@ids,$id);
@@ -70,10 +73,11 @@ sub insert {
     }
     foreach my $r (grep { $_->{'type'} eq 'NS' } @results){
         my @recs = CIF::Message::Domain::getrdata($info->{'nsres'},$r->{'nsdname'});
-        foreach my $rec (grep { $_->{'type'} eq 'A' } @recs){
+        foreach my $rec (grep { $_->{'type'} && $_->{'type'} eq 'A' } @recs){
             my %hash = %$info;
             $hash{'impact'} = 'suspicious nameserver';
             $hash{'description'} = 'suspicious nameserver '.$info->{'impact'}.' '.$info->{'address'};
+            $hash{'detecttime'} = DateTime->from_epoch(epoch => time());
 
             my ($id,$err) = $self->_insert('CIF::Message::DomainNameserver',{%hash},$rec);
             return(undef,$err) unless($id);

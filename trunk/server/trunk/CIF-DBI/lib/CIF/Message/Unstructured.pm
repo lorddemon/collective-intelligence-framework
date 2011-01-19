@@ -11,7 +11,6 @@ __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid source message/);
 __PACKAGE__->columns(Essential => qw/id uuid message/);
 __PACKAGE__->sequence('message_unstructured_id_seq');
-__PACKAGE__->has_a(uuid => 'CIF::Message');
 
 sub insert {
     my $self = shift;
