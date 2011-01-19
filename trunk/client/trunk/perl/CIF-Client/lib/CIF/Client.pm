@@ -170,6 +170,14 @@ CIF::Client - Perl extension that extends REST::Client for use with the CI-Frame
 
   print $client->table($text) || die('no records')
 
+=head1 COMMAND-LINE
+
+  $> cif -h
+  $> cif -q example.com
+  $> cif -q domain -p bindzone
+  $> cif -q 192.168.1.0/24
+  $> cif -q infrastructure/network -p snort
+  $> cif -q url -s low | grep -v private
 
 =head1 DESCRIPTION
 
