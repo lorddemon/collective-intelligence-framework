@@ -50,6 +50,8 @@ sub new {
     $self->{'apikey'} = $apikey;
     $self->{'config'} = $cfg;
     $self->{'max_desc'} = $args->{'max_desc'};
+    $self->{'restriction'} = $cfg->{'restriction'};
+    $self->{'severity'} = $cfg->{'severity'};
     
     if($args->{'fields'}){
         @{$self->{'fields'}} = split(/,/,$args->{'fields'}); 
@@ -62,8 +64,11 @@ sub GET  {
     my ($self,$q,$s,$r) = @_;
 
     my $rest = '/'.$q.'?apikey='.$self->apikey();
-    $rest .= '&severity='.$s if($s);
-    $rest .= '&restriction='.$r if($r);
+    my $severity = ($s) ? $s : $self->{'severity'};
+    my $restriction = ($r) ? $r : $self->{'restriction'};
+
+    $rest .= '&severity='.$severity if($severity);
+    $rest .= '&restriction='.$restriction if($restriction);
 
     $self->SUPER::GET($rest);
     my $content = $self->{'_res'}->{'_content'};
@@ -100,7 +105,7 @@ sub table {
     } elsif(exists($a[0]->{'rdata'})) {
         push(@cols,('address','rdata','type'));
     } else {
-        push(@cols,'address');
+        push(@cols,'address','portlist');
     }
     push(@cols,(
         'detecttime',
