@@ -10,6 +10,7 @@ __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->sequence('feed_id_seq');
 
 use CIF::Message::Unstructured;
+use Data::Dumper;
 
 sub insert {
     my $self = shift;
@@ -59,7 +60,7 @@ sub aggregateFeed {
 sub mapIndex {
     my $self = shift;
     my $rec = shift;
-    my $msg = CIF::Message::Structured->retrieve(uuid => $rec->uuid->id());
+    my $msg = CIF::Message::Structured->retrieve(uuid => $rec->uuid());
     die ::Dumper($rec) unless($msg);
     $msg = $msg->message();
     return {
@@ -70,7 +71,7 @@ sub mapIndex {
         confidence  => $rec->confidence(),
         description => $rec->description(),
         detecttime  => $rec->detecttime(),
-        uuid        => $rec->uuid->id(),
+        uuid        => $rec->uuid(),
         alternativeid   => $rec->alternativeid(),
         alternativeid_restriction   => $rec->alternativeid_restriction(),
         created     => $rec->created(),

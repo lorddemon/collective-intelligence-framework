@@ -14,7 +14,6 @@ __PACKAGE__->table('infrastructure');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid description impact address cidr asn asn_desc cc rir protocol portlist confidence source severity restriction alternativeid alternativeid_restriction detecttime created/);
 __PACKAGE__->columns(Essential => qw/id uuid description address restriction created/);
-__PACKAGE__->has_a(uuid   => 'CIF::Message');
 __PACKAGE__->sequence('infrastructure_id_seq');
 
 my @list = (

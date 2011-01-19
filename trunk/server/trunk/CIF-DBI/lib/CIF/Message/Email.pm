@@ -10,7 +10,6 @@ use CIF::Message::IODEF;
 __PACKAGE__->table('email');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid description address impact source confidence severity restriction alternativeid alternativeid_restriction detecttime created/);
-__PACKAGE__->has_a(uuid   => 'CIF::Message');
 __PACKAGE__->sequence('email_id_seq');
 
 sub insert {
@@ -107,8 +106,6 @@ sub lookup {
         address     => $address,
         impact      => 'search',
         description => $desc,
-        md5         => $md5,
-        sha1        => $sha1,
         detecttime  => $dt,
     });
     $self->table($t);

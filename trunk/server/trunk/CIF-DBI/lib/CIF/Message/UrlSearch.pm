@@ -5,7 +5,6 @@ use strict;
 use warnings;
 
 __PACKAGE__->table('url_search');
-__PACKAGE__->has_a(uuid => 'CIF::Message');
 
 __PACKAGE__->set_sql('feed' => qq{
     SELECT * FROM __TABLE__

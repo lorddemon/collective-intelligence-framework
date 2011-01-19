@@ -9,7 +9,6 @@ __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid source message/);
 __PACKAGE__->columns(Essential => qw/id uuid source message/);
 __PACKAGE__->sequence('message_structured_id_seq');
-__PACKAGE__->has_a(uuid => 'CIF::Message');
 
 use CIF::Message;
 
@@ -22,7 +21,6 @@ sub insert {
     die('source must be a vaild v3 uuid') unless(CIF::Message::isUUID($source));
 
     my $uuid = CIF::Message::genMessageUUID($source,$msg);
-    use Data::Dumper;
 
     my $mid = CIF::Message->insert({
         uuid        => $uuid,

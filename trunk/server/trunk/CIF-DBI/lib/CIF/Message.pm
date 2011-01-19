@@ -11,8 +11,6 @@ __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid type format source confidence severity description impact restriction detecttime created/);
 __PACKAGE__->columns(Essential => qw/id uuid type created/);
 __PACKAGE__->sequence('message_id_seq');
-__PACKAGE__->might_have(unstructured => 'CIF::Message::Unstructured');
-__PACKAGE__->might_have(structured => 'CIF::Message::Structured');
 
 sub isUUID {
     my $arg = shift;
