@@ -3,17 +3,14 @@ import simplejson as json
 from texttable import Texttable
 import os
 import ConfigParser
-import magic
 from base64 import b64decode
-import re
-import cStringIO
 import hashlib
 import zlib
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
 
 version = '0.00_04'
 
-import pprint
-pp = pprint.PrettyPrinter(indent=4)
 class Client(object):
     def __init__(self, **vars):
         self.host = vars['host']
@@ -23,6 +20,15 @@ class Client(object):
             assert isinstance(vars['fields'],list)
             self.fields = vars['fields']
 
+        """ override order: passed args, config file args """
+        self.severity = None
+        self.restriction = None
+
+        if vars.get('severity'):
+            self.severity = vars['severity']
+        if vars.get('restriction'):
+            self.restriction = vars['restriction']
+
     def set_fields(self, **vars):
         assert isinstance(vars['fields'],list)
         self.fields = vars['fields']
@@ -31,15 +37,24 @@ class Client(object):
         s = self.host + '/' + q
         
         params={'apikey':self.apikey}
+
         if restriction:
             params['restriction'] = restriction
+        elif self.restriction:
+            params['restriction'] = self.restriction
+
         if severity:
             params['severity'] = severity
+        elif self.severity:
+            params['severity'] = self.severity
 
         ret = GET(s, params)
         ret = json.loads(ret)
+
+        """ we're mirroring the perl client lib here """
         self.responseCode = ret['status']
 
+        """ check to see if we've got a feed object, auto-de(code/compress) it """
         if ret['data'].get('result') and ret['data']['result'].get('hash_sha1'):
             hash = hashlib.sha1()
             feed = ret['data']['result']['feed']
@@ -51,9 +66,17 @@ class Client(object):
             feed = zlib.decompress(b64decode(feed))
             ret['data']['result']['feed'] = json.loads(feed)
         
+        """ again, mirroring the perl module with responseContent() """
         self.responseContent = json.dumps(ret)
 
     def table(self,j):
+        """
+        Take in the JSON object and print a neat table out of the data
+
+        Keyword args:
+        self -- self
+        j -- json data
+        """
         j = json.loads(j)
         if not j['data'].get('result'): 
             return 0
@@ -86,18 +109,21 @@ class Client(object):
             cols = self.fields
         else:
             cols = ['restriction','severity']
-            if feed[0].get('address'):
-                cols.append('address')
-                if feed[0].get('rdata'):
-                    cols.extend(['rdata','type'])
-            if feed[0].get('hash_md5'):
+            if feed[0].get('rdata'):
+                cols.extend(['address','rdata','type'])
+            elif feed[0].get('hash_md5'):
                 cols.extend(['hash_md5','hash_sha1'])
+            else:
+                cols.extend(['address','portlist'])
+
             cols.extend(['detecttime','description','alternativeid_restriction','alternativeid'])
         
         t.add_row(cols)
         for key in feed:
             row = []
             for col in cols:
+                if not key[col]:
+                    key[col] = ''
                 row.append(key[col])
             t.add_row(row)
 
@@ -118,7 +144,7 @@ class Client(object):
         return table
 
 class ClientINI(Client):
-    def __init__(self, path=None, fields=None):
+    def __init__(self, path=None, fields=None, severity=None, restriction=None):
         if not path:
             path = os.path.expanduser("~/.cif")
         c = ConfigParser.ConfigParser()
@@ -128,4 +154,5 @@ class ClientINI(Client):
         vars = dict(c.items("client"))
         if fields:
             vars['fields'] = fields
+
         Client.__init__(self, **vars)
