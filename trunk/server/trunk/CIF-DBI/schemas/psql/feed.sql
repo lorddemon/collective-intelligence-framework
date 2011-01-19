@@ -15,6 +15,8 @@ CREATE TABLE feed (
     UNIQUE (uuid)
 );
 
+create view v_feed as select id,uuid,restriction,severity,description,created from feed;
+
 CREATE TABLE feed_infrastructure () INHERITS (feed);
 ALTER TABLE feed_infrastructure ADD PRIMARY KEY (id);
 ALTER TABLE feed_infrastructure ADD CONSTRAINT feed_infrastructure_uuid_fkey FOREIGN KEY (uuid) REFERENCES message(uuid) ON DELETE CASCADE;
