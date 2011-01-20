@@ -1,0 +1,56 @@
+#labels Phase-Implementation,Featured
+#initial how-to explaining the initial setup of your client
+
+= Global Configuration File =
+ 1. create a configuration file: ~/.cif with the following:
+{{{
+[client]
+host = https://example.com:443/api
+apikey = xx-xx-xx-xx-xx
+timeout = 60
+#severity = medium
+}}}
+
+= [http://bit.ly/gPkjhQ Client Libraries] =
+== Perl ==
+
+ 1. install the client library
+{{{
+$> sudo perl -MCPAN -e 'install REST::Client, Text::Table, JSON, Module::Pluggable, Config::Simple, Snort::Rule, Class::Accessor, Digest::MD5, Digest::SHA1, Regexp::Common::net'
+$> wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.00_03.tar.gz
+$> tar -zxvf CIF-Client-0.00_03.tar.gz
+$> cd CIF-Cilent-0.00_03
+$> perl Makefile.PL && make && sudo make install
+}}}
+ 1. run a sample query for testing:
+{{{
+$> cif -h
+$> cif -q example.com
+$> cif -q 192.168.1.0/24
+$> cif -q c09bdd5529fa4111758a7e8de0d615a6
+$> cif -q url/246c9fa16cdc19411ace5cb43c301d2c
+$> cif -q malware -s low
+$> cif -q infrastructure
+$> cif -q infrastructure/network -p snort
+$> cif -q domain -p bindzone
+$> cif -q url -w low | grep -v private
+}}}
+
+=== Python ===
+
+ 1. make sure setup tools is installed
+ 1. easy_install [http://pypi.python.org/pypi?:action=pkg_edit&name=cif cif]
+ 1. run a sample query for testing:
+{{{
+$> cifcli.py -h
+$> cifcli.py -h
+$> cifcli.py -q example.com
+$> cifcli.py -q 192.168.1.1
+$> cifcli.py -q c09bdd5529fa4111758a7e8de0d615a6
+$> cifcli.py -q url/246c9fa16cdc19411ace5cb43c301d2c
+$> cifcli.py -q malware -s low
+$> cifcli.py -q infrastructure
+$> cifcli.py -q infrastructure/network -p snort
+$> cifcli.py -q domain -p bindzone
+$> cifcli.py -q url -w low | grep -v private
+}}}
