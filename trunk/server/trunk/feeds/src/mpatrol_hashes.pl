@@ -8,27 +8,33 @@ use DateTime;
 use DateTime::Format::DateParse;
 use MIME::Base64;
 use CIF::Message::Malware;
+use Getopt::Std;
+
+my %opts;
+getopts('d',\%opts);
+my $debug = $opts{'d'};
 
 my $partner = 'malwarepatrol.com.br';
 my $url = 'http://www.malware.com.br/cgi/submit?action=list_hashes';
 
 my $content = get($url) || die('unable to get feed: '.$!);
+my $b = CIF::Message::Malware->new();
+$b->db_Main->{'AutoCommit'} = 0 if($debug);
 
 my @lines = split(/\n/,$content);
 foreach (@lines){
     next if(/^(#|$)/);
     chomp();
     my ($description,$md5,$sha1) = split(/\t/,$_);
-    my $id = encode_base64($description);
+    my $lid = encode_base64($description);
     my $severity = 'medium';
 
     my $detecttime = DateTime->from_epoch(epoch => time());
     $detecttime = $detecttime->ymd().'T00:00:00Z';
+    next unless($md5);
 
-    my $uuid;
     my $impact = 'malware binary';
-    if($md5){
-        $uuid = CIF::Message::Malware->insert({
+    my $id = $b->insert({
             source      => $partner,
             description => 'malware binary '.$description,
             impact      => $impact,
@@ -38,12 +44,10 @@ foreach (@lines){
             detecttime  => $detecttime,
             confidence  => 7,
             severity    => $severity,
-            alternativeid  => 'http://www.malware.com.br/cgi/search.pl?id='.$id,
+            alternativeid  => 'http://www.malware.com.br/cgi/search.pl?id='.$lid,
             alternativeid_restriction => 'public',
-        });
-        $uuid = $uuid->uuid();
-    }
+    });
 
-    warn $uuid;
-
+    print $id.' -- '.$id->uuid().' -- '.$description."\n";
 }
+$b->dbi_commit() if($debug);

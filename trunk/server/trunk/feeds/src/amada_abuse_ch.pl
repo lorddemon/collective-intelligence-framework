@@ -14,13 +14,15 @@ use CIF::Message::UrlMalware;
 use CIF::Message::DomainSimple;
 
 my $timeout = 5;
-my $partner = 'malwaredomainlist.com';
-my $url = 'http://www.malwaredomainlist.com/hostslist/mdl.xml';
+my $partner = 'amada.abuse.ch';
+my $url = 'http://amada.abuse.ch/recent.php';
 my $content;
 my $rss = XML::RSS->new();
 
 $content = get($url);
 $rss->parse($content);
+
+die Dumper($rss);
 
 foreach my $item (@{$rss->{items}}){
     my ($url,$addr,$asn,$country,$desc) = split(/,/,$item->{description});

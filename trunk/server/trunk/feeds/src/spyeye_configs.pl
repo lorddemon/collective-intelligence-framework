@@ -55,7 +55,7 @@ foreach my $item (@{$rss->{items}}){
             restriction => 'need-to-know',
             detecttime  => $detecttime,
             confidence  => 7,
-            severity    => $severity,
+            severity    => 'medium',
             alternativeid  => 'https://spyeyetracker.abuse.ch/monitor.php?hash='.$md5,
             alternativeid_restriction => 'public',
         });
