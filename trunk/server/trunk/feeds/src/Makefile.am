@@ -1,4 +1,5 @@
 bin_SCRIPTS = \
+malc0de.pl \
 maliciousnetworks.org_firelist.pl \
 malwaredomainlist.pl \
 malwaredomains.pl \
@@ -12,7 +13,7 @@ phishtank.pl \
 google_phishing_replyto.pl \
 whitelist_dnswl_org.pl \
 local_domain_whitelist.pl \
-local_inet_whitelist.pl \
+local_infrastructure_whitelist.pl \
 alexa_whitelist.pl \
 hosts-file.net.pl \
 mpatrol_hashes.pl \

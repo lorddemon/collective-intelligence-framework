@@ -52,7 +52,7 @@ foreach my $item (@{$rss->{items}}){
             restriction => 'need-to-know',
             detecttime  => $detecttime,
             confidence  => 7,
-            severity    => $severity,
+            severity    => 'medium',
             alternativeid  => 'https://zeustracker.abuse.ch/monitor.php?search='.$md5,
             alternativeid_restriction => 'public',
         });
