@@ -1,0 +1,41 @@
+Documentation of the Current CIF-WebAPI REST API
+
+= Default Feeds =
+== Domain ==
+ * domain/
+ * domain/fastflux
+ * domain/malware
+ * domain/nameserver
+
+ == Infrastructure ==
+ * infrastructure/
+ * infrastructure/asn
+ * infrastructure/botnet
+ * infrastructure/malware
+ * infrastructure/network
+ * infrastructure/phishing
+ * infrastructure/scan
+ * infrastructure/spam
+ * infrastructure/suspicious
+
+== malware ==
+ * malware/
+
+== malicious urls ==
+ * url/
+ * url/botnet
+ * url/malware
+ * url/phishing
+
+== Whitelists ==
+These feeds are *NOT* included in their respective top-level feeds (eg: domain/ and infrastructure/)
+ * domain/whitelist
+ * infrastructure/whitelist
+
+= Query Examples =
+||Query||Example||                                                                                                          
+||domain||https://example.com:443/api/example.com?apikey=xx-xx-xx-xx||                        
+||ipv4||https://example.com:443api/192.168.1.1?apikey=xx-xx-xx-xx||                        
+||malware||https://example.com:443/api/71eb3bcdb9dcc0fe4a0089db62692318?apikey=xx-xx-xx-xx||
+||url||https://example.com:443/api/url/246c9fa16cdc19411ace5cb43c301d2c?apikey=xx-xx-xx-xx||
+||ipv4-net||https://example.com:443/api/192.168.1.0/24?apikey=xx-xx-xx-xx||
