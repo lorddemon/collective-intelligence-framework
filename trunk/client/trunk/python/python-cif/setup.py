@@ -2,15 +2,15 @@ from setuptools import setup, find_packages
 
 setup(
     name='cif',
-    version='0.00_04',
-    description="",
+    version='0.00_05',
+    description="a sample python client for accessing the CIF interface",
     author = 'Wes Young',
     author_email = 'ci-framework@googlegroups.com',
     url = 'http://code.google.com/p/collective-intelligence-framework/',
     license = 'BSD',
     packages=find_packages(),
     zip_safe = False,
-    install_requires= ['restclient','simplejson','Texttable','python-magic','argparse'],
+    install_requires= ['restclient','simplejson','Texttable','argparse'],
     ## TODO -- change this to entry points instead of scripts
     scripts = [
         'scripts/cifcli.py'
