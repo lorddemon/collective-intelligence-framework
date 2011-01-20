@@ -44,6 +44,7 @@ These feeds are *NOT* included in their respective top-level feeds (eg: domain/ 
 ||ipv4-net||example.com:443/api/infrastructure/192.168.1.0/24?apikey=xx-xx-xx-xx||
 ||ipv4-net||example.com:443/api/192.168.1.0/24?apikey=xx-xx-xx-xx||
 
+= *SPECIAL NOTES* =
  * url queries must be MD5 or SHA1 hashes
  * malware queries must be either MD5 or SHA1 hashes
  * the WebAPI will automatically determine the type of query (with the exception of passing an MD5 url hash, you MUST prefix it with url/$HASH). The WebAPI will determine any MD5 or SHA1 hash as a malware query.
