@@ -22,6 +22,16 @@ Examples:
     $> perl /usr/local/bin/cif_apikeys -k 96818121-f1b6-482e-8851-8fb49cb2f6c0 -r
 }}}
 
+= Feed Generation =
+ 1. for performance reasons, feeds are aggregated via cron
+ 1. each feed is aggregated, compressed and base64 encoded, then inserted into a database for more efficient delivery
+ 1. each set of client libraries is designed to detect this encoding and transparently decode/decompress the feeds and return the results to your output without any extra setup
+ 1. because of this, larger feeds may take longer to decode/decompress on your client, but results in less load against the data-warehouse and the servers
+ 1. an example of how feeds are cached and generated as follows:
+  1. high severity (default): */5 min
+  1. medium severity: */15 min
+  1. low severity: */60 min
+
 = Default Feeds =
 == Domain ==
  * domain/
