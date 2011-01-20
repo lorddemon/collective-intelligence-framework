@@ -12,27 +12,24 @@ pp = pprint.PrettyPrinter(indent=4)
 version = '0.00_04'
 
 class Client(object):
-    def __init__(self, **vars):
-        self.host = vars['host']
-        self.apikey = vars['apikey']
+    def __init__(self, host, apikey, fields=None, severity=None, restriction=None):
+        self.host = host
+        self.apikey = apikey
 
-        if vars.get('fields'):
-            assert isinstance(vars['fields'],list)
-            self.fields = vars['fields']
-
+        self._fields = fields
         """ override order: passed args, config file args """
-        self.severity = None
-        self.restriction = None
+        self.severity = severity
+        self.restriction = restriction
 
-        if vars.get('severity'):
-            self.severity = vars['severity']
-        if vars.get('restriction'):
-            self.restriction = vars['restriction']
-
-    def set_fields(self, **vars):
-        assert isinstance(vars['fields'],list)
-        self.fields = vars['fields']
+    def _get_fields(self):
+        return self._fields
         
+    def _set_fields(self, fields):
+        if fields:
+            assert isinstance(fields, list)
+        self._fields = fields
+    fields = property(_get_fields, _set_fields)
+    
     def GET(self,q,severity=None,restriction=None):
         s = self.host + '/' + q
         
@@ -83,29 +80,17 @@ class Client(object):
 
         j = j['data']['result']
         
-        created = None
-        restriction = None
-        severity = None
-        feedid = None
-
-        if j.get('created'):
-            created = j.get('created') 
-       
-        if j['feed'].get('restriction'):
-            restriction = j['feed'].get('restriction')
-
-        if j['feed'].get('severity'):
-            severity = j['feed'].get('severity')
-
-        if j.get('id'):
-            feedid = j.get('id')
+        created = j.get('created') 
+        feedid = j.get('id')
+        restriction = j['feed'].get('restriction')
+        severity = j['feed'].get('severity')
 
         feed = j['feed']['items']
         
         t = Texttable(max_width=0)
         t.set_deco(Texttable.VLINES)
 
-        if hasattr(self,'fields'):
+        if self.fields:
             cols = self.fields
         else:
             cols = ['restriction','severity']
@@ -119,14 +104,9 @@ class Client(object):
             cols.extend(['detecttime','description','alternativeid_restriction','alternativeid'])
         
         t.add_row(cols)
-        for key in feed:
-            row = []
-            for col in cols:
-                if not key[col]:
-                    key[col] = ''
-                row.append(key[col])
-            t.add_row(row)
-
+        for item in feed:
+            t.add_row([item[col] or '' for col in cols])
+            
         table = t.draw()
         
         if created:

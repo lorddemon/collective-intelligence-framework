@@ -8,3 +8,24 @@ OS X (10.5):
 
 1. sudo easy_install -U setuptools
 2. sudo python setup.py install
+
+CONFIGURATION FILE
+
+1. should be (default) ~/.cif
+2. look like:
+
+    [client]
+    host = https://ses-dev.ren-isac.net:443/api
+    apikey = 985e788b-dbcd-4e3f-a7a9-2e59dd5a4ff8
+    timeout = 60
+    # override servers default severity setting
+    #severity = medium
+
+USAGE
+
+$> cifcli.py -h
+$> cifcli.py -q domain -s low
+$> cifcli.py -q infrastructure/scan
+$> cifcli.py -q 192.168.1.0/24
+$> cifcli.py -q url -s medium | grep -v private
+$> cifcli.py -q example.com
