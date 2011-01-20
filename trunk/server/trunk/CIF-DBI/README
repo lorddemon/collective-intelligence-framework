@@ -24,6 +24,7 @@ To install this module type the following:
    make
    make test
    make install
+   sh database_rebuild.sh
 
 DEPENDENCIES
 
@@ -35,7 +36,9 @@ COPYRIGHT AND LICENCE
 
 Put the correct copyright and licence information here.
 
-Copyright (C) 2010 by Wes Young
+Copyright (C) 2011 by the Trustee's of Indiana University (www.iu.edu)
+Copyright (C) 2011 by the REN-ISAC (www.ren-isac.net)
+Copyright (C) 2011 by Wes Young (claimid.com/wesyoung)
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.0 or,
