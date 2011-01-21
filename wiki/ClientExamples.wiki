@@ -3,6 +3,30 @@ Example Client Commands and outputs
 
 = Suspicious Networks =
 == Table Form ==
+ # CIDR query
+{{{
+$ cif -q 130.201.0.0/16
+Query: 130.201.0.0/16
+Feed Restriction: private
+Feed Created: 2011-01-21T14:25:58Z
+
+restriction |severity|address       |portlist|detecttime            |description                                   |alternativeid_restriction|alternativeid                                        
+need-to-know|high    |130.201.0.0/16|        |2011-01-20 00:00:00+00|hijacked network infrastructure 130.201.0.0/16|public                   |http://www.spamhaus.org/sbl/sbl.lasso?query=SBL101200
+need-to-know|high    |130.201.0.0/16|        |2011-01-21 00:00:00+00|hijacked network infrastructure 130.201.0.0/16|public                   |http://www.spamhaus.org/sbl/sbl.lasso?query=SBL101200
+}}}
+ # ipv4-addr query
+{{{
+$ cif -q 130.201.0.1
+Query: 130.201.0.1
+Feed Restriction: private
+Feed Created: 2011-01-21T14:26:51Z
+
+restriction |severity|address       |portlist|detecttime            |description                                   |alternativeid_restriction|alternativeid                                        
+need-to-know|high    |130.201.0.0/16|        |2011-01-20 00:00:00+00|hijacked network infrastructure 130.201.0.0/16|public                   |http://www.spamhaus.org/sbl/sbl.lasso?query=SBL101200
+need-to-know|high    |130.201.0.0/16|        |2011-01-21 00:00:00+00|hijacked network infrastructure 130.201.0.0/16|public                   |http://www.spamhaus.org/sbl/sbl.lasso?query=SBL101200
+private     |        |130.201.0.0/16|        |2011-01-21 14:00:00+00|search 130.201.0.0/16                         |private                  |                                     
+}}}
+ # suspicious network feed (high severity)
 {{{
 $ cif -q infrastructure/network
 
