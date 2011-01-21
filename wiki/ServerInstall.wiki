@@ -104,6 +104,8 @@ $> sudo chown -R cif:cif /etc/cif
  # setup the cron
 {{{
 $> sudo su - cif
+$> touch .cif_domain_whitelist
+$> touch .cif_infrastructure_whitelist
 $> crontab -e
 }}}
 {{{
