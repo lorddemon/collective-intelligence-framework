@@ -10,7 +10,7 @@ $> psql -U postgres
  # read the README
  # install the CIF::DBI dependencies
 {{{
-$> sudo perl -MCPAN -e 'install Class::DBI, XML::LibXML, XML::IODEF, OSSP::uuid, Digest::SHA1, Digest::MD5, Net::CIDR, Net::Abuse::Utils, XML::Malware, Regexp::Common, Regexp::Common::net::CIDR, DateTime, DateTime::Format::DateParse, Unicode::String, Encode'
+$> sudo perl -MCPAN -e 'install Class::DBI, XML::LibXML, XML::IODEF, OSSP::uuid, Digest::SHA1, Digest::MD5, Net::CIDR, Net::Abuse::Utils, XML::Malware, Regexp::Common, Regexp::Common::net::CIDR, DateTime, DateTime::Format::DateParse, Unicode::String, Encode, Net::DNS'
 }}}
  # install the main server interface:
 {{{
@@ -20,6 +20,100 @@ $> cd CIF-DBI-0.00_02
 $> perl Makefile.PL
 $> make && sudo make install
 $> sh database_rebuild.sh
+}}}
+== Notes ==
+ * see the ./scripts directory for helper cron scripts
 = CIF::WebAPI =
-
+== Instructions ==
+ # read the README
+ # install the CIF::WebAPI dependencies
+{{{
+$> sudo perl -MCPAN -e 'install Class::DBI, Text::Table, Apache2::REST,JSON, Net::DNS, Config::Simple, Pod::POM'
+}}}
+ # install the main server interface:
+{{{
+$> wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/cif/CIF-WebAPI-0.00_02.tar.gz
+$> tar -zxvf CIF-WebAPI-0.00_02.tar.gz
+$> cd CIF-WebAPI-0.00_02
+$> perl Makefile.PL
+$> make && sudo make install
+$> psql -U postgres -d cif < apikeys.sql
+$> sudo cp api.conf /etc/apache2/sites-available/ (or wherever your apache sites dir is)
+}}}
+== Notes ==
+ * script/cif_apikeys is a command line interface to the apikeys table
+{{{
+$> cif_apikeys -h
+$> cif_apikeys -u joe@example.com -a
+}}}
+ * api.conf should be modified to suit your needs
 = cif-feeds-public =
+== Install Instructions ==
+ # create a "cif" user:
+{{{
+$> sudo adduser cif
+}}}
+ # install the cif-feeds-public code:
+{{{
+$> wget http://collective-intelligence-framework.googlecode.com/files/cif-feeds-public-0.01.tar.gz
+$> tar -zxvf cif-feeds-public-0.01.tar.gz
+$> cd cif-feeds-public-0.01
+$> ./configure --with-cif-user=cif --with-cif-group=cif
+$> make
+$> sudo make install
+$> ls -all /opt/cif-public-feeds/bin
+}}}
+== Configuration Instructions ==
+ # configure /etc/cif and configure feed crons
+{{{
+$> sudo mkdir /etc/cif
+}}}
+ # setup the weekly crons, sudo vi /etc/cif/cron_weekly:
+{{{
+/opt/cif-feeds-public/bin/alexa_whitelist.pl
+}}}
+ # setup the daily crons, sudo vi /etc/cif/cron_daily:
+{{{
+/opt/cif-feeds-public/bin/spamhaus_drop.pl
+/opt/cif-feeds-public/bin/malwaredomains.pl
+/opt/cif-feeds-public/bin/malc0de.pl
+/opt/cif-feeds-public/bin/amada_proactive.pl
+/opt/cif-feeds-public/bin/amada_ipblocklist.pl
+/opt/cif-feeds-public/bin/maliciousnetworks.org_firelist.pl
+}}}
+ # setup the hourly crons, sudo vi /etc/cif/cron_hourly:
+{{{
+/opt/cif-feeds-public/bin/local_domain_whitelist.pl
+/opt/cif-feeds-public/bin/local_infrastructure_whitelist.pl
+/opt/cif-feeds-public/bin/phishtank.pl
+/opt/cif-feeds-public/bin/zeustracker_binaries.pl
+/opt/cif-feeds-public/bin/zeustracker_configs.pl
+/opt/cif-feeds-public/bin/zeustracker_domains.pl
+/opt/cif-feeds-public/bin/spyeye_binaries.pl
+/opt/cif-feeds-public/bin/spyeye_configs.pl
+/opt/cif-feeds-public/bin/spyeye_domains.pl
+/opt/cif-feeds-public/bin/mpatrol_hashes.pl
+/opt/cif-feeds-public/bin/mpatrol_urls.pl
+/opt/cif-feeds-public/bin/threatexpert.pl
+/opt/cif-feeds-public/bin/sshbl.pl
+}}}
+ # set the permissions:
+{{{
+$> sudo chown -R cif:cif /etc/cif
+}}}
+ # setup the cron
+{{{
+$> sudo su - cif
+$> crontab -e
+}}}
+{{{
+# m h  dom mon dow   command
+05 *    * * * sh /opt/cif-feeds-public/bin/cron.sh hourly &> /dev/null
+15 04  * * * sh /opt/cif-feeds-public/bin/cron.sh daily &> /dev/null
+30 05  * * sun sh /opt/cif-feeds-public/bin/cron.sh weekly &> /dev/null
+
+# update the feeds
+*/5  *  * * * /usr/local/bin/cif_feeds &> /dev/null
+*/15 *  * * * /usr/local/bin/cif_feeds -s medium &> /dev/null
+00   *  * * * /usr/local/bin/cif_feeds -s low &> /dev/null
+}}}
