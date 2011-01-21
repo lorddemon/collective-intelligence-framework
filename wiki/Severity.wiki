@@ -1,0 +1,15 @@
+#labels Phase-Design
+This page discusses the Severity values for intelligence records
+
+= High =
+ * denotes that the record (or feed) has a low false positive rate
+ * the record is usually vetted by 1 or more humans before being entered into the system
+= Medium =
+  * denotes that the record (or feed) has a medium false positive rate
+  * the record is sometimes betted by a human, normally where an actual relationship or obvious bias to the data exsts (eg: a public researcher feed, etc)
+= Low =
+ * denotes that the record (or feed) has a high false positive rate
+ * data is usually auto-generated (eg: dig -t NS when resolving a bad domain)
+ * data should mostly be considered "support data" for queries and correlation activities
+= <BLANK> =
+ * reserved for known benign data (eg: searches, queries, passive dns data)
