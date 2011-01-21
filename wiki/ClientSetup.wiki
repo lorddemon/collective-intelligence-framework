@@ -1,5 +1,5 @@
 #labels Phase-Implementation,Featured
-#initial how-to explaining the initial setup of your client
+initial how-to explaining the initial setup of your client
 
 = Global Configuration File =
  1. create a configuration file: ~/.cif with the following:
