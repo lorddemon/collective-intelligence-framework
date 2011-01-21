@@ -1,41 +1,6 @@
 #labels Phase-Implementation,Featured
 initial how-to explaining the initial setup of your client
 
-= Global Configuration File =
- 1. create a configuration file: ~/.cif with the following:
-{{{
-[client]
-host = https://example.com:443/api
-apikey = xx-xx-xx-xx-xx
-timeout = 60
-#severity = medium
-}}}
-
-= Default Severity =
-By default, when pulling a feed (NOT a query), the client is set to grab the "high severity" feed. These feeds are generally human vetted feeds, with a very low false positive rate. There are two different ways to "override this" feature, by either modifying your client config or adding "-s low" or "-s medium" to your command line client.
-{{{
-[client]
-host = https://example.com:443/api
-apikey = xx-xx-xx-xx-xx
-timeout = 60
-severity = medium
-}}}
-{{{
-$> cif -q domain -s medium
-}}}
-= Default Restriction =
-By default the server is set to provide either a need-to-know or private feed, depending on it's settings.  To override this feature, simply modify your config file by adding "restriction = private", or by adding "-r private" to your cif command:
-{{{
-$> cif -q domain -r private
-}}}
-{{{
-[client]
-host = https://example.com:443/api
-apikey = xx-xx-xx-xx-xx
-timeout = 60
-restriction = private
-}}}
-
 = [http://bit.ly/gPkjhQ Client Libraries] =
 == Perl ==
 
@@ -78,4 +43,39 @@ $> cifcli.py -q infrastructure
 $> cifcli.py -q infrastructure/network -p snort
 $> cifcli.py -q domain -p bindzone
 $> cifcli.py -q url -w low | grep -v private
+}}}
+
+= Global Configuration File =
+ 1. create a configuration file: ~/.cif with the following:
+{{{
+[client]
+host = https://example.com:443/api
+apikey = xx-xx-xx-xx-xx
+timeout = 60
+#severity = medium
+}}}
+
+= Default Severity =
+By default, when pulling a feed (NOT a query), the client is set to grab the "high severity" feed. These feeds are generally human vetted feeds, with a very low false positive rate. There are two different ways to "override this" feature, by either modifying your client config or adding "-s low" or "-s medium" to your command line client.
+{{{
+[client]
+host = https://example.com:443/api
+apikey = xx-xx-xx-xx-xx
+timeout = 60
+severity = medium
+}}}
+{{{
+$> cif -q domain -s medium
+}}}
+= Default Restriction =
+By default the server is set to provide either a need-to-know or private feed, depending on it's settings.  To override this feature, simply modify your config file by adding "restriction = private", or by adding "-r private" to your cif command:
+{{{
+$> cif -q domain -r private
+}}}
+{{{
+[client]
+host = https://example.com:443/api
+apikey = xx-xx-xx-xx-xx
+timeout = 60
+restriction = private
 }}}
