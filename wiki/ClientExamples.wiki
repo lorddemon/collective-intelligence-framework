@@ -111,6 +111,7 @@ need-to-know|low     |114.207.244.143|        |2011-01-20 17:38:12+00|malicious 
 == Snort Rules ==
 {{{
 $ cif -q infrastructure/malware -s low -p snort
+
 alert ip any any -> 114.207.244.145 any ( msg:"need-to-know - malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.145"; threshold:type limit,track by_src,count 1,seconds 3600; sid; reference:http://www.malwaredomains.com/files/domains.txt; )
 alert ip any any -> 114.207.244.144 any ( msg:"need-to-know - malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.144"; threshold:type limit,track by_src,count 1,seconds 3600; sid:1; reference:http://www.malwaredomains.com/files/domains.txt; )
 alert ip any any -> 114.207.244.146 any ( msg:"need-to-know - malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.146"; threshold:type limit,track by_src,count 1,seconds 3600; sid:2; reference:http://www.malwaredomains.com/files/domains.txt; )
