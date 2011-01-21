@@ -55,7 +55,42 @@ timeout = 60
 #severity = medium
 }}}
 
-= Default Severity =
+== Queries ==
+*BY DEFAULT, ALL QUERIES ARE ANONYMOUSLY LOGGED*
+
+When performing a query, your apikey is hashed (sha1-uuid) and the basics of your search are logged by the system.  This allows others to see when there might be interest in a specific piece of intelligence, but not necessarily any concreate "feed" type data. These searches show up like this:
+{{{
+$ cif -q example.com
+Query: example.com
+no records
+
+$ cif -q example.com
+Query: example.com
+Feed Restriction: private
+Feed Created: 2011-01-20T15:44:14Z
+
+restriction|severity|address    |rdata|type|detecttime            |description       |alternativeid_restriction|alternativeid
+private |        |example.com|     |    |2011-01-20 15:00:00+00|search example.com|private               |             
+}}}
+
+The raw data of the search appears like this in the data-warehouse:
+{{{
+id |    uuid         |     source   | message
+569003 | 7f9f6578-84a3-50fd-8bc1-bd837d61546f | xx-xx-xx-xx-xx | <IODEF-Document><Incident restriction="private"><IncidentID name="xx-xx-xx-xx-xx"/><DetectTime>2011-01-20T15:00:00Z</DetectTime><Description>search example.com</Description><Assessment><Impact>search</Impact></Assessment><EventData><Flow><System><Node><Address category="ext-value" ext-category="domain">example.com</Address></Node></System></Flow></EventData></Incident></IODEF-Document>
+}}}
+
+= Feeds =
+== Feed Generation ==
+ 1. for performance reasons, we aggregate feeds via cron
+ 1. each feed is aggregated, compressed and base64 encoded, then inserted into a database for quicker delivery
+ 1. each set of client libraries is designed to detect this encoding and transparently decode/decompress the feeds and return the results to your output without any extra setup
+ 1. because of this, larger feeds may take longer to decode/decompress on your client, but results in less load against the data-warehouse and the servers
+ 1. feeds are cached and generated as follows:
+  1. high severity (default): */5 min
+  1. medium severity: */15 min
+  1. low severity: */60 min
+
+== Default Severity ==
 By default, when pulling a feed (NOT a query), the client is set to grab the "high severity" feed. These feeds are generally human vetted feeds, with a very low false positive rate. There are two different ways to "override this" feature, by either modifying your client config or adding "-s low" or "-s medium" to your command line client.
 {{{
 [client]
@@ -67,7 +102,7 @@ severity = medium
 {{{
 $> cif -q domain -s medium
 }}}
-= Default Restriction =
+== Default Restriction ==
 By default the server is set to provide either a need-to-know or private feed, depending on it's settings.  To override this feature, simply modify your config file by adding "restriction = private", or by adding "-r private" to your cif command:
 {{{
 $> cif -q domain -r private
