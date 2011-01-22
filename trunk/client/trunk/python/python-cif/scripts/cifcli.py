@@ -12,15 +12,16 @@ if __name__ == '__main__':
     parser.add_argument('-s','--severity')
     parser.add_argument('-r','--restriction')
     parser.add_argument("-f", '--fields',nargs='*',metavar="FIELD")
+    parser.add_argument("-c","--config",default=os.path.expanduser("~/.cif"))
     args = parser.parse_args()
 
     if not args.query:
         parser.print_help()
         print "\n"
-        print "example: python cif.py -q infrastrastructure/bonet -f restriction address asn cidr\n"
+        print "example: python cifcli.py -q infrastructure/botnet -f restriction address asn cidr\n"
         os._exit(-1)        
 
-    rclient = cif.ClientINI(fields=args.fields)
+    rclient = cif.ClientINI(path=args.config,fields=args.fields)
 
     for query in args.query:
         rclient.GET(query,args.severity,args.restriction)

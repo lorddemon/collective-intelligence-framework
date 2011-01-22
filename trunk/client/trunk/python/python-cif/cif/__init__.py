@@ -9,10 +9,10 @@ import zlib
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
-version = '0.00_04'
+version = '0.00_06'
 
 class Client(object):
-    def __init__(self, host, apikey, fields=None, severity=None, restriction=None):
+    def __init__(self, host, apikey, fields=None, severity=None, restriction=None, **args):
         self.host = host
         self.apikey = apikey
 
@@ -94,9 +94,9 @@ class Client(object):
             cols = self.fields
         else:
             cols = ['restriction','severity']
-            if feed[0].get('rdata'):
+            if feed[0].has_key('rdata'):
                 cols.extend(['address','rdata','type'])
-            elif feed[0].get('hash_md5'):
+            elif feed[0].has_key('hash_md5'):
                 cols.extend(['hash_md5','hash_sha1'])
             else:
                 cols.extend(['address','portlist'])
@@ -105,7 +105,11 @@ class Client(object):
         
         t.add_row(cols)
         for item in feed:
-            t.add_row([item[col] or '' for col in cols])
+            for col in cols:
+                if isinstance(item[col],unicode):
+                    item[col] = item[col].encode('utf-8')
+
+            t.add_row([str(item[col]) or '' for col in cols])
             
         table = t.draw()
         
