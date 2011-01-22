@@ -18,7 +18,7 @@ use Module::Pluggable search_path => ['CIF::Client::Plugin'];
 
 __PACKAGE__->mk_accessors(qw/apikey config/);
 
-our $VERSION = '0.00_03';
+our $VERSION = '0.00_04';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 # Preloaded methods go here.
@@ -52,6 +52,7 @@ sub new {
     $self->{'max_desc'} = $args->{'max_desc'};
     $self->{'restriction'} = $cfg->{'restriction'};
     $self->{'severity'} = $cfg->{'severity'};
+    $self->{'silent'} = $cfg->{'silent'};
     
     if($args->{'fields'}){
         @{$self->{'fields'}} = split(/,/,$args->{'fields'}); 
@@ -61,14 +62,16 @@ sub new {
 }
 
 sub GET  {
-    my ($self,$q,$s,$r) = @_;
+    my ($self,$q,$s,$r,$silent) = @_;
 
     my $rest = '/'.$q.'?apikey='.$self->apikey();
     my $severity = ($s) ? $s : $self->{'severity'};
     my $restriction = ($r) ? $r : $self->{'restriction'};
+    $silent = ($silent) ? $silent : $self->{'silent'};
 
     $rest .= '&severity='.$severity if($severity);
     $rest .= '&restriction='.$restriction if($restriction);
+    $rest .= '&silent='.$silent if($silent);
 
     $self->SUPER::GET($rest);
     my $content = $self->{'_res'}->{'_content'};
@@ -102,6 +105,8 @@ sub table {
     );
     if(exists($a[0]->{'hash_md5'})){
         push(@cols,('hash_md5','hash_sha1'));
+    } elsif(exists($a[0]->{'url_md5'})){
+        push(@cols,('url_md5','url_sha1','malware_md5','malware_sha1'));
     } elsif(exists($a[0]->{'rdata'})) {
         push(@cols,('address','rdata','type'));
     } else {
@@ -178,6 +183,16 @@ CIF::Client - Perl extension that extends REST::Client for use with the CI-Frame
   $> cif -q 192.168.1.0/24
   $> cif -q infrastructure/network -p snort
   $> cif -q url -s low | grep -v private
+
+=head1 CONFIG FILE
+
+Your config should be stored in ~/.cif (default)
+
+  [client]
+  host = https://example.com:443/api
+  apikey = xx-xx-xx-xx-xx
+  timeout = 60
+  #severity = medium
 
 =head1 DESCRIPTION
 

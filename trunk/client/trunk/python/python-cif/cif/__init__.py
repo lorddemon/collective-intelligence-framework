@@ -9,7 +9,7 @@ import zlib
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
-version = '0.00_06'
+#version = '0.00_06'
 
 class Client(object):
     def __init__(self, host, apikey, fields=None, severity=None, restriction=None, **args):
@@ -98,6 +98,8 @@ class Client(object):
                 cols.extend(['address','rdata','type'])
             elif feed[0].has_key('hash_md5'):
                 cols.extend(['hash_md5','hash_sha1'])
+            elif feed[0].has_key('url_md5'):
+                cols.extend(['url_md5','url_sha1','malware_md5','malware_sha1'])
             else:
                 cols.extend(['address','portlist'])
 
@@ -109,7 +111,7 @@ class Client(object):
                 if isinstance(item[col],unicode):
                     item[col] = item[col].encode('utf-8')
 
-            t.add_row([str(item[col]) or '' for col in cols])
+            t.add_row([item[col] or '' for col in cols])
             
         table = t.draw()
         

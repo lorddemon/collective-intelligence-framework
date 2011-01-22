@@ -8,7 +8,7 @@ use CIF::Client;
 use JSON;
 
 my %opts;
-getopt('hL:p:f:q:c:s:r:', \%opts);
+getopt('hSL:p:f:q:c:s:r:', \%opts);
 
 my $query       = $opts{'q'} || shift;
 my $debug       = ($opts{'d'}) ? 1 : 0;
@@ -18,6 +18,7 @@ my $severity    = $opts{'s'};
 my $restriction = $opts{'r'};
 my $plugin      = $opts{'p'} || 'table';
 my $max_desc    = $opts{'L'} || 100;
+my $silent      = $opts{'S'};
 my $plugs = join(',',CIF::Client::_plugins);
 
 die(usage()) unless($query || $opts{'h'});
@@ -30,6 +31,7 @@ Usage: perl $0 -q xyz.com
     -q  --query:    query string (use 'url\\/<md5|sha1>' for url hash lookups)
     -s  --severity: severity (low,medium,high), default: high
     -p  --plugin:   output plugin ($plugs), default: $plugin
+    -S  --silent    perform a "silent" query (no log query)
 
 Queries:
 
@@ -58,13 +60,14 @@ my ($client,$err) = CIF::Client->new({
     config  => $c,
     fields  => $fields,
     max_desc    => $max_desc,
+    silent  => $silent,
 });
 
 die($err) unless($client);
 
 my @q = split(/\,/,$query);
 foreach (@q){
-    $client->GET($_,$severity,$restriction);
+    $client->GET($_,$severity,$restriction,$silent);
     die('request failed with code: '.$client->responseCode()."\n\n".$client->responseContent()) unless($client->responseCode == 200);
     my $text = $client->responseContent();
    
