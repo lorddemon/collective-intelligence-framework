@@ -6,7 +6,7 @@ setup(
     description="a sample python client for accessing the CIF interface",
     author = 'Wes Young',
     author_email = 'ci-framework@googlegroups.com',
-    url = 'http://code.google.com/p/collective-intelligence-framework/',
+#    url = 'http://code.google.com/p/collective-intelligence-framework/',
     license = 'BSD',
     packages=find_packages(),
     zip_safe = False,
