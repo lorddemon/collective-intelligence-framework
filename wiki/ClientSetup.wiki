@@ -7,9 +7,9 @@ initial how-to explaining the initial setup of your client
  1. install the client library
 {{{
 $> sudo perl -MCPAN -e 'install REST::Client, Text::Table, JSON, Module::Pluggable, Config::Simple, Snort::Rule, Class::Accessor, Digest::MD5, Digest::SHA1, Regexp::Common::net'
-$> wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.00_03.tar.gz
-$> tar -zxvf CIF-Client-0.00_03.tar.gz
-$> cd CIF-Client-0.00_03
+$> wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.00_04.tar.gz
+$> tar -zxvf CIF-Client-0.00_04.tar.gz
+$> cd CIF-Client-0.00_04
 $> perl Makefile.PL && make && sudo make install
 }}}
  1. run a sample query for testing:
