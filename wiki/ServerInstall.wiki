@@ -1,4 +1,4 @@
-#labels Phase-Deploy,Phase-Implementation
+#labels Phase-Deploy,Phase-Implementation,Featured
 Instructions for standing up a CIF server
 
 = Bind9 =
