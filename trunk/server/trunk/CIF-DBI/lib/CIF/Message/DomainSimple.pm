@@ -50,8 +50,12 @@ sub insert {
             $hash{'detecttime'} = DateTime->from_epoch(epoch => time());
         }
         my ($id,$err) = $self->_insert($bucket,{%hash},$r);
-        return(undef,$err) unless($id);
-        push(@ids,$id);
+        if($r->{'type'} eq 'A'){
+            return(undef,$err) unless($id);
+            push(@ids,$id);
+        } else {
+            next unless($id);
+        }
     }
 
     # do the same for the nameservers
@@ -75,13 +79,12 @@ sub insert {
         my @recs = CIF::Message::Domain::getrdata($info->{'nsres'},$r->{'nsdname'});
         foreach my $rec (grep { $_->{'type'} && $_->{'type'} eq 'A' } @recs){
             my %hash = %$info;
-            $hash{'impact'} = 'suspicious nameserver';
+            $hash{'impact'} = 'suspicious nameserver '.$info->{'address'};
             $hash{'description'} = 'suspicious nameserver '.$info->{'impact'}.' '.$info->{'address'};
             $hash{'detecttime'} = DateTime->from_epoch(epoch => time());
 
             my ($id,$err) = $self->_insert('CIF::Message::DomainNameserver',{%hash},$rec);
-            return(undef,$err) unless($id);
-            push(@ids,$id);
+            push(@ids,$id) if($id);
         }
     }
     return($ids[0]);
@@ -91,10 +94,10 @@ sub _insert {
     my ($self,$b,$h,$r) = @_;
     my %hash = %$h;
 
-    $hash{'impact'} .= ' '.$hash{'address'};
+    #$hash{'impact'} .= ' '.$hash{'address'};
     $hash{'address'} = $r->{'name'};
     my $rdata = $r->{'address'} || $r->{'cname'} || $r->{'ptrdname'} || $r->{'nsdname'} || $r->{'exchange'};
-    if($rdata && $rdata =~ /^$RE{net}{IPv4}/){
+    if($rdata && $rdata =~ /^$RE{net}{IPv4}$/){
         ($hash{'asn'},$hash{'cidr'},$hash{'cc'},$hash{'rir'},$hash{'date'},$hash{'as_desc'}) = CIF::Message::Infrastructure::asninfo($rdata);
     } else {
         return(undef,'invalid address: '.$rdata.' -- whitelisted') if($self->isWhitelisted($rdata));
@@ -107,7 +110,7 @@ sub _insert {
 
     my ($id,$err) = $b->insert({%hash});
     return(undef,$err) unless($id);
-    return($id) unless($rdata && $rdata =~ /^$RE{net}{IPv4}/);
+    return($id) unless($rdata && $rdata =~ /^$RE{'net'}{'IPv4'}$/);
 
     $hash{'severity'} = ($hash{'severity'} eq 'high') ? 'medium' : 'low';
     $hash{'confidence'} = ($hash{'confidence'}) ? ($hash{'confidence'} - 2) : 0;

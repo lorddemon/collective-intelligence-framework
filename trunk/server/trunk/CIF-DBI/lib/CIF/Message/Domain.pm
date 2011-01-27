@@ -196,7 +196,7 @@ sub getrdata {
         if(ref($default) eq 'Net::DNS::Packet' && $default->answer()){
             push(@rdata,$default->answer());
         } else {
-            push(@rdata, { name => $d, address => undef, type => 'A', class => 'IN', ttl => undef });
+            push(@rdata, { name => $d, address => undef, type => 'A', class => 'IN', ttl => -1 });
         }
         push(@rdata,$ns->answer()) if(ref($ns) eq 'Net::DNS::Packet');
         push(@rdata,$mx->answer()) if(ref($mx) eq 'Net::DNS::Packet');
@@ -210,7 +210,7 @@ sub getrdata {
 }
 
 sub lookup {
-    my ($self,$address,$apikey,$limit) = @_;
+    my ($self,$address,$apikey,$limit,$silent) = @_;
     $limit = 5000 unless($limit);
     my @recs;
     if($address =~ /^$RE{'net'}{'IPv4'}/){
@@ -218,6 +218,8 @@ sub lookup {
     } else {
         @recs = $self->search_by_address('%'.$address.'%',$limit);
     }
+
+    return @recs if($silent);
 
     my $t = $self->table();
     $self->table('domain_search');

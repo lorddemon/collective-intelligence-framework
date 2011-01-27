@@ -112,7 +112,7 @@ sub toIODEF {
 }
 
 sub lookup {
-    my ($self,$arg,$apikey) = @_;
+    my ($self,$arg,$apikey,$limit,$silent) = @_;
     my $source = CIF::Message::genMessageUUID('api',$apikey);
     my $desc = 'search '.$arg;
     my $col = 'address';
@@ -128,6 +128,8 @@ sub lookup {
         $address = $arg;
     }
     my @recs = $self->search($col => $arg);
+    return @recs if($silent);
+
     my $dt = DateTime->from_epoch(epoch => time());
     $dt = $dt->ymd().'T'.$dt->hour().':00:00Z'; 
     my $t = $self->table();
