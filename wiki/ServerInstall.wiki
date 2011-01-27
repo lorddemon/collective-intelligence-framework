@@ -122,8 +122,8 @@ $> crontab -e
 
 # update the feeds
 */5  *  * * * /usr/local/bin/cif_feeds &> /dev/null
-*/15 *  * * * /usr/local/bin/cif_feeds -s medium &> /dev/null
-00   *  * * * /usr/local/bin/cif_feeds -s low &> /dev/null
+00 *  * * * /usr/local/bin/cif_feeds -s medium &> /dev/null
+00  00  * * * /usr/local/bin/cif_feeds -s low &> /dev/null
 
 # resolve bulk-inserted domains
 #00 * * * * /usr/local/bin/cif_domains_resolve &> /dev/null
