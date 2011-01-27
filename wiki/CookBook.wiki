@@ -1,4 +1,4 @@
-#labels Phase-Implementation
+#labels Phase-Implementation,Client,Phase-Deploy
 = Tips and Tricks =
  # aliases are fun.. vi ~/.profile (or .bashrc):
 {{{
