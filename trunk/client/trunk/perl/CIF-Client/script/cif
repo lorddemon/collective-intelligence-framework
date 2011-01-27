@@ -76,7 +76,7 @@ foreach (@q){
         eval "require $plug";
         die($@) if($@);
         my $json = from_json($text);
-        print $plug->write_out(@{$json->{'data'}->{'result'}->{'feed'}->{'items'}}) if($json->{'data'}->{'result'});
+        print $plug->write_out($client->{'config'},@{$json->{'data'}->{'result'}->{'feed'}->{'items'}}) if($json->{'data'}->{'result'});
     } else {
         print "Query: ".$_;
         $text = $client->table($text) || "\n".'no records'."\n";
