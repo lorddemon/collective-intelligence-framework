@@ -18,7 +18,7 @@ getopts('hDc:d:f:s:r:m:F:',\%opts);
 
 my $feed        = $opts{'f'} || shift || '';
 my $severity    = $opts{'s'} || 'high';
-my $restriction = $opts{'r'} || 'private';
+my $restriction = $opts{'r'};
 my $maxdays     = $opts{'d'} || 30;
 my $debug       = $opts{'D'};
 my $config      = $opts{'c'} || $ENV{'HOME'}.'/.cif';
@@ -42,6 +42,15 @@ unless($feed ne '') {
 }
 
 my @feeds = split(/,/,$feed);
+
+my $restriction_map = $cfg->param(-block => 'restrictions');
+unless($restriction){
+    if(my $x = $restriction_map->{'default'}){
+        $restriction = $x;
+    } else {
+        $restriction = 'private';
+    }
+}
 
 die usage() if($opts{'h'} || $#feeds < 0);
 
@@ -68,8 +77,6 @@ Examples:
 
 EOF
 }
-
-my $restriction_map = $cfg->param(-block => 'restrictions');
 
 my %sev = (
     'high'      => 3,
@@ -108,7 +115,8 @@ foreach (@feeds){
             LIMIT $maxrecords
         });
     } else {
-        @recs = $bucket->search_feed($detecttime,$severity,$restriction,$maxrecords);
+        my @args = ($bucket =~ /Domain/) ? ($severity,$restriction,$maxrecords) : ($detecttime,$severity,$restriction,$maxrecords);
+        @recs = $bucket->search_feed(@args);
 
     }
     _profile('generating',$start);
@@ -157,12 +165,14 @@ foreach (@feeds){
         description => lc($description),
         impact      => lc($impact),
         restriction => lc($restriction),
+        detecttime  => $dt,
     });
 
-    print 'feed: '.$id.' created -- '.$id->uuid()."\n";
+    print lc($description).': '.$id.' created -- '.$id->uuid()."\n";
     my @feeds = $feed_bucket->retrieve_from_sql(qq{
         severity = '$severity'
-        ORDER BY id DESC
+        AND restriction = '$restriction'
+        ORDER BY id ASC
     });
     if($#feeds >= $last_feeds){
         foreach (0 ... $last_feeds-1){
