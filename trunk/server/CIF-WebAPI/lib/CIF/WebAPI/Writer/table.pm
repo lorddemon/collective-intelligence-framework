@@ -43,6 +43,7 @@ Returns the response as json UTF8 bytes for output.
 sub asBytes{
     my ($self,  $resp ) = @_ ;
     
+    return $resp->{'message'} if($resp->{'message'});
     return 'no records, check back later' unless($resp->{'data'}->{'result'});
     my $hash = $resp->{'data'}->{'result'};
     if($hash->{'hash_sha1'}){

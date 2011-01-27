@@ -1,5 +1,5 @@
 CIF-DBI
-===========================
+=======
 
 The README is used to introduce the module and provide instructions on
 how to install the module, any machine dependencies it may have (for
@@ -25,12 +25,6 @@ To install this module type the following:
    make test
    make install
    sh database_rebuild.sh
-
-DEPENDENCIES
-
-This module requires these other modules and libraries:
-
-Class::DBI, XML::LibXML, XML::IODEF, OSSP::uuid, Digest::SHA1, Digest::MD5
 
 COPYRIGHT AND LICENCE
 
