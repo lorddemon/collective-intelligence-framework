@@ -6,8 +6,10 @@ use Data::Dumper;
 
 sub write_out {
     my $self = shift;
+    my $config = shift;
     my @array = @_;
     return '' unless(exists($array[0]->{'address'}));
+    my $sid = ($config->{'snortsid'}) ? $config->{'snortsid'} : 1;
     my $rules = '';
     foreach (@array){
         #next unless($_->{'address'} =~ /^$RE{'net'}{'IPv4'}/);

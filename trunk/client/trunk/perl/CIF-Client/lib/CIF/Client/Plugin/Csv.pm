@@ -4,6 +4,7 @@ use Regexp::Common qw/net/;
 
 sub write_out {
     my $self = shift;
+    my $config = shift;
     my @array = @_;
     my @header = keys(%{$array[0]});
     @header = sort { $a cmp $b } @header;
