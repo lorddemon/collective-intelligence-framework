@@ -1,4 +1,4 @@
-#labels Phase-Implementation,Featured,Phase-Deploy
+#labels Phase-Implementation,Featured,Phase-Deploy,Client
 initial how-to explaining the initial setup of your client
 
 = [http://bit.ly/gPkjhQ Client Libraries] =
