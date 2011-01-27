@@ -2,6 +2,7 @@
 
 use CIF::Message::InfrastructureSimple;
 use DateTime;
+use Config::Simple;
 
 # your own personal whitelist;
 my $cfg = Config::Simple->new($ENV{'HOME'}.'/.cif') || die($!);

@@ -2,8 +2,8 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.64])
-AC_INIT([cif-feeds-public], [0.01], [ci-framework@googlegroups.com])
-AM_INIT_AUTOMAKE(cif-feeds-public,0.01)
+AC_INIT([cif-feeds-public], [0.01_01], [ci-framework@googlegroups.com])
+AM_INIT_AUTOMAKE(cif-feeds-public,0.01_01)
 AC_PREFIX_DEFAULT([/opt/cif-feeds-public])
 
 # Checks for programs.

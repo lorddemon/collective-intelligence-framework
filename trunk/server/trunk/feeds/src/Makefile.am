@@ -1,4 +1,6 @@
 bin_SCRIPTS = \
+amada_proactive.pl \
+amada_ipblocklist.pl \
 malc0de.pl \
 maliciousnetworks.org_firelist.pl \
 malwaredomainlist.pl \
