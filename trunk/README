@@ -15,15 +15,7 @@ BEFORE YOU BEGIN
 
 INSTALLATION
 
-- perl modules
-
- 1. sudo sh install_interface_perl.sh
- 2. sudo sh rebuild_database.sh (default is pgsql)
- 3. sudo sh install_example_deps.sh (this will install deps required to run scripts in examples/ dir)
-
-- python modules
-
- 1. still to be written
+http://code.google.com/p/collective-intelligence-framework/w/list?q=label:Featured
 
 COPYRIGHT AND LICENCE
 
