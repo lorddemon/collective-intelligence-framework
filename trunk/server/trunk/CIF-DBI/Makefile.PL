@@ -14,9 +14,10 @@ requires    'Net::Abuse::Utils' => '0.1';
 requires    'XML::Malware'  => '0.00_4';
 requires    'Regexp::Common' => '2.122';
 requires    'Regexp::Common::net::CIDR' => '0.02'; 
-requires    'DateTime'      => '0.47';
+requires    'DateTime'      => '0.42';
 requires    'DateTime::Format::DateParse'   => '0.04';
 requires    'Unicode::String'   => '2.09';
+requires    'Net::DNS'  => '0.64';
 
 install_script  'cif_infra_wl';
 install_script  'cif_domains_wl';

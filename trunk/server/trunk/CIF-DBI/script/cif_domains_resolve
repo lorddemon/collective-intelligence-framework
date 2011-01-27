@@ -7,38 +7,42 @@ use CIF::Message::Domain;
 use CIF::Message::DomainSimple;
 use DateTime;
 use Net::DNS::Resolver;
+use CIF::Message;
 
-my $now = DateTime->from_epoch(epoch => time());
-$now = $now->ymd().'T'.$now->hms().'Z';
-
-my $b = CIF::Message::Domain->new();
-
-my @recs = $b->retrieve_from_sql(qq{
+my @recs = CIF::Message::Domain->retrieve_from_sql(qq{
     ttl IS NULL
-    AND severity = 'high'
-    ORDER BY id DESC
+    AND impact NOT LIKE 'domain whitelist%'
+    AND impact NOT LIKE 'search'
+    ORDER BY id ASC
     LIMIT 2000 
 });
+exit unless($#recs > -1);
 
-warn $#recs;
+my @sorted = sort { $a->address() cmp $b->address } @recs;
+
 my $x = 0;
-foreach my $rec (@recs){
+foreach my $rec (@sorted){
     my $id = CIF::Message::DomainSimple->insert({
         relatedid   => $rec->id(),
         source      => $rec->source(),
-        impact      => substr($rec->impact(), 0, 10),
-        description => substr($rec->description(), 0, 10),
+        impact      => $rec->impact(),
+        description => $rec->description(),
         address     => $rec->address(),
         confidence  => $rec->confidence(),
-        nsres       => Net::DNS::Resolver->new(nameservers => ['8.8.8.8','8.8.8.4'],debug => 1),
+        nsres       => Net::DNS::Resolver->new(nameservers => ['8.8.8.8','8.8.8.4'],debug => 0),
         restriction => $rec->restriction(),
         alternativeid   => $rec->alternativeid(),
         alternativeid_restriction => $rec->alternativeid_restriction(),
         detecttime  => $rec->detecttime(),
         severity    => $rec->severity(),
     });
-    print $id."\n";
-    warn $x++;
-}
+    print $rec->address().' -- '.$id.' resolved'.' -- '.$x++/($#recs+1)."\n";
 
+    if($id =~ /^\d+$/){
+        CIF::Message->retrieve(uuid => $rec->uuid())->delete();
+    } else {
+        $rec->ttl(-1);
+        $rec->update();
+    }
+}
 warn $#recs;
