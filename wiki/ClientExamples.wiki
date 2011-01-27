@@ -1,4 +1,4 @@
-#labels Featured,Phase-Implementation,Phase-Deploy
+#labels Featured,Phase-Implementation,Phase-Deploy,Client
 Example Client Commands and outputs
 
 = Suspicious Networks =
