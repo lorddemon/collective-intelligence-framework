@@ -43,5 +43,5 @@ foreach (@lines){
         alternativeid_restriction => 'public',
     });
     my $uuid = ($u =~ /^\d+/) ? $u->uuid() : '';
-    print $u.' -- '.$u->uuid.' -- '.$domain."\n";
+    print $u.' -- '.$uuid.' -- '.$domain."\n";
 }

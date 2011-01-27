@@ -1,6 +1,9 @@
 AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = \
+    src/amada_proactive.pl \
+    src/amada_ipblocklist.pl \
+    src/malc0de.pl \
     src/maliciousnetworks.org_firelist.pl \
     src/malwaredomainlist.pl \
     src/malwaredomains.pl \
@@ -14,7 +17,7 @@ EXTRA_DIST = \
     src/google_phishing_replyto.pl \
     src/whitelist_dnswl_org.pl \
     src/local_domain_whitelist.pl \
-    src/local_inet_whitelist.pl \
+    src/local_infrastructure_whitelist.pl \
     src/alexa_whitelist.pl \
     src/hosts-file.net.pl \
     src/mpatrol_hashes.pl \

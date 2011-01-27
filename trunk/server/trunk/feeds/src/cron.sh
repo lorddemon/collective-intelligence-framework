@@ -12,7 +12,7 @@ case $CRON in
 esac
 
 CONFIG="/etc/cif/cron_$CRON"
-CRONS=`cat $CONFIG`
+CRONS=`cat $CONFIG | grep -v "#"`
 
 for SCRIPT in $CRONS
 do

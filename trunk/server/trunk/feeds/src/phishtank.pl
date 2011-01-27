@@ -17,7 +17,7 @@ use CIF::Message::InfrastructureSimple;
 my %opts;
 getopt('pc:f:', \%opts);
 my $config = $opts{'c'} || '/etc/cif/phishtank';
-my $download = $opts{'d'} || 0;
+my $download = $opts{'d'} || 1;
 my $cache = $opts{'f'} || '/tmp/phishtank.xml';
 my $keepcache = $opts{'k'} || 1;
 my $oldest = DateTime::Format::DateParse->parse_datetime($opts{'t'}) || DateTime->from_epoch(epoch => (time() - (7*84600)));
