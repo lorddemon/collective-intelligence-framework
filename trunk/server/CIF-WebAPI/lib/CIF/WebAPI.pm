@@ -79,6 +79,10 @@ sub GET {
         return Apache2::Const::HTTP_OK; 
 
     } elsif(my $q = $self->{'query'}){
+        if($q =~ /^ERROR/){
+            $response->{'message'} = $q;
+            return Apache2::Const::HTTP_OK;
+        }
         my $qbucket = 'CIF::Message::'.$type;
         eval "require $qbucket";
         if($@){

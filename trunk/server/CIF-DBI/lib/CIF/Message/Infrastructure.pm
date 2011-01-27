@@ -9,6 +9,7 @@ use CIF::Message::IODEF;
 use Net::CIDR;
 use Net::Abuse::Utils qw(:all);
 use Regexp::Common qw/net/;
+use Regexp::Common::net::CIDR ();
 
 __PACKAGE__->table('infrastructure');
 __PACKAGE__->columns(Primary => 'id');
@@ -30,7 +31,7 @@ my @list = (
 
 sub isPrivateAddress {
     my $addr = shift;
-    return(undef) unless($addr);
+    return(undef) unless($addr && $addr =~ /^$RE{'net'}{'IPv4'}/);
     my $found = Net::CIDR::cidrlookup($addr,@list);
     return($found);
 }
@@ -193,13 +194,15 @@ sub toIODEF {
 sub lookup {
     my ($self,$address,$apikey,$limit,$silent) = @_;
     $limit = 5000 unless($limit);
-    #my $source = CIF::Message::genSourceUUID('api',$apikey);
+    my $source = CIF::Message::genSourceUUID('api',$apikey);
     my $asn;
     my $description = 'search '.$address;
     if($address !~ /^$RE{net}{IPv4}/){
         $asn = $address;
         $asn =~ s/^(AS|as)//;
         $address = '0/0';
+    } elsif($address =~ /^$RE{net}{CIDR}{IPv4}{-keep}$/){
+        return undef if($2 < 8);
     }
     my $dt = DateTime->from_epoch(epoch => time());
     $dt = $dt->ymd().'T'.$dt->hour().':00:00Z';
@@ -219,7 +222,7 @@ sub lookup {
         address => $address,
         asn     => $asn,
         impact  => 'search',
-        source  => 'api'.$apikey,
+        source  => $source,
         description => $description,
         detecttime  => $dt,
     });

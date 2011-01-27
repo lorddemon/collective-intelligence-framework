@@ -29,8 +29,12 @@ sub submit {
 sub buildNext {
     my ($self,$frag,$req) = @_;
 
-    if($req->uri() =~ /($RE{'net'}{'CIDR'}{'IPv4'})/){
-        $self->{'query'} = $1;
+    if($req->uri() =~ /$RE{'net'}{'CIDR'}{'IPv4'}{-keep}/){
+        if($2 < 8){
+            $self->{'query'} = 'ERROR: cidr prefix must be larger than 7';
+        } else {
+            $self->{'query'} = $1.'/'.$2;
+        }
         return $self;
     } elsif ($frag =~ /($RE{'net'}{'IPv4'})/) {
         $self->{'query'} = $1;
