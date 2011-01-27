@@ -18,12 +18,16 @@ my $examples = {
 sub GET {
     my ($self,$req,$resp) = @_;
 
-    my $agent = $req->{'r'}->headers_in->{'User-Agent'};
+    my $r = $req->{'r'};
+    my $agent = $r->headers_in->{'User-Agent'};
     return Apache2::Const::HTTP_OK unless(lc($agent) =~ /(mozilla|msie|chrome|safari)/);
+
+#    $req->requestedFormat('html');
+#    $resp->{'data'}->{'result'} = $self->mydoc();
+#    return Apache2::Const::HTTP_OK;
 
     my $hostname = $req->{'r'}->hostname();
     my $apibase = $req->{'r'}->dir_config('Apache2RESTAPIBase') || '';
-    my $r = $req->{'r'};
     my $apikey = $r->param('apikey');
     my $port = $r->server->port();
     my $proto = ($port == 443) ? 'https://' : 'http://';

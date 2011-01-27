@@ -5,7 +5,7 @@ use 5.008008;
 use strict;
 use warnings;
 
-our $VERSION = '0.00_02';
+our $VERSION = '0.01_01';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 use CIF::Message::Structured;
@@ -73,7 +73,12 @@ sub GET {
     }
 
     my $msg;
-    if(my $q = $self->{'query'}){
+    if($request->{'r'}->param('doc')){
+        $request->requestedFormat('html');
+        $response->{'data'}->{'result'} = $self->mydoc();
+        return Apache2::Const::HTTP_OK; 
+
+    } elsif(my $q = $self->{'query'}){
         my $qbucket = 'CIF::Message::'.$type;
         eval "require $qbucket";
         if($@){
@@ -81,7 +86,8 @@ sub GET {
             return Apache2::Const::FORBIDDEN;
         }
         
-        my @recs = $qbucket->lookup($q,$apikey,$maxresults);
+        my $silent_lookup = $request->{'r'}->param('silent');
+        my @recs = $qbucket->lookup($q,$apikey,$maxresults,$silent_lookup);
         unless(@recs){ return Apache2::Const::HTTP_OK; }
         my $res;
         @recs = map { $bucket->mapIndex($_) } @recs;
@@ -148,7 +154,8 @@ sub buildNext {
     my $type;
     for($frag){
         if(/^doc$/){
-            return CIF::WebAPI::doc->new($self);
+            my $subh = CIF::WebAPI::doc->new($self);
+            return $subh;
             last;
         }
         if(/^($RE{'net'}{'IPv4'}|as\d+)/){
@@ -172,6 +179,43 @@ sub buildNext {
     my $bucket = 'CIF::WebAPI::'.$type;
     my $h = $bucket->new($self);
     return($h->buildNext($frag,$req));
+}
+
+=head2 mydoc
+
+Extract our Pod documentation and present it as HTML
+
+=cut
+
+sub mydoc {
+    use Pod::POM;
+    use Pod::POM::View::HTML;
+        
+    my $self   = shift;
+    my $donly  = shift || 0;
+    my $path   = $self->mypath();
+    my $h = CIF::WebAPI->new($self);
+    $path = $h->mypath();
+
+    return "Documentation unavailable." unless defined $path;
+        
+    my $parser = new Pod::POM();
+    my $pom    = $parser->parse_file($path);
+
+    if(!defined($pom)){
+            print STDERR "Pod::POM failure for path $path error ". $parser->error();
+            return "Documentation unavailable.";
+    }
+    
+    return Pod::POM::View::HTML->print($pom);
+}
+
+sub mypath {
+        my $self = shift;
+        my $pkg = ref($self) . ".pm";
+        $pkg =~ s/::/\//g; # FIX unix only
+        return $INC{$pkg} if (exists $INC{$pkg});
+        return undef;
 }
 
 1;
