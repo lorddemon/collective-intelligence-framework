@@ -11,7 +11,7 @@ Once installed, monitor your dns traffic a bit, your server will be looking up s
  # install and configure postgresql
  # make sure your user can:
 {{{
-$> psql -U postgres
+$> psql -U postgres -d cif
 }}}
  # read the README
  # install the CIF::DBI dependencies
@@ -81,7 +81,6 @@ $> sudo mkdir /etc/cif
  # setup the daily crons, sudo vi /etc/cif/cron_daily:
 {{{
 /opt/cif-feeds-public/bin/spamhaus_drop.pl
-/opt/cif-feeds-public/bin/malwaredomains.pl
 /opt/cif-feeds-public/bin/malc0de.pl
 /opt/cif-feeds-public/bin/amada_proactive.pl
 /opt/cif-feeds-public/bin/amada_ipblocklist.pl
@@ -91,6 +90,7 @@ $> sudo mkdir /etc/cif
 {{{
 /opt/cif-feeds-public/bin/local_domain_whitelist.pl
 /opt/cif-feeds-public/bin/local_infrastructure_whitelist.pl
+/opt/cif-feeds-public/bin/malwaredomains.pl
 /opt/cif-feeds-public/bin/phishtank.pl
 /opt/cif-feeds-public/bin/zeustracker_binaries.pl
 /opt/cif-feeds-public/bin/zeustracker_configs.pl
@@ -124,4 +124,7 @@ $> crontab -e
 */5  *  * * * /usr/local/bin/cif_feeds &> /dev/null
 */15 *  * * * /usr/local/bin/cif_feeds -s medium &> /dev/null
 00   *  * * * /usr/local/bin/cif_feeds -s low &> /dev/null
+
+# resolve bulk-inserted domains
+#00 * * * * /usr/local/bin/cif_domains_resolve &> /dev/null
 }}}
