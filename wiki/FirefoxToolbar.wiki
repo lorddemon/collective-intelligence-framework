@@ -1,0 +1,3 @@
+how to install the firefox search addon
+
+ # download and install [http://collective-intelligence-framework.googlecode.com/files/cifsearch.xpi cif-search]
