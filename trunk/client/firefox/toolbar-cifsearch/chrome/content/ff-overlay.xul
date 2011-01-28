@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://cifsearch/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://cifsearch/locale/overlay.dtd">
+<overlay id="cifsearch-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script src="overlay.js"/>
+  <script src="ff-overlay.js"/>
+
+  <toolbox id="navigator-toolbox">
+    <toolbar class="chromeclass-toolbar" toolbarname="&cifsearchToolbar.name;" customizable="true" id="cifsearch-toolbar">
+      <vbox>
+      <label control="query" value="Search CIF:"/>
+      <textbox type='search' id='query' searchbutton="true" oncommand="CIFBarSearch(event)" />
+      </vbox>
+    </toolbar>
+  </toolbox>
+
+
+</overlay>
