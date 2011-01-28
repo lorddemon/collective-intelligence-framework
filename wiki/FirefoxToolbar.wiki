@@ -1,3 +1,10 @@
 how to install the firefox search addon
 
  # download and install [http://collective-intelligence-framework.googlecode.com/files/cifsearch.xpi cif-search]
+ # restart firefox
+ # open the addons window ("tools" --> "addons")
+ # highlight "CIF-Search"
+ # click "preferences"
+ # fill in the host and apikey with their appropriate values
+ # close the preference box (the values will auto-save)
+ # type "infrastructure" into the "Search CIF" search box
