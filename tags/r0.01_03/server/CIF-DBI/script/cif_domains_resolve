@@ -1,0 +1,48 @@
+#!/usr/bin/perl -w
+
+use warnings;
+use strict;
+
+use CIF::Message::Domain;
+use CIF::Message::DomainSimple;
+use DateTime;
+use Net::DNS::Resolver;
+use CIF::Message;
+
+my @recs = CIF::Message::Domain->retrieve_from_sql(qq{
+    ttl IS NULL
+    AND impact NOT LIKE 'domain whitelist%'
+    AND impact NOT LIKE 'search'
+    ORDER BY id ASC
+    LIMIT 2000 
+});
+exit unless($#recs > -1);
+
+my @sorted = sort { $a->address() cmp $b->address } @recs;
+
+my $x = 0;
+foreach my $rec (@sorted){
+    my $id = CIF::Message::DomainSimple->insert({
+        relatedid   => $rec->id(),
+        source      => $rec->source(),
+        impact      => $rec->impact(),
+        description => $rec->description(),
+        address     => $rec->address(),
+        confidence  => $rec->confidence(),
+        nsres       => Net::DNS::Resolver->new(nameservers => ['8.8.8.8','8.8.8.4'],debug => 0, recursive => 0),
+        restriction => $rec->restriction(),
+        alternativeid   => $rec->alternativeid(),
+        alternativeid_restriction => $rec->alternativeid_restriction(),
+        detecttime  => $rec->detecttime(),
+        severity    => $rec->severity(),
+    });
+    print $rec->address().' -- '.$id.' resolved'.' -- '.$x++/($#recs+1)."\n";
+
+    if($id =~ /^\d+$/){
+        CIF::Message->retrieve(uuid => $rec->uuid())->delete();
+    } else {
+        $rec->ttl(-1);
+        $rec->update();
+    }
+}
+warn $#recs;

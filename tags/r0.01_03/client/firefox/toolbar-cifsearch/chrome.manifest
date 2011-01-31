@@ -1,0 +1,6 @@
+content   cifsearch                 chrome/content/
+skin      cifsearch   classic/1.0   chrome/skin/
+locale    cifsearch   en-US         chrome/locale/en-US/
+
+
+overlay   chrome://browser/content/browser.xul   chrome://cifsearch/content/ff-overlay.xul
