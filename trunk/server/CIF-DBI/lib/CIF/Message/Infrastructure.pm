@@ -192,7 +192,7 @@ sub toIODEF {
 }
 
 sub lookup {
-    my ($self,$address,$apikey,$limit,$silent) = @_;
+    my ($self,$address,$apikey,$limit,$nolog) = @_;
     $limit = 5000 unless($limit);
     my $source = CIF::Message::genSourceUUID('api',$apikey);
     my $asn;
@@ -214,7 +214,7 @@ sub lookup {
         @recs = $self->search_by_address($address,$address,$limit);
     }
 
-    return @recs if($silent);
+    return @recs if($nolog);
 
     my $t = $self->table();
     $self->table('infrastructure_search');
