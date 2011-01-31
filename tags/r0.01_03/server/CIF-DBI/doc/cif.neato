@@ -1,0 +1,174 @@
+digraph g {
+node [ fontsize = "10", shape = record ];
+edge [];
+
+"apikeys" [shape = record, label = "{<col0> \N| id:  bigserial\luserid:  text\lparentid:  bigint\lapikey:  uuid\lrevoked:  boolean\laccess:  character varying(100)\lwrite:  boolean\lcreated:  timestamp with time zone\l}" ];
+
+"domain" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\ldescription:  text\laddress:  text\ltype:  character varying(10)\lrdata:  character varying(255)\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lclass:  character varying(10)\lttl:  integer\lwhois:  text\limpact:  character varying(140)\lconfidence:  real\lsource:  uuid\lalternativeid:  text\lalternativeid_restriction:  restriction\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_botnet" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\laddress:  text\ltype:  character varying(10)\lrdata:  character varying(255)\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lclass:  character varying(10)\lttl:  integer\lwhois:  text\limpact:  character varying(140)\lconfidence:  real\lsource:  uuid\lalternativeid:  text\lalternativeid_restriction:  restriction\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_fastflux" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\laddress:  text\ltype:  character varying(10)\lrdata:  character varying(255)\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lclass:  character varying(10)\lttl:  integer\lwhois:  text\limpact:  character varying(140)\lconfidence:  real\lsource:  uuid\lalternativeid:  text\lalternativeid_restriction:  restriction\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_malware" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\laddress:  text\ltype:  character varying(10)\lrdata:  character varying(255)\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lclass:  character varying(10)\lttl:  integer\lwhois:  text\limpact:  character varying(140)\lconfidence:  real\lsource:  uuid\lalternativeid:  text\lalternativeid_restriction:  restriction\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_nameserver" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\laddress:  text\ltype:  character varying(10)\lrdata:  character varying(255)\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lclass:  character varying(10)\lttl:  integer\lwhois:  text\limpact:  character varying(140)\lconfidence:  real\lsource:  uuid\lalternativeid:  text\lalternativeid_restriction:  restriction\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_passivedns" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\laddress:  text\ltype:  character varying(10)\lrdata:  character varying(255)\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lclass:  character varying(10)\lttl:  integer\lwhois:  text\limpact:  character varying(140)\lconfidence:  real\lsource:  uuid\lalternativeid:  text\lalternativeid_restriction:  restriction\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_search" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\laddress:  text\ltype:  character varying(10)\lrdata:  character varying(255)\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lclass:  character varying(10)\lttl:  integer\lwhois:  text\limpact:  character varying(140)\lconfidence:  real\lsource:  uuid\lalternativeid:  text\lalternativeid_restriction:  restriction\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_whitelist" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\laddress:  text\ltype:  character varying(10)\lrdata:  character varying(255)\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lclass:  character varying(10)\lttl:  integer\lwhois:  text\limpact:  character varying(140)\lconfidence:  real\lsource:  uuid\lalternativeid:  text\lalternativeid_restriction:  restriction\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"email" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\ldescription:  text\laddress:  text\lsource:  uuid\limpact:  character varying(140)\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"email_search" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\laddress:  text\lsource:  uuid\limpact:  character varying(140)\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"feed" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_domain" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_domain_botnet" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_domain_fastflux" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_domain_malware" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_domain_nameserver" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_domain_whitelist" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_email" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_infrastructure" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_infrastructure_asn" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_infrastructure_botnet" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_infrastructure_malware" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_infrastructure_network" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_infrastructure_phishing" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_infrastructure_scan" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_infrastructure_search" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_infrastructure_spam" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_infrastructure_suspicious" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_infrastructure_whitelist" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_malware" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_url" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_url_botnet" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_url_malware" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"feed_url_phishing" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\lmessage:  text\l}" ];
+
+"infrastructure" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\ldescription:  text\limpact:  character varying(140)\laddress:  inet\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lprotocol:  integer\lportlist:  character varying(255)\lconfidence:  real\lsource:  uuid\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\lwhois:  text\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_asn" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\limpact:  character varying(140)\laddress:  inet\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lprotocol:  integer\lportlist:  character varying(255)\lconfidence:  real\lsource:  uuid\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\lwhois:  text\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_botnet" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\limpact:  character varying(140)\laddress:  inet\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lprotocol:  integer\lportlist:  character varying(255)\lconfidence:  real\lsource:  uuid\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\lwhois:  text\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_malware" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\limpact:  character varying(140)\laddress:  inet\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lprotocol:  integer\lportlist:  character varying(255)\lconfidence:  real\lsource:  uuid\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\lwhois:  text\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_network" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\limpact:  character varying(140)\laddress:  inet\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lprotocol:  integer\lportlist:  character varying(255)\lconfidence:  real\lsource:  uuid\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\lwhois:  text\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_phishing" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\limpact:  character varying(140)\laddress:  inet\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lprotocol:  integer\lportlist:  character varying(255)\lconfidence:  real\lsource:  uuid\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\lwhois:  text\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_scanner" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\limpact:  character varying(140)\laddress:  inet\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lprotocol:  integer\lportlist:  character varying(255)\lconfidence:  real\lsource:  uuid\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\lwhois:  text\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_search" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\limpact:  character varying(140)\laddress:  inet\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lprotocol:  integer\lportlist:  character varying(255)\lconfidence:  real\lsource:  uuid\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\lwhois:  text\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_spam" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\limpact:  character varying(140)\laddress:  inet\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lprotocol:  integer\lportlist:  character varying(255)\lconfidence:  real\lsource:  uuid\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\lwhois:  text\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_suspicious" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\limpact:  character varying(140)\laddress:  inet\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lprotocol:  integer\lportlist:  character varying(255)\lconfidence:  real\lsource:  uuid\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\lwhois:  text\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_whitelist" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\limpact:  character varying(140)\laddress:  inet\lcidr:  inet\lasn:  integer\lasn_desc:  text\lcc:  character varying(5)\lrir:  character varying(10)\lprotocol:  integer\lportlist:  character varying(255)\lconfidence:  real\lsource:  uuid\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\lwhois:  text\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"malware" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_md5:  character varying(32)\lhash_sha1:  character varying(40)\lcontent:  bytea\limpact:  character varying(140)\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"malware_search" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lhash_md5:  character varying(32)\lhash_sha1:  character varying(40)\lcontent:  bytea\limpact:  character varying(140)\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"message" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\lsource:  uuid\ltype:  character varying(16)\lformat:  character varying(32)\lconfidence:  real\lseverity:  severity\ldescription:  text\limpact:  character varying(140)\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"message_structured" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\lsource:  uuid\lmessage:  xml\l}" ];
+
+"message_unstructured" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\lsource:  uuid\lmessage:  text\l}" ];
+
+"url" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\ldescription:  text\laddress:  text\lurl_md5:  character varying(32)\lurl_sha1:  character varying(40)\lmalware_md5:  character varying(32)\lmalware_sha1:  character varying(40)\lsource:  uuid\limpact:  character varying(140)\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"url_botnet" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\laddress:  text\lurl_md5:  character varying(32)\lurl_sha1:  character varying(40)\lmalware_md5:  character varying(32)\lmalware_sha1:  character varying(40)\lsource:  uuid\limpact:  character varying(140)\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"url_malware" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\laddress:  text\lurl_md5:  character varying(32)\lurl_sha1:  character varying(40)\lmalware_md5:  character varying(32)\lmalware_sha1:  character varying(40)\lsource:  uuid\limpact:  character varying(140)\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"url_phishing" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\laddress:  text\lurl_md5:  character varying(32)\lurl_sha1:  character varying(40)\lmalware_md5:  character varying(32)\lmalware_sha1:  character varying(40)\lsource:  uuid\limpact:  character varying(140)\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"url_search" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\laddress:  text\lurl_md5:  character varying(32)\lurl_sha1:  character varying(40)\lmalware_md5:  character varying(32)\lmalware_sha1:  character varying(40)\lsource:  uuid\limpact:  character varying(140)\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\lalternativeid:  text\lalternativeid_restriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+
+"domain" -> "message" [label="domain_uuid_fkey"];
+"domain_botnet" -> "message" [label="domain_botnet_uuid_fkey"];
+"domain_fastflux" -> "message" [label="domain_fastflux_uuid_fkey"];
+"domain_malware" -> "message" [label="domain_malware_uuid_fkey"];
+"domain_nameserver" -> "message" [label="domain_nameserver_uuid_fkey"];
+"domain_passivedns" -> "message" [label="domain_passivedns_uuid_fkey"];
+"domain_search" -> "message" [label="domain_search_uuid_fkey"];
+"domain_whitelist" -> "message" [label="whitelist_domain_uuid_fkey"];
+"email" -> "message" [label="email_uuid_fkey"];
+"email_search" -> "message" [label="email_search_uuid_fkey"];
+"feed" -> "message" [label="feed_uuid_fkey"];
+"feed_domain" -> "message" [label="feed_domain_uuid_fkey"];
+"feed_domain_botnet" -> "message" [label="feed_domain_botnet_uuid_fkey"];
+"feed_domain_fastflux" -> "message" [label="feed_domain_fastflux_uuid_fkey"];
+"feed_domain_malware" -> "message" [label="feed_domain_malware_uuid_fkey"];
+"feed_domain_nameserver" -> "message" [label="feed_domain_nameserver_uuid_fkey"];
+"feed_domain_whitelist" -> "message" [label="feed_domain_whitelist_uuid_fkey"];
+"feed_email" -> "message" [label="feed_email_uuid_fkey"];
+"feed_infrastructure" -> "message" [label="feed_infrastructure_uuid_fkey"];
+"feed_infrastructure_asn" -> "message" [label="feed_infrastructure_asn_uuid_fkey"];
+"feed_infrastructure_botnet" -> "message" [label="feed_infrastructure_botnet_uuid_fkey"];
+"feed_infrastructure_malware" -> "message" [label="feed_infrastructure_malware_uuid_fkey"];
+"feed_infrastructure_network" -> "message" [label="feed_infrastructure_network_uuid_fkey"];
+"feed_infrastructure_phishing" -> "message" [label="feed_infrastructure_phishing_uuid_fkey"];
+"feed_infrastructure_scan" -> "message" [label="feed_infrastructure_scan_uuid_fkey"];
+"feed_infrastructure_search" -> "message" [label="feed_infrastructure_search_uuid_fkey"];
+"feed_infrastructure_spam" -> "message" [label="feed_infrastructure_spam_uuid_fkey"];
+"feed_infrastructure_suspicious" -> "message" [label="feed_infrastructure_suspicious_uuid_fkey"];
+"feed_infrastructure_whitelist" -> "message" [label="feed_infrastructure_whitelist_uuid_fkey"];
+"feed_malware" -> "message" [label="feed_malware_uuid_fkey"];
+"feed_url" -> "message" [label="feed_url_uuid_fkey"];
+"feed_url_botnet" -> "message" [label="feed_url_botnet_uuid_fkey"];
+"feed_url_malware" -> "message" [label="feed_url_malware_uuid_fkey"];
+"feed_url_phishing" -> "message" [label="feed_url_phishing_uuid_fkey"];
+"infrastructure" -> "message" [label="infrastructure_uuid_fkey"];
+"infrastructure_asn" -> "message" [label="infrastructure_asn_uuid_fkey"];
+"infrastructure_botnet" -> "message" [label="infrastructure_botnet_uuid_fkey"];
+"infrastructure_malware" -> "message" [label="infrastructure_malware_uuid_fkey"];
+"infrastructure_network" -> "message" [label="infrastructure_network_uuid_fkey"];
+"infrastructure_phishing" -> "message" [label="infrastructure_phishing_uuid_fkey"];
+"infrastructure_scanner" -> "message" [label="infrastructure_scanner_uuid_fkey"];
+"infrastructure_search" -> "message" [label="infrastructure_search_uuid_fkey"];
+"infrastructure_spam" -> "message" [label="infrastructure_spam_uuid_fkey"];
+"infrastructure_suspicious" -> "message" [label="infrastructure_suspicious_uuid_fkey"];
+"infrastructure_whitelist" -> "message" [label="infrastructure_whitelist_uuid_fkey"];
+"malware" -> "message" [label="malware_uuid_fkey"];
+"malware_search" -> "message" [label="malware_search_uuid_fkey"];
+"message_structured" -> "message" [label="message_structured_uuid_fkey"];
+"message_unstructured" -> "message" [label="message_unstructured_uuid_fkey"];
+"url" -> "message" [label="url_uuid_fkey"];
+"url_botnet" -> "message" [label="url_botnet_uuid_fkey"];
+"url_malware" -> "message" [label="url_malware_uuid_fkey"];
+"url_phishing" -> "message" [label="url_phishing_uuid_fkey"];
+"url_search" -> "message" [label="url_search_uuid_fkey"];
+}
+
+
