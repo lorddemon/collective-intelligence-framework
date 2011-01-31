@@ -29,7 +29,7 @@ foreach my $rec (@sorted){
         description => $rec->description(),
         address     => $rec->address(),
         confidence  => $rec->confidence(),
-        nsres       => Net::DNS::Resolver->new(nameservers => ['8.8.8.8','8.8.8.4'],debug => 0),
+        nsres       => Net::DNS::Resolver->new(nameservers => ['8.8.8.8','8.8.8.4'],debug => 0, recursive => 0),
         restriction => $rec->restriction(),
         alternativeid   => $rec->alternativeid(),
         alternativeid_restriction => $rec->alternativeid_restriction(),
