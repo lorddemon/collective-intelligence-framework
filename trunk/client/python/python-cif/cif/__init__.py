@@ -12,7 +12,7 @@ pp = pprint.PrettyPrinter(indent=4)
 #version = '0.00_06'
 
 class Client(object):
-    def __init__(self, host, apikey, fields=None, severity=None, restriction=None, **args):
+    def __init__(self, host, apikey, fields=None, severity=None, restriction=None, nolog=None, **args):
         self.host = host
         self.apikey = apikey
 
@@ -20,6 +20,7 @@ class Client(object):
         """ override order: passed args, config file args """
         self.severity = severity
         self.restriction = restriction
+        self.nolog = nolog
 
     def _get_fields(self):
         return self._fields
@@ -30,7 +31,7 @@ class Client(object):
         self._fields = fields
     fields = property(_get_fields, _set_fields)
     
-    def GET(self,q,severity=None,restriction=None):
+    def GET(self,q,severity=None,restriction=None,nolog=None):
         s = self.host + '/' + q
         
         params={'apikey':self.apikey}
@@ -44,6 +45,11 @@ class Client(object):
             params['severity'] = severity
         elif self.severity:
             params['severity'] = self.severity
+
+        if nolog:
+            params['nolog'] = 1
+        elif self.nolog:
+            params['nolog'] = 1
 
         ret = GET(s, params)
         ret = json.loads(ret)
@@ -130,7 +136,7 @@ class Client(object):
         return table
 
 class ClientINI(Client):
-    def __init__(self, path=None, fields=None, severity=None, restriction=None):
+    def __init__(self, path=None, fields=None, severity=None, restriction=None, nolog=None):
         if not path:
             path = os.path.expanduser("~/.cif")
         c = ConfigParser.ConfigParser()

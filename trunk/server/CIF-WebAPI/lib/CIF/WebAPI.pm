@@ -90,8 +90,8 @@ sub GET {
             return Apache2::Const::FORBIDDEN;
         }
         
-        my $silent_lookup = $request->{'r'}->param('silent');
-        my @recs = $qbucket->lookup($q,$apikey,$maxresults,$silent_lookup);
+        my $nolog = $request->{'r'}->param('nolog');
+        my @recs = $qbucket->lookup($q,$apikey,$maxresults,$nolog);
         unless(@recs){ return Apache2::Const::HTTP_OK; }
         my $res;
         @recs = map { $bucket->mapIndex($_) } @recs;

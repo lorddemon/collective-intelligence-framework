@@ -210,7 +210,7 @@ sub getrdata {
 }
 
 sub lookup {
-    my ($self,$address,$apikey,$limit,$silent) = @_;
+    my ($self,$address,$apikey,$limit,$nolog) = @_;
     $limit = 5000 unless($limit);
     my @recs;
     if($address =~ /^$RE{'net'}{'IPv4'}/){
@@ -219,7 +219,7 @@ sub lookup {
         @recs = $self->search_by_address('%'.$address.'%',$limit);
     }
 
-    return @recs if($silent);
+    return @recs if($nolog);
 
     my $t = $self->table();
     $self->table('domain_search');

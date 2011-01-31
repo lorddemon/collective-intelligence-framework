@@ -52,7 +52,7 @@ sub new {
     $self->{'max_desc'} = $args->{'max_desc'};
     $self->{'restriction'} = $cfg->{'restriction'};
     $self->{'severity'} = $cfg->{'severity'};
-    $self->{'silent'} = $cfg->{'silent'};
+    $self->{'nolog'} = $cfg->{'nolog'};
     
     if($args->{'fields'}){
         @{$self->{'fields'}} = split(/,/,$args->{'fields'}); 
@@ -62,16 +62,17 @@ sub new {
 }
 
 sub GET  {
-    my ($self,$q,$s,$r,$silent) = @_;
+    my ($self,$q,$s,$r,$nolog) = @_;
 
     my $rest = '/'.$q.'?apikey='.$self->apikey();
     my $severity = ($s) ? $s : $self->{'severity'};
     my $restriction = ($r) ? $r : $self->{'restriction'};
-    $silent = ($silent) ? $silent : $self->{'silent'};
+    $nolog = ($nolog) ? $nolog : $self->{'nolog'};
 
     $rest .= '&severity='.$severity if($severity);
     $rest .= '&restriction='.$restriction if($restriction);
-    $rest .= '&silent='.$silent if($silent);
+    $rest .= '&nolog='.$nolog if($nolog);
+    warn $rest;
 
     $self->SUPER::GET($rest);
     my $content = $self->{'_res'}->{'_content'};
