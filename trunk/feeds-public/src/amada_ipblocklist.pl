@@ -1,15 +1,6 @@
 #!/usr/bin/perl -w
 
 use strict;
-use LWP::Simple;
-use DateTime;
-use Regexp::Common qw/net/;
-
-use CIF::Message::InfrastructureSimple;
-
-my $timeout = 5;
-my $partner = 'amada.abuse.ch';
-my $url = 'http://amada.abuse.ch/blocklist.php?download=ipblocklist';
 
 my $content = get($url);
 
