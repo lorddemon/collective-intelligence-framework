@@ -36,6 +36,19 @@ sub insert {
         $info->{'address'} = $md5 || $sha1;
     }
 
+    my $dt = $info->{'detecttime'};
+    unless($dt =~ /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/){
+        if($dt && ref($dt) ne 'DateTime'){
+            if($dt =~ /^\d+$/){
+                $dt = DateTime->from_epoch(epoch => $dt);
+            } else {
+                $dt = DateTime::Format::DateParse->parse_datetime($dt);
+                return(undef,'invaild detecttime') unless($dt);
+            }
+        }
+        $info->{'detecttime'} = $dt->ymd().'T'.$dt->hms().'Z';
+    }
+
     unless($uuid){
         $uuid = CIF::Message::IODEF->insert({
             message => $self->toIODEF($info)
