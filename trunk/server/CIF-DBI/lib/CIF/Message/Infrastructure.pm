@@ -66,6 +66,19 @@ sub insert {
     my ($ret,$err) = $self->check_params($tests,$info);
     return($ret,$err) unless($ret);
 
+    my $dt = $info->{'detecttime'};
+    unless($dt =~ /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/){
+        if($dt && ref($dt) ne 'DateTime'){
+            if($dt =~ /^\d+$/){
+                $dt = DateTime->from_epoch(epoch => $dt);
+            } else {
+                $dt = DateTime::Format::DateParse->parse_datetime($dt);
+                return(undef,'invaild detecttime') unless($dt);
+            }
+        }
+        $info->{'detecttime'} = $dt->ymd().'T'.$dt->hms().'Z';
+    }
+
     my $proto = convertProto($info->{'protocol'});
     my $uuid = $info->{'uuid'};
     my $source = $info->{'source'};

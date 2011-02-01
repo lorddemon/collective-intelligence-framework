@@ -38,12 +38,16 @@ sub insert {
     $info->{'source'} = $source;
 
     my $dt = $info->{'detecttime'};
-    if($dt){
-        $dt = DateTime::Format::DateParse->parse_datetime($dt);
-        unless($dt){
-            return(undef,'invalid datetime');
+    unless($dt =~ /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/){
+        if($dt && ref($dt) ne 'DateTime'){
+            if($dt =~ /^\d+$/){
+                $dt = DateTime->from_epoch(epoch => $dt);
+            } else {
+                $dt = DateTime::Format::DateParse->parse_datetime($dt);
+                return(undef,'invaild detecttime') unless($dt);
+            }
         }
-        $dt = $dt->dmy().'T'.$dt->hms().'Z';
+        $info->{'detecttime'} = $dt->ymd().'T'.$dt->hms().'Z';
     }
 
     unless($uuid){
