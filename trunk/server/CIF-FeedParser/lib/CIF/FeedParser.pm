@@ -25,16 +25,57 @@ sub parse {
     my $f = shift;
     my $content = get($f->{'feed'}) || die($!);
     $content = encode_utf8($content);
+    
+    if($content =~ /<rss version=/){
+        return _parse_rss($f,$content);
+    } else {
+        return _parse_txt($f,$content);
+   }
+}
+sub _parse_rss {
+    my $f = shift;
+    my $content = shift;
+    my $rss = XML::RSS->new();
+    $rss->parse($content);
+    my @array;
+    foreach my $item (@{$rss->{items}}){
+        my $h;
+        foreach my $key (keys %$item){
+            if(my $r = $f->{'regex_'.$key}){
+                my @m = ($item->{$key} =~ /$r/);
+                my @cols = split(',',$f->{'regex_'.$key.'_values'});
+                foreach (0 ... $#cols){
+                    $h->{$cols[$_]} = $m[$_];
+                }
+            }
+        }
+        map { $h->{$_} = $f->{$_} } keys %$f;
+        push(@array,$h);
+    }
+    return(@array);
+}
+
+sub _parse_txt {
+    my $f = shift;
+    my $content = shift;
     my @lines = split(/\n/,$content);
     my @array;
     foreach(@lines){
         next if(/^(#|$)/);
         my @m = ($_ =~ /$f->{'regex'}/);
         next unless(@m);
-        push(@array,[@m]);
+        my $h;
+        my @cols = split(',',$f->{'regex_values'});
+        foreach (0 ... $#cols){
+            $h->{$cols[$_]} = $m[$_];
+        }
+        map { $h->{$_} = $f->{$_} } keys %$f;
+        push(@array,$h);
     }
     return(@array);
 }
+
+
 
 sub insert {
     my ($full,@recs) = (shift,@_);
@@ -56,6 +97,7 @@ sub insert {
         $_->{'description'} = '' unless($_->{'description'});
         $_->{'detecttime'} = normalize_date($_->{'detecttime'});
         foreach my $key (keys %$_){
+            next unless($_->{$key});
             if($_->{$key} =~ /<(\S+)>/){
                 my $x = $_->{$1};
                 $_->{$key} =~ s/<\S+>/$x/;
@@ -75,6 +117,8 @@ sub insert {
 sub _insert {
     my $f = shift;
     my $a = $f->{'hash_md5'} || $f->{'address'};
+    die Dumper($f) if(!$a);
+    return unless($a && length($a) > 2);
     if($f->{'description'}){
         $f->{'description'} = $f->{'impact'}.' '.$f->{'description'}.' '.$a;
     } else {
