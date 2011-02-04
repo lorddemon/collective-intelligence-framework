@@ -3,7 +3,7 @@ this will show you how to leverage CIF with Google Chrome
 
 = Installation =
  1. install the [https://chrome.google.com/webstore/detail/mknehpjhljpfaghmicofickbkdagooni SearchBox] extension
- 1. Click the SearchGlass button
+ 1. Click the search glass button
  1. Click "manage search engines"
  1. Fill in the settings:
 {{{
