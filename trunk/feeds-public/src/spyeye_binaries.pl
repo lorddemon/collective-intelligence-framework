@@ -9,9 +9,6 @@ use DateTime::Format::DateParse;
 use DateTime;
 use Digest::MD5 qw(md5_hex);
 
-use CIF::Message::Malware;
-use CIF::Message::UrlMalware;
-
 my $partner = 'spyeye.abuse.ch';
 my $url = 'https://spyeyetracker.abuse.ch/monitor.php?rssfeed=binaryurls';
 
