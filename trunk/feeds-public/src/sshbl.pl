@@ -21,18 +21,6 @@ unless($full_load){
     $c->{nsres} = Net::DNS::Resolver->new(recursive => 0);
 }
 
-my @lines = CIF::FeedParser::parse($c);
-my @recs;
-my $x = 15;
-foreach (@lines){
-    my %h = %{$c};
-    my @cols = split(/,/,$c->{'regex_values'});
-    my @vals = @{$_};
-    foreach my $x (0 ... $#cols){
-        my $col = $cols[$x];
-        $h{$col} = $vals[$x];
-    }
-    push(@recs,\%h);
-}
+my @items = CIF::FeedParser::parse($c);
 
-CIF::FeedParser::insert($full_load,@recs);
+CIF::FeedParser::insert($full_load,@items);
