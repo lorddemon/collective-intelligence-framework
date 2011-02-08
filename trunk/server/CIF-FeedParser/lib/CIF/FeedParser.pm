@@ -15,23 +15,105 @@ use CIF::Message::DomainSimple;
 use CIF::Message::InfrastructureSimple;
 use CIF::Message::UrlSimple;
 use CIF::Message::Malware;
+use CIF::Message::Email;
 use Regexp::Common qw/net/;
 use Encode qw/encode_utf8/;
 use Data::Dumper;
+use File::Type;
+use Compress::Zlib;
+use JSON;
 
 # Preloaded methods go here.
 
 sub parse {
     my $f = shift;
-    my $content = get($f->{'feed'}) || die($!);
+    my $content;
+    for($f->{'feed'}){
+        if(/^file\:\/\/(\S+)/){
+            open(F,$1) || die($!);
+            my @lines = <F>;
+            close(F);
+            $content = join('',@lines);
+        } else {
+            $content = get($f->{'feed'}) || die($!);
+        }
+    }
+    $content = _decode($content);
+    
     $content = encode_utf8($content);
     
-    if($content =~ /<rss version=/){
-        return _parse_rss($f,$content);
+    if($content =~ /<\?xml version="\S+"/){
+        if($content =~ /<rss version=/){
+            return _parse_rss($f,$content);
+        } else {
+            return _parse_xml($f,$content);
+        }
+    } elsif($content =~ /^{?\[/){
+        # possible json content
+        return _parse_json($f,$content);
     } else {
         return _parse_txt($f,$content);
    }
 }
+
+sub _decode {
+    my $data = shift;
+
+    my $ft = File::Type->new();
+    my $t = $ft->mime_type($data);
+    for($t){
+        if(/gzip/){
+           return _decode_gzip($data);
+        }
+        return $data;
+    }
+}
+
+sub _decode_gzip {
+    my $data = shift;
+    return Compress::Zlib::memGunzip($data) || die('failed to decompress');
+}
+
+sub _parse_json {
+    my $f = shift;
+    my $content = shift;
+
+    my @feed = @{from_json($content)};
+    my @fields = split(',',$f->{'fields'});
+    my @fields_map = split(',',$f->{'fields_map'});
+    my @array;
+    foreach my $a (@feed){
+        foreach (0 ... $#fields_map){
+            $a->{$fields_map[$_]} = lc($a->{$fields[$_]});
+        }
+        map { $a->{$_} = $f->{$_} } keys %$f;
+        push(@array,$a);
+    }
+    return(@array);
+}
+
+sub _parse_xml {
+    my $f = shift;
+    my $content = shift;
+    
+    my $parser = XML::LibXML->new();
+    my $doc = $parser->load_xml(string => $content);
+    my @nodes = $doc->findnodes('//'.$f->{'node'});
+    return unless(@nodes);
+    my @array;
+    my @elements = split(',',$f->{'elements'});
+    my @elements_map = split(',',$f->{'elements_map'});
+    foreach my $node (@nodes){
+        my $h;
+        foreach (0 ... $#elements_map){
+            $h->{$elements_map[$_]} = $node->findvalue('./'.$elements[$_]);
+        }
+        map { $h->{$_} = $f->{$_} } keys %$f;
+        push(@array,$h);   
+    }
+    return(@array);
+}
+
 sub _parse_rss {
     my $f = shift;
     my $content = shift;
@@ -117,7 +199,6 @@ sub insert {
 sub _insert {
     my $f = shift;
     my $a = $f->{'hash_md5'} || $f->{'address'};
-    die Dumper($f) if(!$a);
     return unless($a && length($a) > 2);
     if($f->{'description'}){
         $f->{'description'} = $f->{'impact'}.' '.$f->{'description'}.' '.$a;
@@ -139,7 +220,7 @@ sub _insert {
             $bucket .= 'Malware';
             last;
         }
-        if(/^\w+@\w+/){
+        if(/[\w]+@[\w]+/){
             $bucket .= 'Email';
             last;
         } else {
@@ -165,6 +246,9 @@ sub normalize_date {
             } else {
                 $dt = DateTime->from_epoch(epoch => $dt);
             }
+        } elsif($dt =~ /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\S+)?$/) {
+            my ($year,$month,$day,$hour,$min,$sec,$tz) = ($1,$2,$3,$4,$5,$6,$7);
+            $dt = DateTime::Format::DateParse->parse_datetime($year.'-'.$month.'-'.$day.' '.$hour.':'.$min.':'.$sec,$tz);
         } else {
             $dt = DateTime::Format::DateParse->parse_datetime($dt);
             return undef unless($dt);
