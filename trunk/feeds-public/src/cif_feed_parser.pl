@@ -14,7 +14,17 @@ my $full_load = $opts{'F'} || 0;
 my $config = $opts{'c'} || $ENV{'HOME'}.'/.cif';
 my $f = $opts{'f'} || die('missing feed');
 my $c = Config::Simple->new($config) || die($!.' '.$config);
-$c = $c->param(-block => $f);
+my $default = $c->param(-block => 'default');
+my $hash = $c->param(-block => $f);
+unless(keys %$hash){
+    die('section doesn\'t exist: '.$f);
+}
+
+foreach my $h (keys %$hash){
+    $default->{$h} = $hash->{$h};
+}
+
+$c = $default;
 
 my $nsres;
 unless($full_load){
