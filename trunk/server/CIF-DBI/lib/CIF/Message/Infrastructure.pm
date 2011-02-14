@@ -193,6 +193,11 @@ sub toIODEF {
         $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','ipv4-net');
         $iodef->add('IncidentEventDataFlowSystemNodeAddress',$cidr);
     }
+    if($cidr){
+        $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
+        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','prefix');
+        $iodef->add('IncidentEventDataFlowSystemAdditionalData',$cidr);
+    }
     if($cc){
         $iodef->add('IncidentEventDataFlowSystemNodeLocation',$cc);
     }

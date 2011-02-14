@@ -19,7 +19,7 @@ sub insert {
     my $self = shift;
     my $info = {%{+shift}};
 
-    unless($info->{'severity'} eq 'high'){
+    unless($info->{'severity'} && $info->{'severity'} eq 'high'){
         return (undef,'invalid address: '.$info->{'address'}.' -- whitelisted') if($self->isWhitelisted($info->{'address'}));
     }
     my @ids;
@@ -59,7 +59,7 @@ sub insert {
     }
 
     # do the same for the nameservers
-    $info->{'severity'} = ($info->{'severity'} eq 'high') ? 'medium' : 'low';
+    $info->{'severity'} = ($info->{'severity'} && $info->{'severity'} eq 'high') ? 'medium' : 'low';
     $info->{'confidence'} = ($info->{'confidence'}) ? ($info->{'confidence'} - 2) : 0;
     my @ns = grep { $_->{'type'} eq 'NS' } @results;
     unless(@ns){
@@ -79,8 +79,9 @@ sub insert {
         my @recs = CIF::Message::Domain::getrdata($info->{'nsres'},$r->{'nsdname'});
         foreach my $rec (grep { $_->{'type'} && $_->{'type'} eq 'A' } @recs){
             my %hash = %$info;
-            $hash{'impact'} = 'suspicious nameserver '.$info->{'address'};
-            $hash{'description'} = 'suspicious nameserver '.$info->{'impact'}.' '.$info->{'address'};
+            $hash{'impact'} = 'suspicious nameserver';
+            $hash{'relatedid'} = $ids[0]->uuid();
+            $hash{'description'} = $description;
             $hash{'detecttime'} = DateTime->from_epoch(epoch => time());
 
             my ($id,$err) = $self->_insert('CIF::Message::DomainNameserver',{%hash},$rec);
@@ -112,7 +113,7 @@ sub _insert {
     return(undef,$err) unless($id);
     return($id) unless($rdata && $rdata =~ /^$RE{'net'}{'IPv4'}$/);
 
-    $hash{'severity'} = ($hash{'severity'} eq 'high') ? 'medium' : 'low';
+    $hash{'severity'} = ($hash{'severity'} && $hash{'severity'} eq 'high') ? 'medium' : 'low';
     $hash{'confidence'} = ($hash{'confidence'}) ? ($hash{'confidence'} - 2) : 0;
     $hash{'detecttime'} = DateTime->from_epoch(epoch => time());
     $hash{'impact'} =~ s/domain/infrastructure/;
