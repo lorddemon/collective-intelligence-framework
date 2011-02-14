@@ -8,7 +8,7 @@ use Data::Dumper;
 use Net::DNS::Resolver;
 
 my %opts;
-getopts('dFc:f:',\%opts);
+getopts('t:dFc:f:',\%opts);
 my $debug = $opts{'d'};
 my $full_load = $opts{'F'} || 0;
 my $config = $opts{'c'} || $ENV{'HOME'}.'/.cif';
@@ -25,6 +25,8 @@ foreach my $h (keys %$hash){
 }
 
 $c = $default;
+my $threaded = $opts{'t'} || $c->{'threads_count'};
+$c->{'threads_count'} = $threaded if($threaded);
 
 my $nsres;
 unless($full_load){
@@ -33,4 +35,8 @@ unless($full_load){
 
 my @items = CIF::FeedParser::parse($c);
 
-CIF::FeedParser::insert($full_load,@items);
+if($threaded){
+    CIF::FeedParser::t_insert($full_load,@items);
+} else {
+    CIF::FeedParser::insert($full_load,@items);
+}
