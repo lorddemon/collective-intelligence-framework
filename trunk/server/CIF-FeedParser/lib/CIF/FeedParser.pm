@@ -8,39 +8,49 @@ our $VERSION = '0.00_01';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 use LWP::Simple;
+use LWP::UserAgent;
 use DateTime::Format::DateParse;
 use DateTime;
 use XML::RSS;
-use CIF::Message::DomainSimple;
-use CIF::Message::InfrastructureSimple;
-use CIF::Message::UrlSimple;
-use CIF::Message::Malware;
-use CIF::Message::Email;
 use Regexp::Common qw/net/;
 use Encode qw/encode_utf8/;
 use Data::Dumper;
 use File::Type;
 use Compress::Zlib;
 use JSON;
+use threads;
 
 # Preloaded methods go here.
 
-sub parse {
+sub get_feed { 
     my $f = shift;
     my $content;
     for($f->{'feed'}){
-        if(/^file\:\/\/(\S+)/){
-            open(F,$1) || die($!);
+        if(/^(\/\S+)/){
+            open(F,$1) || die($!.': '.$_);
             my @lines = <F>;
             close(F);
             $content = join('',@lines);
+        } elsif($f->{'feed_user'}) {
+            my $ua = LWP::UserAgent->new();
+            my $req = HTTP::Request->new(GET => $f->{'feed'});
+            $req->authorization_basic($f->{'feed_user'},$f->{'feed_password'});
+            my $ress = $ua->request($req);
+            die('request failed: '.$ress->status_line()."\n") unless($ress->is_success());
+            $content = $ress->decoded_content();
         } else {
             $content = get($f->{'feed'}) || die($!);
         }
     }
     $content = _decode($content);
-    
+
     $content = encode_utf8($content);
+    return $content;
+}
+
+sub parse {
+    my $f = shift;
+    my $content = get_feed($f);
     
     if($content =~ /<\?xml version="\S+"/){
         if($content =~ /<rss version=/){
@@ -103,10 +113,18 @@ sub _parse_xml {
     my @array;
     my @elements = split(',',$f->{'elements'});
     my @elements_map = split(',',$f->{'elements_map'});
+    my @attributes_map = split(',',$f->{'attributes_map'});
+    my @attributes = split(',',$f->{'attributes'});
     foreach my $node (@nodes){
         my $h;
-        foreach (0 ... $#elements_map){
-            $h->{$elements_map[$_]} = $node->findvalue('./'.$elements[$_]);
+        if(@elements_map){
+            foreach (0 ... $#elements_map){
+                $h->{$elements_map[$_]} = $node->findvalue('./'.$elements_map[$_]);
+            }
+        } else {
+            foreach (0 ... $#attributes_map){
+                $h->{$attributes_map[$_]} = $node->getAttribute($attributes[$_]);
+            }
         }
         map { $h->{$_} = $f->{$_} } keys %$f;
         push(@array,$h);   
@@ -143,12 +161,18 @@ sub _parse_txt {
     my @lines = split(/\n/,$content);
     my @array;
     foreach(@lines){
-        next if(/^(#|$)/);
+        next if(/^(#|<|$)/);
         my @m = ($_ =~ /$f->{'regex'}/);
+
         next unless(@m);
         my $h;
         my @cols = split(',',$f->{'regex_values'});
         foreach (0 ... $#cols){
+            $m[$_] = '' unless($m[$_]);
+            for($m[$_]){
+                s/^\s+//;
+                s/\s+$//;
+            }
             $h->{$cols[$_]} = $m[$_];
         }
         map { $h->{$_} = $f->{$_} } keys %$f;
@@ -171,6 +195,8 @@ sub insert {
             $dt = DateTime->from_epoch(epoch => time());
             if(lc($_->{'detection'}) eq 'hourly'){
                 $dt = $dt->ymd().'T'.$dt->hour.':00:00Z';
+            } elsif(lc($_->{'detection'}) eq 'monthly') {
+                $dt = $dt->year().'-'.$dt->month().'-01T'.$dt->hour.':00:00Z';
             } else {
                 $dt = $dt->ymd().'T00:00:00Z';
             }
@@ -182,7 +208,9 @@ sub insert {
             next unless($_->{$key});
             if($_->{$key} =~ /<(\S+)>/){
                 my $x = $_->{$1};
-                $_->{$key} =~ s/<\S+>/$x/;
+                if($x){
+                    $_->{$key} =~ s/<\S+>/$x/;
+                }
             }
         }
     }
@@ -196,40 +224,76 @@ sub insert {
     }
 }
 
-sub _insert {
-    my $f = shift;
-    my $a = $f->{'hash_md5'} || $f->{'address'};
-    return unless($a && length($a) > 2);
-    if($f->{'description'}){
-        $f->{'description'} = $f->{'impact'}.' '.$f->{'description'}.' '.$a;
-    } else {
-        $f->{'description'} = $f->{'impact'}.' '.$a;
+sub t_insert {
+    my ($full,@recs) = (shift,@_);
+    my @threads;
+    my $tc = $recs[0]->{'threads_count'};
+    my $batch = (($#recs/$tc) == int($#recs/$tc)) ? ($#recs/$tc) : (int($#recs/$tc) + 1);
+    for(my $x = 0; $x <= $#recs; $x += $batch){
+        my $start = $x;
+        my $end = ($x+$batch)-1;
+        $end = $#recs if($end > $#recs);
+        my @a = @recs[$x ... $end];
+        my $t = threads->create('insert',@a);
+        push(@threads,$t);
     }
 
-    my $bucket = 'CIF::Message::';
-    for($a){
-        if(/^([A-Za-z0-9.-]+\.[a-zA-Z]{2,6})$/ && ($f->{'impact'} !~ / url/)){
-            $bucket .= 'DomainSimple';
-            last;
-        }
-        if(/^$RE{'net'}{'IPv4'}/){
-            $bucket .= 'InfrastructureSimple';
-            last;
-        }
-        if(/^[a-fA-F0-9]{32,40}$/){
-            $bucket .= 'Malware';
-            last;
-        }
-        if(/[\w]+@[\w]+/){
-            $bucket .= 'Email';
-            last;
-        } else {
-            $bucket .= 'UrlSimple';
+    while(@threads){
+        foreach (0 ... $#threads){
+            if($threads[$_] && $threads[$_]->is_joinable()){
+                $threads[$_]->join();
+                delete($threads[$_]);
+            } else {
+                #warn 'sleeping';
+                sleep(2);
+            }
         }
     }
+}
+
+sub _insert {
+    my $f = shift;
+    my $b = shift;
+    my $a = $f->{'hash_md5'} || $f->{'address'};
+    return unless($a && length($a) > 2);
+    unless($f->{'description'}){
+        $f->{'description'} = $f->{'impact'};
+    }
+
+    my $bucket = $b;
+    if(!$bucket){
+        for($a){
+            $bucket = 'CIF::Message::';
+            if(/^([A-Za-z0-9.-]+\.[a-zA-Z]{2,6})$/ && ($f->{'impact'} !~ / url/)){
+                $bucket .= 'DomainSimple';
+                last;
+            }
+            if(/^$RE{'net'}{'IPv4'}/){
+                $bucket .= 'InfrastructureSimple';
+                last;
+            }
+            if(/^[a-fA-F0-9]{32,40}$/){
+                $bucket .= 'Malware';
+                last;
+            }
+            if(/[\w]+@[\w]+/){
+                $bucket .= 'Email';
+                last;
+            } else {
+                $bucket .= 'UrlSimple';
+            }
+        }
+    }
+    eval "require $bucket";
+    die($@) if($@);
     my $id = $bucket->insert({ %{$f} });
-    my $rid = ($id =~ /^\d+$/) ? $id->uuid() : $id;
-    print $f->{'source'}.' -- '.$a.' -- '.$id->description().' -- '.$id->detecttime().' -- '.$rid."\n";
+    my $rid;
+    if($id =~ /^\d+$/){
+        $rid = $id->description().' -- '.$id->detecttime().' -- '.$id->uuid();
+    } else {
+        $rid = $id;
+    }
+    print $f->{'source'}.' -- '.$a.' -- '.$rid."\n";
 }
 
 sub normalize_date {
