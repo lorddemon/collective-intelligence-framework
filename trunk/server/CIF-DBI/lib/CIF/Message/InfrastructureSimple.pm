@@ -29,9 +29,6 @@ sub insert {
     my $bucket;
     my $description = $info->{'description'};
     my $addr = $info->{'address'};
-    unless($description =~ /$addr/){
-        $description .= ' '.$info->{'address'};
-    }
     my $impact = $info->{'impact'};
     for(lc($impact)){
         if(/botnet/){

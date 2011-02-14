@@ -85,7 +85,6 @@ sub toIODEF {
     my $info = {%{+shift}};
 
     my $impact      = $info->{'impact'};
-    die('invalid impact type') unless(lc($impact) =~ /^(search|phishing|malware|spam|botnet)/);
 
     my $address     = $info->{'address'};
     my $description = $info->{'description'} || $impact.' '.$address;

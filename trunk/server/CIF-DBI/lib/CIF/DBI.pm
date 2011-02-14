@@ -15,6 +15,7 @@ sub check_params {
     foreach my $key (keys %$info){
         if(exists($tests->{$key})){
             my $test = $tests->{$key};
+            next unless($info->{$key});
             unless($info->{$key} =~ m/$test/){
                 return(undef,'invaild value for '.$key.': '.$info->{$key});
             }
