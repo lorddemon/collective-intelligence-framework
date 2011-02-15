@@ -19,6 +19,7 @@ use File::Type;
 use Compress::Zlib;
 use JSON;
 use threads;
+use Text::CSV;
 
 # Preloaded methods go here.
 
@@ -45,25 +46,34 @@ sub get_feed {
     $content = _decode($content);
 
     $content = encode_utf8($content);
+    $content =~ s/\r//g;
     return $content;
 }
 
 sub parse {
     my $f = shift;
     my $content = get_feed($f);
-    
-    if($content =~ /<\?xml version="\S+"/){
-        if($content =~ /<rss version=/){
-            return _parse_rss($f,$content);
-        } else {
-            return _parse_xml($f,$content);
-        }
-    } elsif($content =~ /^{?\[/){
-        # possible json content
-        return _parse_json($f,$content);
+    # see if we designate a delimiter
+    if(my $d = $f->{'delimiter'}){
+        return _parse_delim($f,$content,$d);
     } else {
-        return _parse_txt($f,$content);
-   }
+        # try to auto-detect the file
+        if($content =~ /<\?xml version="\S+"/){
+            if($content =~ /<rss version=/){
+                return _parse_rss($f,$content);
+            } else {
+                return _parse_xml($f,$content);
+            }
+        } elsif($content =~ /^{?\[/){
+            # possible json content
+            return _parse_json($f,$content);
+        ## TODO -- fix this; double check it
+        } elsif($content =~ /^#?\s?"\S+","\S+"/){
+            return _parse_csv($f,$content);
+        } else {
+            return _parse_txt($f,$content);
+        }
+    }
 }
 
 sub _decode {
@@ -155,6 +165,49 @@ sub _parse_rss {
     return(@array);
 }
 
+sub _parse_csv {
+    my $f = shift;
+    my $content = shift;
+    my @lines = split(/\n/,$content);
+    my @array;
+    my $csv = Text::CSV->new({binary => 1});
+    my @cols = split(',',$f->{'values'});
+    foreach(@lines){
+        next if(/^(#|<|$)/);
+        my $row = $csv->parse($_);
+        next unless($csv->parse($_));
+        my $h;
+        my @m = $csv->fields();
+        foreach (0 ... $#cols){
+            next if($cols[$_] eq 'null');
+            $h->{$cols[$_]} = $m[$_];
+        }
+        map { $h->{$_} = $f->{$_} } keys %$f;
+        push(@array,$h);
+    }
+    return(@array);
+}
+
+sub _parse_delim {
+    my $f = shift;
+    my $content = shift;
+    my $split = shift;
+    my @lines = split(/\n/,$content);
+    my @cols = split(',',$f->{'values'});
+    my @array;
+    foreach(@lines){
+        next if(/^(#|$)/);
+        my @m = split($split,$_);
+        my $h;
+        foreach (0 ... $#cols){
+            $h->{$cols[$_]} = $m[$_];   
+        }
+        map { $h->{$_} = $f->{$_} } keys %$f;
+        push(@array,$h);
+    }
+    return(@array);
+}
+
 sub _parse_txt {
     my $f = shift;
     my $content = shift;
@@ -163,7 +216,6 @@ sub _parse_txt {
     foreach(@lines){
         next if(/^(#|<|$)/);
         my @m = ($_ =~ /$f->{'regex'}/);
-
         next unless(@m);
         my $h;
         my @cols = split(',',$f->{'regex_values'});
@@ -181,15 +233,13 @@ sub _parse_txt {
     return(@array);
 }
 
-
-
 sub insert {
     my ($full,@recs) = (shift,@_);
     my $goback = DateTime->from_epoch(epoch => (time() - (84600 * 5)));
     $goback = $goback->ymd().'T'.$goback->hms().'Z';
 
     foreach (@recs){
-        delete($_->{'regex'});
+        delete($_->{'regex'}) if($_->{'regex'});
         my $dt = $_->{'detecttime'};
         unless($dt){
             $dt = DateTime->from_epoch(epoch => time());
@@ -256,9 +306,11 @@ sub _insert {
     my $b = shift;
     my $a = $f->{'hash_md5'} || $f->{'address'};
     return unless($a && length($a) > 2);
+    $f->{'impact'} = lc($f->{'impact'});
     unless($f->{'description'}){
         $f->{'description'} = $f->{'impact'};
     }
+    $f->{'description'} = lc($f->{'description'});
 
     my $bucket = $b;
     if(!$bucket){
@@ -281,6 +333,11 @@ sub _insert {
                 last;
             } else {
                 $bucket .= 'UrlSimple';
+                # catch urls that have no leading http, makes other regex easier
+                if($a =~ /^[A-Za-z0-9.-]+\.[a-zA-Z]{2,6}/){
+                    $a = 'http://'.$a;
+                    $f->{'address'} = 'http://'.$f->{'address'};
+                }
             }
         }
     }
@@ -314,6 +371,7 @@ sub normalize_date {
             my ($year,$month,$day,$hour,$min,$sec,$tz) = ($1,$2,$3,$4,$5,$6,$7);
             $dt = DateTime::Format::DateParse->parse_datetime($year.'-'.$month.'-'.$day.' '.$hour.':'.$min.':'.$sec,$tz);
         } else {
+            $dt =~ s/_/ /g;
             $dt = DateTime::Format::DateParse->parse_datetime($dt);
             return undef unless($dt);
         }
