@@ -1,12 +1,24 @@
-use 5.008008;
-use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
-WriteMakefile(
-    NAME              => 'CIF::FeedParser',
-    VERSION_FROM      => 'lib/CIF/FeedParser.pm', # finds $VERSION
-    PREREQ_PM         => {}, # e.g., Module::Name => 1.1
-    ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-      (ABSTRACT_FROM  => 'lib/CIF/FeedParser.pm', # retrieve abstract from module
-       AUTHOR         => 'Wes Young <wes@>') : ()),
-);
+use inc::Module::Install;
+
+name        'CIF-FeedParser';
+all_from    'lib/CIF/FeedParser.pm';
+
+requires    'CIF::DBI'          => '0.01_01';
+requires    'LWP::Simple'       => undef;
+requires    'LWP::UserAgent'    => undef;
+requires    'DateTime'          => undef;
+requires    'XML::RSS'          => undef;
+requires    'Regexp::Common'    => undef;
+requires    'Encode'            => undef;
+requires    'File::Type'        => undef;
+requires    'Compress::Zlib'    => undef;
+requires    'JSON'              => undef;
+requires    'Text::CSV'         => undef;
+requires    'Config::Simple'    => undef;
+requires    'Net::DNS::Resolver'    => undef;
+requires    'DateTime::Format::DateParse'   => undef;
+requires    'Linux::Cpuinfo'    => '1.7';
+
+install_script  'cif_feed_parser';
+
+WriteAll();
