@@ -104,6 +104,33 @@ sub _decode {
     }
 }
 
+sub normalize_date {
+    my $dt = shift;
+    return $dt if($dt =~ /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/);
+    if($dt && ref($dt) ne 'DateTime'){
+        if($dt =~ /^\d+$/){
+            if($dt =~ /^\d{8}$/){
+                $dt.= 'T00:00:00Z';
+                $dt = eval { DateTime::Format::DateParse->parse_datetime($dt) };
+                unless($dt){
+                    $dt = DateTime->from_epoch(epoch => time());
+                }
+            } else {
+                $dt = DateTime->from_epoch(epoch => $dt);
+            }
+        } elsif($dt =~ /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\S+)?$/) {
+            my ($year,$month,$day,$hour,$min,$sec,$tz) = ($1,$2,$3,$4,$5,$6,$7);
+            $dt = DateTime::Format::DateParse->parse_datetime($year.'-'.$month.'-'.$day.' '.$hour.':'.$min.':'.$sec,$tz);
+        } else {
+            $dt =~ s/_/ /g;
+            $dt = DateTime::Format::DateParse->parse_datetime($dt);
+            return undef unless($dt);
+        }
+    }
+    $dt = $dt->ymd().'T'.$dt->hms().'Z';
+    return $dt;
+}
+
 sub _sort_detecttime {
     my @recs = @_;
 
@@ -126,85 +153,6 @@ sub _sort_detecttime {
     }
     @recs = sort { $b->{'detecttime'} cmp $a->{'detecttime'} } @recs;
     return(@recs);
-}
-
-sub throttle {
-    my $throttle = shift;
-    my $cpu = Linux::Cpuinfo->new();
-    return(1) unless($cpu);
-    my $cores = $cpu->num_cpus();
-    return(1) unless($cores && $cores =~ /^\d$/);
-    return(1) if($cores eq 1);
-    return($cores) unless($throttle && $throttle ne 'medium');
-    return($cores/2) if($throttle eq 'low');
-    return($cores * 2);
-}
-
-sub _split_batches {
-    my @recs = @_;
-    my $tc = $recs[0]->{'threads_count'};
-    my @batches;
-    my $batch = (($#recs/$tc) == int($#recs/$tc)) ? ($#recs/$tc) : (int($#recs/$tc) + 1);
-    for(my $x = 0; $x <= $#recs; $x += $batch){
-        my $start = $x;
-        my $end = ($x+$batch);
-        $end = $#recs if($end > $#recs);
-        my @a = @recs[$x ... $end];
-        push(@batches,\@a);
-        $x++;
-    }
-    return(@batches);
-}
-
-sub insert {
-    my ($full,@recs) = (shift,@_);
-    my $goback = DateTime->from_epoch(epoch => (time() - (84600 * 5)));
-    $goback = $goback->ymd().'T'.$goback->hms().'Z';
-    @recs = _sort_detecttime(@recs);
-
-    foreach (@recs){
-        foreach my $key (keys %$_){
-            next unless($_->{$key});
-            if($_->{$key} =~ /<(\S+)>/){
-                my $x = $_->{$1};
-                if($x){
-                    $_->{$key} =~ s/<\S+>/$x/;
-                }
-            }
-        }
-    }
-    foreach(@recs){
-        unless($full){
-            next if(($_->{'detecttime'} cmp $goback) == -1);
-        }
-        _insert($_);
-    }
-}
-
-sub t_insert {
-    my ($full,$fctn,@recs) = (shift,shift,@_);
-    $fctn = 'CIF::FeedParser::insert' unless($fctn);
-    my @batches = _split_batches(@recs);
-    # don't thread me out if we only have one batch
-    # Crypt::SSLeay is NOT really thread safe, so we do simple https feeds with 1 bath where possible
-    return insert($full,@recs) unless($#batches);
-    # go nuts...
-    foreach(@batches){
-        my $t = threads->create($fctn,$full,@{$_});
-    }
-    while(threads->list()){
-        my @joinable = threads->list(threads::joinable);
-        unless($#joinable > -1){
-            sleep(2);
-            next();
-        }
-        foreach(@joinable){
-            # crypto libs might seg fault here. its OK
-            ## TODO -- patch here for Crypt::SSLeay
-            ## https://rt.cpan.org/Ticket/Display.html?id=41007
-            $_->join();
-        }
-    }
 }
 
 sub _insert {
@@ -259,31 +207,83 @@ sub _insert {
     print $f->{'source'}.' -- '.$a.' -- '.$rid."\n";
 }
 
-sub normalize_date {
-    my $dt = shift;
-    return $dt if($dt =~ /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/);
-    if($dt && ref($dt) ne 'DateTime'){
-        if($dt =~ /^\d+$/){
-            if($dt =~ /^\d{8}$/){
-                $dt.= 'T00:00:00Z';
-                $dt = eval { DateTime::Format::DateParse->parse_datetime($dt) };
-                unless($dt){
-                    $dt = DateTime->from_epoch(epoch => time());
+sub insert {
+    my ($full,@recs) = (shift,@_);
+    my $goback = DateTime->from_epoch(epoch => (time() - (84600 * 5)));
+    $goback = $goback->ymd().'T'.$goback->hms().'Z';
+    @recs = _sort_detecttime(@recs);
+
+    foreach (@recs){
+        foreach my $key (keys %$_){
+            next unless($_->{$key});
+            if($_->{$key} =~ /<(\S+)>/){
+                my $x = $_->{$1};
+                if($x){
+                    $_->{$key} =~ s/<\S+>/$x/;
                 }
-            } else {
-                $dt = DateTime->from_epoch(epoch => $dt);
             }
-        } elsif($dt =~ /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\S+)?$/) {
-            my ($year,$month,$day,$hour,$min,$sec,$tz) = ($1,$2,$3,$4,$5,$6,$7);
-            $dt = DateTime::Format::DateParse->parse_datetime($year.'-'.$month.'-'.$day.' '.$hour.':'.$min.':'.$sec,$tz);
-        } else {
-            $dt =~ s/_/ /g;
-            $dt = DateTime::Format::DateParse->parse_datetime($dt);
-            return undef unless($dt);
         }
     }
-    $dt = $dt->ymd().'T'.$dt->hms().'Z';
-    return $dt;
+    foreach(@recs){
+        unless($full){
+            next if(($_->{'detecttime'} cmp $goback) == -1);
+        }
+        _insert($_);
+    }
+}
+
+sub throttle {
+    my $throttle = shift;
+    my $cpu = Linux::Cpuinfo->new();
+    return(1) unless($cpu);
+    my $cores = $cpu->num_cpus();
+    return(1) unless($cores && $cores =~ /^\d$/);
+    return(1) if($cores eq 1);
+    return($cores) unless($throttle && $throttle ne 'medium');
+    return($cores/2) if($throttle eq 'low');
+    return($cores * 2);
+}
+
+sub _split_batches {
+    my @recs = @_;
+    my $tc = $recs[0]->{'threads_count'};
+    my @batches;
+    my $batch = (($#recs/$tc) == int($#recs/$tc)) ? ($#recs/$tc) : (int($#recs/$tc) + 1);
+    for(my $x = 0; $x <= $#recs; $x += $batch){
+        my $start = $x;
+        my $end = ($x+$batch);
+        $end = $#recs if($end > $#recs);
+        my @a = @recs[$x ... $end];
+        push(@batches,\@a);
+        $x++;
+    }
+    return(@batches);
+}
+
+sub t_insert {
+    my ($full,$fctn,@recs) = (shift,shift,@_);
+    $fctn = 'CIF::FeedParser::insert' unless($fctn);
+    my @batches = _split_batches(@recs);
+    # don't thread me out if we only have one batch
+    # Crypt::SSLeay is NOT really thread safe, so we do simple https feeds with 1 bath where possible
+    return insert($full,@recs) unless($#batches);
+    # go nuts...
+    foreach(@batches){
+        my $t = threads->create($fctn,$full,@{$_});
+    }
+    while(threads->list()){
+        my @joinable = threads->list(threads::joinable);
+        unless($#joinable > -1){
+            sleep(2);
+            next();
+        }
+        foreach(@joinable){
+            # crypto libs might seg fault here. its OK
+            ## TODO -- patch here for Crypt::SSLeay
+            ## https://rt.cpan.org/Ticket/Display.html?id=41007
+            $_->join();
+        }
+    }
 }
 
 # Autoload methods go after =cut, and are processed by the autosplit program.
