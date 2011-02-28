@@ -194,6 +194,6 @@ sub _debug {
 }
 
 sub _profile {
-    #my ($msg,$start) = @_;
-    #_debug('('.(time() - $start).') '.$msg);
+    my ($msg,$start) = @_;
+    _debug('('.(time() - $start).') '.$msg);
 }
