@@ -10,7 +10,7 @@ use Data::Dumper;
 my %opts;
 getopt('e:k:u:', \%opts);
 die(usage()) if($opts{'h'});
-my $user = $opts{'u'} || die(usage()) unless($opts{'k'});
+my $user = $opts{'u'} || die(usage()) unless($opts{'k'} || $opts{'l'});
 my $access = $opts{'e'};
 
 sub usage {
@@ -23,6 +23,7 @@ Usage: perl $0 -u joe\@example.com
     -a  --add:      add key
     -d  --delete:   delete key
     -k  --key:      apikey
+    -l  --list:     list users
 
 Examples:
     \$> perl $0 -u joe\@example.com
@@ -31,7 +32,7 @@ Examples:
     \$> perl $0 -u joe\@example.com -e infrastructure -a
     \$> perl $0 -k 96818121-f1b6-482e-8851-8fb49cb2f6c0 -w
     \$> perl $0 -k 96818121-f1b6-482e-8851-8fb49cb2f6c0 -r
-
+    \$> perl $0 -l
 EOF
 }
 
@@ -71,12 +72,16 @@ if(exists($opts{'d'})){
         $_->delete();
     }
 }
-
-unless($user){
+my @recs;
+if(!$user && $opts{'k'}){
     my @r = CIF::WebAPI::APIKey->search(apikey => $opts{'k'});
     $user = $r[0]->userid();
 }
-my @recs = CIF::WebAPI::APIKey->search(userid => $user, { order_by => 'created DESC' });
+if($user){
+    @recs = CIF::WebAPI::APIKey->search(userid => $user, { order_by => 'created DESC' });
+} else {
+    @recs = CIF::WebAPI::APIKey->retrieve_all();
+}
 if($#recs > -1){
     my $t = Text::Table->new('id','key','access','write','revoked','created');
     foreach (@recs){
