@@ -5,13 +5,7 @@ sysconfdir = /etc/cif
 
 EXTRA_DIST = \
     src/alexa_whitelist.pl \
-    src/cif_cron \
-    etc/cron.cfg \
-    etc/amada.cfg \
-    etc/misc.cfg \
-    etc/shadowserver.cfg \
-    etc/spyeyetracker.cfg \
-    etc/zeustracker.cfg
+    src/cif_cron 
 
 install: install-recursive fixperms
 
