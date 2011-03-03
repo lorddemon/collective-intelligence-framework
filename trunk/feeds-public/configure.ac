@@ -4,7 +4,7 @@
 AC_PREREQ([2.64])
 AC_INIT([cif-feeds-public], [0.01_01], [ci-framework@googlegroups.com])
 AM_INIT_AUTOMAKE(cif-feeds-public,0.01_01)
-AC_PREFIX_DEFAULT([/opt/cif-feeds-public])
+AC_PREFIX_DEFAULT([/opt/cif-feeds])
 
 # Checks for programs.
 
@@ -22,16 +22,16 @@ AC_CONFIG_FILES([
 ])
 
 #dnl CIF_USER
-AC_ARG_WITH(cif-user,
-    AC_HELP_STRING([--with-cif-user=USER],
+AC_ARG_WITH(user,
+    AC_HELP_STRING([--with-user=USER],
         [user the cif scripts will run as (default: cif)]),
     CIF_USER=$withval,
     CIF_USER=cif)
 AC_SUBST(CIF_USER)
 
 #dnl CIF_USER
-AC_ARG_WITH(cif-group,
-    AC_HELP_STRING([--with-cif-user=GROUP],
+AC_ARG_WITH(group,
+    AC_HELP_STRING([--with-user=GROUP],
         [group the cif scripts will run as (default: cif)]),
     CIF_GROUP=$withval,
     CIF_GROUP=cif
