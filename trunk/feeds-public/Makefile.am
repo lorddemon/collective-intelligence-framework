@@ -1,28 +1,27 @@
 AUTOMAKE_OPTIONS = foreign
 
 SUBDIRS = src 
-#sysconfdir = $(prefix)/etc/cif
 sysconfdir = /etc/cif
 
 EXTRA_DIST = \
     src/alexa_whitelist.pl \
     src/cif_cron \
-    rules/cron.cfg \
-    rules/amada.cfg \
-    rules/misc.cfg \
-    rules/shadowserver.cfg \
-    rules/spyeyetracker.cfg \
-    rules/zeustracker.cfg
+    etc/cron.cfg \
+    etc/amada.cfg \
+    etc/misc.cfg \
+    etc/shadowserver.cfg \
+    etc/spyeyetracker.cfg \
+    etc/zeustracker.cfg
 
 install: install-recursive fixperms
 
 dist_sysconf_DATA = \
-rules/cron.cfg \
-rules/amada.cfg \
-rules/misc.cfg \
-rules/shadowserver.cfg \
-rules/spyeyetracker.cfg \
-rules/zeustracker.cfg
+etc/cron.cfg \
+etc/feeds/amada.cfg \
+etc/feeds/misc.cfg \
+etc/feeds/shadowserver.cfg \
+etc/feeds/spyeyetracker.cfg \
+etc/feeds/zeustracker.cfg
 
 fixperms:
 	chown -R $(CIF_USER) $(prefix)
