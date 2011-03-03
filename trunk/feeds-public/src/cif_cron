@@ -1,0 +1,65 @@
+#!/usr/bin/perl -w
+
+use strict;
+use warnings;
+
+use Config::Simple;
+use Getopt::Std;
+use Data::Dumper;
+
+my %opts;
+getopts('fdT:C:c:p:h',\%opts);
+my $config = $opts{'c'} || '/etc/cif/cron.cfg';
+my $period = $opts{'p'} || 'hourly';
+my $throttle = $opts{'T'} || 'medium';
+my $cron_tool = $opts{'C'} || 'cif_feed_parser';
+my $first_run = $opts{'f'};
+my $debug = $opts{'d'};
+
+my $c = Config::Simple->new($config) || die($!);
+$c = $c->param(-block => 'default');
+my $feedsdir = $c->{'feedsdir'} || '/etc/cif/feeds';
+
+opendir(F,$feedsdir) || die($!);
+my @files = grep(/.cfg$/,readdir(F));
+close(F);
+
+my @crons;
+foreach(@files){
+    my $cc_name = $feedsdir.'/'.$_;
+    my $cc = Config::Simple->new($cc_name) || die('failed to open: '.$cc_name.': '.$!);
+    my @sections = keys %{$cc->{'_DATA'}};
+    foreach my $sec (@sections){
+        next if($sec =~ /^default/);
+        my $skip = $cc->param(-block => $sec)->{'skip'};
+        next if($skip);
+        if($first_run){
+            my $f = $cc->param(-block => $sec)->{'first_run'};
+            next unless($f  && $f eq 'true');
+        } else {
+            my $cron_period = $cc->param(-block => $sec)->{'cron'} || 'hourly';
+            next unless($cron_period eq $period);
+        }
+        my $h = {
+            feed => $sec,
+            config => $cc_name,
+        };
+        push(@crons,$h);
+    }
+}
+
+$SIG{'INT'} = 'exit';
+
+foreach(@crons){
+    my $cmd = $cron_tool.' -T '.$throttle.' -c '.$_->{'config'}.' -f '.$_->{'feed'};
+    $cmd .= ' -F' if($first_run);
+    warn $cmd if($debug);
+    my $ret = system($cmd);
+    warn $ret if($debug);
+    die($!) unless(defined($ret) && $ret == 0 || $ret == 11);
+}
+
+sub exit {
+    print "\n\nCaught Interrupt (^C), Aborting\n";
+    exit(1);
+}
