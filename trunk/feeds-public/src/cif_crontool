@@ -9,16 +9,13 @@ use Data::Dumper;
 
 my %opts;
 getopts('fdT:C:c:p:h',\%opts);
-my $config = $opts{'c'} || '/etc/cif/cron.cfg';
 my $period = $opts{'p'} || 'hourly';
 my $throttle = $opts{'T'} || 'medium';
 my $cron_tool = $opts{'C'} || 'cif_feed_parser';
 my $first_run = $opts{'f'};
 my $debug = $opts{'d'};
 
-my $c = Config::Simple->new($config) || die($!);
-$c = $c->param(-block => 'default');
-my $feedsdir = $c->{'feedsdir'} || '/etc/cif/feeds';
+my $feedsdir = '/etc/cif';
 
 opendir(F,$feedsdir) || die($!);
 my @files = grep(/.cfg$/,readdir(F));
