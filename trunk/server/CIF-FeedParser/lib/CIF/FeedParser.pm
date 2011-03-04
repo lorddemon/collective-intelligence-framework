@@ -10,10 +10,12 @@ $VERSION = eval $VERSION;  # see L<perlmodstyle>
 use DateTime::Format::DateParse;
 use DateTime;
 use Regexp::Common qw/net/;
-use Encode qw/encode_utf8/;
+use Regexp::Common::net::CIDR;
+use Encode qw/decode_utf8 encode_utf8/;
 use Data::Dumper;
 use File::Type;
 use threads;
+use threads::shared;
 use Linux::Cpuinfo;
 
 # Preloaded methods go here.
@@ -44,7 +46,7 @@ sub get_feed {
             $content = $ress->decoded_content();
         } else {
             require LWP::Simple;
-            $content = LWP::Simple::get($f->{'feed'}) || die($!);
+            $content = LWP::Simple::get($f->{'feed'}) || die('failed to get feed: '.$f->{'feed'}.': '.$!);
         }
     }
     # auto-decode the content if need be
@@ -67,7 +69,7 @@ sub parse {
         return CIF::FeedParser::ParseDelim::parse($f,$content,$d);
     } else {
         # try to auto-detect the file
-        if($content =~ /<\?xml version="\S+"/){
+        if($content =~ /<\?xml version=/){
             if($content =~ /<rss version=/){
                 require CIF::FeedParser::ParseRss;
                 return CIF::FeedParser::ParseRss::parse($f,$content);
@@ -137,6 +139,9 @@ sub _sort_detecttime {
     foreach (@recs){
         delete($_->{'regex'}) if($_->{'regex'});
         my $dt = $_->{'detecttime'};
+        if($dt){
+            $dt = normalize_date($dt);
+        }
         unless($dt){
             $dt = DateTime->from_epoch(epoch => time());
             if(lc($_->{'detection'}) eq 'hourly'){
@@ -146,10 +151,9 @@ sub _sort_detecttime {
             } else {
                 $dt = $dt->ymd().'T00:00:00Z';
             }
-            $_->{'detecttime'} = $dt;
         }
+        $_->{'detecttime'} = $dt;
         $_->{'description'} = '' unless($_->{'description'});
-        $_->{'detecttime'} = normalize_date($_->{'detecttime'});
     }
     @recs = sort { $b->{'detecttime'} cmp $a->{'detecttime'} } @recs;
     return(@recs);
@@ -158,7 +162,7 @@ sub _sort_detecttime {
 sub _insert {
     my $f = shift;
     my $b = shift;
-    my $a = $f->{'hash_md5'} || $f->{'address'};
+    my $a = $f->{'hash_md5'} || encode_utf8($f->{'address'});
     return unless($a && length($a) > 2);
     $f->{'impact'} = lc($f->{'impact'});
     unless($f->{'description'}){
@@ -174,7 +178,7 @@ sub _insert {
                 $bucket .= 'DomainSimple';
                 last;
             }
-            if(/^$RE{'net'}{'IPv4'}/){
+            if(/^$RE{'net'}{'IPv4'}$/ || /^$RE{'net'}{'CIDR'}{'IPv4'}$/){
                 $bucket .= 'InfrastructureSimple';
                 last;
             }
@@ -200,11 +204,12 @@ sub _insert {
     my $id = $bucket->insert({ %{$f} });
     my $rid;
     if($id =~ /^\d+$/){
-        $rid = $id->description().' -- '.$id->detecttime().' -- '.$id->uuid();
+        $rid = $id->impact().' -- '.$id->description().' -- '.$id->detecttime().' -- '.$id->uuid();
     } else {
         $rid = $id;
     }
     print $f->{'source'}.' -- '.$a.' -- '.$rid."\n";
+    return(0);
 }
 
 sub insert {
@@ -230,6 +235,7 @@ sub insert {
         }
         _insert($_);
     }
+    return(0);
 }
 
 sub throttle {
@@ -266,7 +272,7 @@ sub t_insert {
     my @batches = _split_batches(@recs);
     # don't thread me out if we only have one batch
     # Crypt::SSLeay is NOT really thread safe, so we do simple https feeds with 1 bath where possible
-    return insert($full,@recs) unless($#batches);
+    return insert($full,@recs) unless($#batches > -1);
     # go nuts...
     foreach(@batches){
         my $t = threads->create($fctn,$full,@{$_});
@@ -286,51 +292,51 @@ sub t_insert {
     }
 }
 
-# Autoload methods go after =cut, and are processed by the autosplit program.
-
 1;
 __END__
 # Below is stub documentation for your module. You'd better edit it!
 
 =head1 NAME
 
-CIF::FeedParser - Perl extension for blah blah blah
+CIF::FeedParser - Perl extension for parsing different types of feeds and inserting into CIF
 
 =head1 SYNOPSIS
 
   use CIF::FeedParser;
-  blah blah blah
-
-=head1 DESCRIPTION
-
-Stub documentation for CIF::FeedParser, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
-
-Blah blah blah.
-
-=head2 EXPORT
-
-None by default.
+  my $c = Config::Simple->new($config);
+  my @items = CIF::FeedParser::parse($c)
+  my $full_load = 1;
+  CIF::FeedParser::t_insert($full_load,undef,@items);
 
 
+  my $content = CIF::FeedParser::get_feed($c);
+  my @lines = split("\n",$content);
+  my @items;
+  foreach(@lines){
+    # .. do something
+    my $h = {
+      address => 'example.com',
+      portlist => 123,
+      %$c,
+    };
+    push(@items,$h);
+  }
+  
+  CIF::FeedParser::t_insert($full_load,undef,@items);
 
 =head1 SEE ALSO
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
+script/cif_feed_parser for more doc and usage tips
 
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+http://code.google.com/p/collective-intelligence-framework
 
 =head1 AUTHOR
 
-Wes Young, E<lt>wes@E<gt>
+Wes Young, E<lt>wes@barely3am.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2011 by REN-ISAC and The Trustees of Indiana University
 
 Copyright (C) 2011 by Wes Young
 
