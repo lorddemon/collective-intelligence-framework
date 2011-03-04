@@ -41,7 +41,12 @@ sub insert {
             $bucket = 'CIF::Message::DomainBotnet';
             last;
         }
+        if(/whitelist/){
+            $bucket = 'CIF::Message::DomainWhitelist';
+            last;
+        }
     }
+    eval "require $bucket";
 
     my @results = CIF::Message::Domain::getrdata($info->{'nsres'},$info->{'address'});
     foreach my $r (@results){

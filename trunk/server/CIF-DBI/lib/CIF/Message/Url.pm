@@ -19,7 +19,7 @@ __PACKAGE__->sequence('url_id_seq');
 sub insert {
     my $self = shift;
     my $info = {%{+shift}};
-    $info->{'address'} = encode_utf8($info->{'address'});
+    $info->{'address'} = encode_utf8($info->{'address'}) if($info->{'address'});
 
     my $uuid    = $info->{'uuid'};
     my $source  = $info->{'source'};
