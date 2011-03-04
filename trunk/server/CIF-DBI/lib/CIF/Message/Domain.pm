@@ -268,6 +268,8 @@ sub isWhitelisted {
             $sql .= qq{ OR address LIKE '$1'};
         }
     }
+    #if($sql eq ''){ return(0); }
+
     $sql .= qq{\nORDER BY detecttime DESC, created DESC, id DESC};
     my $t = $self->table();
     $self->table('domain_whitelist');

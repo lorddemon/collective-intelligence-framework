@@ -31,7 +31,7 @@ my @list = (
 
 sub isPrivateAddress {
     my $addr = shift;
-    return(undef) unless($addr && $addr =~ /^$RE{'net'}{'IPv4'}/);
+    return(undef) unless($addr && $addr =~ /^$RE{'net'}{'IPv4'}$/ || $addr =~ /^$RE{'net'}{'CIDR'}{'IPv4'}$/);
     my $found = Net::CIDR::cidrlookup($addr,@list);
     return($found);
 }
