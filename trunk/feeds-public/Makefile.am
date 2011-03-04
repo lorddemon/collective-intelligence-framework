@@ -5,19 +5,18 @@ sysconfdir = /etc/cif
 
 EXTRA_DIST = \
     src/alexa_whitelist.pl \
-    src/cif_cron 
+    src/cif_crontool 
 
 install: install-recursive fixperms
 
 dist_sysconf_DATA = \
-etc/cron.cfg \
-etc/feeds/amada.cfg \
-etc/feeds/misc.cfg \
-etc/feeds/shadowserver.cfg \
-etc/feeds/spyeyetracker.cfg \
-etc/feeds/zeustracker.cfg
+etc/amada.cfg \
+etc/misc.cfg \
+etc/shadowserver.cfg \
+etc/spyeyetracker.cfg \
+etc/zeustracker.cfg
 
 fixperms:
-	chown -R $(CIF_USER) $(prefix)
-	chgrp -R $(CIF_GROUP) $(prefix)
-	chmod -R o-rwx $(prefix)
+	chown -R $(CIF_USER) $(prefix) $(sysconfdir)
+	chgrp -R $(CIF_GROUP) $(prefix) $(sysconfdir)
+	chmod -R o-rwx $(prefix) $(sysconfdir)
