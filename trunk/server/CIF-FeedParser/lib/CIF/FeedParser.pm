@@ -29,6 +29,19 @@ sub new {
 
 sub get_feed { 
     my $f = shift;
+    my $content = threads->create('_get_feed',$f)->join();
+    # auto-decode the content if need be
+    $content = _decode($content);
+
+    # encode to utf8
+    $content = encode_utf8($content);
+    # remove any CR's
+    $content =~ s/\r//g;
+    return($content);
+}
+
+sub _get_feed {
+    my $f = shift;
     my $content;
     for($f->{'feed'}){
         if(/^(\/\S+)/){
@@ -49,15 +62,9 @@ sub get_feed {
             $content = LWP::Simple::get($f->{'feed'}) || die('failed to get feed: '.$f->{'feed'}.': '.$!);
         }
     }
-    # auto-decode the content if need be
-    $content = _decode($content);
-
-    # encode to utf8
-    $content = encode_utf8($content);
-    # remove any CR's
-    $content =~ s/\r//g;
-    return($content);
+    return $content;
 }
+
 
 sub parse {
     my $f = shift;
@@ -162,8 +169,9 @@ sub _sort_detecttime {
 sub _insert {
     my $f = shift;
     my $b = shift;
-    my $a = $f->{'hash_md5'} || encode_utf8($f->{'address'});
+    my $a = $f->{'hash_md5'} || $f->{'address'};
     return unless($a && length($a) > 2);
+    $a = encode_utf8($a);
     $f->{'impact'} = lc($f->{'impact'});
     unless($f->{'description'}){
         $f->{'description'} = $f->{'impact'};
