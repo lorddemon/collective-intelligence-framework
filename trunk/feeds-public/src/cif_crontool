@@ -34,6 +34,8 @@ foreach(@files){
             my $f = $cc->param(-block => $sec)->{'first_run'};
             next unless($f  && $f eq 'true');
         } else {
+            my $tool = $cc->param(-block => $sec)->{'cron_tool'};
+            next if($tool && $tool eq 'false');
             my $cron_period = $cc->param(-block => $sec)->{'cron'} || 'hourly';
             next unless($cron_period eq $period);
         }
@@ -44,6 +46,32 @@ foreach(@files){
         push(@crons,$h);
     }
 }
+
+my @feeds = map { $_->{'config'}.' -- '.$_->{'feed'} } @crons;
+my $f = join("\n",@feeds);
+die(usage()) if($opts{'h'});
+sub usage {
+    return <<EOF;
+Usage: $0 -p hourly
+    -h  --help:     this message
+    -f  --first:    "first load", run through the configs where first_run = true
+                    don't do NS resolution on domains
+    
+    -p  --period:   which period to run (hourly, daily, monthly, default: $period)
+    -d  --debug:    debug
+    -T  --throttle: throttle (how man threads to use, default: $throttle)
+                    low:    threads = 1/2 number of cores
+                    medium: threads = number of cores
+                    high:   threads = 2x number of cores
+
+Examples:
+    $0 -T high -f -d
+    $0 -T medium -p daily 
+
+Current Feeds:
+$f
+EOF
+} 
 
 $SIG{'INT'} = 'exit';
 
