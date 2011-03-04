@@ -4,11 +4,12 @@ use base 'CIF::Message::Url';
 use strict;
 use warnings;
 
-use CIF::Message::UrlMalware;
-use CIF::Message::UrlPhishing;
-use CIF::Message::DomainSimple;
-use CIF::Message::InfrastructureSimple;
-use Regexp::Common qw/net/;
+require CIF::Message::UrlMalware;
+require CIF::Message::UrlPhishing;
+require CIF::Message::DomainSimple;
+require CIF::Message::InfrastructureSimple;
+require CIF::Message::UrlBotnet;
+use Regexp::Common qw/net URI/;
 use Digest::MD5 qw/md5_hex/;
 
 sub insert {
@@ -59,7 +60,7 @@ sub insert {
 
     my $address = $info->{'address'};
     my $port;
-    if($address =~ /^(https?\:\/\/)?(\S+\.[a-z]{2,5})(:\d+)?\//){
+    if($address =~ /^(https?\:\/\/)?([A-Za-z-]+\.[a-z]{2,5})(:\d+)?\//){
         $bucket = 'CIF::Message::DomainSimple';
         $impact .= 'domain';
         $address = $2;
@@ -68,8 +69,7 @@ sub insert {
             $port = $3;
             $port =~ s/^://;
         }
-    } else {
-        $address =~ /^(https?\:\/\/)?($RE{'net'}{'IPv4'})(:\d+)?\//;
+    } elsif($address =~ /^(https?\:\/\/)?($RE{'net'}{'IPv4'})(:\d+)?\//) {
         $address = $2;
         $impact .= 'infrastructure';
         $port = (defined($1) && $1 eq 'https') ? 443 : 80;
@@ -78,6 +78,8 @@ sub insert {
             $port =~ s/^://;
         }
         $bucket = 'CIF::Message::InfrastructureSimple';
+    } else {
+        return $id;
     }
     $bucket->insert({
             nsres       => $info->{'nsres'},

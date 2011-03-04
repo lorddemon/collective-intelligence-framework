@@ -8,6 +8,7 @@ use XML::IODEF;
 use CIF::Message::IODEF;
 use Digest::SHA1 qw(sha1_hex);
 use Digest::MD5 qw(md5_hex);
+use Encode qw/encode_utf8/;
 
 __PACKAGE__->table('url');
 __PACKAGE__->columns(Primary => 'id');
@@ -18,6 +19,7 @@ __PACKAGE__->sequence('url_id_seq');
 sub insert {
     my $self = shift;
     my $info = {%{+shift}};
+    $info->{'address'} = encode_utf8($info->{'address'});
 
     my $uuid    = $info->{'uuid'};
     my $source  = $info->{'source'};
@@ -59,7 +61,7 @@ sub insert {
     my $id = eval { $self->SUPER::insert({
         uuid            => $uuid,
         description     => $info->{'description'},
-        address         => $info->{'address'},
+        address         => $address,
         url_md5         => $md5,
         url_sha1        => $sha1,
         malware_md5     => $info->{'malware_md5'},
