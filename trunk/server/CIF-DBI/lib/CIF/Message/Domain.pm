@@ -56,6 +56,10 @@ sub insert {
         });
         $uuid = $uuid->uuid();
     }
+    if($info->{'severity'} eq ''){
+        # work-around for domain_whitelist and cif_feed_parser
+        $info->{'severity'} = undef;
+    }
 
     my $id = eval { $self->SUPER::insert({
         uuid        => $uuid,
