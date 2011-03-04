@@ -15,13 +15,13 @@ sub parse {
     my @array;
     my @elements = split(',',$f->{'elements'});
     my @elements_map = split(',',$f->{'elements_map'});
-    my @attributes_map = split(',',$f->{'attributes_map'});
-    my @attributes = split(',',$f->{'attributes'});
+    my @attributes_map = split(',',$f->{'attributes_map'}) if($f->{'attributes_map'});
+    my @attributes = split(',',$f->{'attributes'}) if($f->{'attributes'});
     foreach my $node (@nodes){
         my $h;
         if(@elements_map){
             foreach (0 ... $#elements_map){
-                $h->{$elements_map[$_]} = $node->findvalue('./'.$elements_map[$_]);
+                $h->{$elements_map[$_]} = $node->findvalue('./'.$elements[$_]);
             }
         } else {
             foreach (0 ... $#attributes_map){

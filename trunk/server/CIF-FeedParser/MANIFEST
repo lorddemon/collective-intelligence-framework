@@ -8,11 +8,17 @@ inc/Module/Install/Metadata.pm
 inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
 lib/CIF/FeedParser.pm
+lib/CIF/FeedParser/DecodeGzip.pm
+lib/CIF/FeedParser/ParseCsv.pm
+lib/CIF/FeedParser/ParseDelim.pm
+lib/CIF/FeedParser/ParseJson.pm
+lib/CIF/FeedParser/ParseRss.pm
+lib/CIF/FeedParser/ParseTxt.pm
+lib/CIF/FeedParser/ParseXml.pm
 Makefile.PL
 MANIFEST			This list of files
 META.yml
 package.sh
 README
-script/.cif_feed_parser.swp
 script/cif_feed_parser
 t/CIF-FeedParser.t

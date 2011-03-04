@@ -10,7 +10,6 @@ use Net::DNS::Resolver;
 my %opts;
 getopts('hT:t:dFc:f:',\%opts);
 my $debug = $opts{'d'};
-my $full_load = $opts{'F'} || 0;
 my $config = $opts{'c'} || $ENV{'HOME'}.'/.cif';
 my $throttle = $opts{'T'} || 'low';
 my $c = Config::Simple->new($config) || die($!.' '.$config);
@@ -18,6 +17,7 @@ my $f = $opts{'f'};
 die usage() if($opts{'h'} || !$f);
 my $default = $c->param(-block => 'default');
 my $hash = $c->param(-block => $f);
+my $full_load = $opts{'F'};
 
 sub usage {
     return <<EOF;
@@ -50,6 +50,12 @@ $c = $default;
 my $threaded = $opts{'t'} || $c->{'threads_count'} || CIF::FeedParser::throttle($throttle);
 $c->{'threads_count'} = $threaded if($threaded);
 
+unless($full_load){
+    if(my $val = $hash->{'no_resolve'}){
+        $full_load = 1 if($val eq '1' || $val eq 'true');        
+    }
+}
+
 if($debug){
     warn 'running '.$c->{'threads_count'}.' threads';
 }
@@ -60,5 +66,6 @@ unless($full_load){
 }
 
 my @items = CIF::FeedParser::parse($c);
-
+exit(0) unless($#items > -1);
 CIF::FeedParser::t_insert($full_load,undef,@items);
+exit(0);
