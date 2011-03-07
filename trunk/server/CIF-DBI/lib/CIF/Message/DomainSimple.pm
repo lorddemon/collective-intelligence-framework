@@ -49,14 +49,18 @@ sub insert {
     eval "require $bucket";
 
     my @results = CIF::Message::Domain::getrdata($info->{'nsres'},$info->{'address'});
+    my @a_records = map { $_->{'type'} eq 'A' } @results;
+    my @cname_records = map { $_->{'type'} eq 'CNAME'} @results;
+    my @ptr_records = map { $_->{'type'} eq 'PTR' } @results;
+
     foreach my $r (@results){
         my %hash = %$info;
         if($r->{'type'} ne 'A'){
             $hash{'detecttime'} = DateTime->from_epoch(epoch => time());
         }
         my ($id,$err) = $self->_insert($bucket,{%hash},$r);
-        if($r->{'type'} eq 'A'){
-            return(undef,$err) unless($id);
+        return(undef,$err) unless($id);
+        if($r->{'type'} =~ /A|PTR|CNAME/){
             push(@ids,$id);
         } else {
             next unless($id);
