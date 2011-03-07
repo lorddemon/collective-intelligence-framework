@@ -9,6 +9,11 @@ Once installed, monitor your dns traffic a bit, your server will be looking up s
 
 = CIF::DBI =
  # install and configure postgresql
+  # set error logging in postgres to "log" (key violations generate lots of errors):
+{{{
+vi /etc/postgresql/8.3/main/postgresql.conf +296 (or so)
+log_min_messages = log
+}}}
  # make sure your user can:
 {{{
 $> psql -U postgres -d cif
