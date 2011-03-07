@@ -16,7 +16,7 @@ log_min_messages = log
 }}}
  # make sure your user can:
 {{{
-$> psql -U postgres -d cif
+$> psql -U postgres
 }}}
  # read the README
  # install the CIF::DBI dependencies
@@ -31,6 +31,10 @@ $> cd CIF-DBI-0.00_02
 $> perl Makefile.PL
 $> make && sudo make install
 $> sh database_rebuild.sh
+}}}
+ # make sure your user can:
+{{{
+$> psql -U postgres -d cif
 }}}
 == Notes ==
  * see the ./scripts directory for helper cron scripts
