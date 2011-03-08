@@ -41,10 +41,7 @@ $ diff -u pg_hba.conf.orig pg_hba.conf
 {{{
 $ sudo /etc/init.d/postgresql reload
 }}}
-
-= CIF::DBI =
- # install and configure postgresql
-  # set error logging in postgres to "log" (key violations generate lots of errors):
+ # set error logging in postgres to "log" (key violations generate lots of errors):
 {{{
 vi /etc/postgresql/8.3/main/postgresql.conf +296 (or so)
 log_min_messages = log
@@ -53,6 +50,7 @@ log_min_messages = log
 {{{
 $> psql -U postgres
 }}}
+= CIF::DBI =
  # install the main server interface:
 {{{
 $> wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/cif/CIF-DBI-0.00_02.tar.gz
