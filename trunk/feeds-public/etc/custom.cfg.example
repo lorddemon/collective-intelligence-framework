@@ -18,3 +18,9 @@ severity = low
 confidence = 5
 period = daily
 first_run = true
+
+[cif-dev_botnet_infrastructure]
+source = 'localhost'
+feed = 'infrastructure/botnet'
+cif = /home/cif/.cif
+period = hourly
