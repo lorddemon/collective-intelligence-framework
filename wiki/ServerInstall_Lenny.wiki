@@ -2,15 +2,15 @@ Lenny Server Install
 
  # Install the base deps
 {{{
-# sudo aptitude install rng-tools postgresql apache2 apache2-threaded-dev gcc make libexpat-dev libapache2-mod-perl2 libclass-dbi-perl libdigest-sha1-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev libjson-perl rsync libunicode-string-perl
+$ sudo aptitude install rng-tools postgresql apache2 apache2-threaded-dev gcc make libexpat-dev libapache2-mod-perl2 libclass-dbi-perl libdigest-sha1-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev libjson-perl rsync libunicode-string-perl
 }}}
  # Install the remaining CPAN modules
 {{{
- # sudo perl -MCPAN -e 'install Net::Abuse::Utils,XML::Compile,XML::IODEF,XML::Malware,DateTime::Format::DateParse, Regexp::Common::net::CIDR,Apache2::REST,CIF::WebAPI,Text::Table'
+$ sudo perl -MCPAN -e 'install Net::Abuse::Utils,XML::Compile,XML::IODEF,XML::Malware,DateTime::Format::DateParse, Regexp::Common::net::CIDR,Apache2::REST,CIF::WebAPI,Text::Table'
 }}}
  # Modify your postgres config
 {{{
- # diff -u pg_hba.conf.orig pg_hba.conf
+$ diff -u pg_hba.conf.orig pg_hba.conf
 --- pg_hba.conf.orig	2010-09-02 12:06:29.000000000 +0000
 +++ pg_hba.conf	2010-09-02 12:21:43.000000000 +0000
 @@ -71,13 +71,13 @@
@@ -38,5 +38,5 @@ $ sudo /etc/init.d/postgresql reload
 }}}
  # enable apreq and ssl for apache
 {{{
-sudo a2enmod apreq ssl
+$ sudo a2enmod apreq ssl
 }}}
