@@ -1,11 +1,46 @@
 #labels Phase-Deploy,Phase-Implementation,Featured
 Instructions for standing up a CIF instance
 
-= Bind9 =
+= Preamble =
 
 Trust me, these scripts do a lot of dns queries. You're gonna wanna install bind and configure it to use forwarders. Maybe something like google public dns to help mask your queries. Then point your resolv.conf to localhost
 
-Once installed, monitor your dns traffic a bit, your server will be looking up some interesting information. Get a good handle on this and work with your security teams to whitelist this server. 
+Once installed, monitor your dns traffic a bit, your server will be looking up some interesting information. Get a good handle on this and work with your security teams to whitelist this server.
+
+= System Deps =
+ # ServerInstall_Generic
+ # ServerInstall_Lenny
+ # ServerInstall_Ubuntu10
+
+= Postgres =
+ # Modify your postgres config
+{{{
+$ diff -u pg_hba.conf.orig pg_hba.conf
+--- pg_hba.conf.orig	2010-09-02 12:06:29.000000000 +0000
++++ pg_hba.conf	2010-09-02 12:21:43.000000000 +0000
+@@ -71,13 +71,13 @@
+ # (autovacuum, daily cronjob, replication, and similar tasks).
+ #
+ # Database administrative login by UNIX sockets
+-local   all         postgres                          ident sameuser
++local   all         postgres                          trust 
+ 
+ # TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+ 
+ # "local" is for Unix domain socket connections only
+-local   all         all                               ident sameuser
++local   all         all                               trust 
+ # IPv4 local connections:
+-host    all         all         127.0.0.1/32          md5
++host    all         all         127.0.0.1/32          trust
+ # IPv6 local connections:
+-host    all         all         ::1/128               md5
++host    all         all         ::1/128               trust
+}}}
+ # reload postgres
+{{{
+$ sudo /etc/init.d/postgresql reload
+}}}
 
 = CIF::DBI =
  # install and configure postgresql
@@ -17,20 +52,6 @@ log_min_messages = log
  # make sure your user can:
 {{{
 $> psql -U postgres
-}}}
- # read the README
- # install the CIF::DBI dependencies
-{{{
-$> sudo perl -MCPAN -e 'install Class::DBI, XML::LibXML, XML::IODEF, OSSP::uuid, Digest::SHA1, Digest::MD5, Net::CIDR, Net::Abuse::Utils, XML::Malware, Regexp::Common, Regexp::Common::net::CIDR, DateTime, DateTime::Format::DateParse, Unicode::String, Encode, Net::DNS'
-}}}
-  if you have issues installing XML::Malware (because it's still a "developer release"), install as follows:
-{{{
-$ wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/malware/XML-Malware-0.00_04.tar.gz
-$ tar -zxvf XML-Malware-0.00_04.tar.gz
-$ cd XML-Malware-0.00_04
-$ perl Makefile.PL
-$ make
-$ sudo make install
 }}}
  # install the main server interface:
 {{{
@@ -50,10 +71,6 @@ $> psql -U postgres -d cif
 = CIF::WebAPI =
 == Instructions ==
  # read the README
- # install the CIF::WebAPI dependencies
-{{{
-$> sudo perl -MCPAN -e 'install Class::DBI, Text::Table, Apache2::REST,JSON, Net::DNS, Config::Simple, Pod::POM'
-}}}
  # install the main server interface:
 {{{
 $> wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/cif/CIF-WebAPI-0.00_02.tar.gz
