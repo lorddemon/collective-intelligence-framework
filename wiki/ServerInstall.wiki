@@ -192,3 +192,10 @@ $> crontab -e
 # resolve bulk-inserted domains
 #00 * * * * /usr/local/bin/cif_domains_resolve &> /dev/null
 }}}
+ # setup your local server config (/home/cif/.cif):
+{{{
+
+[feed_sources]
+domains_whitelist = /home/cif/.cif_domains_whitelist
+infrastructure_whitelist = /home/cif/.cif_infrastructure_whitelist
+}}}
