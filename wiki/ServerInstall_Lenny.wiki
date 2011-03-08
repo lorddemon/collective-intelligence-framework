@@ -8,35 +8,3 @@ $ sudo aptitude install rng-tools postgresql apache2 apache2-threaded-dev gcc ma
 {{{
 $ sudo perl -MCPAN -e 'install Net::Abuse::Utils,XML::Compile,XML::IODEF,XML::Malware,DateTime::Format::DateParse, Regexp::Common::net::CIDR,Apache2::REST,CIF::WebAPI,Text::Table'
 }}}
- # Modify your postgres config
-{{{
-$ diff -u pg_hba.conf.orig pg_hba.conf
---- pg_hba.conf.orig	2010-09-02 12:06:29.000000000 +0000
-+++ pg_hba.conf	2010-09-02 12:21:43.000000000 +0000
-@@ -71,13 +71,13 @@
- # (autovacuum, daily cronjob, replication, and similar tasks).
- #
- # Database administrative login by UNIX sockets
--local   all         postgres                          ident sameuser
-+local   all         postgres                          trust 
- 
- # TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
- 
- # "local" is for Unix domain socket connections only
--local   all         all                               ident sameuser
-+local   all         all                               trust 
- # IPv4 local connections:
--host    all         all         127.0.0.1/32          md5
-+host    all         all         127.0.0.1/32          trust
- # IPv6 local connections:
--host    all         all         ::1/128               md5
-+host    all         all         ::1/128               trust
-}}}
- # reload postgres
-{{{
-$ sudo /etc/init.d/postgresql reload
-}}}
- # enable apreq and ssl for apache
-{{{
-$ sudo a2enmod apreq ssl
-}}}
