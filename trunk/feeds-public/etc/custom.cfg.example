@@ -5,3 +5,16 @@ source = 'phishtank.com'
 fields = 'url,target,phish_detail_url,submission_time'
 fields_map = 'address,description,alternativeid,detecttime'
 first_run = true
+
+[fastflux_mon]
+feed = ''
+node = domain
+source = 'fastfluxmonitor.com'
+attributes = 'name,fast_flux_first_date'
+attributes_map = 'address,detecttime'
+impact = 'fastflux domain'
+description = 'fastflux'
+severity = low
+confidence = 5
+period = daily
+first_run = true
