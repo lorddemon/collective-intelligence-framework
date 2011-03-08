@@ -13,8 +13,8 @@ sub parse {
     my @nodes = $doc->findnodes('//'.$f->{'node'});
     return unless(@nodes);
     my @array;
-    my @elements = split(',',$f->{'elements'});
-    my @elements_map = split(',',$f->{'elements_map'});
+    my @elements = split(',',$f->{'elements'}) if($f->{'elements'});
+    my @elements_map = split(',',$f->{'elements_map'}) if($f->{'elements_map'});
     my @attributes_map = split(',',$f->{'attributes_map'}) if($f->{'attributes_map'});
     my @attributes = split(',',$f->{'attributes'}) if($f->{'attributes'});
     foreach my $node (@nodes){

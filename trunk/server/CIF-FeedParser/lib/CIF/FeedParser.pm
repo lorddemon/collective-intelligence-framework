@@ -57,6 +57,15 @@ sub _get_feed {
             my $ress = $ua->request($req);
             die('request failed: '.$ress->status_line()."\n") unless($ress->is_success());
             $content = $ress->decoded_content();
+        } elsif($f->{'cif'}) {
+            require CIF::Client;
+            my $config = $f->{'cif'};
+            my $feed = $f->{'feed'};
+            my ($client,$err) = CIF::Client->new({config => $config});
+            die($err) if($err);
+            $client->GET($feed);
+            die('request failed with code: '.$client->responseCode()."\n\n".$client->responseContent()) unless($client->responseCode == 200);
+            $content = $client->responseContent();
         } else {
             require LWP::Simple;
             $content = LWP::Simple::get($f->{'feed'}) || die('failed to get feed: '.$f->{'feed'}.': '.$!);
@@ -84,10 +93,15 @@ sub parse {
                 require CIF::FeedParser::ParseXml;
                 return CIF::FeedParser::ParseXml::parse($f,$content);
             }
-        } elsif($content =~ /^{?\[/){
-            # possible json content
-            require CIF::FeedParser::ParseJson;
-            return CIF::FeedParser::ParseJson::parse($f,$content);
+        } elsif($content =~ /^{/){
+            # possible json content or CIF
+            if($content =~ /^{"status"\:/){
+                require CIF::FeedParser::ParseCIF;
+                return CIF::FeedParser::ParseCIF::parse($f,$content);
+            } else {
+                require CIF::FeedParser::ParseJson;
+                return CIF::FeedParser::ParseJson::parse($f,$content);
+            }
         ## TODO -- fix this; double check it
         } elsif($content =~ /^#?\s?"\S+","\S+"/){
             require CIF::FeedParser::ParseCsv;
@@ -108,6 +122,10 @@ sub _decode {
         if(/gzip/){
             require CIF::FeedParser::DecodeGzip;
             return CIF::FeedParser::DecodeGzip::decode($data);
+        }
+        if(/zip/){
+            require CIF::FeedParser::DecodeZip;
+            return CIF::FeedParser::DecodeZip::decode($data);
         }
         return $data;
     }
