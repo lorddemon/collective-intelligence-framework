@@ -63,7 +63,7 @@ sub insert {
 
     my $id = eval { $self->SUPER::insert({
         uuid        => $uuid,
-        description => $info->{'description'},
+        description => lc($info->{'description'}),
         address     => $info->{'address'},
         type        => $info->{'type'},
         rdata       => $info->{'rdata'},
@@ -97,7 +97,7 @@ sub toIODEF {
 
     my $impact      = $info->{'impact'};
     my $address     = $info->{'address'} || return(undef,'no address given');
-    my $description = $info->{'description'};
+    my $description = lc($info->{'description'});
     my $confidence  = $info->{'confidence'};
     my $severity    = $info->{'severity'};
     my $restriction = $info->{'restriction'} || 'private';
