@@ -37,18 +37,30 @@ $ diff -u pg_hba.conf.orig pg_hba.conf
 -host    all         all         ::1/128               md5
 +host    all         all         ::1/128               trust
 }}}
- # reload postgres
-{{{
-$ sudo /etc/init.d/postgresql reload
-}}}
  # set error logging in postgres to "log" (key violations generate lots of errors):
 {{{
-vi /etc/postgresql/8.3/main/postgresql.conf +296 (or so)
+vi /etc/postgresql/8.X/main/postgresql.conf +300 (or so)
 log_min_messages = log
+}}}
+ # restart postgres
+{{{
+$ sudo /etc/init.d/postgresql restart
 }}}
  # make sure your user can:
 {{{
-$> psql -U postgres
+$> psql -U postgres -d cif
+postgres=#
+postgres=#\l
+                                 List of databases
+   Name    |  Owner   | Encoding | Collation  |   Ctype    |   Access privileges   
+-----------+----------+----------+------------+------------+-----------------------
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 | 
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres
+                                                           : postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres
+                                                           : postgres=CTc/postgres
+(3 rows)
+
 }}}
 = CIF::DBI =
  # install the main server interface:
@@ -60,15 +72,33 @@ $> perl Makefile.PL
 $> make && sudo make install
 $> sh database_rebuild.sh
 }}}
- # make sure your user can:
+ # test the database:
 {{{
-$> psql -U postgres -d cif
+$ psql -U postgres -d cif
+cif=# \d
+                       List of relations
+ Schema |              Name              |   Type   |  Owner   
+--------+--------------------------------+----------+----------
+ public | domain                         | table    | postgres
+ public | domain_botnet                  | table    | postgres
+ public | domain_fastflux                | table    | postgres
+ public | domain_id_seq                  | sequence | postgres
+ public | domain_malware                 | table    | postgres
+ public | domain_nameserver              | table    | postgres
+ public | domain_passivedns              | table    | postgres
+ public | domain_search                  | table    | postgres
+ public | domain_whitelist               | table    | postgres
+...
 }}}
 == Notes ==
  * see the ./scripts directory for helper cron scripts
 = CIF::WebAPI =
 == Instructions ==
  # read the README
+ # enable apreq and TLS for apache
+{{{
+$ sudo a2enmod apreq ssl
+}}}
  # install the main server interface:
 {{{
 $> wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/cif/CIF-WebAPI-0.00_02.tar.gz
