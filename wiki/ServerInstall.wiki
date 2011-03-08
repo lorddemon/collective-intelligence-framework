@@ -177,7 +177,7 @@ $> touch .cif_domain_whitelist
 $> touch .cif_infrastructure_whitelist
 $> crontab -e
 }}}
- * add the following:
+  * add the following:
 {{{
 # m h  dom mon dow   command
 05 *    * * * sh /opt/cif-feeds-public/bin/cron.sh hourly &> /dev/null
@@ -196,6 +196,6 @@ $> crontab -e
 {{{
 
 [feed_sources]
-domains_whitelist = /home/cif/.cif_domains_whitelist
+domains_whitelist = /home/cif/.cif_domain_whitelist
 infrastructure_whitelist = /home/cif/.cif_infrastructure_whitelist
 }}}
