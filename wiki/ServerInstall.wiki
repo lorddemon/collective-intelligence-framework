@@ -133,7 +133,7 @@ $> sudo make install
 $> ls -all /opt/cif-public-feeds/bin
 }}}
 == Configuration Instructions ==
- # configure /etc/cif and configure feed crons
+ # configure /etc/cif and configure feed crons. These will pull the feed data you wish to integrate into your CIF instance.
 {{{
 $> sudo mkdir /etc/cif
 }}}
