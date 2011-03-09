@@ -133,7 +133,11 @@ $> sudo make install
 $> ls -all /opt/cif-public-feeds/bin
 }}}
 == Configuration Instructions ==
- # configure /etc/cif and configure feed crons. These will pull the feed data you wish to integrate into your CIF instance.
+ # configure /etc/cif and configure feed crons. These will pull the feed data you wish to integrate into your CIF instance. Each of these "cron configuration files" are simply lists of perl scripts to be run by the "/opt/cif-feeds-public/bin/cron.sh" script as shown below.
+  * /etc/cron_hourly
+  * /etc/cron_daily
+  * /etc/cron_weekly
+ # create the /etc/cif directory:
 {{{
 $> sudo mkdir /etc/cif
 }}}
