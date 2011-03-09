@@ -158,7 +158,7 @@ $> sudo mkdir /etc/cif
 /opt/cif-feeds-public/bin/local_domain_whitelist.pl
 /opt/cif-feeds-public/bin/local_infrastructure_whitelist.pl
 /opt/cif-feeds-public/bin/malwaredomains.pl
-/opt/cif-feeds-public/bin/phishtank.pl
+/opt/cif-feeds-public/bin/phishtank.pl -c /etc/cif/phishtank
 /opt/cif-feeds-public/bin/zeustracker_binaries.pl
 /opt/cif-feeds-public/bin/zeustracker_configs.pl
 /opt/cif-feeds-public/bin/zeustracker_domains.pl
@@ -203,3 +203,6 @@ $> crontab -e
 domains_whitelist = /home/cif/.cif_domain_whitelist
 infrastructure_whitelist = /home/cif/.cif_infrastructure_whitelist
 }}}
+ # go to http://www.phishtank.com/register.php
+ # register for an apikey
+ # copy the apikey to a blank file: /etc/cif/phishtank
