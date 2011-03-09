@@ -48,7 +48,7 @@ $ sudo /etc/init.d/postgresql restart
 }}}
  # make sure your user can:
 {{{
-$> psql -U postgres -d cif
+$> psql -U postgres
 postgres=#
 postgres=#\l
                                  List of databases
