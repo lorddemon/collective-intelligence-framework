@@ -65,4 +65,43 @@ sub insert {
     return($results[0]);
 }
 
+sub fromIODEF {
+    my $self = shift;
+    my $msg = shift;
+
+    my $iodef = XML::IODEF->new();
+    $iodef->in($msg);
+    my $hash = $iodef->to_hash();
+
+    my ($prefix,$asn,$rir,$cc);
+    if(exists($hash->{'IncidentEventDataFlowSystemAdditionalData'})){
+        my @adm = @{$hash->{'IncidentEventDataFlowSystemAdditionalDatameaning'}};
+        my @ad = @{$hash->{'IncidentEventDataFlowSystemAdditionalData'}};
+        my %m = map { $adm[$_],$ad[$_] } (0 ... $#adm);
+        $prefix = $m{'prefix'};
+        $asn    = $m{'asn'};
+        $rir    = $m{'rir'};
+    }
+
+    my $h = {
+        address     => $hash->{'IncidentEventDataFlowSystemNodeAddress'}[0],
+        description => $hash->{'IncidentDescription'}[0],
+        detecttime  => $hash->{'IncidentDetectTime'}[0],
+        confidence  => $hash->{'IncidentAssessmentConfidence'}[0],
+        impact      => $hash->{'IncidentAssessmentImpact'}[0],
+        protocol    => $hash->{'IncidentEventDataFlowSystemServiceip_protocol'}[0],
+        portlist    => $hash->{'IncidentEventDataFlowSystemServicePortlist'}[0],
+        severity    => $hash->{'IncidentAssessmentImpactseverity'}[0],
+        source      => $hash->{'IncidentIncidentIDname'}[0],
+        restriction => $hash->{'Incidentrestriction'}[0],
+        asn         => $asn,
+        cidr        => $prefix,
+        cc          => $hash->{'IncidentEventDataFlowSystemNodeLocation'}[0],
+        rir         => $rir,
+        alternativeid               => $hash->{'IncidentAlternativeIDIncidentID'}[0],
+        alternativeid_restriction   => $hash->{'IncidentAlternativeIDIncidentIDrestriction'}[0],
+    };
+    return($h);
+}
+    
 1;
