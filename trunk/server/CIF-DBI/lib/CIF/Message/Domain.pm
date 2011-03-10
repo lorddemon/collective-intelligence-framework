@@ -136,38 +136,28 @@ sub toIODEF {
     $iodef->add('IncidentEventDataFlowSystemNodeAddressext-category','domain');
     $iodef->add('IncidentEventDataFlowSystemNodeAddress',$address);
     if($rdata){
-        ## TODO -- autodetect Addresscategory with regex
-        my $cat = 'domain';
-        for($rdata){
-            if(/^$RE{net}{CIDR}{IPv4}$/){
-                $cat = 'ipv4-net';
-                last;
-            }
-            if(/^$RE{net}{IPv4}$/){
-                $cat = 'ipv4-addr';
-                last;
-            }
-        }
-        if($cat eq 'domain'){
-            $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','ext-value');
-            $iodef->add('IncidentEventDataFlowSystemNodeAddressext-category',$cat);
-        } else {
-            $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory',$cat);
-        }
-        $iodef->add('IncidentEventDataFlowSystemNodeAddress',$rdata);
+        $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
+        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','rdata');
+        $iodef->add('IncidentEventDataFlowSystemAdditionalData',$rdata);
     }
     if($cidr){
-        $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','ipv4-net');
-        $iodef->add('IncidentEventDataFlowSystemNodeAddress',$cidr);
+        $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
+        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','prefix');
+        $iodef->add('IncidentEventDataFlowSystemAdditionalData',$cidr);
+
     }
     if($asn){
         $asn .= ' '.$asn_desc if($asn_desc);
-        $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','asn');
-        $iodef->add('IncidentEventDataFlowSystemNodeAddress',$asn);
+        $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
+        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','asn');
+        $iodef->add('IncidentEventDataFlowSystemAdditionalData',$asn);
+    }
+    if($cc){
+        $iodef->add('IncidentEventDataFlowSystemNodeLocation',$cc);
     }
     if($rir){
         $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','RIR');
+        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','rir');
         $iodef->add('IncidentEventDataFlowSystemAdditionalData',$rir);
     }
     return $iodef->out();
