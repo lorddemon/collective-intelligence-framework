@@ -186,12 +186,9 @@ sub toIODEF {
     $iodef->add('IncidentEventDataFlowSystemServiceip_protocol',$protocol) if($protocol);
     if($asn){
         $asn .= ' '.$asn_desc if($asn_desc);
-        $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','asn');
-        $iodef->add('IncidentEventDataFlowSystemNodeAddress',$asn);
-    }
-    if($cidr){
-        $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','ipv4-net');
-        $iodef->add('IncidentEventDataFlowSystemNodeAddress',$cidr);
+        $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
+        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','asn');
+        $iodef->add('IncidentEventDataFlowSystemAdditionalData',$asn);
     }
     if($cidr){
         $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
@@ -203,7 +200,7 @@ sub toIODEF {
     }
     if($rir){
         $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','RIR');
+        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','rir');
         $iodef->add('IncidentEventDataFlowSystemAdditionalData',$rir);
     }
     return $iodef->out();
