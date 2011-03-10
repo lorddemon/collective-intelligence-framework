@@ -4,8 +4,6 @@ use base 'CIF::DBI';
 use strict;
 use warnings;
 
-use Digest::SHA1 qw/sha1_hex/;
-
 __PACKAGE__->table('message_unstructured');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid source message/);
@@ -18,10 +16,6 @@ sub insert {
     my $source = $info->{'source'};
     my $msg = $info->{'message'};
 
-    # we do this since UUID truncates a v5 hash at 128bits..
-    # bad for similarly sized files
-    ## TODO -- change uuids to sha1 hashes
-    my $sha1 = sha1_hex($msg);
     my $uuid = CIF::Message::genMessageUUID($source,$msg);
 
     my $mid = CIF::Message->insert({
