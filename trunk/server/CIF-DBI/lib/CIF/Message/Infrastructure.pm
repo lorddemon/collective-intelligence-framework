@@ -1,5 +1,5 @@
 package CIF::Message::Infrastructure;
-use base 'CIF::DBI';
+use base 'CIF::Archive';
 
 use strict;
 use warnings;
@@ -67,17 +67,10 @@ sub insert {
 
     my $proto = convertProto($info->{'protocol'});
     my $uuid = $info->{'uuid'};
-    my $source = $info->{'source'};
-    
-    $source = CIF::Message::genSourceUUID($source) unless(CIF::Message::isUUID($source));
-    $info->{'source'} = $source;
     $info->{'protocol'} = $proto;
 
     unless($uuid){
-        $uuid = CIF::Message->insert({
-            storage => 'IODEF',
-            %$info,
-        });
+        $uuid = CIF::Message->insert($info);
         $uuid = $uuid->uuid();
     }
 

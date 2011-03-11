@@ -1,5 +1,5 @@
 package CIF::Message::Email;
-use base 'CIF::DBI';
+use base 'CIF::Archive';
 
 use strict;
 use warnings;
@@ -63,44 +63,6 @@ sub insert {
         $id = $self->retrieve(uuid => $uuid);
     }
     return($id);
-}
-
-sub toIODEF {
-    my $self = shift;
-    my $info = {%{+shift}};
-
-    my $impact      = $info->{'impact'};
-
-    my $address     = $info->{'address'} || die('no address given');
-    my $description = lc($info->{'description'});
-    my $confidence  = $info->{'confidence'} || 0;
-    my $severity    = $info->{'severity'} || 'low';
-    my $restriction = $info->{'restriction'} || 'private';
-    my $source      = $info->{'source'};
-    my $sourceid    = $info->{'sourceid'};
-    my $relatedid   = $info->{'relatedid'};
-    my $detecttime  = $info->{'detecttime'};
-    my $alternativeid  = $info->{'alternativeid'};
-    my $alternativeid_restriction = $info->{'alternativeid_restriction'} || 'private';
-
-    my $iodef = XML::IODEF->new();
-    $iodef->add('IncidentIncidentIDname',$source);
-    $iodef->add('IncidentDetectTime',$detecttime) if($detecttime);
-    $iodef->add('IncidentRelatedActivityIncidentID',$relatedid) if($relatedid);
-    if($alternativeid){
-        $iodef->add('IncidentAlternativeIDIncidentID',$alternativeid);
-        $iodef->add('IncidentAlternativeIDIncidentIDrestriction',$alternativeid_restriction);
-    }
-    $iodef->add('Incidentrestriction',$restriction);
-    $iodef->add('IncidentDescription',$description);
-    $iodef->add('IncidentAssessmentImpact',$impact);
-    $iodef->add('IncidentAssessmentConfidencerating','numeric');
-    $iodef->add('IncidentAssessmentConfidence',$confidence);
-    $iodef->add('IncidentAssessmentImpactseverity',$severity);
-    $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','e-mail');
-    $iodef->add('IncidentEventDataFlowSystemNodeAddress',$address);
-
-    return $iodef->out();
 }
 
 sub lookup {
