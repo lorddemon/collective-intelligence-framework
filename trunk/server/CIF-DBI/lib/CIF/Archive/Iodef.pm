@@ -5,9 +5,9 @@ use warnings;
 
 use XML::IODEF;
 use XML::LibXML;
-use Module::Pluggable search_path => ['CIF::Message::IODEF'], require => 1;
-our @plugs = __PACKAGE__->plugins;
-
+#use Module::Pluggable search_path => ['CIF::Archive::Iodef'], require => 1;
+#our @plugs = __PACKAGE__->plugins;
+our @plugs;
 sub can {
     my $class   = shift;
     my $info    = shift;

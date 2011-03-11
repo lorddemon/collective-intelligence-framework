@@ -4,6 +4,10 @@ use strict;
 use warnings;
 use JSON;
 
+sub can {
+    return(1);
+}
+
 sub to {
     my $self = shift;
     my $data = shift;
