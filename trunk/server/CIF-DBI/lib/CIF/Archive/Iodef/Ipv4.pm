@@ -1,4 +1,4 @@
-package CIF::Message::IODEF::IPv4;
+package CIF::Archive::Iodef::Ipv4;
 
 use Regexp::Common qw/net/;
 
