@@ -9,7 +9,7 @@ __PACKAGE__->columns(All => qw/id uuid description source hash_sha1 signature im
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->sequence('feed_id_seq');
 
-use CIF::Message::Unstructured;
+use CIF::Message;
 use Data::Dumper;
 
 sub insert {
@@ -20,9 +20,15 @@ sub insert {
         $info->{'source'} = CIF::Message::genSourceUUID($info->{'source'});
     };
 
-    my $bid = CIF::Message::Unstructured->insert(
-        $info,
-    );
+    my $bid = CIF::Message->insert({
+        source          => $info->{'source'},
+        type            => 'feed',
+        format          => 'json',
+        description     => $info->{'description'},
+        restriction     => $info->{'restriction'},
+        message         => $info->{'message'},
+
+    });
     delete($info->{'format'});
 
     my $id = eval {

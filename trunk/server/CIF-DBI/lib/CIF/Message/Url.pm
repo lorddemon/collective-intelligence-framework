@@ -4,8 +4,6 @@ use base 'CIF::DBI';
 use strict;
 use warnings;
 
-use XML::IODEF;
-use CIF::Message::IODEF;
 use Digest::SHA1 qw(sha1_hex);
 use Digest::MD5 qw(md5_hex);
 use Encode qw/encode_utf8/;
@@ -18,16 +16,12 @@ __PACKAGE__->sequence('url_id_seq');
 
 sub insert {
     my $self = shift;
-    my $info = {%{+shift}};
+    my $info = shift;
     $info->{'address'} = encode_utf8($info->{'address'}) if($info->{'address'});
 
     my $uuid    = $info->{'uuid'};
-    my $source  = $info->{'source'};
     my $address = $info->{'address'};
     
-    $source = CIF::Message::genSourceUUID($source) unless(CIF::Message::isUUID($source));
-    $info->{'source'} = $source;
-
     my $md5     = $info->{'md5'};
     my $sha1    = $info->{'sha1'};
     
@@ -38,23 +32,8 @@ sub insert {
         $info->{'address'} = $md5 || $sha1;
     }
 
-    my $dt = $info->{'detecttime'};
-    unless($dt =~ /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/){
-        if($dt && ref($dt) ne 'DateTime'){
-            if($dt =~ /^\d+$/){
-                $dt = DateTime->from_epoch(epoch => $dt);
-            } else {
-                $dt = DateTime::Format::DateParse->parse_datetime($dt);
-                return(undef,'invaild detecttime') unless($dt);
-            }
-        }
-        $info->{'detecttime'} = $dt->ymd().'T'.$dt->hms().'Z';
-    }
-
     unless($uuid){
-        $uuid = CIF::Message::IODEF->insert({
-            message => $self->toIODEF($info)
-        });
+        $uuid = CIF::Message->insert($info);
         $uuid = $uuid->uuid();
     }
     
@@ -66,7 +45,7 @@ sub insert {
         url_sha1        => $sha1,
         malware_md5     => $info->{'malware_md5'},
         malware_sha1    => $info->{'malware_sha1'},
-        source          => $source,
+        source          => $info->{'source'},
         impact          => $info->{'impact'},
         confidence      => $info->{'confidence'},
         severity        => $info->{'severity'},
@@ -80,49 +59,6 @@ sub insert {
         $id = $self->retrieve(uuid => $uuid);
     }
     return($id);
-}
-
-sub toIODEF {
-    my $self = shift;
-    my $info = {%{+shift}};
-
-    my $impact      = $info->{'impact'};
-
-    my $address     = $info->{'address'};
-    my $description = lc($info->{'description'});
-    my $confidence  = $info->{'confidence'};
-    my $severity    = $info->{'severity'};
-    my $restriction = $info->{'restriction'} || 'private';
-    my $source      = $info->{'source'};
-    my $sourceid    = $info->{'sourceid'};
-    my $relatedid   = $info->{'relatedid'};
-    my $detecttime  = $info->{'detecttime'};
-    my $alternativeid  = $info->{'alternativeid'};
-    my $alternativeid_restriction = $info->{'alternativeid_restriction'} || 'private';
-
-    my $iodef = XML::IODEF->new();
-    $iodef->add('IncidentIncidentIDname',$source);
-    $iodef->add('IncidentDetectTime',$detecttime) if($detecttime);
-    $iodef->add('IncidentRelatedActivityIncidentID',$relatedid) if($relatedid);
-    if($alternativeid){
-        $iodef->add('IncidentAlternativeIDIncidentID',$alternativeid);
-        $iodef->add('IncidentAlternativeIDIncidentIDrestriction',$alternativeid_restriction);
-    }
-    $iodef->add('Incidentrestriction',$restriction);
-    $iodef->add('IncidentDescription',$description);
-    $iodef->add('IncidentAssessmentImpact',$impact);
-    if($confidence){
-        $iodef->add('IncidentAssessmentConfidencerating','numeric');
-        $iodef->add('IncidentAssessmentConfidence',$confidence);
-    }
-    if($severity){
-        $iodef->add('IncidentAssessmentImpactseverity',$severity);
-    }
-    $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','ext-value');
-    $iodef->add('IncidentEventDataFlowSystemNodeAddressext-category','url');
-    $iodef->add('IncidentEventDataFlowSystemNodeAddress',$address) if($address);
-
-    return $iodef->out();
 }
 
 sub lookup {

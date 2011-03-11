@@ -4,12 +4,11 @@ use base 'CIF::DBI';
 use strict;
 use warnings;
 
-use XML::IODEF;
-use CIF::Message::IODEF;
 use Net::CIDR;
 use Net::Abuse::Utils qw(:all);
 use Regexp::Common qw/net/;
 use Regexp::Common::net::CIDR ();
+use CIF::Message;
 
 __PACKAGE__->table('infrastructure');
 __PACKAGE__->columns(Primary => 'id');
@@ -66,19 +65,6 @@ sub insert {
     my ($ret,$err) = $self->check_params($tests,$info);
     return($ret,$err) unless($ret);
 
-    my $dt = $info->{'detecttime'};
-    unless($dt =~ /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/){
-        if($dt && ref($dt) ne 'DateTime'){
-            if($dt =~ /^\d+$/){
-                $dt = DateTime->from_epoch(epoch => $dt);
-            } else {
-                $dt = DateTime::Format::DateParse->parse_datetime($dt);
-                return(undef,'invaild detecttime') unless($dt);
-            }
-        }
-        $info->{'detecttime'} = $dt->ymd().'T'.$dt->hms().'Z';
-    }
-
     my $proto = convertProto($info->{'protocol'});
     my $uuid = $info->{'uuid'};
     my $source = $info->{'source'};
@@ -88,8 +74,9 @@ sub insert {
     $info->{'protocol'} = $proto;
 
     unless($uuid){
-        $uuid = CIF::Message::IODEF->insert({
-            message => $self->toIODEF($info)
+        $uuid = CIF::Message->insert({
+            storage => 'IODEF',
+            %$info,
         });
         $uuid = $uuid->uuid();
     }
@@ -134,76 +121,6 @@ sub convertProto {
     }
     $proto = undef unless($proto =~ /^\d+$/);
     return($proto);
-}
-
-sub toIODEF {
-    my $self = shift;
-    my $info = {%{+shift}};
-
-    my $impact      = $info->{'impact'};
-    my $address     = $info->{'address'};
-    my $description = lc($info->{'description'});
-    my $cidr        = $info->{'cidr'};
-    my $asn         = $info->{'asn'};
-    my $asn_desc    = $info->{'asn_desc'};
-    my $cc          = $info->{'cc'},
-    my $rir         = $info->{'rir'},
-    my $protocol    = $info->{'protocol'};
-    my $portlist    = $info->{'portlist'};
-    my $confidence  = $info->{'confidence'};
-    my $severity    = $info->{'severity'};
-    my $restriction = $info->{'restriction'} || 'private';
-    my $source      = $info->{'source'};
-    my $detecttime  = $info->{'detecttime'};
-    my $relatedid   = $info->{'relatedid'};
-    my $alternativeid  = $info->{'alternativeid'};
-    my $alternativeid_restriction = $info->{'alternativeid_restriction'} || 'private';
-
-    die('source or source uuid required') unless($source);
-
-    my $iodef = XML::IODEF->new();
-    $iodef->add('Incidentrestriction',$restriction);
-    $iodef->add('IncidentDescription',$description);
-    $iodef->add('IncidentIncidentIDname',$source);
-    if($relatedid){
-        $iodef->add('IncidentRelatedActivityIncidentID',$relatedid);
-    }
-    if($alternativeid){
-        $iodef->add('IncidentAlternativeIDIncidentID',$alternativeid);
-        $iodef->add('IncidentAlternativeIDIncidentIDrestriction',$alternativeid_restriction);
-    }
-
-    $iodef->add('IncidentDetectTime',$detecttime) if($detecttime);
-    $iodef->add('IncidentAssessmentImpact',$impact);
-    if($confidence){
-        $iodef->add('IncidentAssessmentConfidencerating','numeric');
-        $iodef->add('IncidentAssessmentConfidence',$confidence);
-    }
-    $iodef->add('IncidentAssessmentImpactseverity',$severity) if($severity);
-    $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','ipv4-addr'); ## TODO -- regext this
-    $iodef->add('IncidentEventDataFlowSystemNodeAddress',$address);
-    $iodef->add('IncidentEventDataFlowSystemServicePortlist',$portlist) if($portlist);
-    $iodef->add('IncidentEventDataFlowSystemServiceip_protocol',$protocol) if($protocol);
-    if($asn){
-        $asn .= ' '.$asn_desc if($asn_desc);
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','asn');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalData',$asn);
-    }
-    if($cidr){
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','prefix');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalData',$cidr);
-    }
-    if($cc){
-        $iodef->add('IncidentEventDataFlowSystemNodeLocation',$cc);
-    }
-    if($rir){
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','rir');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalData',$rir);
-    }
-    return $iodef->out();
 }
 
 sub lookup {
