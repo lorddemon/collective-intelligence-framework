@@ -227,6 +227,11 @@ sub _insert {
     }
     eval "require $bucket";
     die($@) if($@);
+    if($f->{'database'}){
+        local $^W = 0;
+        $bucket->connection($f->{'database'});
+        local $^W = 1;
+    }
     my $id = $bucket->insert({ %{$f} });
     my $rid;
     if($id =~ /^\d+$/){
