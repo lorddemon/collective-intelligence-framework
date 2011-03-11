@@ -1,4 +1,4 @@
-package CIF::Archive::Plugin::Iodef::Ipv4;
+package CIF::Archive::Plugin::Iodef::Email;
 
 use Regexp::Common qw/net/;
 
@@ -7,8 +7,8 @@ sub can {
     my $info    = shift;
 
     my $address = $info->{'address'};
-    return(1) if($address && $address =~ /^$RE{'net'}{'IPv4'}/);
-    return(0);
+    return(0) unless($address);
+    return(1) if($address =~ /\w+@\w+/);
 }
 
 sub toIODEF {
@@ -17,8 +17,10 @@ sub toIODEF {
     my $iodef = shift;
     
     my $address = $info->{'address'};
+    return($iodef) unless($address);
+    return($iodef) unless($address =~ /\w+@\w+/);
 
-    return($iodef) unless($address && $address =~ /^$RE{'net'}{'IPv4'}/);
+    $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','e-mail');
     $iodef->add('IncidentEventDataFlowSystemNodeAddress',$address);
     return $iodef;
 }
