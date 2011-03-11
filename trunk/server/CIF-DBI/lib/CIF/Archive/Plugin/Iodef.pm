@@ -1,11 +1,11 @@
-package CIF::Archive::Iodef;
+package CIF::Archive::Plugin::Iodef;
 
 use strict;
 use warnings;
 
 use XML::IODEF;
 use XML::LibXML;
-use Module::Pluggable search_path => ['CIF::Archive::Iodef'], require => 1;
+use Module::Pluggable search_path => ['CIF::Archive::Plugin::Iodef'], require => 1;
 our @plugs = __PACKAGE__->plugins;
 
 sub can {
