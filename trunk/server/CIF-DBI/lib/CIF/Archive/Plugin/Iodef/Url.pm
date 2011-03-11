@@ -1,4 +1,4 @@
-package CIF::Archive::Iodef::Url;
+package CIF::Archive::Plugin::Iodef::Url;
 
 use strict;
 use warnings;

@@ -1,4 +1,4 @@
-package CIF::Archive::Iodef::Bgp;
+package CIF::Archive::Plugin::Iodef::Bgp;
 
 use strict;
 use warnings;

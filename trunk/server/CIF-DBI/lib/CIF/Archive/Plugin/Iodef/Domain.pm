@@ -1,4 +1,4 @@
-package CIF::Archive::Iodef::Domain;
+package CIF::Archive::Plugin::Iodef::Domain;
 
 sub can {
     my $class   = shift;
