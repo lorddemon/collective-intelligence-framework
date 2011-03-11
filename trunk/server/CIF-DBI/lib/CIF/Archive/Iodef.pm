@@ -1,4 +1,4 @@
-package CIF::Message::IODEF;
+package CIF::Archive::Iodef;
 
 use strict;
 use warnings;
