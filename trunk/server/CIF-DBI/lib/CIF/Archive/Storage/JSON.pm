@@ -1,4 +1,4 @@
-package CIF::Message::JSON;
+package CIF::Archive::Json;
 
 use strict;
 use warnings;
