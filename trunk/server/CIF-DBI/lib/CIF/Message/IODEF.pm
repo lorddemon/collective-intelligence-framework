@@ -1,71 +1,77 @@
 package CIF::Message::IODEF;
-use base CIF::DBI;
 
 use strict;
 use warnings;
 
-__PACKAGE__->table('v_iodef');
-__PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid source confidence severity description restriction message created/);
-__PACKAGE__->columns(All => qw/id uuid confidence severity description restriction created/);
-
 use XML::IODEF;
 use XML::LibXML;
-use CIF::Message::Structured;
+use Module::Pluggable search_path => ['CIF::Message::IODEF'], require => 1;
+our @plugs = __PACKAGE__->plugins;
 
-sub insert {
-    my $self = shift;
-    my $args = { %{+shift} };
-    
-    my $parser = XML::LibXML->new();
-    my $doc = $parser->parse_string($args->{'message'});
-    
-    my @incidents = $doc->findnodes('//Incident');
-    my @results;
-    foreach my $i (@incidents){
-        my $iodef = XML::IODEF->new();
-        $iodef->in('<IODEF-Document>'.$i->toString().'</IODEF-Document>');
+sub can {
+    my $class   = shift;
+    my $info    = shift;
 
-        my $source = $iodef->get('IncidentIncidentIDname');
-
-        my $desc = $i->findvalue('//Incident/Description');
-        my $restriction = $i->getAttribute('restriction') || 'private';
-        my $detecttime = $i->findvalue('//Incident/DetectTime') || undef;
-
-        my @confidence = $i->findnodes('//Incident/Assessment/Confidence');
-        my $conf;
-        if($#confidence >= 0){
-            $conf = $confidence[0]->textContent();
-        }
-
-        my @impacts = $i->findnodes('//Incident/Assessment/Impact');
-        my $severity = 'low';
-        my $type;
-        my $impact;
-        if($#impacts >= 0){
-            $severity = $impacts[0]->getAttribute('severity');
-            $impact   = $impacts[0]->textContent();
-        }
-        
-        my $mid = CIF::Message::Structured->insert({
-            format      => 'IODEF',
-            type        => $impact,
-            source      => $source,
-            severity    => $severity,
-            description => $desc,
-            restriction => $restriction,
-            confidence  => $conf,
-            detecttime  => $detecttime,
-            message     => $iodef->out(),
-            impact      => $impact,
-        });
-        push(@results,$mid);
+    foreach(@plugs){
+        return(1) if($_->can($info));
     }
-    return(@results) if($#results > 0);
-    return($results[0]);
+    return(0);
 }
 
-sub fromIODEF {
+sub to {
+    my $self = shift;
+    my $info = shift;
+
+    my $impact                      = $info->{'impact'};
+    my $address                     = $info->{'address'};
+    my $description                 = lc($info->{'description'});
+    my $confidence                  = $info->{'confidence'};
+    my $severity                    = $info->{'severity'};
+    my $restriction                 = $info->{'restriction'} || 'private';
+    my $source                      = $info->{'source'};
+    my $sourceid                    = $info->{'sourceid'};
+    my $relatedid                   = $info->{'relatedid'};
+    my $detecttime                  = $info->{'detecttime'};
+    my $alternativeid               = $info->{'alternativeid'};
+    my $alternativeid_restriction   = $info->{'alternativeid_restriction'} || 'private';
+    my $cidr                        = $info->{'cidr'};
+    my $asn                         = $info->{'asn'};
+    my $asn_desc                    = $info->{'asn_desc'};
+    my $cc                          = $info->{'cc'},
+    my $rir                         = $info->{'rir'},
+    my $protocol                    = $info->{'protocol'};
+    my $portlist                    = $info->{'portlist'};
+
+    # set this bit for info
+    $info->{'format'}   = 'IODEF';
+
+    my $iodef = XML::IODEF->new();
+    $iodef->add('IncidentIncidentIDname',$source) if($source);
+    $iodef->add('IncidentDetectTime',$detecttime) if($detecttime);
+    $iodef->add('IncidentRelatedActivityIncidentID',$relatedid) if($relatedid);
+    if($alternativeid){
+        $iodef->add('IncidentAlternativeIDIncidentID',$alternativeid);
+        $iodef->add('IncidentAlternativeIDIncidentIDrestriction',$alternativeid_restriction);
+    }
+    $iodef->add('Incidentrestriction',$restriction);
+    $iodef->add('IncidentDescription',$description) if($description);
+    $iodef->add('IncidentAssessmentImpact',$impact) if($impact);
+    if($confidence){
+        $iodef->add('IncidentAssessmentConfidencerating','numeric');
+        $iodef->add('IncidentAssessmentConfidence',$confidence);
+    }
+    if($severity){
+        $iodef->add('IncidentAssessmentImpactseverity',$severity);
+    }
+    $iodef->add('IncidentEventDataFlowSystemServicePortlist',$portlist) if($portlist);
+    $iodef->add('IncidentEventDataFlowSystemServiceip_protocol',$protocol) if($protocol);
+    foreach(@plugs){
+        $_->toIODEF($info,$iodef);
+    }
+    return $iodef->out();
+}
+
+sub from {
     my $self = shift;
     my $msg = shift;
 

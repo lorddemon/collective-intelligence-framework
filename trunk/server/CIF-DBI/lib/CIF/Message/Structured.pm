@@ -6,8 +6,8 @@ use warnings;
 
 __PACKAGE__->table('message_structured');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid source message/);
-__PACKAGE__->columns(Essential => qw/id uuid source message/);
+__PACKAGE__->columns(All => qw/id uuid format description message detecttime created source restriction/);
+__PACKAGE__->columns(Essential => qw/id uuid format description message/);
 __PACKAGE__->sequence('message_structured_id_seq');
 
 use CIF::Message;
@@ -24,22 +24,19 @@ sub insert {
 
     my $mid = CIF::Message->insert({
         uuid        => $uuid,
-        source      => $source,
         type        => 'structured',
         format      => $info->{'format'},
-        confidence  => $info->{'confidence'},
-        severity    => $info->{'severity'},
         description => $info->{'description'},
-        impact      => $info->{'impact'},
         restriction => $info->{'restriction'},
-        detecttime  => $info->{'detecttime'},
+        created     => $info->{'created'},
+        message     => $info->{'message'},
+        source      => $info->{'source'},
     }); 
-    
+
     my $id = eval {
         $self->SUPER::insert({
-            uuid    => $mid->uuid(),
-            source  => $source,
-            message => $msg,
+            uuid    => $uuid,
+            %$info,
         })
     };
     if($@){
@@ -48,3 +45,4 @@ sub insert {
     }
     return($id);
 }
+

@@ -4,13 +4,13 @@ use base 'CIF::DBI';
 use strict;
 use warnings;
 
-use CIF::Message::IODEF;
 use Regexp::Common qw/net/;
 use Regexp::Common::net::CIDR;
 use DateTime::Format::DateParse;
 use Data::Dumper;
 use DateTime;
 use IO::Select;
+use CIF::Message;
 
 __PACKAGE__->table('domain');
 __PACKAGE__->columns(Primary => 'id');
@@ -32,27 +32,11 @@ sub insert {
     return($ret,$err) unless($ret);
 
     my $uuid    = $info->{'uuid'};
-    my $source  = $info->{'source'};
-    
-    $source = CIF::Message::genSourceUUID($source) unless(CIF::Message::isUUID($source));
-    $info->{'source'} = $source;
-
-    my $dt = $info->{'detecttime'};
-    unless($dt =~ /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/){
-        if($dt && ref($dt) ne 'DateTime'){
-            if($dt =~ /^\d+$/){
-                $dt = DateTime->from_epoch(epoch => $dt);
-            } else {
-                $dt = DateTime::Format::DateParse->parse_datetime($dt);
-                return(undef,'invaild detecttime') unless($dt);
-            }
-        }
-        $info->{'detecttime'} = $dt->ymd().'T'.$dt->hms().'Z';
-    }
 
     unless($uuid){
-        $uuid = CIF::Message::IODEF->insert({
-            message => $self->toIODEF($info)
+        $uuid = CIF::Message->insert({
+            storage => 'IODEF',
+            %$info
         });
         $uuid = $uuid->uuid();
     }
@@ -74,7 +58,7 @@ sub insert {
         rir         => $info->{'rir'},
         class       => $info->{'class'},
         ttl         => $info->{'ttl'},
-        source      => $source,
+        source      => $info->{'source'},
         impact      => $info->{'impact'} || 'malicious domain',
         confidence  => $info->{'confidence'},
         severity    => $info->{'severity'},
