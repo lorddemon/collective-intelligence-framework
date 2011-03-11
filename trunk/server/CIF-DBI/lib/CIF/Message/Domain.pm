@@ -1,5 +1,5 @@
 package CIF::Message::Domain;
-use base 'CIF::DBI';
+use base 'CIF::Archive';
 
 use strict;
 use warnings;
@@ -72,79 +72,6 @@ sub insert {
         $id = $self->retrieve(uuid => $uuid);
     }
     return($id);    
-}
-
-sub toIODEF {
-
-    my $self = shift;
-    my $info = {%{+shift}};
-
-    my $impact      = $info->{'impact'};
-    my $address     = $info->{'address'} || return(undef,'no address given');
-    my $description = lc($info->{'description'});
-    my $confidence  = $info->{'confidence'};
-    my $severity    = $info->{'severity'};
-    my $restriction = $info->{'restriction'} || 'private';
-    my $source      = $info->{'source'};
-    my $detecttime    = $info->{'detecttime'};
-    my $relatedid   = $info->{'relatedid'};
-    my $rdata       = $info->{'rdata'};
-    my $asn         = $info->{'asn'};
-    my $asn_desc    = $info->{'asn_desc'};
-    my $cidr        = $info->{'cidr'};
-    my $cc          = $info->{'cc'};
-    my $rir         = $info->{'rir'};
-    my $alternativeid  = $info->{'alternativeid'};
-    my $alternativeid_restriction = $info->{'alternativeid_restriction'} || 'private';
-
-    my $iodef = XML::IODEF->new();
-    $iodef->add('Incidentrestriction',$restriction);
-    $iodef->add('IncidentDescription',$description);
-    $iodef->add('IncidentDetectTime',$detecttime) if($detecttime);
-    $iodef->add('IncidentIncidentIDname',$source);
-    if($relatedid){
-        $iodef->add('IncidentRelatedActivityIncidentID',$relatedid);
-    }
-    if($alternativeid){
-        $iodef->add('IncidentAlternativeIDIncidentID',$alternativeid);
-        $iodef->add('IncidentAlternativeIDIncidentIDrestriction',$alternativeid_restriction);
-    }
-    $iodef->add('IncidentAssessmentImpact',$impact);
-    if($confidence){
-        $iodef->add('IncidentAssessmentConfidencerating','numeric');
-        $iodef->add('IncidentAssessmentConfidence',$confidence);
-    }
-    $iodef->add('IncidentAssessmentImpactseverity',$severity) if($severity);
-    $iodef->add('IncidentEventDataFlowSystemNodeLocation',$cc) if($cc);
-    $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','ext-value');
-    $iodef->add('IncidentEventDataFlowSystemNodeAddressext-category','domain');
-    $iodef->add('IncidentEventDataFlowSystemNodeAddress',$address);
-    if($rdata){
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','rdata');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalData',$rdata);
-    }
-    if($cidr){
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','prefix');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalData',$cidr);
-
-    }
-    if($asn){
-        $asn .= ' '.$asn_desc if($asn_desc);
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','asn');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalData',$asn);
-    }
-    if($cc){
-        $iodef->add('IncidentEventDataFlowSystemNodeLocation',$cc);
-    }
-    if($rir){
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','rir');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalData',$rir);
-    }
-    return $iodef->out();
 }
 
 # send in a Net::DNS $res and the domain

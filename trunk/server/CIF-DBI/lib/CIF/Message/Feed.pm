@@ -1,5 +1,5 @@
 package CIF::Message::Feed;
-use base 'CIF::DBI';
+use base 'CIF::Archive';
 
 use strict;
 use warnings;
@@ -14,11 +14,7 @@ use Data::Dumper;
 
 sub insert {
     my $self = shift;
-    my $info = {%{+shift}};
-
-    unless(CIF::Message::isUUID($info->{'source'})){
-        $info->{'source'} = CIF::Message::genSourceUUID($info->{'source'});
-    };
+    my $info = shift;
 
     my $bid = CIF::Message->insert({
         source          => $info->{'source'},
@@ -29,7 +25,6 @@ sub insert {
         message         => $info->{'message'},
 
     });
-    delete($info->{'format'});
 
     my $id = eval {
         $self->SUPER::insert({
