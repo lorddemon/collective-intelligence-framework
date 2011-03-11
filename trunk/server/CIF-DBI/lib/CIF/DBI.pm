@@ -3,8 +3,11 @@ use base Class::DBI;
 
 use strict;
 use warnings;
+
 use Data::Dumper;
 use Config::Simple;
+use Module::Pluggable search_path => ['CIF::Archive'], require => 1;
+our @plugs = __PACKAGE__->plugins;
 
 our $VERSION = '0.01_01';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
