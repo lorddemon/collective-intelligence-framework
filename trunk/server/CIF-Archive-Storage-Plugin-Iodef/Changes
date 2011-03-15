@@ -1,0 +1,6 @@
+Revision history for Perl extension CIF::Archive::Storage::Plugin::Iodef.
+
+0.00_01  Mon Mar 14 19:53:21 2011
+	- original version; created by h2xs 1.23 with options
+		-ABXb 5.8.8 CIF::Archive::Storage::Plugin::Iodef
+
