@@ -1,14 +1,26 @@
 package CIF::Archive::Storage::Plugin::Iodef;
 use base 'CIF::Archive::Storage';
 
+use Module::Pluggable search_path => ['CIF::Archive::Storage::Plugin::Iodef'], require => 1;
+
 use strict;
 use warnings;
 
 use XML::IODEF;
 use XML::LibXML;
 
-sub to {
-    my $self = shift;
+sub prepare {
+    my $class = shift;
+    my $info = shift;
+
+    foreach($class->plugins()){
+        return(1) if($_->prepare($info));
+    }
+    return(0);
+}
+
+sub convert {
+    my $class = shift;
     my $info = shift;
 
     my $impact                      = $info->{'impact'};
@@ -31,7 +43,6 @@ sub to {
     my $protocol                    = $info->{'protocol'};
     my $portlist                    = $info->{'portlist'};
 
-    # set this bit for info
     $info->{'format'}   = 'iodef';
 
     my $iodef = XML::IODEF->new();
@@ -54,7 +65,13 @@ sub to {
     }
     $iodef->add('IncidentEventDataFlowSystemServicePortlist',$portlist) if($portlist);
     $iodef->add('IncidentEventDataFlowSystemServiceip_protocol',$protocol) if($protocol);
-    return($iodef);
+
+    foreach($class->plugins()){
+        if($_->prepare($info)){
+            $iodef = $_->convert($info,$iodef);
+        }
+    }
+    return($iodef->out());
 }
 
 sub from {
