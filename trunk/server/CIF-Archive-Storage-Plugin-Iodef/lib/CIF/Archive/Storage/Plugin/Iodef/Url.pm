@@ -1,10 +1,7 @@
 package CIF::Archive::Storage::Plugin::Iodef::Url;
-use base 'CIF::Archive::Storage::Plugin::Iodef';
 
 use strict;
 use warnings;
-
-require XML::IODEF;
 
 sub prepare {
     my $class   = shift;
@@ -16,17 +13,17 @@ sub prepare {
     return(1) if($address =~ /[a-zA-Z0-9.-]+\.[a-z]{2,5}/);
 }
 
-sub to {
+sub convert {
     my $class = shift;
     my $info = shift;
-    my $address = lc($info->{'address'});
+    my $iodef = shift;
 
-    my $iodef = $class->SUPER::to($info);
+    my $address = lc($info->{'address'});
 
     $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','ext-value');
     $iodef->add('IncidentEventDataFlowSystemNodeAddressext-category','url');
     $iodef->add('IncidentEventDataFlowSystemNodeAddress',$address);
-    return $iodef->out();
+    return($iodef);
 }
 
 1;

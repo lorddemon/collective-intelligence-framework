@@ -1,5 +1,4 @@
 package CIF::Archive::Storage::Plugin::Iodef::Bgp;
-use base 'CIF::Archive::Storage::Plugin::Iodef';
 
 use strict;
 use warnings;
@@ -7,10 +6,15 @@ use warnings;
 sub prepare {
     my $class   = shift;
     my $info    = shift;
+
+    return(1) if($info->{'cidr'});
+    return(1) if($info->{'asn'});
+    return(1) if($info->{'cc'});
+    return(1) if($info->{'rir'});
     return(0);
 }
 
-sub toIODEF {
+sub convert {
     my $self = shift;
     my $info = shift;
     my $iodef = shift;

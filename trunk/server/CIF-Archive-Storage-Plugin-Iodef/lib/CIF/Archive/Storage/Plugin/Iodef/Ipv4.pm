@@ -1,5 +1,4 @@
 package CIF::Archive::Storage::Plugin::Iodef::Ipv4;
-use base 'CIF::Archive::Storage::Plugin::Iodef';
 
 use Regexp::Common qw/net/;
 use XML::IODEF;
@@ -13,14 +12,13 @@ sub prepare {
     return(0);
 }
 
-sub to {
+sub convert {
     my $class = shift;
     my $info = shift;
-    
-    my $iodef = $class->SUPER::to($info);
+    my $iodef = shift;
     
     $iodef->add('IncidentEventDataFlowSystemNodeAddress',$info->{'address'});
-    return $iodef->out();
+    return($iodef);
 }
 
 1;

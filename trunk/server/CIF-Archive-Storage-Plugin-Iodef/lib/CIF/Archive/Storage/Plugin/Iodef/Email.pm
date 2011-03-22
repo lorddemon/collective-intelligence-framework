@@ -1,5 +1,4 @@
 package CIF::Archive::Storage::Plugin::Iodef::Email;
-use base 'CIF::Archive::Storage::Plugin::Iodef';
 
 use Regexp::Common qw/net/;
 
@@ -12,7 +11,7 @@ sub prepare {
     return(1) if($address =~ /\w+@\w+/);
 }
 
-sub toIODEF {
+sub convert {
     my $self = shift;
     my $info = shift;
     my $iodef = shift;

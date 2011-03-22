@@ -1,5 +1,4 @@
 package CIF::Archive::Storage::Plugin::Iodef::Domain;
-use base 'CIF::Archive::Storage::Plugin::Iodef';
 
 sub prepare {
     my $class   = shift;
@@ -11,12 +10,12 @@ sub prepare {
 }
 
 
-sub to {
+sub convert {
     my $self = shift;
     my $info = shift;
+    my $iodef = shift;
 
     my $address = lc($info->{'address'});
-    my $iodef = $self->SUPER::to($info);
     
 
     $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','ext-value');
@@ -29,7 +28,7 @@ sub to {
         $iodef->add('IncidentEventDataFlowSystemAdditionalData',$rdata);
 
     }
-    return $iodef->out();
+    return($iodef);
 }
 
 1;
