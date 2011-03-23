@@ -17,6 +17,7 @@ use File::Type;
 use threads;
 use threads::shared;
 use Linux::Cpuinfo;
+use Module::Pluggable require => 1;
 
 # Preloaded methods go here.
 
@@ -118,16 +119,12 @@ sub _decode {
 
     my $ft = File::Type->new();
     my $t = $ft->mime_type($data);
-    for($t){
-        if(/gzip/){
-            require CIF::FeedParser::DecodeGzip;
-            return CIF::FeedParser::DecodeGzip::decode($data);
+    my @plugs = __PACKAGE__->plugins();
+    @plugs = grep(/Decode/,@plugs);
+    foreach(@plugs){
+        if(my $ret = $_->decode($data,$t)){
+            return($ret);
         }
-        if(/zip/){
-            require CIF::FeedParser::DecodeZip;
-            return CIF::FeedParser::DecodeZip::decode($data);
-        }
-        return $data;
     }
 }
 
@@ -196,37 +193,8 @@ sub _insert {
     }
     $f->{'description'} = lc($f->{'description'});
 
-    my $bucket = $b;
-    if(!$bucket){
-        for($a){
-            $bucket = 'CIF::Message::';
-            if(/^([A-Za-z0-9.-]+\.[a-zA-Z]{2,6})$/ && ($f->{'impact'} !~ / url/)){
-                $bucket .= 'DomainSimple';
-                last;
-            }
-            if(/^$RE{'net'}{'IPv4'}$/ || /^$RE{'net'}{'CIDR'}{'IPv4'}$/){
-                $bucket .= 'InfrastructureSimple';
-                last;
-            }
-            if(/^[a-fA-F0-9]{32,40}$/){
-                $bucket .= 'Malware';
-                last;
-            }
-            if(/[\w]+@[\w]+/){
-                $bucket .= 'Email';
-                last;
-            } else {
-                $bucket .= 'UrlSimple';
-                # catch urls that have no leading http, makes other regex easier
-                if($a =~ /^[A-Za-z0-9.-]+\.[a-zA-Z]{2,6}/){
-                    $a = 'http://'.$a;
-                    $f->{'address'} = 'http://'.$f->{'address'};
-                }
-            }
-        }
-    }
-    eval "require $bucket";
-    die($@) if($@);
+    require CIF::Archive;
+    my $bucket = CIF::Archive->new();
     if($f->{'database'}){
         local $^W = 0;
         $bucket->connection($f->{'database'});
@@ -235,7 +203,7 @@ sub _insert {
     my $id = $bucket->insert({ %{$f} });
     my $rid;
     if($id =~ /^\d+$/){
-        $rid = $id->impact().' -- '.$id->description().' -- '.$id->detecttime().' -- '.$id->uuid();
+        $rid = $id->description().' -- '.$id->uuid();
     } else {
         $rid = $id;
     }
