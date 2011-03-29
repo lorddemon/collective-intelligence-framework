@@ -1,0 +1,6 @@
+Revision history for Perl extension CIF::Archive::Storage::Plugin::Atom.
+
+0.00_01  Tue Mar 29 17:31:32 2011
+	- original version; created by h2xs 1.23 with options
+		-ABXb 5.8.8 CIF::Archive::Storage::Plugin::Atom
+
