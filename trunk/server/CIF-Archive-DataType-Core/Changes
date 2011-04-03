@@ -1,0 +1,6 @@
+Revision history for Perl extension CIF::Archive::DataType::Plugin::Infrastructure.
+
+0.00_01  Mon Mar 14 18:25:10 2011
+	- original version; created by h2xs 1.23 with options
+		-ABXb 5.8.8 CIF::Archive::DataType::Plugin::Infrastructure
+
