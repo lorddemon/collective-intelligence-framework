@@ -86,7 +86,7 @@ need-to-know|medium  |815c3dd120ca6b6303c5f657d1971b33|                         
 need-to-know|medium  |c98aa1796a242491d9a85e0c9bd62ff7|                                        |2010-12-24 00:00:00+00|malware spyeye binary md5:c98aa1796a242491d9a85e0c9bd62ff7                                          |public                   |https://spyeyetracker.abuse.ch/monitor.php?hash=c98aa1796a242491d9a85e0c9bd62ff7                       
 need-to-know|medium  |fad8d43455309cd60fb04b18845a8119|                                        |2010-12-24 00:00:00+00|malware spyeye config md5:fad8d43455309cd60fb04b18845a8119                                          |public                   |https://spyeyetracker.abuse.ch/monitor.php?hash=fad8d43455309cd60fb04b18845a8119                       
 }}}
-= URL =
+= Malware URLs =
 == Table Form ==
 {{{
 
