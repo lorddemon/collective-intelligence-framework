@@ -159,3 +159,27 @@ need-to-know |   |        |    |       |0c27b16b999a6656bb39a297cccb38af|840a89f
 need-to-know |   |        |    |       |18a5bc3997771d2bcd9935b8bea1fefc|312876bce93f8f424ffafe876c2eda8e512b69f9|malware binary :Spyware.Relevantknowledge.A                                                                                          |medium  |2011-03-08 00:00:00+00|2011-03-08 00:22:10.386712+00|LIMITED                  |http://www.malware.com.br/cgi/search.pl?id=OlNweXdhcmUuUmVsZXZhbnRrbm93bGVkZ2UuQQ==                            
 need-to-know |   |        |    |       |3ed38d1e353087a9b0fea7aadb88655c|eb47983cd2a50bacafcd8dcb54677a2496c99121|malware binary Trojan-Downloader.Win32.Agent.dbff                                                                                    |medium  |2011-03-08 00:00:00+00|2011-03-08 00:25:07.978252+00|LIMITED                  |http://www.malware.com.br/cgi/search.pl?id=VHJvamFuLURvd25sb2FkZXIuV2luMzIuQWdlbnQuZGJmZg==  
 }}}
+
+= Phishing =
+== Infrastructure ==
+=== Table Form ===
+{{{
+$ cif -q infrastructure/phishing -s low
+
+restriction|severity|address        |protocol|portlist|detecttime            |impact                 |description                                                                     |alternativeid_restriction|alternativeid                                             
+need-to-know    |low     |190.123.46.115 |        |        |2011-01-13 17:25:12+00|phishing infrastructure|phishing infrastructure target:Other 190.123.46.115                             |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101217
+need-to-know    |low     |83.64.29.203   |        |        |2011-01-13 17:30:56+00|phishing infrastructure|phishing infrastructure target:PayPal 83.64.29.203                              |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101221
+need-to-know    |low     |67.221.186.208 |        |        |2011-01-13 17:51:05+00|phishing infrastructure|phishing infrastructure target:Amazon.com 67.221.186.208                        |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101223
+need-to-know    |low     |64.62.181.46   |        |        |2011-01-13 18:01:33+00|phishing infrastructure|phishing infrastructure target:Facebook 64.62.181.46                            |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101243
+need-to-know    |low     |216.52.115.2   |        |        |2011-01-13 18:02:46+00|phishing infrastructure|phishing infrastructure target:Facebook 216.52.115.2                            |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101246
+}}}
+
+=== Snort Rules ===
+{{{
+$ cif -q infrastructure/phishing -s low -p snort
+
+alert ip any any -> 190.123.46.115 any ( msg:"need-to-know - phishing infrastructure target:Other 190.123.46.115"; threshold:type limit,track by_src,count 1,seconds 3600; sid; reference:http://www.phishtank.com/phish_detail.php?phish_id=1101217; )
+alert ip any any -> 83.64.29.203 any ( msg:"need-to-know - phishing infrastructure target:PayPal 83.64.29.203"; threshold:type limit,track by_src,count 1,seconds 3600; sid:1; reference:http://www.phishtank.com/phish_detail.php?phish_id=1101221; )
+alert ip any any -> 67.221.186.208 any ( msg:"need-to-know - phishing infrastructure target:Amazon.com 67.221.186.208"; threshold:type limit,track by_src,count 1,seconds 3600; sid:2; reference:http://www.phishtank.com/phish_detail.php?phish_id=1101223; )
+alert ip any any -> 64.62.181.46 any ( msg:"need-to-know - phishing infrastructure target:Facebook 64.62.181.46"; threshold:type limit,track by_src,count 1,seconds 3600; sid:3; reference:http://www.phishtank.com/phish_detail.php?phish_id=1101243; )
+}}}
