@@ -1,6 +1,8 @@
 #labels Featured,Phase-Implementation,Phase-Deploy,Client
 Example Client Commands and outputs
 
+<wiki:toc max_depth="2" />
+
 = Suspicious Networks =
 == Table Form ==
  # CIDR query
@@ -146,4 +148,14 @@ alert ip any any -> 61.191.55.37 any ( msg:"need-to-know - malicious infrastruct
 alert ip any any -> 65.254.60.240 any ( msg:"need-to-know - malicious infrastructure malvertising blerin.com 65.254.60.240"; threshold:type limit,track by_src,count 1,seconds 3600; sid:7; reference:http://www.malwaredomains.com/files/domains.txt; )
 alert ip any any -> 68.67.68.10 any ( msg:"need-to-know - malicious infrastructure harmful bluelinefreight.in 68.67.68.10"; threshold:type limit,track by_src,count 1,seconds 3600; sid:8; reference:http://www.malwaredomains.com/files/domains.txt; )
 alert ip any any -> 210.114.175.151 any ( msg:"need-to-know - malicious infrastructure harmful bumin.org 210.114.175.151"; threshold:type limit,track by_src,count 1,seconds 3600; sid:9; reference:http://www.malwaredomains.com/files/domain.txt; )
+}}}
+
+= Malware =
+{{{
+$ cif -q malware -s medium
+
+restriction|asn|asn_desc|cidr|address|hash_md5                        |hash_sha1                               |description                                                                                                                          |severity|detecttime            |created                      |alternativeid_restriction|alternativeid                                                                                                  
+need-to-know |   |        |    |       |0c27b16b999a6656bb39a297cccb38af|840a89fc018ae07ae771da2b0204375644b3fe48|malware binary Virus.Win32.Virut.a                                                                                                   |medium  |2011-03-08 00:00:00+00|2011-03-08 00:28:54.045894+00|LIMITED                  |http://www.malware.com.br/cgi/search.pl?id=VmlydXMuV2luMzIuVmlydXQuYQ==                                        
+need-to-know |   |        |    |       |18a5bc3997771d2bcd9935b8bea1fefc|312876bce93f8f424ffafe876c2eda8e512b69f9|malware binary :Spyware.Relevantknowledge.A                                                                                          |medium  |2011-03-08 00:00:00+00|2011-03-08 00:22:10.386712+00|LIMITED                  |http://www.malware.com.br/cgi/search.pl?id=OlNweXdhcmUuUmVsZXZhbnRrbm93bGVkZ2UuQQ==                            
+need-to-know |   |        |    |       |3ed38d1e353087a9b0fea7aadb88655c|eb47983cd2a50bacafcd8dcb54677a2496c99121|malware binary Trojan-Downloader.Win32.Agent.dbff                                                                                    |medium  |2011-03-08 00:00:00+00|2011-03-08 00:25:07.978252+00|LIMITED                  |http://www.malware.com.br/cgi/search.pl?id=VHJvamFuLURvd25sb2FkZXIuV2luMzIuQWdlbnQuZGJmZg==  
 }}}
