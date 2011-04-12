@@ -24,6 +24,8 @@ sub prepare {
     return(1);
 }
 
+# # http://www.frankl.info/wordpress/uncategorized/howto-create-vcards-with-perl
+
 sub convert {
     my $class = shift;
     my $info = shift;
