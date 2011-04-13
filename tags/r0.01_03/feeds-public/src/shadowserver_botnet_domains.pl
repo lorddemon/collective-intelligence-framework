@@ -1,7 +1,5 @@
 #!/usr/bin/perl -w
 
-# THIS CODE FALLS UNDER THE RESTRICTED SHARING RULES
-
 use strict;
 
 use LWP::Simple;
