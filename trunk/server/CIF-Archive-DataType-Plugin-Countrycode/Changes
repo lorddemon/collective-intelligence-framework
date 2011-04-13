@@ -1,0 +1,6 @@
+Revision history for Perl extension CIF::Archive::DataType::Plugin::Countrycode.
+
+0.00_01  Wed Apr 13 20:33:04 2011
+	- original version; created by h2xs 1.23 with options
+		-ABXb 5.8.8 CIF::Archive::DataType::Plugin::Countrycode
+
