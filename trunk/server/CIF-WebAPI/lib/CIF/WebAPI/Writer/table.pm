@@ -44,9 +44,10 @@ sub asBytes{
     my ($self,  $resp ) = @_ ;
     
     return $resp->{'message'} if($resp->{'message'});
-    return 'no records, check back later' unless($resp->{'data'}->{'result'});
-    my $hash = $resp->{'data'}->{'result'};
+    return 'no records, check back later' unless($resp->{'data'});
+    my $hash = $resp->{'data'};
     if($hash->{'hash_sha1'}){
+        warn from_json($hash->{'feed'});
         $hash->{'feed'} = from_json(uncompress(decode_base64($hash->{'feed'})));
     }
     my @array = @{$hash->{'feed'}->{'items'}};
