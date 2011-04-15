@@ -1,8 +1,13 @@
-package CIF::WebAPI::cc;
-use base 'CIF::WebAPI';
+package CIF::WebAPI::Plugin;
+use base 'CIF::WebAPI::Plugin';
 
-use strict;
-use warnings;
+sub prepare {
+    my $self = shift;
+    my $frag = shift;
+
+    return unless(lc($frag) =~ /^[a-z]{2,3}$/);
+    return(1);
+}
 
 sub buildNext {
     my ($self,$frag,$req) = @_;
