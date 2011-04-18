@@ -8,8 +8,7 @@
   <toolbox id="navigator-toolbox">
     <toolbar class="chromeclass-toolbar" toolbarname="&cifsearchToolbar.name;" customizable="true" id="cifsearch-toolbar">
       <vbox>
-      <label control="query" value="Search CIF:"/>
-      <textbox type='search' id='query' searchbutton="true" oncommand="CIFBarSearch(event)" />
+      <textbox type='search' id='query' searchbutton="true" oncommand="CIFBarSearch(event)" placeholder='search cif'/>
       </vbox>
     </toolbar>
   </toolbox>
