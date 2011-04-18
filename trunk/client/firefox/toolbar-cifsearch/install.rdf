@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
-    <em:id>cif-0.01_01@barely3am.com</em:id>
+    <em:id>cif-0.01_02@barely3am.com</em:id>
     <em:type>2</em:type>
     <em:name>CIF-Search</em:name>
-    <em:version>0.01_01</em:version>
+    <em:version>0.01_02</em:version>
     <em:creator>Wes Young</em:creator>
     <em:contributor></em:contributor>
     <em:description>search a CIF interface</em:description>
