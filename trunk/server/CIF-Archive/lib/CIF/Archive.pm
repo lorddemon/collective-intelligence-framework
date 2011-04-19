@@ -1,6 +1,7 @@
 package CIF::Archive;
 use base 'CIF::DBI';
 
+require 5.008;
 use strict;
 use warnings;
 
@@ -9,6 +10,7 @@ $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 use Data::Dumper;
 use Config::Simple;
+use DateTime::Format::DateParse;
 use OSSP::uuid;
 
 __PACKAGE__->table('archive');
@@ -144,7 +146,6 @@ sub lookup {
     my $class = shift;
     my $info = shift;
     $info->{'limit'} = 10000 unless($info->{'limit'});
-    warn Dumper($info);
 
     foreach($class->plugins('datatype')){
         if(my $ret = $_->lookup($info)){
@@ -225,9 +226,62 @@ CIF::Archive - Perl extension for interfacing with the CIF Archive.
 =head1 SYNOPSIS
 
   use CIF::Archive
-  blah blah blah
+
+  my $a = CIF::Archive->new();
+  my $id = $a->insert({
+    address     => '1.1.1.1',
+    portlist    => '22',
+    impact      => 'scanner',
+    severity    => 'medium',
+    description => 'ssh scanner',
+  });
+
+  my @recs = CIF::Archive->search(descripion => 'ssh scanner');
+
+  # ->lookup() is an API into the plugins, searches the index tables automatically
+  # the plugin stack figures out which plugin understands '1.1.1.1' (eg: CIF::Archive::DataType::Plugin::Infrastructure::prepare)
+
+  my $qid = $a->lookup({
+    query   => '1.1.1.1',
+  });
+
+  my $qid = $a->lookup({
+    query   => 'scanner',
+  });
+
+  my $id = $a->insert({
+    address     => 'example.com',
+    impact      => 'malware domain',
+    description => 'mebroot',
+  });
+
+  CIF::Archive->connection('DBI:Pg:database=cif2;host=localhost','postgres','',{ AutoCommit => 1} );
 
 =head1 DESCRIPTION
+
+This module was created to be a generic storage "archive" for the Collective Intelligence Framework. It's simple and is to be exteded both by CIF::Archive::DataType and CIF::Archive::Storage for both custom indicies and storage formats. It's accompanied by CIF::WebAPI as an extensible framework for creating REST based (Apache2::REST) services around these extensions.
+
+=head1 SEE ALSO
+
+ http://code.google.com/p/collective-intelligence-framework/
+ CIF::WebAPI
+ CIF::Archive::DataType::Plugin::Feed
+ CIF::Archive::Storage::Plugin::Iodef
+ CIF::FeedParser
+
+=head1 AUTHOR
+
+Wes Young, E<lt>wes@barely3am.comE<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+ Copyright (C) 2011 by Wes Young (claimid.com/wesyoung)
+ Copyright (C) 2011 by the Trustee's of Indiana University (www.iu.edu)
+ Copyright (C) 2011 by the REN-ISAC (www.ren-isac.net)
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.10.0 or,
+at your option, any later version of Perl 5 you may have available.
 
 =cut
 
