@@ -1,8 +1,5 @@
 package CIF::Archive::Storage::Plugin::Iodef::Url;
 
-use strict;
-use warnings;
-
 sub prepare {
     my $class   = shift;
     my $info    = shift;

@@ -1,8 +1,5 @@
 package CIF::Archive::Storage::Plugin::Iodef::Bgp;
 
-use strict;
-use warnings;
-
 sub prepare {
     my $class   = shift;
     my $info    = shift;

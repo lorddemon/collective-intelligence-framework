@@ -1,7 +1,6 @@
 package CIF::Archive::Storage::Plugin::Iodef::Ipv4;
 
 use Regexp::Common qw/net/;
-use XML::IODEF;
 
 sub prepare {
     my $class   = shift;
