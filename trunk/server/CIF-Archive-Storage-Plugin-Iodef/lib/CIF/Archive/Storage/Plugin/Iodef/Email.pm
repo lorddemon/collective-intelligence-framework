@@ -1,7 +1,5 @@
 package CIF::Archive::Storage::Plugin::Iodef::Email;
 
-use Regexp::Common qw/net/;
-
 sub prepare {
     my $class   = shift;
     my $info    = shift;

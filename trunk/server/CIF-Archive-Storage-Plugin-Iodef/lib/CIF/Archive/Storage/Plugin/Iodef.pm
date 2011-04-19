@@ -1,13 +1,15 @@
 package CIF::Archive::Storage::Plugin::Iodef;
 use base 'CIF::Archive::Storage';
 
-use Module::Pluggable search_path => ['CIF::Archive::Storage::Plugin::Iodef'], require => 1;
+our $VERSION = '0.01_01';
+$VERSION = eval $VERSION;
 
+require 5.008;
 use strict;
 use warnings;
 
 use XML::IODEF;
-use XML::LibXML;
+use Module::Pluggable search_path => [__PACKAGE__], require => 1;
 
 sub prepare {
     my $class = shift;
@@ -114,3 +116,32 @@ sub from {
 }
     
 1;
+
+=head1 SYNOPSIS
+
+See CIF::Archive
+
+=head1 DESCRIPTION
+
+Storage Plugin for CIF::Archive
+
+=head1 SEE ALSO
+
+ http://code.google.com/p/collective-intelligence-framework/
+ CIF::Archive
+
+=head1 AUTHOR
+
+Wes Young, E<lt>wes@barely3am.comE<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+ Copyright (C) 2011 by Wes Young (claimid.com/wesyoung)
+ Copyright (C) 2011 by the Trustee's of Indiana University (www.iu.edu)
+ Copyright (C) 2011 by the REN-ISAC (www.ren-isac.net)
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.10.0 or,
+at your option, any later version of Perl 5 you may have available.
+
+=cut
