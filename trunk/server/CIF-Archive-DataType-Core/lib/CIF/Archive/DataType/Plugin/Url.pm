@@ -4,7 +4,7 @@ use base 'CIF::Archive::DataType';
 use strict;
 use warnings;
 
-use Module::Pluggable require => 1, search_path => ['CIF::Archive::DataType::Plugin::Url'];
+use Module::Pluggable require => 1, search_path => [__PACKAGE__];
 
 use Digest::SHA1 qw(sha1_hex);
 use Digest::MD5 qw(md5_hex);
@@ -78,7 +78,6 @@ sub lookup {
     my $self = shift;
     my $info = shift;
     my $query = $info->{'query'};
-    my $limit = $info->{'limit'} || 5000;
 
     return(undef) unless($query && $query =~ /^[a-fA-F0-9]{32,40}$/);
     my $col = 'address';
