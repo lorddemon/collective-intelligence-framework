@@ -39,7 +39,7 @@ sub insert {
     my $self = shift;
     my $info = shift;
 
-    my ($ret,$err) = check_params($tests,$info);
+    my ($ret,$err) = $self->check_params($tests,$info);
     return($ret,$err) unless($ret);
 
     my $tbl = $self->table();
@@ -134,18 +134,9 @@ sub lookup {
     my $self = shift;
     my $info = shift;
     my $address = $info->{'query'};
-    my $limit = $info->{'limit'} || 5000;
 
     return(undef) unless($address && lc($address) =~ /^[a-z0-9.-]+\.[a-z]{2,5}$/);
-
-    my @recs;
-    if($address =~ /^$RE{'net'}{'IPv4'}/){
-        @recs = $self->search_rdata($address,$limit);
-    } else {
-        @recs = $self->search_by_address('%'.$address.'%',$limit);
-    }
-
-    return(\@recs);
+    return($self->SUPER::lookup($address,$info->{'limit'}));
 }
 
 sub isWhitelisted {
@@ -193,24 +184,10 @@ __PACKAGE__->set_sql('feed' => qq{
     LIMIT ?
 });
 
-__PACKAGE__->set_sql('by_address' => qq{
+__PACKAGE__->set_sql('lookup' => qq{
     SELECT * FROM __TABLE__
     WHERE lower(address) LIKE lower(?)
     AND lower(impact) NOT LIKE '% whitelist %'
-    LIMIT ?
-});
-
-__PACKAGE__->set_sql('by_rdata' => qq{
-    SELECT * FROM __TABLE__
-    WHERE lower(rdata) LIKE lower(?)
-    ORDER BY detecttime DESC, created DESC, id DESC,
-    LIMIT ?
-});
-
-__PACKAGE__->set_sql('by_asn' => qq{
-    SELECT * FROM __TABLE__
-    WHERE asn = ?
-    ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });
 
