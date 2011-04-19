@@ -6,13 +6,11 @@ use warnings;
 
 require JSON;
 
-sub to {
+sub convert {
     my $self = shift;
     my $data = shift;
 
     my $json = JSON::to_json($data);
-
-    
     return($json);
 }
 

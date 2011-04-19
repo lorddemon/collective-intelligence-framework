@@ -8,9 +8,6 @@ use Data::Dumper;
 use Config::Simple;
 use OSSP::uuid;
 
-our $VERSION = '0.01_01';
-$VERSION = eval $VERSION;  # see L<perlmodstyle>
-
 __PACKAGE__->connection('DBI:Pg:database=cif;host=localhost','postgres','',{ AutoCommit => 1} );
 __PACKAGE__->set_sql(_create_me => 'CREATE TABLE __TABLE__ (%s)');
 __PACKAGE__->set_sql(_create_me_index => 'CREATE TABLE __TABLE__ () INHERITS (%s)');
@@ -18,16 +15,6 @@ __PACKAGE__->set_sql(_table_pragma => 'select * from pg_stat_user_tables where r
 __PACKAGE__->set_sql(_type_pragma => "select typname from pg_type where typname = ?");
 __PACKAGE__->set_sql(_create_type_severity => "create type severity as enum ('low','medium','high')");
 __PACKAGE__->set_sql(_create_type_restriction => "create type restriction as enum ('public','need-to-know','private','default')");
-
-__PACKAGE__->set_sql('feed' => qq{
-    SELECT * FROM __TABLE__
-    WHERE detecttime >= ?
-    AND severity >= ?
-    AND restriction <= ?
-    AND NOT (lower(impact) LIKE 'search %' OR lower(impact) LIKE '% whitelist %')
-    ORDER BY detecttime DESC, created DESC, id DESC
-    LIMIT ?
-});
 
 sub set_table {
     my ($class,$table) = @_;
