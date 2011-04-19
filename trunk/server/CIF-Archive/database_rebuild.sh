@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DB="cif"
-SCHEMA="archive.sql domain.sql infrastructure.sql malware.sql url.sql email.sql feed.sql"
+SCHEMA="archive.sql"
 
 psql -U postgres -c "DROP DATABASE $DB"
 psql -U postgres -c "CREATE DATABASE $DB"

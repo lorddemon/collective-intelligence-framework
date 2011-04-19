@@ -1,4 +1,4 @@
-package CIF::Archive::Binary;
+package CIF::Archive::Storage::Binary;
 use base 'CIF::Archive::Storage';
 
 use strict;
