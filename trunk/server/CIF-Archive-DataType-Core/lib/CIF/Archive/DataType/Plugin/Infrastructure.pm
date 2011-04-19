@@ -157,7 +157,7 @@ sub lookup {
     my @args;
     my $sth;
     if($asn){
-        my $sth = $self->sql__by_asn();
+        $sth = $self->sql__by_asn();
         push(@args,($asn,$limit));
     } else {
         $sth = $self->sql_by_address();

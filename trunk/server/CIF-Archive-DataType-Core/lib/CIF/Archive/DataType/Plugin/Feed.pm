@@ -57,12 +57,10 @@ sub lookup {
 
     my $severity = $info->{'severity'};
     my $restriction = $info->{'restriction'};
-    
     my $query = $info->{'query'}.' feed';
-    my $sth = $class->sql_lookup();
-    my $r = $sth->execute($query,$severity,$restriction);
-    my $ret = $sth->fetchall_hash();
-    return($ret);
+
+    my @args = ($query,$severity,$restriction);
+    return $class->SUPER::lookup(@args);
 }
 
 1;

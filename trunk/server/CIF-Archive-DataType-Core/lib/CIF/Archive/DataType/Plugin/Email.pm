@@ -55,12 +55,9 @@ sub insert {
 sub lookup {
     my $self = shift;
     my $info = shift;
-    return(undef) unless($self->prepare($info));
     my $address = $info->{'query'};
-
-    my @recs = $self->search(address => $address);
-
-    return(\@recs);
+    return(undef) unless($address =~ /\w+@\w+$/);
+    return($self->SUPER::lookup($address,$info->{'limit'}));
 }
 
 1;
