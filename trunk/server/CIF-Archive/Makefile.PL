@@ -1,12 +1,17 @@
-use 5.008008;
-use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
-WriteMakefile(
-    NAME              => 'CIF::Archive',
-    VERSION_FROM      => 'lib/CIF/Archive.pm', # finds $VERSION
-    PREREQ_PM         => {}, # e.g., Module::Name => 1.1
-    ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-      (ABSTRACT_FROM  => 'lib/CIF/Archive.pm', # retrieve abstract from module
-       AUTHOR         => 'Wes Young <wes@>') : ()),
-);
+use inc::Module::Install;
+
+name        'CIF-Archive';
+all_from    'lib/CIF/Archive.pm';
+version_from    'lib/CIF/Archive.pm';
+
+requires    'Class::DBI'                    => '3.0.17';
+requires    'OSSP::uuid'                    => '1.0501';
+requires    'Config::Simple'                => '4.59';
+requires    'DateTime::Format::DateParse'   => '0.04';
+requires    'Module::Pluggable'             => '3.6';
+requires    'JSON'                          => '2.07';
+requires    'Digest::SHA1'                  => '2.10';
+requires    'MIME::Base64'                  => '3.06';
+requires    'Compress::Zlib'                => '2.008';
+
+WriteAll();
