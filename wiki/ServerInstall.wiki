@@ -73,7 +73,7 @@ postgres=#\l
 = CIF::DBI =
  # install the main server interface:
 {{{
-$> wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/cif/CIF-DBI-0.00_02.tar.gz
+$> wget http://collective-intelligence-framework.googlecode.com/files/CIF-DBI-0.00_02.tar.gz
 $> tar -zxvf CIF-DBI-0.00_02.tar.gz
 $> cd CIF-DBI-0.00_02
 $> perl Makefile.PL
@@ -109,7 +109,7 @@ $ sudo a2enmod apreq ssl
 }}}
  # install the main server interface:
 {{{
-$> wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/cif/CIF-WebAPI-0.00_02.tar.gz
+$> wget http://collective-intelligence-framework.googlecode.com/files/CIF-WebAPI-0.00_02.tar.gz
 $> tar -zxvf CIF-WebAPI-0.00_02.tar.gz
 $> cd CIF-WebAPI-0.00_02
 $> perl Makefile.PL
