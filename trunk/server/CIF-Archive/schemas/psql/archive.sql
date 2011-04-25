@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS archive CASCADE;
 CREATE TYPE restriction AS ENUM ('public','need-to-know','private','default');
+CREATE TYPE severity AS ENUM ('','low','medium','high');
 
 CREATE TABLE archive (
     id BIGSERIAL PRIMARY KEY NOT NULL,
