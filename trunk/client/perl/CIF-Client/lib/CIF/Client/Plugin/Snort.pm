@@ -7,7 +7,8 @@ use Data::Dumper;
 sub write_out {
     my $self = shift;
     my $config = shift;
-    my @array = @_;
+    my $feed = shift;
+    my @array = @{$feed->{'feed'}->{'entry'}};
     return '' unless(exists($array[0]->{'address'}));
     my $sid = ($config->{'snortsid'}) ? $config->{'snortsid'} : 1;
     my $rules = '';
