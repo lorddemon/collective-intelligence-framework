@@ -3,6 +3,9 @@ package CIF::WebAPI::Writer::iodef;
 use 5.008;
 use XML::IODEF;
 
+our $VERSION = '0.01_01';
+$VERSION = eval $VERSION;
+
 =head1 NAME
 
 CIF::WebAPI::Writer::iodef - Apache2::REST::Response Writer for IODEF 
