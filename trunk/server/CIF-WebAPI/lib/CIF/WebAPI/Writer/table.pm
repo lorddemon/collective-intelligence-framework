@@ -1,17 +1,14 @@
 package CIF::WebAPI::Writer::table;
-use strict;
-use warnings;
 
 use Text::Table;
 use JSON;
 use MIME::Base64;
 use Compress::Zlib;
 use Encode qw/encode_utf8/;
-use Data::Dumper;
 
 =head1 NAME
 
-Apache2::REST::Writer::json - Apache2::REST::Response Writer for json
+Apache2::REST::Writer::table - Apache2::REST::Response Writer for Text::Table
 
 =cut
 

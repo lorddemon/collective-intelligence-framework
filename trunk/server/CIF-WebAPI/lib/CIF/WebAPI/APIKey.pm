@@ -1,24 +1,19 @@
 package CIF::WebAPI::APIKey;
 use base 'CIF::DBI';
 
-our $VERSION = '0.00_02';
-
 __PACKAGE__->table('apikeys');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id apikey userid parentid revoked write access created/);
 __PACKAGE__->sequence('apikeys_id_seq');
 
-use OSSP::uuid;
+use CIF::Archive;
 
 sub genkey {
     my ($self,%args) = @_;
-    my $uuid    = OSSP::uuid->new();
-    $uuid->make('v4');
-    my $str = $uuid->export('str');
-    undef $uuid;
+    my $uuid = CIF::Archive::genUUID();
 
     my $r = $self->insert({
-        apikey      => $str,
+        apikey      => $uuid,
         userid      => $args{'userid'},
         access      => $args{'access'} || 'all',
         parentid    => $args{'parentid'},
