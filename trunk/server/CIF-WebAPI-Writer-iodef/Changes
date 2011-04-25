@@ -1,0 +1,9 @@
+Revision history for Perl extension CIF::WebAPI::Writer::iodef.
+
+0.01_01  2010-04-25
+    - updated
+
+0.00_01  Mon Apr 25 13:00:43 2011
+	- original version; created by h2xs 1.23 with options
+		-ABXb 5.8.8 CIF::WebAPI::Writer::iodef
+
