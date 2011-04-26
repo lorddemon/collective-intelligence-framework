@@ -99,7 +99,7 @@ __PACKAGE__->set_sql('lookup' => qq{
 __END__
 =head1 NAME
 
-CIF::Archive::DataType::Plugin::ASN - Perl extension for indexing ASN's
+ CIF::Archive::DataType::Plugin::ASN - Perl extension for indexing ASN's
 
 =head1 SEE ALSO
 
@@ -108,7 +108,7 @@ CIF::Archive::DataType::Plugin::ASN - Perl extension for indexing ASN's
 
 =head1 AUTHOR
 
-Wes Young, E<lt>wes@barely3am.comE<gt>
+ Wes Young, E<lt>wes@barely3am.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
