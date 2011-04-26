@@ -1,6 +1,5 @@
 package CIF::Archive::DataType::Feed::Plugin::Domain;
 
-use Module::Pluggable require => 1, search_path => [__PACKAGE__];
 
 sub prepare {
     my $class = shift;
