@@ -23,6 +23,10 @@ MISC
     script/cif_apikeys is a command line interface to the apikeys table
     api.conf should be modified to suit your needs
 
+EXTENDING
+
+   see CIF::Archive::DataType::Infrastructure as an example
+
 DEPENDENCIES
 
 This module requires these other modules and libraries:
