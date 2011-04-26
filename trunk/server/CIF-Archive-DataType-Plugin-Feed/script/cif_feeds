@@ -1,0 +1,158 @@
+#!/usr/bin/perl
+
+use warnings;
+use strict;
+
+use Getopt::Std;
+use DateTime;
+use JSON;
+use Digest::SHA1 qw/sha1_hex/;
+use MIME::Base64;
+use Config::Simple;
+use Data::Dumper;
+use Compress::Zlib;
+use CIF::Archive;
+use CIF::Archive::DataType::Plugin::Feed;
+
+my %opts;
+getopts('hDc:d:f:s:r:m:F:',\%opts);
+
+my $feed        = $opts{'f'} || shift || '';
+my $severity    = $opts{'s'} || 'high';
+my $restriction = $opts{'r'};
+my $maxdays     = $opts{'d'} || 30;
+my $debug       = $opts{'D'};
+my $config      = $opts{'c'} || $ENV{'HOME'}.'/.cif';
+my $last_feeds  = $opts{'F'} || 5;
+
+my $cfg = Config::Simple->new($config) || die('missing config file');
+my $maxrecords  = $opts{'m'} || $cfg->param(-block => 'cif_feeds')->{'maxrecords'} || 50000;
+my @plugs = CIF::Archive->plugins('datatype');
+@plugs = grep(!/Feed/,@plugs);
+
+my $restriction_map = $cfg->param(-block => 'restrictions');
+unless($restriction){
+    if(my $x = $restriction_map->{'default'}){
+        $restriction = $x;
+    } else {
+        $restriction = 'private';
+    }
+}
+
+die usage() if($opts{'h'});
+
+my %map;
+my @feeds;
+sub usage {
+    my $usage_feeds = join("\n\t",@feeds);
+    return <<EOF;
+Usage: perl $0 -s medium -f infrastructure/botnet
+    -h  --help:         this meessage
+    -c  --config:       specify config file, default: $config
+    -f  --feed:         feed to pull, comma seperated, default:
+
+        $usage_feeds
+
+    -s  --severity:     feed severity (low|medium|high), default: $severity
+    -r  --restriction:  feed restriction (default|public|need-to-know|private), default: $restriction
+    -m  --maxrecords:   max feed records, default: $maxrecords
+    -d  --maxdays:      max days to go back in feed search, default: $maxdays
+
+
+Examples:
+    \$> perl $0 -f infrastructure
+    \$> perl $0 -f infrastructure/botnet -s low
+    \$> perl $0 -f domain/malware -D
+
+EOF
+}
+
+my %sev = (
+    'high'      => 3,
+    'medium'    => 2,
+    'low'       => 1,
+);
+my $dt = DateTime->from_epoch(epoch => time());
+$dt = $dt->ymd().'T'.$dt->hms().'Z';
+
+foreach (@plugs){
+    my $start = time();
+
+    _debug('processing: '.$_);
+
+    my $detecttime = DateTime->from_epoch(epoch => (time() - (84600 * $maxdays)));
+    _profile('searching',$start);
+    my $ret = $_->feed({
+        severity    => $severity,
+        detecttime  => $detecttime,
+        maxrecords  => 50000,
+    });
+    unless($ret){
+        _debug('no records');
+        next();
+    }
+    my @feeds = @$ret;
+    _debug('records: '.@feeds);
+    _profile('mapping',$start);
+    my @types = map { $_->{'feed'}->{'title'} } @feeds;
+    foreach my $f (@feeds){
+        my @recs = @{$f->{'feed'}->{'entry'}};
+        my $loc_restriction = $restriction;
+        if(keys %$restriction_map){
+            $loc_restriction = $restriction_map->{$restriction};
+            foreach my $r (@recs){
+                if(exists($restriction_map->{$r->{'restriction'}})){
+                    $r->{'restriction'} = $restriction_map->{$r->{'restriction'}};
+                }
+                if(exists($restriction_map->{$r->{'alternativeid_restriction'}})){
+                    $r->{'alternativeid_restriction'} = $restriction_map->{$r->{'alternativeid_restriction'}};
+                }
+            }
+        }
+        my $json = to_json(\@recs);
+    
+        my $description = $f->{'feed'}->{'title'}.' '.$severity.' severity '.$restriction.' feed';
+        my $impact = $f->{'feed'}->{'title'}.' feed';
+        my $zcontent = encode_base64(compress($json));
+        my ($err,$id) = CIF::Archive->insert({
+            source      => 'localhost',
+            data        => $zcontent,
+            hash_sha1   => sha1_hex($zcontent),
+            severity    => $severity,
+            description => lc($description),
+            impact      => lc($impact),
+            restriction => lc($restriction),
+            detecttime  => $dt,
+            format      => 'text/base64'
+        });
+        die($err) unless($id);
+        print lc($description).': '.$id.' created -- '.$id->uuid()."\n";
+        my @feeds = CIF::Archive::DataType::Plugin::Feed->retrieve_from_sql(qq{
+            severity = '$severity'
+            AND restriction = '$restriction'
+            ORDER BY id ASC
+        });
+        if($#feeds >= $last_feeds){
+            foreach (0 ... $last_feeds-1){
+                pop(@feeds);
+            }
+            foreach (@feeds){
+                print 'removing feed: '.$_->id().' -- '.$_->uuid()."\n";
+                CIF::Archive->retrieve(uuid => $_->uuid())->delete();
+            }
+        }
+    }
+        
+    ## TODO -- if $id is < than most recent feed (of this type), we need to re-insert this as a new feed (or delete the old feed)
+    _profile('finished',$start);
+}
+
+sub _debug {
+    return unless($debug);
+    warn shift;
+}
+
+sub _profile {
+    my ($msg,$start) = @_;
+    _debug('('.(time() - $start).') '.$msg);
+}
