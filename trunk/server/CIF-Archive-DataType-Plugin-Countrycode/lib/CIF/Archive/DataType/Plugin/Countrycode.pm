@@ -5,18 +5,15 @@ use 5.008008;
 use strict;
 use warnings;
 
+our $VERSION = '0.00_01';
+$VERSION = eval $VERSION;  # see L<perlmodstyle>
+
 use Module::Pluggable require => 1, search_path => [__PACKAGE__];
 
 __PACKAGE__->table('countrycode');
 __PACKAGE__->columns(Primary => 'id');__PACKAGE__->columns(All => qw/id uuid description cc source severity restriction alternativeid alternativeid_restriction detecttime created/);
 __PACKAGE__->columns(Essential => qw/id uuid description cc restriction created/);
 __PACKAGE__->sequence('countrycode_id_seq');
-
-
-our $VERSION = '0.00_01';
-$VERSION = eval $VERSION;  # see L<perlmodstyle>
-
-# Preloaded methods go here.
 
 sub prepare {
     my $class = shift;
@@ -67,6 +64,7 @@ sub lookup {
     my $info = shift;
     my $q = $info->{'query'};
     $q = uc($q);
+    return unless($q =~ /^[A-Z]{2}$/);
 
     my $sth = $class->sql_by_cc();
     my $r = $sth->execute($q,10000);
@@ -87,49 +85,25 @@ __END__
 
 =head1 NAME
 
-CIF::Archive::DataType::Plugin::Countrycode - Perl extension for blah blah blah
-
-=head1 SYNOPSIS
-
-  use CIF::Archive::DataType::Plugin::Countrycode;
-  blah blah blah
-
-=head1 DESCRIPTION
-
-Stub documentation for CIF::Archive::DataType::Plugin::Countrycode, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
-
-Blah blah blah.
-
-=head2 EXPORT
-
-None by default.
-
-
+CIF::Archive::DataType::Plugin::Countrycode - CIF::Archive plugin for indexing country codes
 
 =head1 SEE ALSO
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
-
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+ http://code.google.com/p/collective-intelligence-framework/
+ CIF::Archive
 
 =head1 AUTHOR
 
-Wes Young, E<lt>wes@E<gt>
+ Wes Young, E<lt>wes@barely3am.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2011 by Wes Young
+ Copyright (C) 2011 by Wes Young (claimid.com/wesyoung)
+ Copyright (C) 2011 by the Trustee's of Indiana University (www.iu.edu)
+ Copyright (C) 2011 by the REN-ISAC (www.ren-isac.net)
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.0 or,
 at your option, any later version of Perl 5 you may have available.
-
 
 =cut
