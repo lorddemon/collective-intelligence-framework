@@ -1,5 +1,5 @@
 package CIF::Message;
-use base 'CIF::DBI';
+use base 'CIF::Archive';
 
 use strict;
 use warnings;
@@ -49,24 +49,22 @@ sub normalize_timestamp {
 sub insert {
     my $self = shift;
     my $info = shift;
-    my $format = $info->{'format'} || 'JSON';
 
-    my $bucket = 'CIF::Message::'.$format;
-    eval "require $bucket";
-    if($@){
-        warn $@;
-        return undef;
-    }
     if($info->{'detecttime'}){
         $info->{'detecttime'} = normalize_timestamp($info->{'detecttime'});
     }
-    require CIF::Message::IODEF;
-    die CIF::Message::IODEF->can($info);
-    my $msg     = $bucket->to($info); 
-    my $source  = $info->{'source'};
 
+    my $source  = $info->{'source'};
     $source = genSourceUUID($source) unless(isUUID($source));
     $info->{'source'} = $source;
+
+    require CIF::Archive::Json;
+    my $bucket = 'CIF::Archive::Json';
+    foreach($self->plugins()){
+        $bucket = $_ if($_->can($info));
+    }
+
+    my $msg = $bucket->to($info);
 
     $info->{'uuid'} = genMessageUUID($source,$msg);
     $info->{'message'} = $msg;

@@ -1,5 +1,5 @@
 package CIF::FeedTables;
-use base 'CIF::DBI';
+use base 'CIF::Archive';
 
 use strict;
 use warnings;
