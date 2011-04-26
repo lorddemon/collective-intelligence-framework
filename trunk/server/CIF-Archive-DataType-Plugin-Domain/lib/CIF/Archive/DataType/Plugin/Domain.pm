@@ -126,10 +126,28 @@ sub isWhitelisted {
     return @recs;
 }
 
+sub feed {
+    my $class = shift;
+    my $info = shift;
+
+    my @feeds;
+    $info->{'key'} = 'address';
+    my $ret = $class->SUPER::feed($info);
+    push(@feeds,$ret) if($ret);
+
+    my $tbl = $class->table();
+    foreach($class->plugins()){
+        my $t = $_->set_table();
+        my $r = $_->SUPER::feed($info);
+        push(@feeds,$r) if($r);
+    }
+    return(\@feeds);
+}
+
 __PACKAGE__->set_sql('feed' => qq{
     SELECT * FROM __TABLE__
     WHERE detecttime > ?
-    AND type = 'A'
+    AND (type IS NULL OR type = 'A')
     AND severity >= ?
     AND restriction <= ?
     AND NOT (lower(impact) = 'search' OR lower(impact) = 'domain whitelist' OR lower(impact) LIKE '% whitelist %')
