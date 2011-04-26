@@ -145,6 +145,7 @@ __PACKAGE__->set_sql('lookup' => qq{
 });
 
 1;
+__END__
 
 =head1 NAME
 
