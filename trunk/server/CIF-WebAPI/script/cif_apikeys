@@ -83,9 +83,9 @@ if($user){
     @recs = CIF::WebAPI::APIKey->retrieve_all();
 }
 if($#recs > -1){
-    my $t = Text::Table->new('id','key','access','write','revoked','created');
+    my $t = Text::Table->new('id','uid','key','access','write','revoked','created');
     foreach (@recs){
-        $t->load([$_->id(),$_->apikey(),$_->access(),$_->write(),$_->revoked(),$_->created()]);
+        $t->load([$_->id(),$_->userid(),$_->apikey(),$_->access(),$_->write(),$_->revoked(),$_->created()]);
     }
     print $t;
 } else {
