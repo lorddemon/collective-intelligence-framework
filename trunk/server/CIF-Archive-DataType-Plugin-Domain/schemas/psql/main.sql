@@ -60,3 +60,8 @@ CREATE TABLE domain_search() INHERITS (domain);
 ALTER TABLE domain_search ADD PRIMARY KEY (id);
 ALTER TABLE domain_search ADD CONSTRAINT domain_search_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
 ALTER TABLE domain_search ADD UNIQUE(uuid);
+
+CREATE TABLE domain_phishing() INHERITS (domain);
+ALTER TABLE domain_phishing ADD PRIMARY KEY (id);
+ALTER TABLE domain_phishing ADD CONSTRAINT domain_phishing_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
+ALTER TABLE domain_phishing ADD UNIQUE(uuid);

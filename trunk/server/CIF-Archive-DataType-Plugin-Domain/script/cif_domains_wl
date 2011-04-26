@@ -1,0 +1,41 @@
+#!/usr/bin/perl -w
+
+use warnings;
+use strict;
+
+use CIF::Message::Domain;
+use CIF::Message;
+use Data::Dumper;
+
+my $bucket = CIF::Message::Domain->new();
+my @recs = $bucket->retrieve_from_sql(qq{
+    severity < 'high' AND severity IS NOT NULL
+    AND impact != 'domain whitelist' AND impact != 'search'
+    ORDER BY id DESC
+    LIMIT 500000
+});
+
+foreach my $rec (@recs){
+    # could have been deleted by rdata ->delete()
+    next if(ref($rec) eq 'Class::DBI::Object::Has::Been::Deleted');
+    if($bucket->isWhitelisted($rec->address())){
+        my $address = $rec->address();
+        print 'removing: '.$address.' -- whitelisted'."\n";
+        my $msg = CIF::Message->retrieve(uuid => $rec->uuid());
+        $msg->delete();
+        my @rdata_records = CIF::Message::Domain->retrieve_from_sql(qq{
+            rdata LIKE '$address' OR rdata LIKE '%.$address'
+        });
+        foreach (@rdata_records) {
+            print 'removing: '.$_->rdata()."\n";
+            CIF::Message->retrieve(uuid => $_->uuid())->delete();
+        }
+        my @infra_records = CIF::Message->retrieve_from_sql(qq{
+            impact LIKE '% $address'
+        });
+        foreach (@infra_records){
+            print 'removing: '.$_->impact()."\n";
+            $_->delete();
+        }
+    }
+}
