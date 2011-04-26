@@ -1,6 +1,5 @@
 package CIF::Archive::DataType::Feed::Plugin::Domain;
 
-
 sub prepare {
     my $class = shift;
     my $info = shift;
