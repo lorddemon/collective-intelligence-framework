@@ -1,6 +1,9 @@
 Revision history for Perl extension CIF::WebAPI.
 
-0.00_02 2010-01-09
+0.01_01  2011-04-26
+    - re-architected to use Module::Pluggable and CIF::Archive
+
+0.00_02  2011-01-09
     - Merged CIF::APIKEY
 
 0.00_01  Tue Aug  3 02:44:00 2010

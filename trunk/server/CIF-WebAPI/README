@@ -1,16 +1,9 @@
 CIF-WebAPI
 ==========
 
-The README is used to introduce the module and provide instructions on
-how to install the module, any machine dependencies it may have (for
-example C compilers and installed libraries) and any other information
-that should be provided before the module is installed.
+SEE ALSO
 
-A README file is required for CPAN modules since CPAN extracts the
-README file from a module distribution so that people browsing the
-archive can use it get an idea of the modules uses. It is usually a
-good idea to provide version information here so that people can
-decide whether fixes for the module are worth downloading.
+http://code.google.com/p/collective-intelligence-framework/
 
 INSTALLATION
 
@@ -20,7 +13,7 @@ To install this module type the following:
    make
    make test
    make install
-   psql -U postgres -d cif < apikeys.sql
+   psql -U postgres -d cif < schemas/psql/main.sql
    sudo cp api.conf /etc/apache2/sites-available/ (or wherever your apache sites dir is)
 
 MISC
@@ -32,17 +25,14 @@ DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-See Makefile.PL
+   CIF::Archive Apache2::REST JSON ... (see Makefile.PL for full list)
 
 COPYRIGHT AND LICENCE
 
-Put the correct copyright and licence information here.
-
-Copyright (C) 2010 the REN-ISAC and the Trustees of Indiana University
-Copyright (C) 2010 by Wes Young
+Copyright (C) 2011 by Wes Young (claimid.com/wesyoung)
+Copyright (C) 2011 by the Trustee's of Indiana University (www.iu.edu)
+Copyright (C) 2011 by the REN-ISAC (www.ren-isac.net)
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.0 or,
 at your option, any later version of Perl 5 you may have available.
-
-
