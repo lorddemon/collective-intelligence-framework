@@ -18,9 +18,9 @@ __PACKAGE__->sequence('email_id_seq');
 sub prepare {
     my $class = shift;
     my $info = shift;
-
+   
     my $address = $info->{'address'} || return(undef);
-    return(undef) unless(/\w+@\w+$/);
+    return(undef) unless($address =~ /\w+@\w+/);
     return(1);
 }
 
@@ -65,5 +65,29 @@ sub lookup {
 }
 
 1;
-
 __END__
+
+=head1 NAME
+
+ CIF::Archive::DataType::Plugin::Email - CIF::Archive plugin for indexing internet messages
+
+=head1 SEE ALSO
+
+ http://code.google.com/p/collective-intelligence-framework/
+ CIF::Archive
+
+=head1 AUTHOR
+
+ Wes Young, E<lt>wes@barely3am.comE<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+ Copyright (C) 2011 by Wes Young (claimid.com/wesyoung)
+ Copyright (C) 2011 by the Trustee's of Indiana University (www.iu.edu)
+ Copyright (C) 2011 by the REN-ISAC (www.ren-isac.net)
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.10.0 or,
+at your option, any later version of Perl 5 you may have available.
+
+=cut
