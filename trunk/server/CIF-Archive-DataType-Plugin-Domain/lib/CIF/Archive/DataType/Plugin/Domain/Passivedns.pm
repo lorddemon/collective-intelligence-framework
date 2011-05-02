@@ -5,7 +5,7 @@ sub prepare {
     my $class = shift;
     my $info = shift;
     return unless($info->{'impact'});
-    return(0) unless($info->{'impact'} =~ /passivedns/);
+    return(0) unless($info->{'impact'} =~ /passive dns/);
     return('domain_passivedns');
 }
 
