@@ -1,11 +1,7 @@
 package CIF::DBI;
 use base 'Class::DBI';
 
-use strict;
-use warnings;
-
 use Config::Simple;
-use OSSP::uuid;
 
 __PACKAGE__->connection('DBI:Pg:database=cif;host=localhost','postgres','',{ AutoCommit => 1} );
 

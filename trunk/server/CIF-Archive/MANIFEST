@@ -18,5 +18,5 @@ Makefile.PL
 MANIFEST			This list of files
 META.yml
 README
-schemas/psql/archive.sql
+schemas/psql/main.sql
 t/CIF-Archive.t

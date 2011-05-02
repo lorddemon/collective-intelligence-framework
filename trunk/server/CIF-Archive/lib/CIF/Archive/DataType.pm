@@ -1,12 +1,7 @@
 package CIF::Archive::DataType;
 use base 'CIF::DBI';
 
-use strict;
-use warnings;
-
 use Module::Pluggable require => 1, except => qr/::Plugin::\S+::/;
-
-sub prepare { return(0) };
 
 __PACKAGE__->set_sql('feed' => qq{
     SELECT * FROM __TABLE__
@@ -17,6 +12,27 @@ __PACKAGE__->set_sql('feed' => qq{
     LIMIT ?
 });
 
+sub prepare {
+    my $class = shift;
+    my $info = shift;
+
+    my @bits = split(/::/,lc($class));
+    my $t = $bits[$#bits];
+    return(1) if($info->{'impact'} =~ /$t$/);
+    return(0);
+}
+
+sub set_table {
+    my $class = shift;
+
+    my @bits = split(/::/,lc($class));
+    my $t = $bits[$#bits];
+    if($bits[$#bits-1] ne 'plugin'){
+        $t = $bits[$#bits-1].'_'.$bits[$#bits];
+    }
+    return $class->table($t);
+}
+
 sub feed {
     my $class = shift;
     my $info = shift;
@@ -26,12 +42,21 @@ sub feed {
     my $restriction = $info->{'restriction'} || 'need-to-know';
     my $severity = $info->{'severity'} || 'medium';
 
+    my @bits = split(/::/,lc($class));
+    my $feed_name = '';
+    if($bits[$#bits-1] eq 'plugin'){
+        $feed_name = $bits[$#bits];
+    } else {
+        $feed_name = $bits[$#bits].' '.$bits[$#bits-1];
+    }
+
     my $sth = $class->sql_feed();
     $sth->execute($info->{'detecttime'},$severity,$restriction,$max);
     my $ret = $sth->fetchall_hash();
-    return(undef) unless($ret);
+    return(undef) unless(@$ret);
     my @recs = @$ret;
     
+    # declassify what we can
     my $hash;
     foreach (@recs){
         if($hash->{$_->{$key}}){
@@ -42,7 +67,16 @@ sub feed {
         $hash->{$_->{$key}} = $_;
     }
     @recs = map { $hash->{$_} } keys(%$hash);
-    return(\@recs);
+
+    # sort it out
+    @recs = sort { $a->{'detecttime'} cmp $b->{'detecttime'} } @recs;
+    my $feed = {
+        feed    => {
+            title   => $feed_name,
+            entry   => \@recs,
+        }
+    };
+    return($feed);
 }
 
 sub check_params {
@@ -63,6 +97,7 @@ sub check_params {
 sub lookup {
     my $class = shift;
     my @args = @_;
+    return(undef) unless(@args);
 
     my $sth = $class->sql_lookup();
     my $r = $sth->execute(@args);
