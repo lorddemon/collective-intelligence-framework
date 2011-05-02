@@ -13,7 +13,7 @@ use Net::Abuse::Utils qw(:all);
 
 __PACKAGE__->table('domain');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid description address type rdata cidr asn asn_desc cc rir class ttl whois impact confidence source alternativeid alternativeid_restriction severity restriction detecttime created/);
+__PACKAGE__->columns(All => qw/id uuid description address type rdata cidr asn asn_desc cc rir class ttl impact confidence source alternativeid alternativeid_restriction severity restriction detecttime created/);
 __PACKAGE__->columns(Essential => qw/id uuid description address rdata impact restriction created/);
 __PACKAGE__->sequence('domain_id_seq');
 
@@ -30,50 +30,7 @@ sub prepare {
     my $address = $info->{'address'} || return(undef);
     return(undef) unless($address =~ /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,5}$/);
     return(0,'invalid address: whitelisted -- '.$address) if(isWhitelisted($address));
-    my @rdata = getrdata($address);
-    if(@rdata){
-        foreach (@rdata){
-            next unless($_->{'address'});
-            my ($as,$network,$ccode,$rir,$date,$as_desc) = asninfo($_->{'address'});
-            $_->{'asn'} = $as;
-            $_->{'rir'} = $rir;
-            $_->{'asn_desc'} = $as_desc;
-            $_->{'cc'} = $ccode;
-            $_->{'cidr'} = $network;
-        }
-        $info->{'rdata'} = \@rdata;
-    }
     return(1);
-}
-
-sub asninfo {
-    my $a = shift;
-    return undef unless($a);
-    my ($as,$network,$ccode,$rir,$date) = get_asn_info($a);
-    my $as_desc;
-    $as_desc = get_as_description($as) if($as);
-
-    $as         = undef if($as && $as eq 'NA');
-    $network    = undef if($network && $network eq 'NA');
-    $ccode      = undef if($ccode && $ccode eq 'NA');
-    $rir        = undef if($rir && $rir eq 'NA');
-    $date       = undef if($date && $date eq 'NA');
-    $as_desc    = undef if($as_desc && $as_desc eq 'NA');
-    $a          = undef if($a eq '');
-    return ($as,$network,$ccode,$rir,$date,$as_desc);
-}
-
-sub getrdata {
-    my $a = shift;
-    return unless($a);
-
-    require Net::DNS::Resolver;
-    my $r = Net::DNS::Resolver->new();
-    my $pkt = $r->send($a);
-    return unless($pkt);
-    my @array = $pkt->answer();
-    return(@array) if(@array);
-    return({name => $a, class => 'IN', type => 'A'});
 }
 
 sub insert {
@@ -97,35 +54,31 @@ sub insert {
         delete($info->{'severity'}) unless($info->{'severity'});
     }
     
-    my $id;
-
-    foreach my $r (@{$info->{'rdata'}}){
-        $id = eval { $self->SUPER::insert({
-            uuid        => $uuid,
-            description => lc($info->{'description'}),
-            address     => $info->{'address'},
-            type        => $r->{'type'},
-            rdata       => $r->{'address'},
-            cidr        => $r->{'cidr'},
-            asn         => $r->{'asn'},
-            asn_desc    => $r->{'asn_desc'},
-            cc          => $r->{'cc'},
-            rir         => $r->{'rir'},
-            class       => $r->{'class'},
-            ttl         => $r->{'ttl'},
-            source      => $info->{'source'},
-            impact      => $info->{'impact'} || 'malicious domain',
-            confidence  => $info->{'confidence'},
-            severity    => $info->{'severity'},
-            restriction => $info->{'restriction'} || 'private',
-            detecttime  => $info->{'detecttime'},
-            alternativeid => $info->{'alternativeid'},
-            alternativeid_restriction => $info->{'alternativeid_restriction'} || 'private',
-        }) };
-        if($@){
-            return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
-            $id = $self->retrieve(uuid => $uuid);
-        }
+    my $id = eval { $self->SUPER::insert({
+        uuid        => $uuid,
+        description => lc($info->{'description'}),
+        address     => $info->{'address'},
+        type        => $info->{'type'} || 'A',
+        rdata       => $info->{'rdata'},
+        cidr        => $info->{'cidr'},
+        asn         => $info->{'asn'},
+        asn_desc    => $info->{'asn_desc'},
+        cc          => $info->{'cc'},
+        rir         => $info->{'rir'},
+        class       => $info->{'class'} || 'IN',
+        ttl         => $info->{'ttl'},
+        source      => $info->{'source'},
+        impact      => $info->{'impact'} || 'malicious domain',
+        confidence  => $info->{'confidence'},
+        severity    => $info->{'severity'},
+        restriction => $info->{'restriction'} || 'private',
+        detecttime  => $info->{'detecttime'},
+        alternativeid => $info->{'alternativeid'},
+        alternativeid_restriction => $info->{'alternativeid_restriction'} || 'private',
+    }) };
+    if($@){
+        return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
+        $id = $self->retrieve(uuid => $uuid);
     }
     $self->table($tbl);
     return($id);    
@@ -150,6 +103,8 @@ sub isWhitelisted {
     my $sql = '';
 
     ## TODO -- do this by my $parts = split(/\./,$a); foreach ....
+    ## TODO -- use hashing dumbass. LIKE, like really sucks.
+    ## TODO -- maybe even had feed parser pull the whitelist and do this in memory.
     for($a){
         if(/([a-zA-Z0-9-]+\.[a-zA-Z]{2,4})$/){
             $sql .= qq{address LIKE '$1'};

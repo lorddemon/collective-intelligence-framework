@@ -13,7 +13,6 @@ CREATE TABLE domain (
     rir varchar(10),
     class VARCHAR(10),
     ttl int,
-    whois text,
     impact VARCHAR(140),
     confidence REAL,
     source uuid NOT NULL,
