@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/CIF-Archive-Analytic-Plugin-Nameserver.t
+lib/CIF/Archive/Analytic/Plugin/Nameserver.pm

@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/CIF-Archive-Analytic-Plugin-Surbl.t
+lib/CIF/Archive/Analytic/Plugin/Surbl.pm
