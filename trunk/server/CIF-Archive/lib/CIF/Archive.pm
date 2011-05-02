@@ -16,7 +16,7 @@ use OSSP::uuid;
 __PACKAGE__->table('archive');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid format description data restriction created source/);
-__PACKAGE__->columns(Essential => qw/id uuid format description created/);
+__PACKAGE__->columns(Essential => qw/id uuid format description source restriction data created/);
 __PACKAGE__->sequence('archive_id_seq');
 
 sub plugins {
@@ -72,11 +72,29 @@ sub normalize_timestamp {
     return $dt;
 }
 
+## TODO -- this could get really slow
+## might be best to not use the XML storage and just use straight up JSON
+
+__PACKAGE__->add_trigger(select => \&data);
+
+sub data {
+    my $class = shift;
+    my $data = $class->{'data'};
+    my $format = $class->{'format'};
+    return $data unless($format && $format eq 'iodef');
+
+    use CIF::Archive::Storage::Plugin::Iodef;
+    $data = CIF::Archive::Storage::Plugin::Iodef->from($data);
+    $data->{'uuid'} = $class->uuid();
+    return($data);
+    
+}
+
 sub insert {
     my $self = shift;
     my $info = shift;
 
-    my $source  = $info->{'source'} || return('missing source',undef);
+    my $source  = $info->{'source'} || 'localhost';
     $source = genSourceUUID($source) unless(isUUID($source));
     $info->{'source'} = $source;
 
@@ -125,7 +143,7 @@ sub insert {
         })
     };
     if($@){
-        die $@ unless($@ =~ /duplicate key value violates unique constraint/);
+        return($@,undef) unless($@ =~ /duplicate key value violates unique constraint/);
         $id = $self->retrieve(uuid => $info->{'uuid'});
     }
     $info->{'uuid'} = $id->uuid();
@@ -135,8 +153,7 @@ sub insert {
         my ($did,$err) = $p->insert($info);
         if($err){
             $id->delete();
-            ## TODO -- should we be returning the error or dying?
-            die($err);
+            return($err,undef);
         }
     }
     return(undef,$id);
