@@ -1,0 +1,33 @@
+#!/usr/bin/perl
+
+use strict;
+
+use CIF::Archive;
+use CIF::Archive::Analytic;
+use Data::Dumper;
+use Config::Simple;
+
+my $c = Config::Simple->new('~/.cif') || die 'missing config';
+
+my @plugs = CIF::Archive::Analytic->plugins();
+my $max = '500';
+
+my $ret = CIF::Archive::Analytic->start_run({
+    description => 'analytics run start',
+});
+my $startid = $ret->{'startid'};
+my $endid = $ret-{'endid'};
+
+my @recs = CIF::Archive->retrieve_from_sql(qq{
+    id >= $startid
+    AND id <= $endid
+    ORDER BY id ASC
+});
+
+warn 'processing: '.($#recs + 1).' recs';
+
+foreach(@recs){
+    foreach my $p (@plugs){
+        my $r = $p->process($_->data(),$c);
+    }
+}
