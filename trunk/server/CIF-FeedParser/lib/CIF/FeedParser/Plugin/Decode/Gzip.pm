@@ -1,7 +1,5 @@
 package CIF::FeedParser::Plugin::Decode::Gzip;
 
-use strict;
-use warnings;
 use Compress::Zlib;
 
 sub decode {

@@ -5,7 +5,6 @@ use Getopt::Std;
 use CIF::FeedParser;
 use Config::Simple;
 use Data::Dumper;
-use Net::DNS::Resolver;
 
 my %opts;
 getopts('hs:T:t:dFc:f:',\%opts);
@@ -63,11 +62,6 @@ if($debug){
     warn 'running '.$c->{'threads_count'}.' threads';
 }
 
-my $nsres;
-unless($full_load){
-    $c->{nsres} = Net::DNS::Resolver->new(recursive => 0);
-}
-
 if($sconfig && $sconfig->param(-block => 'database')){
     $sconfig = $sconfig->param(-block => 'database');
     $c->{'database'} = ['DBI:'.$sconfig->{'driver'}.':database='.$sconfig->{'database'}.';host='.$sconfig->{'host'},$sconfig->{'user'},$sconfig->{'password'},{AutoCommit => 1}];
@@ -75,5 +69,6 @@ if($sconfig && $sconfig->param(-block => 'database')){
 
 my @items = CIF::FeedParser::parse($c);
 exit(0) unless($#items > -1);
-CIF::FeedParser::t_insert($full_load,undef,@items);
+my $ret = CIF::FeedParser::t_insert($full_load,undef,@items);
+
 exit(0);
