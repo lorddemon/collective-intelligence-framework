@@ -1,6 +1,7 @@
 package CIF::Archive::DataType::Plugin::Feed;
 use base 'CIF::Archive::DataType';
 
+require 5.008;
 use strict;
 use warnings;
 
@@ -16,7 +17,7 @@ __PACKAGE__->sequence('feed_id_seq');
 sub prepare {
     my $class = shift;
     my $info = shift;
-
+    return unless($info->{'impact'});
     return(undef) unless($info->{'impact'} =~ /feed/);
     return(1);
 }
