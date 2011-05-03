@@ -4,7 +4,7 @@ use 5.008008;
 use strict;
 use warnings;
 
-our $VERSION = '0.00_01';
+our $VERSION = '0.01_01';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 use DateTime::Format::DateParse;
@@ -30,12 +30,15 @@ sub new {
 
 sub get_feed { 
     my $f = shift;
-    my $content = threads->create('_get_feed',$f)->join();
+    my ($content,$err) = threads->create('_get_feed',$f)->join();
+    return(undef,$err) if($err);
+    return(undef,'no content') unless($content);
     # auto-decode the content if need be
     $content = _decode($content);
 
     # encode to utf8
     $content = encode_utf8($content);
+    #$content =~ s/[^[:print:]]//g;
     # remove any CR's
     $content =~ s/\r//g;
     return($content);
@@ -43,39 +46,19 @@ sub get_feed {
 
 sub _get_feed {
     my $f = shift;
-    my $content;
-    for($f->{'feed'}){
-        if(/^(\/\S+)/){
-            open(F,$1) || die($!.': '.$_);
-            my @lines = <F>;
-            close(F);
-            $content = join('',@lines);
-        } elsif($f->{'feed_user'}) {
-            require LWP::UserAgent;
-            my $ua = LWP::UserAgent->new();
-            my $req = HTTP::Request->new(GET => $f->{'feed'});
-            $req->authorization_basic($f->{'feed_user'},$f->{'feed_password'});
-            my $ress = $ua->request($req);
-            die('request failed: '.$ress->status_line()."\n") unless($ress->is_success());
-            $content = $ress->decoded_content();
-        } elsif($f->{'cif'}) {
-            require CIF::Client;
-            my $config = $f->{'cif'};
-            my $feed = $f->{'feed'};
-            my ($client,$err) = CIF::Client->new({config => $config});
-            die($err) if($err);
-            $client->GET($feed);
-            die('request failed with code: '.$client->responseCode()."\n\n".$client->responseContent()) unless($client->responseCode == 200);
-            $content = $client->responseContent();
-        } else {
-            require LWP::Simple;
-            $content = LWP::Simple::get($f->{'feed'}) || die('failed to get feed: '.$f->{'feed'}.': '.$!);
+    return unless($f->{'feed'});
+    my @pulls = __PACKAGE__->plugins();
+    @pulls = grep(/::Pull::/,@pulls);
+    foreach(@pulls){
+        if(my $content = $_->pull($f)){
+            return(undef,$content);
         }
     }
-    return $content;
+    return('could not pull feed',undef);
 }
 
 
+## TODO -- turn this into plugins
 sub parse {
     my $f = shift;
     my $content = get_feed($f);
@@ -94,7 +77,7 @@ sub parse {
                 require CIF::FeedParser::ParseXml;
                 return CIF::FeedParser::ParseXml::parse($f,$content);
             }
-        } elsif($content =~ /^{/){
+        } elsif($content =~ /^?\[{/){
             # possible json content or CIF
             if($content =~ /^{"status"\:/){
                 require CIF::FeedParser::ParseCIF;
@@ -128,6 +111,7 @@ sub _decode {
     }
 }
 
+## TODO -- commit some of this to DateTime::Format::DateParse
 sub normalize_date {
     my $dt = shift;
     return $dt if($dt =~ /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/);
@@ -200,7 +184,9 @@ sub _insert {
         $bucket->connection($f->{'database'});
         local $^W = 1;
     }
-    my $id = $bucket->insert({ %{$f} });
+    my ($err,$id) = $bucket->insert($f);
+    die($err) unless($id);
+    
     my $rid;
     if($id =~ /^\d+$/){
         $rid = $id->description().' -- '.$id->uuid();
@@ -335,9 +321,8 @@ Wes Young, E<lt>wes@barely3am.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
+Copyright (C) 2011 by Wes Young (claimid.con/wesyoung)
 Copyright (C) 2011 by REN-ISAC and The Trustees of Indiana University
-
-Copyright (C) 2011 by Wes Young
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.0 or,

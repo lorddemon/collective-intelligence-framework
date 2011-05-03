@@ -1,7 +1,5 @@
 package CIF::FeedParser::ParseJson;
 
-use strict;
-use warnings;
 use JSON;
 
 sub parse {
