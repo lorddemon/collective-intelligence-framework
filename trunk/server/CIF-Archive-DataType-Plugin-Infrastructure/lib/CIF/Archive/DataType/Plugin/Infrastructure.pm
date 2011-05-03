@@ -14,6 +14,7 @@ use Net::CIDR;
 use Net::Abuse::Utils qw(:all);
 use Regexp::Common qw/net/;
 use Regexp::Common::net::CIDR ();
+use DateTime;
 
 __PACKAGE__->set_table();
 __PACKAGE__->columns(Primary => 'id');
@@ -40,12 +41,13 @@ sub prepare {
     my $class = shift;
     my $info = shift;
 
-    my $address = $info->{'address'} || return(undef);
+    my $address = $info->{'rdata'} || $info->{'address'};
+    return unless($address);
     return(undef) unless($address =~ /^$RE{'net'}{'IPv4'}/);
     return(0,'invalid address: private address space -- '.$address) if(isPrivateAddress($address));
     return(0,'invalid address: whitelisted -- '.$address) if(isWhitelisted($address));
     unless($info->{'asn'} || $info->{'cidr'}){
-        my ($as,$network,$ccode,$rir,$date,$as_desc) = asninfo($info->{'address'});
+        my ($as,$network,$ccode,$rir,$date,$as_desc) = asninfo($address);
         $info->{'asn'}  = $as;
         $info->{'cidr'} = $network;
         $info->{'cc'}   = $ccode;
@@ -79,12 +81,6 @@ sub asninfo {
     return ($as,$network,$ccode,$rir,$date,$as_desc);
 }
 
-my $tests = {
-    'severity'      => qr/^(low|medium|high||)$/,
-    'address'       => qr/^$RE{'net'}{'IPv4'}/,
-    'confidence'    => qr/\d+/,
-};
-
 sub feed {
     my $class = shift;
     my $info = shift;
@@ -107,8 +103,12 @@ sub insert {
     my $self = shift;
     my $info = shift;
 
-    my ($ret,$err) = $self->check_params($tests,$info);
-    return($ret,$err) unless($ret);
+    ## TODO -- clean this up
+    ## this will auto-index rdata from a domain insert
+    my $address = $info->{'rdata'} || $info->{'address'};
+    
+    #my ($ret,$err) = $self->check_params($tests,$info);
+    #return($ret,$err) unless($ret);
 
     my $tbl = $self->table();
     foreach($self->plugins()){
@@ -125,7 +125,7 @@ sub insert {
         uuid        => $uuid,
         description => lc($info->{'description'}),
         impact      => $info->{'impact'},
-        address     => $info->{'address'},
+        address     => $address,
         cidr        => $info->{'cidr'},
         asn         => $info->{'asn'},
         asn_desc    => $info->{'asn_desc'},

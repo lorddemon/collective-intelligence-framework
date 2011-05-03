@@ -22,7 +22,6 @@ CREATE TABLE infrastructure (
     restriction restriction not null default 'private',
     alternativeid text,
     alternativeid_restriction restriction not null default 'private',
-    whois text,
     detecttime timestamp with time zone DEFAULT NOW(),
     created timestamp with time zone DEFAULT NOW()
 );
