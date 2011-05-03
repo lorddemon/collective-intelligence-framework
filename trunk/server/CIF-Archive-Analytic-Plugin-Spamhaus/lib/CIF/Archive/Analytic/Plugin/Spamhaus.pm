@@ -13,38 +13,56 @@ my $codes = {
     '127.0.0.2' => {
         impact      => 'spam infrastructure',
         description => 'Direct UBE sources, spam operations & spam services',
+        severity    => 'medium',
+        confidence  => 7,
     },
     '127.0.0.3' => {
         impact      => 'spam infrastructure',
         description => 'Direct snowshoe spam sources detected via automation',
+        severity    => 'medium',
+        confidence  => 7,
     },
     '127.0.0.4' => {
         impact      => 'malware infrastructure',
         description => 'CBL + customised NJABL. 3rd party exploits (proxies, trojans, etc.)',
+        severity    => 'medium',
+        confidence  => 7,
     },
     '127.0.0.5' => {
         impact      => 'malware infrastructure',
         description => 'CBL + customised NJABL. 3rd party exploits (proxies, trojans, etc.)',
+        severity    => 'medium',
+        confidence  => 7,
     },
     '127.0.0.6' => {
         impact      => 'malware infrastructure',
         description => 'CBL + customised NJABL. 3rd party exploits (proxies, trojans, etc.)',
+        severity    => 'medium',
+        confidence  => 7,
     },
     '127.0.0.7' => {
         impact      => 'malware infrastructure',
         description => 'CBL + customised NJABL. 3rd party exploits (proxies, trojans, etc.)',
+        severity    => 'medium',
+        confidence  => 7,
     },
     '127.0.0.8' => {
         impact      => 'malware infrastructure',
         description => 'CBL + customised NJABL. 3rd party exploits (proxies, trojans, etc.)',
+        severity    => 'medium',
+        confidence  => 7,
     },
     '127.0.0.10'    => {
         impact      => 'spam infrastructure',
         description => 'End-user Non-MTA IP addresses set by ISP outbound mail policy',
+        severity    => 'medium',
+        confidence  => 7,
     },
     '127.0.0.11'    => {
         impact      => 'spam infrastructure',
         description => 'End-user Non-MTA IP addresses set by ISP outbound mail policy',
+        severity    => 'medium',
+        confidence  => 7,
     },
 };
 
@@ -54,6 +72,7 @@ sub process {
 
     return unless(ref($data) eq 'HASH');
     my $a = $data->{'address'};
+    return unless($a);
     return unless($a =~ /^$RE{'net'}{'IPv4'}{-keep}/);
     $a = $1;
     my $aid = $data->{'alternativeid'};
@@ -71,14 +90,14 @@ sub process {
 
     require CIF::Archive;
     foreach(@rdata){
-        my $desc = $codes->{$_->{'address'}};
+        my $code = $codes->{$_->{'address'}};
         my ($err,$id) = CIF::Archive->insert({
             address                     => $data->{'address'},
-            impact                      => $desc->{'impact'},
-            description                 => $desc->{'description'},
+            impact                      => $code->{'impact'},
+            description                 => $cide->{'description'},
             relatedid                   => $data->{'uuid'},
-            severity                    => $data->{'severity'},
-            confidence                  => $data->{'confidence'},
+            severity                    => $code->{'severity'},
+            confidence                  => $code->{'confidence'},
             restriction                 => 'need-to-know', 
             alternativeid               => 'http://www.spamhaus.org/query/bl?ip='.$a,
             alternativdid_restriction   => 'public',
