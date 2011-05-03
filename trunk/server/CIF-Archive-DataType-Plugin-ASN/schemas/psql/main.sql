@@ -12,5 +12,6 @@ CREATE TABLE asn (
     alternativeid text,
     alternativeid_restriction restriction not null default 'private',
     detecttime timestamp with time zone DEFAULT NOW(),
-    created timestamp with time zone DEFAULT NOW()
+    created timestamp with time zone DEFAULT NOW(),
+    unique(uuid,asn)
 );
