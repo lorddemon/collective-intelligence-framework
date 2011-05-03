@@ -56,6 +56,8 @@ sub process {
     my $a = $data->{'address'};
     return unless($a =~ /^$RE{'net'}{'IPv4'}{-keep}/);
     $a = $1;
+    my $aid = $data->{'alternativeid'};
+    return if($aid =~ /spamhaus\.org/);
 
     require Net::DNS::Resolver;
     my $r = Net::DNS::Resolver->new(recursive => 0);
