@@ -1,13 +1,15 @@
 package CIF::Archive::Storage::Plugin::Iodef::Url;
 
+use Regexp::Common qw /URI/;
+
 sub prepare {
     my $class   = shift;
     my $info    = shift;
 
     my $address = $info->{'address'};
     return(0) unless($address);
-    return(0) if($address =~ /[a-zA-Z0-9.-]+\.[a-z]{2,5}$/);
-    return(1) if($address =~ /[a-zA-Z0-9.-]+\.[a-z]{2,5}/);
+    return(1) if($address =~ /$RE{URI}{HTTP}/);
+    return(0);
 }
 
 sub convert {
