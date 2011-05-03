@@ -1,7 +1,7 @@
 package CIF::Archive::Storage::Plugin::Iodef;
 use base 'CIF::Archive::Storage';
 
-our $VERSION = '0.01_01';
+our $VERSION = '0.01_02';
 $VERSION = eval $VERSION;
 
 require 5.008;
