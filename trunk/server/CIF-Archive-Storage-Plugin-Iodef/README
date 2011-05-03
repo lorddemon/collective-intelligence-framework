@@ -4,6 +4,8 @@ CIF-Archive-Storage-Plugin-Iodef
 PREAMBLE
 
 http://code.google.com/p/collective-intelligence-framework/
+http://tools.ietf.org/html/rfc5070
+http://standards.ieee.org/develop/indconn/icsg/malware.html
 
 INSTALLATION
 
@@ -18,7 +20,7 @@ DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-CIF::Archive
+CIF::Archive XML::IODEF XML::Malware
 
 COPYRIGHT AND LICENCE
 
