@@ -1,0 +1,6 @@
+Revision history for Perl extension CIF::Archive::Analytic::Plugin::SpamhausDBL.
+
+0.00_01  Tue May  3 14:51:59 2011
+	- original version; created by h2xs 1.23 with options
+		-ABXb 5.8.8 CIF::Archive::Analytic::Plugin::SpamhausDBL
+
