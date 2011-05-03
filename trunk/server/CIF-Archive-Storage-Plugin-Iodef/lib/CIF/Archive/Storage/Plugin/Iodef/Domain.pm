@@ -25,9 +25,20 @@ sub convert {
     if($info->{'rdata'}){
         $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
         $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','rdata');
-        $iodef->add('IncidentEventDataFlowSystemAdditionalData',$rdata);
+        $iodef->add('IncidentEventDataFlowSystemAdditionalData',$info->{'rdata'} || '');
+        $iodef = CIF::Archive::Storage::Plugin::Iodef::Bgp->convert($_,$iodef);
+
+        # don't add TTL's, you'll screw up the duplicate detection, it changes every time you add a domain ;-)
+        # we build it into the index, but not the orig message.
+        #$iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
+        #$iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','ttl');
+        #$iodef->add('IncidentEventDataFlowSystemAdditionalData',$_->{'ttl'} || '');
 
     }
+    $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
+    $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','type');
+    $iodef->add('IncidentEventDataFlowSystemAdditionalData',$info->{'type'} || 'A');
+
     return($iodef);
 }
 

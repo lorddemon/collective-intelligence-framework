@@ -45,6 +45,14 @@ sub convert {
     my $protocol                    = $info->{'protocol'};
     my $portlist                    = $info->{'portlist'};
 
+    my $dt = $info->{'detecttime'};
+    # default it to the hour
+    unless($dt){
+        $dt = DateTime->from_epoch(epoch => time());
+        $dt = $dt->ymd().'T'.$dt->hour().':00:00Z';
+    }
+    $info->{'detecttime'} = $dt;
+
     $info->{'format'}   = 'iodef';
 
     my $iodef = XML::IODEF->new();
@@ -84,7 +92,7 @@ sub from {
     $iodef->in($msg);
     my $hash = $iodef->to_hash();
 
-    my ($prefix,$asn,$rir,$cc);
+    my ($prefix,$asn,$rir,$cc,$type,$rdata);
     if(exists($hash->{'IncidentEventDataFlowSystemAdditionalData'})){
         my @adm = @{$hash->{'IncidentEventDataFlowSystemAdditionalDatameaning'}};
         my @ad = @{$hash->{'IncidentEventDataFlowSystemAdditionalData'}};
@@ -92,9 +100,12 @@ sub from {
         $prefix = $m{'prefix'};
         $asn    = $m{'asn'};
         $rir    = $m{'rir'};
+        $type   = $m{'type'};
+        $rdata  = $m{'rdata'};
     }
 
     my $h = {
+        relatedid   => $hash->{'IncidentRelatedActivityIncidentID'}[0],
         address     => $hash->{'IncidentEventDataFlowSystemNodeAddress'}[0],
         description => $hash->{'IncidentDescription'}[0],
         detecttime  => $hash->{'IncidentDetectTime'}[0],
@@ -109,6 +120,8 @@ sub from {
         cidr        => $prefix,
         cc          => $hash->{'IncidentEventDataFlowSystemNodeLocation'}[0],
         rir         => $rir,
+        type        => $type,
+        rdata       => $rdata,
         alternativeid               => $hash->{'IncidentAlternativeIDIncidentID'}[0],
         alternativeid_restriction   => $hash->{'IncidentAlternativeIDIncidentIDrestriction'}[0],
     };
