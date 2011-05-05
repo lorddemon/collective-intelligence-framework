@@ -12,7 +12,7 @@ use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/S
 
 use Net::CIDR;
 use Net::Abuse::Utils qw(:all);
-use Regexp::Common qw/net/;
+use Regexp::Common qw/net URI/;
 use Regexp::Common::net::CIDR ();
 use DateTime;
 
@@ -43,7 +43,11 @@ sub prepare {
 
     my $address = $info->{'rdata'} || $info->{'address'};
     return unless($address);
-    return(undef) unless($address =~ /^$RE{'net'}{'IPv4'}/);
+
+    # be sure to guard against things like 1.1.1.1/exe.exe
+    # when we move to ipv6, be sure to for() this and anchor them down
+    # the DataType::Plugin::Url can confuse it if you don't
+    return(undef) unless($address =~ /^$RE{'net'}{'IPv4'}$/ || $address =~ /^$RE{'net'}{'CIDR'}{'IPv4'}$/);
     return(0,'invalid address: private address space -- '.$address) if(isPrivateAddress($address));
     return(0,'invalid address: whitelisted -- '.$address) if(isWhitelisted($address));
     unless($info->{'asn'} || $info->{'cidr'}){
@@ -60,6 +64,7 @@ sub prepare {
 sub isPrivateAddress {
     my $addr = shift;
     return(undef) unless($addr && $addr =~ /^$RE{'net'}{'IPv4'}/);
+    return if($addr =~ /^$RE{'URI'}/);
     my $found = Net::CIDR::cidrlookup($addr,@list);
     return($found);
 }
