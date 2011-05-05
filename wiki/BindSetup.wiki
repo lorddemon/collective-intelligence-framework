@@ -12,7 +12,7 @@ This doc shows an example of how to proxy your resolution requests through googl
  * http://www.team-cymru.org/Services/ip-to-asn.html
  * http://www.bind9.net/BIND-FAQ
 
-== HowTo ==
+== Example ==
 /etc/bind/named.conf.options
 
 {{{
