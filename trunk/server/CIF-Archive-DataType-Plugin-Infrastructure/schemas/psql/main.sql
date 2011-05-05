@@ -23,7 +23,8 @@ CREATE TABLE infrastructure (
     alternativeid text,
     alternativeid_restriction restriction not null default 'private',
     detecttime timestamp with time zone DEFAULT NOW(),
-    created timestamp with time zone DEFAULT NOW()
+    created timestamp with time zone DEFAULT NOW(),
+    unique(uuid,address,cidr)
 );
 
 --
@@ -33,7 +34,7 @@ CREATE TABLE infrastructure (
 CREATE TABLE infrastructure_botnet () INHERITS (infrastructure);
 ALTER TABLE infrastructure_botnet ADD PRIMARY KEY (id);
 ALTER TABLE infrastructure_botnet ADD CONSTRAINT infrastructure_botnet_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
-ALTER TABLE infrastructure_botnet ADD UNIQUE(uuid);
+ALTER TABLE infrastructure_botnet ADD UNIQUE(uuid,address,cidr);
 
 --
 -- infrastructure_malware
@@ -42,7 +43,7 @@ ALTER TABLE infrastructure_botnet ADD UNIQUE(uuid);
 CREATE TABLE infrastructure_malware () INHERITS (infrastructure);
 ALTER TABLE infrastructure_malware ADD PRIMARY KEY (id);
 ALTER TABLE infrastructure_malware ADD CONSTRAINT infrastructure_malware_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
-ALTER TABLE infrastructure_malware ADD UNIQUE(uuid);
+ALTER TABLE infrastructure_malware ADD UNIQUE(uuid,address,cidr);
 
 --
 -- infrastructure_whitelist
@@ -51,7 +52,7 @@ ALTER TABLE infrastructure_malware ADD UNIQUE(uuid);
 CREATE TABLE infrastructure_whitelist () INHERITS (infrastructure);
 ALTER TABLE infrastructure_whitelist ADD PRIMARY KEY (id);
 ALTER TABLE infrastructure_whitelist ADD CONSTRAINT infrastructure_whitelist_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
-ALTER TABLE infrastructure_whitelist ADD UNIQUE(uuid);
+ALTER TABLE infrastructure_whitelist ADD UNIQUE(uuid,address,cidr);
 
 --
 -- infrastructure_scan
@@ -60,7 +61,7 @@ ALTER TABLE infrastructure_whitelist ADD UNIQUE(uuid);
 CREATE TABLE infrastructure_scanning () INHERITS (infrastructure);
 ALTER TABLE infrastructure_scanning ADD PRIMARY KEY (id);
 ALTER TABLE infrastructure_scanning ADD CONSTRAINT infrastructure_scanning_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
-ALTER TABLE infrastructure_scanning ADD UNIQUE(uuid);
+ALTER TABLE infrastructure_scanning ADD UNIQUE(uuid,address,cidr);
 
 --
 -- infrastructure_spam 
@@ -69,7 +70,7 @@ ALTER TABLE infrastructure_scanning ADD UNIQUE(uuid);
 CREATE TABLE infrastructure_spam () INHERITS (infrastructure);
 ALTER TABLE infrastructure_spam ADD PRIMARY KEY (id);
 ALTER TABLE infrastructure_spam ADD CONSTRAINT infrastructure_spam_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
-ALTER TABLE infrastructure_spam ADD UNIQUE(uuid);
+ALTER TABLE infrastructure_spam ADD UNIQUE(uuid,address,cidr);
 
 --
 -- infrastructure_network
@@ -78,24 +79,29 @@ ALTER TABLE infrastructure_spam ADD UNIQUE(uuid);
 CREATE TABLE infrastructure_network () INHERITS (infrastructure);
 ALTER TABLE infrastructure_network ADD PRIMARY KEY (id);
 ALTER TABLE infrastructure_network ADD CONSTRAINT infrastructure_network_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
-ALTER TABLE infrastructure_network ADD UNIQUE(uuid);
+ALTER TABLE infrastructure_network ADD UNIQUE(uuid,address,cidr);
 
 CREATE TABLE infrastructure_suspicious () INHERITS (infrastructure);
 ALTER TABLE infrastructure_suspicious ADD PRIMARY KEY (id);
 ALTER TABLE infrastructure_suspicious ADD CONSTRAINT infrastructure_suspicious_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
-ALTER TABLE infrastructure_suspicious ADD UNIQUE(uuid);
+ALTER TABLE infrastructure_suspicious ADD UNIQUE(uuid,address,cidr);
 
 CREATE TABLE infrastructure_phishing () INHERITS (infrastructure);
 ALTER TABLE infrastructure_phishing ADD PRIMARY KEY (id);
 ALTER TABLE infrastructure_phishing ADD CONSTRAINT infrastructure_phishing_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
-ALTER TABLE infrastructure_phishing ADD UNIQUE(uuid);
+ALTER TABLE infrastructure_phishing ADD UNIQUE(uuid,address,cidr);
 
 CREATE TABLE infrastructure_asn () INHERITS (infrastructure);
 ALTER TABLE infrastructure_asn ADD PRIMARY KEY (id);
 ALTER TABLE infrastructure_asn ADD CONSTRAINT infrastructure_asn_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
-ALTER TABLE infrastructure_asn ADD UNIQUE(uuid);
+ALTER TABLE infrastructure_asn ADD UNIQUE(uuid,address,cidr);
 
 CREATE TABLE infrastructure_search () INHERITS (infrastructure);
 ALTER TABLE infrastructure_search ADD PRIMARY KEY (id);
 ALTER TABLE infrastructure_search ADD CONSTRAINT infrastructure_search_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
-ALTER TABLE infrastructure_search ADD UNIQUE(uuid);
+ALTER TABLE infrastructure_search ADD UNIQUE(uuid,address,cidr);
+
+CREATE TABLE infrastructure_passivedns () INHERITS (infrastructure);
+ALTER TABLE infrastructure_passivedns ADD PRIMARY KEY (id);
+ALTER TABLE infrastructure_passivedns ADD CONSTRAINT infrastructure_passivedns_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
+ALTER TABLE infrastructure_passivedns ADD UNIQUE(uuid,address,cidr);
