@@ -1,0 +1,6 @@
+Revision history for Perl extension CIF::Archive::Analytic::Plugin::VirusTotal.
+
+0.00_01  Fri May  6 14:27:48 2011
+	- original version; created by h2xs 1.23 with options
+		-ABXb 5.8.8 CIF::Archive::Analytic::Plugin::VirusTotal
+
