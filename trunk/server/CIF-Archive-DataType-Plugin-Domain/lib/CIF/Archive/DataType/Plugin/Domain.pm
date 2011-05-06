@@ -10,11 +10,13 @@ $VERSION = eval $VERSION;
 
 use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/SUPER$/;
 use Net::Abuse::Utils qw(:all);
+use Digest::MD5 qw/md5_hex/;
+use Digest::SHA1 qw/sha1_hex/;
 
 __PACKAGE__->table('domain');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid description address type rdata cidr asn asn_desc cc rir class ttl impact confidence source alternativeid alternativeid_restriction severity restriction detecttime created/);
-__PACKAGE__->columns(Essential => qw/id uuid description address rdata impact restriction created/);
+__PACKAGE__->columns(All => qw/id uuid description address md5 sha1 type rdata cidr asn asn_desc cc rir class ttl impact confidence source alternativeid alternativeid_restriction severity restriction detecttime created/);
+__PACKAGE__->columns(Essential => qw/id uuid description address md5 sha1 rdata impact restriction created/);
 __PACKAGE__->sequence('domain_id_seq');
 
 my $tests = {
@@ -29,7 +31,10 @@ sub prepare {
 
     my $address = $info->{'address'} || return(undef);
     return(undef) unless($address =~ /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,5}$/);
-    return(0,'invalid address: whitelisted -- '.$address) if(isWhitelisted($address));
+    $info->{'md5'} = md5_hex($address);
+    $info->{'sha1'} = sha1_hex($address);
+
+    return(0,'invalid address: whitelisted -- '.$address) if($class->isWhitelisted($address));
     return(1);
 }
 
@@ -58,8 +63,11 @@ sub insert {
         uuid        => $uuid,
         description => lc($info->{'description'}),
         address     => $info->{'address'},
+        md5         => $info->{'md5'},
+        sha1        => $info->{'sha1'},
         type        => $info->{'type'} || 'A',
-        rdata       => $info->{'rdata'},
+        rdata       => $info->{'rdata'} || 'unknown', ## in sql @NULL != NULL@, so to avoid dup's with no rdata, we have to fill it in
+                                                      ## http://www.pgrs.net/2008/1/11/postgresql-allows-duplicate-nulls-in-unique-columns
         cidr        => $info->{'cidr'},
         asn         => $info->{'asn'},
         asn_desc    => $info->{'asn_desc'},
@@ -95,31 +103,22 @@ sub lookup {
 
 sub isWhitelisted {
     my $self = shift;
-    my $a = shift;
+    my $addr = shift;
 
-    return undef unless($a && $a =~ /\.[a-zA-Z]{2,4}$/);
-    return(1) unless($a =~ /\.[a-zA-Z]{2,4}$/);
-
-    my $sql = '';
-
-    ## TODO -- do this by my $parts = split(/\./,$a); foreach ....
-    ## TODO -- use hashing dumbass. LIKE, like really sucks.
-    ## TODO -- maybe even had feed parser pull the whitelist and do this in memory.
-    for($a){
-        if(/([a-zA-Z0-9-]+\.[a-zA-Z]{2,4})$/){
-            $sql .= qq{address LIKE '$1'};
-        }
-        if(/((?:[a-zA-Z0-9-]+\.){2,2}[a-zA-Z]{2,4})$/){
-            $sql .= qq{ OR address LIKE '$1'};
-        }
-        if(/((?:[a-zA-Z0-9-]+\.){3,3}[a-zA-Z]{2,4})$/){
-            $sql .= qq{ OR address LIKE '$1'};
-        }
-        if(/((?:[a-zA-Z0-9-]+\.){4,4}[a-zA-Z]{2,4})$/){
-            $sql .= qq{ OR address LIKE '$1'};
-        }
+    my @bits = reverse(split(/\./,$addr));
+    my $tld = $bits[0];
+    my @array;
+    push(@array,$tld);
+    my @hashes;
+    foreach(1 ... $#bits){
+        push(@array,$bits[$_]);
+        my $d = join('.',reverse(@array));
+        $d = md5_hex($d);
+        $d = "'".$d."'";
+        push(@hashes,$d);
     }
-    #if($sql eq ''){ return(0); }
+    my $sql .= join('OR md5 = ',@hashes);
+    $sql =~ s/^/md5 = /;
 
     $sql .= qq{\nORDER BY detecttime DESC, created DESC, id DESC};
     my $t = $self->table();
@@ -150,10 +149,10 @@ sub feed {
 __PACKAGE__->set_sql('feed' => qq{
     SELECT * FROM __TABLE__
     WHERE detecttime > ?
-    AND (type IS NULL OR type = 'A')
+    AND type = 'A'
     AND severity >= ?
     AND restriction <= ?
-    AND NOT (lower(impact) = 'search' OR lower(impact) = 'domain whitelist' OR lower(impact) LIKE '% whitelist %')
+    AND NOT (lower(impact) = 'domain whitelist' OR lower(impact) LIKE '% whitelist %')
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });
