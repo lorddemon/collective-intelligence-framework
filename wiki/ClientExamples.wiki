@@ -47,6 +47,14 @@ alert ip any any -> 188.229.13.0/24 any ( msg:"need-to-know - hijacked network i
 alert ip any any -> 204.28.104.0/21 any ( msg:"need-to-know - hijacked network infrastructure 204.28.104.0/21"; threshold:type limit,track by_src,count 1,seconds 3600; sid:2; reference:http://www.spamhaus.org/sbl/sbl.lasso?query=SBL96986; )
 alert ip any any -> 200.106.128.0/20 any ( msg:"need-to-know - hijacked network infrastructure 200.106.128.0/20"; threshold:type limit,track by_src,count 1,seconds 3600; sid:3; reference:http://www.spamhaus.org/sbl/sbl.lasso?query=SBL8587
 }}}
+{{{
+$ cif -q infrastructure/network -p csv
+# address,alternativeid,alternativeid_restriction,asn,asn_desc,cc,cidr,confidence,created,description,detecttime,impact,message,portlist,protocol,restriction,rir,severity,uuid
+130.201.0.0/16,http://www.spamhaus.org/sbl/sbl.lasso?query=SBL101200,LIMITED,23504,SPEAKEASY Speakeasy, Inc.,,128.0.0.0/2,9,2011-04-14 00:15:08.560785+00,hijacked network infrastructure 130.201.0.0/16,2011-04-14 00:00:00+00,hijacked network infrastructure,,,,PRIVILEGED,,high,ae7a011a-c6c3-5f2f-a960-5c703bc7b7db
+188.229.13.0/24,http://www.spamhaus.org/sbl/sbl.lasso?query=SBL89529,LIMITED,23504,SPEAKEASY Speakeasy, Inc.,,128.0.0.0/2,9,2011-04-14 00:15:14.53268+00,hijacked network infrastructure 188.229.13.0/24,2011-04-14 00:00:00+00,hijacked network infrastructure,,,,PRIVILEGED,,high,53e5ec11-2b95-5d05-9c44-a65cae5ac414
+204.28.104.0/21,http://www.spamhaus.org/sbl/sbl.lasso?query=SBL96986,LIMITED,23504,SPEAKEASY Speakeasy, Inc.,,192.0.0.0/3,9,2011-04-14 00:15:34.525974+00,hijacked network infrastructure 204.28.104.0/21,2011-04-14 00:00:00+00,hijacked network infrastructure,,,,PRIVILEGED,,high,801d0d74-5564-5a2a-bc3f-bb1296faf506
+200.106.128.0/20,http://www.spamhaus.org/sbl/sbl.lasso?query=SBL85870,LIMITED,21560,NETSTREAM-COMMUNICATIONS Netstream Communications, LLC,CO,200.106.128.0/21,9,2011-04-14 00:15:31.856361+00,hijacked network infrastructure 200.106.128.0/20,2011-04-14 00:00:00+00,hijacked network infrastructure,,,,PRIVILEGED,lacnic,high,a333fc42-f0cf-5f6d-a691-c66e3de76899
+}}}
 == Scanners ==
 {{{
 $ cif -q infrastructure/scan -s medium
