@@ -3,8 +3,8 @@ Example Client Commands and outputs
 
 <wiki:toc max_depth="3" />
 
-= Suspicious Networks =
-== Table Form ==
+= Infrastructure =
+== Suspicious Networks ==
  # CIDR query
 {{{
 $ cif -q 130.201.0.0/16
@@ -39,7 +39,6 @@ need-to-know|high    |204.28.104.0/21 |        |2011-01-20 00:00:00+00|hijacked 
 need-to-know|high    |200.106.128.0/20|        |2011-01-20 00:00:00+00|hijacked network infrastructure 200.106.128.0/20|public                   |http://www.spamhaus.org/sbl/sbl.lasso?query=SBL85870 
 need-to-know|high    |195.234.159.0/24|        |2011-01-20 00:00:00+00|hijacked network infrastructure 195.234.159.0/24|public                   |http://www.spamhaus.org/sbl/sbl.lasso?query=SBL57950 
 }}}
-== Snort Rules ==
 {{{
 $ cif -q infrastructure/network -p snort
 
@@ -48,9 +47,75 @@ alert ip any any -> 188.229.13.0/24 any ( msg:"need-to-know - hijacked network i
 alert ip any any -> 204.28.104.0/21 any ( msg:"need-to-know - hijacked network infrastructure 204.28.104.0/21"; threshold:type limit,track by_src,count 1,seconds 3600; sid:2; reference:http://www.spamhaus.org/sbl/sbl.lasso?query=SBL96986; )
 alert ip any any -> 200.106.128.0/20 any ( msg:"need-to-know - hijacked network infrastructure 200.106.128.0/20"; threshold:type limit,track by_src,count 1,seconds 3600; sid:3; reference:http://www.spamhaus.org/sbl/sbl.lasso?query=SBL8587
 }}}
+== Scanners ==
+{{{
+$ cif -q infrastructure/scan -s medium
+
+restriction |severity|address        |portlist|detecttime            |description                |alternativeid_restriction|alternativeid                      
+need-to-know|medium  |124.162.54.219 |22      |2010-12-23 04:04:00+00|ssh scanner 124.162.54.219 |public                   |http://www.sshbl.org/lists/date.txt
+need-to-know|medium  |85.25.144.108  |22      |2010-12-23 08:55:53+00|ssh scanner 85.25.144.108  |public                   |http://www.sshbl.org/lists/date.txt
+need-to-know|medium  |88.191.130.49  |22      |2010-12-23 11:09:51+00|ssh scanner 88.191.130.49  |public                   |http://www.sshbl.org/lists/date.txt
+need-to-know|medium  |58.180.49.43   |22      |2010-12-23 12:02:56+00|ssh scanner 58.180.49.43   |public                   |http://www.sshbl.org/lists/date.txt
+}}}
+{{{
+$ cif -q infrastructure/scan -p iptables -s medium
+iptables -N CIF_IN
+iptables -F CIF_IN
+iptables -N CIF_OUT
+iptables -F CIF_OUT
+iptables -A CIF_IN -s 124.162.54.219 -j DROP
+iptables -A CIF_OUT -d 124.162.54.219 -j DROP
+iptables -A CIF_IN -s 85.25.144.108 -j DROP
+iptables -A CIF_OUT -d 85.25.144.108 -j DROP
+iptables -A CIF_IN -s 88.191.130.49 -j DROP
+iptables -A CIF_OUT -d 88.191.130.49 -j DROP
+}}}
+
+== Malware Infrastructure ==
+{{{
+$ cif -q infrastructure/malware -s low
+
+restriction |severity|address        |portlist|detecttime            |description                                                                                |alternativeid_restriction|alternativeid                                                                       
+need-to-know|low     |114.207.244.145|        |2011-01-20 17:38:11+00|malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.145                      |public                   |http://www.malwaredomains.com/files/domains.txt                                     
+need-to-know|low     |114.207.244.144|        |2011-01-20 17:38:11+00|malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.144                      |public                   |http://www.malwaredomains.com/files/domains.txt                                     
+need-to-know|low     |114.207.244.146|        |2011-01-20 17:38:11+00|malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.146                      |public                   |http://www.malwaredomains.com/files/domains.txt                                     
+need-to-know|low     |114.207.244.143|        |2011-01-20 17:38:12+00|malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.143                      |public                   |http://www.malwaredomains.com/files/domains.txt   
+}}}
+{{{
+$ cif -q infrastructure/malware -s low -p snort
+
+alert ip any any -> 114.207.244.145 any ( msg:"need-to-know - malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.145"; threshold:type limit,track by_src,count 1,seconds 3600; sid; reference:http://www.malwaredomains.com/files/domains.txt; )
+alert ip any any -> 114.207.244.144 any ( msg:"need-to-know - malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.144"; threshold:type limit,track by_src,count 1,seconds 3600; sid:1; reference:http://www.malwaredomains.com/files/domains.txt; )
+alert ip any any -> 114.207.244.146 any ( msg:"need-to-know - malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.146"; threshold:type limit,track by_src,count 1,seconds 3600; sid:2; reference:http://www.malwaredomains.com/files/domains.txt; )
+alert ip any any -> 114.207.244.143 any ( msg:"need-to-know - malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.143"; threshold:type limit,track by_src,count 1,seconds 3600; sid:3; reference:http://www.malwaredomains.com/files/domains.txt; )
+alert ip any any -> 174.36.71.44 any ( msg:"need-to-know - malicious infrastructure harmful adplus.in 174.36.71.44"; threshold:type limit,track by_src,count 1,seconds 3600; sid:4; reference:http://www.malwaredomains.com/files/domains.txt; )
+alert ip any any -> 205.209.184.136 any ( msg:"need-to-know - malicious infrastructure unknown bellmorefinancial.com 205.209.184.136"; threshold:type limit,track by_src,count 1,seconds 3600; sid:5; reference:http://www.malwaredomains.com/files/domains.txt; )
+alert ip any any -> 61.191.55.37 any ( msg:"need-to-know - malicious infrastructure unknown bidz.cn 61.191.55.37"; threshold:type limit,track by_src,count 1,seconds 3600; sid:6; reference:http://www.malwaredomains.com/files/domains.txt; )
+alert ip any any -> 65.254.60.240 any ( msg:"need-to-know - malicious infrastructure malvertising blerin.com 65.254.60.240"; threshold:type limit,track by_src,count 1,seconds 3600; sid:7; reference:http://www.malwaredomains.com/files/domains.txt; )
+alert ip any any -> 68.67.68.10 any ( msg:"need-to-know - malicious infrastructure harmful bluelinefreight.in 68.67.68.10"; threshold:type limit,track by_src,count 1,seconds 3600; sid:8; reference:http://www.malwaredomains.com/files/domains.txt; )
+alert ip any any -> 210.114.175.151 any ( msg:"need-to-know - malicious infrastructure harmful bumin.org 210.114.175.151"; threshold:type limit,track by_src,count 1,seconds 3600; sid:9; reference:http://www.malwaredomains.com/files/domain.txt; )
+}}}
+== Phishing ==
+{{{
+$ cif -q infrastructure/phishing -s low
+
+restriction|severity|address        |protocol|portlist|detecttime            |impact                 |description                                                                     |alternativeid_restriction|alternativeid                                             
+need-to-know    |low     |190.123.46.115 |        |        |2011-01-13 17:25:12+00|phishing infrastructure|phishing infrastructure target:Other 190.123.46.115                             |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101217
+need-to-know    |low     |83.64.29.203   |        |        |2011-01-13 17:30:56+00|phishing infrastructure|phishing infrastructure target:PayPal 83.64.29.203                              |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101221
+need-to-know    |low     |67.221.186.208 |        |        |2011-01-13 17:51:05+00|phishing infrastructure|phishing infrastructure target:Amazon.com 67.221.186.208                        |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101223
+need-to-know    |low     |64.62.181.46   |        |        |2011-01-13 18:01:33+00|phishing infrastructure|phishing infrastructure target:Facebook 64.62.181.46                            |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101243
+need-to-know    |low     |216.52.115.2   |        |        |2011-01-13 18:02:46+00|phishing infrastructure|phishing infrastructure target:Facebook 216.52.115.2                            |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101246
+}}}
+{{{
+$ cif -q infrastructure/phishing -s low -p snort
+
+alert ip any any -> 190.123.46.115 any ( msg:"need-to-know - phishing infrastructure target:Other 190.123.46.115"; threshold:type limit,track by_src,count 1,seconds 3600; sid; reference:http://www.phishtank.com/phish_detail.php?phish_id=1101217; )
+alert ip any any -> 83.64.29.203 any ( msg:"need-to-know - phishing infrastructure target:PayPal 83.64.29.203"; threshold:type limit,track by_src,count 1,seconds 3600; sid:1; reference:http://www.phishtank.com/phish_detail.php?phish_id=1101221; )
+alert ip any any -> 67.221.186.208 any ( msg:"need-to-know - phishing infrastructure target:Amazon.com 67.221.186.208"; threshold:type limit,track by_src,count 1,seconds 3600; sid:2; reference:http://www.phishtank.com/phish_detail.php?phish_id=1101223; )
+alert ip any any -> 64.62.181.46 any ( msg:"need-to-know - phishing infrastructure target:Facebook 64.62.181.46"; threshold:type limit,track by_src,count 1,seconds 3600; sid:3; reference:http://www.phishtank.com/phish_detail.php?phish_id=1101243; )
+}}}
 
 = Domain(s) =
-== Table Form ==
 {{{
 $> cif -q domain/nameserver -s low
 
@@ -81,7 +146,6 @@ RESTRICTED |low     |ns5.tophostingcenter.com|208.43.34.232|A   |2011-02-16 08:2
 RESTRICTED |low     |ns4.tophostingcenter.com|208.43.34.231|A   |2011-02-16 08:24:50+00|suspicious nameserver servidoronline.co.cc|suspicious nameserver malware domain servidoronline.co.cc         |RESTRICTED               |                                               
 RESTRICTED |low     |ns5.tophostingcenter.com|208.43.34.232|A   |2011-02-16 09:24:23+00|suspicious nameserver servidoronline.co.cc|suspicious nameserver malware domain servidoronline.co.cc         |RESTRICTED               |                                               
 }}}
-== Bind Zone ==
 {{{
 $ cif -q domain/nameserver -s low -p bindzone
 
@@ -96,8 +160,48 @@ zone "dns4.registrar-servers.com" {type master; file "/etc/namedb/cif_blockeddom
 zone "dns1.registrar-servers.com" {type master; file "/etc/namedb/cif_blockeddomain.hosts";};
 zone "ns2.ndns.cn" {type master; file "/etc/namedb/cif_blockeddomain.hosts";};
 }}}
+
+= URLs =
+== Malware / Exploit ==
+{{{
+
+$ cif -q url/malware -s medium
+
+restriction |severity|address                                                                                                                                                                 |portlist|detecttime            |description                                                    |alternativeid_restriction|alternativeid                                                                       
+need-to-know|medium  |http://derts3563d.net/old_files/root/bin/config.bin                                                                                                                     |        |2010-12-25 00:00:00+00|malware url spyeye config md5:15f587e0c9472c7538dff178ea07ee5f |public                   |https://spyeyetracker.abuse.ch/monitor.php?host=derts3563d.net                      
+need-to-know|medium  |http://holycrosshrco.org/img_49jfdnmgudfg.jpg                                                                                                                           |        |2010-12-31 00:00:00+00|malware url zeus binary md5:36acc426ab7328c3979c05b9d3743594   |public                   |https://zeustracker.abuse.ch/monitor.php?host=holycrosshrco.org                     
+need-to-know|medium  |http://yyyaanve.ru/b.bin                                                                                                                                                |        |2011-01-04 00:00:00+00|malware url zeus config v2 md5:0052e23360b505e45e099355287ad0a5|public                   |https://zeustracker.abuse.ch/monitor.php?host=yyyaanve.ru                           
+need-to-know|medium  |http://454ht5h59.com/l.7z                                                                                                                                               |        |2011-01-05 00:00:00+00|malware url zeus config v2 md5:e997f4e34c2f61fe91c9c3e32c56f33c|public                   |https://zeustracker.abuse.ch/monitor.php?host=454ht5h59.com                         
+}}}
+{{{
+$ cif 1e81826d3a272ffcb2707913a2218a1f
+
+Feed Restriction: RESTRICTED
+Feed Created: 2011-05-12T13:16:35Z
+
+restriction|severity|address                                                    |portlist|detecttime            |impact|description          |alternativeid_restriction|alternativeid                                                                           
+PRIVILEGED |medium  |http%3A%2F%2Fa.k7h2.org%2Findex.php%3Ftp%3De7908426b507d04c|        |2011-05-09 18:50:00+00|      |blackhole exploit kit|LIMITED                  |http://www.malwaredomainlist.com/mdl.php?search=a.k7h2.org/index.php?tp=e7908426b507d04c
+}}}
+
+== Phishing ==
+{{{
+$ cif -q url/phishing -s low
+
+restriction|severity|address|url_md5                         |url_sha1                                |malware_md5|malware_sha1|detecttime            |impact      |description                                                                                |alternativeid_restriction|alternativeid                                             
+need-to-know |medium  |http://us.worldofwarcraft.accountadmin-service.net/customersupport.htm|4f566ced52f11c4e44ab5e16ff6c1e83|a62e153af62552215eb859cdca8c1c6da871948e|           |            |2011-01-13 17:25:12+00|phishing url|phishing url target:Other md5:4f566ced52f11c4e44ab5e16ff6c1e83                             |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101217
+need-to-know |medium  |http://www.toyoida.org/components/com_hotornot2/phpthumb/cache/index.html|dcb967c05b2b22c38d6379392b89830e|3226551520c3051c81f98ff68a05dadc43e47604|           |            |2011-01-13 17:30:56+00|phishing url|phishing url target:PayPal md5:dcb967c05b2b22c38d6379392b89830e                            |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101221
+need-to-know |medium  |http://sport-ro.limewebs.com/amz/processing.php|05db9301b3b5d504570e3bff47e00d39|7d7dd147feaaba43fdbf576b1f6a81a05c168d68|           |            |2011-01-13 17:51:05+00|phishing url|phishing url target:Amazon.com md5:05db9301b3b5d504570e3bff47e00d39 
+}}}
+
 = Malware =
-== Table Form ==
+{{{
+$ cif -q malware -s medium
+
+restriction|asn|asn_desc|cidr|address|hash_md5                        |hash_sha1                               |description                                                                                                                          |severity|detecttime            |created                      |alternativeid_restriction|alternativeid                                                                                                  
+need-to-know |   |        |    |       |0c27b16b999a6656bb39a297cccb38af|840a89fc018ae07ae771da2b0204375644b3fe48|malware binary Virus.Win32.Virut.a                                                                                                   |medium  |2011-03-08 00:00:00+00|2011-03-08 00:28:54.045894+00|LIMITED                  |http://www.malware.com.br/cgi/search.pl?id=VmlydXMuV2luMzIuVmlydXQuYQ==                                        
+need-to-know |   |        |    |       |18a5bc3997771d2bcd9935b8bea1fefc|312876bce93f8f424ffafe876c2eda8e512b69f9|malware binary :Spyware.Relevantknowledge.A                                                                                          |medium  |2011-03-08 00:00:00+00|2011-03-08 00:22:10.386712+00|LIMITED                  |http://www.malware.com.br/cgi/search.pl?id=OlNweXdhcmUuUmVsZXZhbnRrbm93bGVkZ2UuQQ==                            
+need-to-know |   |        |    |       |3ed38d1e353087a9b0fea7aadb88655c|eb47983cd2a50bacafcd8dcb54677a2496c99121|malware binary Trojan-Downloader.Win32.Agent.dbff                                                                                    |medium  |2011-03-08 00:00:00+00|2011-03-08 00:25:07.978252+00|LIMITED                  |http://www.malware.com.br/cgi/search.pl?id=VHJvamFuLURvd25sb2FkZXIuV2luMzIuQWdlbnQuZGJmZg==  
+}}}
 {{{
 $ cif -q malware -s low
 
@@ -132,110 +236,4 @@ Feed Created: 2011-05-09T23:18:58Z
 
 restriction|severity|hash_md5                        |hash_sha1|detecttime            |impact        |description                                                                                         |alternativeid_restriction|alternativeid                                                               
 PRIVILEGED |medium  |0d5d4beda220a754b13cbc5ecea0264d|         |2011-03-08 00:00:00+00|malware binary|malware binary md5:0d5d4beda220a754b13cbc5ecea0264d Downloader.Generic, Downloader, Generic.ff, Troj|LIMITED                  |http://www.threatexpert.com/report.aspx?md5=0d5d4beda220a754b13cbc5ecea0264d
-}}}
-= Malware URLs =
-== Table Form ==
-{{{
-
-$ cif -q url/malware -s medium
-
-restriction |severity|address                                                                                                                                                                 |portlist|detecttime            |description                                                    |alternativeid_restriction|alternativeid                                                                       
-need-to-know|medium  |http://derts3563d.net/old_files/root/bin/config.bin                                                                                                                     |        |2010-12-25 00:00:00+00|malware url spyeye config md5:15f587e0c9472c7538dff178ea07ee5f |public                   |https://spyeyetracker.abuse.ch/monitor.php?host=derts3563d.net                      
-need-to-know|medium  |http://holycrosshrco.org/img_49jfdnmgudfg.jpg                                                                                                                           |        |2010-12-31 00:00:00+00|malware url zeus binary md5:36acc426ab7328c3979c05b9d3743594   |public                   |https://zeustracker.abuse.ch/monitor.php?host=holycrosshrco.org                     
-need-to-know|medium  |http://yyyaanve.ru/b.bin                                                                                                                                                |        |2011-01-04 00:00:00+00|malware url zeus config v2 md5:0052e23360b505e45e099355287ad0a5|public                   |https://zeustracker.abuse.ch/monitor.php?host=yyyaanve.ru                           
-need-to-know|medium  |http://454ht5h59.com/l.7z                                                                                                                                               |        |2011-01-05 00:00:00+00|malware url zeus config v2 md5:e997f4e34c2f61fe91c9c3e32c56f33c|public                   |https://zeustracker.abuse.ch/monitor.php?host=454ht5h59.com                         
-}}}
-= Infrastructure Scanners =
-== Table ==
-{{{
-$ cif -q infrastructure/scan -s medium
-
-restriction |severity|address        |portlist|detecttime            |description                |alternativeid_restriction|alternativeid                      
-need-to-know|medium  |124.162.54.219 |22      |2010-12-23 04:04:00+00|ssh scanner 124.162.54.219 |public                   |http://www.sshbl.org/lists/date.txt
-need-to-know|medium  |85.25.144.108  |22      |2010-12-23 08:55:53+00|ssh scanner 85.25.144.108  |public                   |http://www.sshbl.org/lists/date.txt
-need-to-know|medium  |88.191.130.49  |22      |2010-12-23 11:09:51+00|ssh scanner 88.191.130.49  |public                   |http://www.sshbl.org/lists/date.txt
-need-to-know|medium  |58.180.49.43   |22      |2010-12-23 12:02:56+00|ssh scanner 58.180.49.43   |public                   |http://www.sshbl.org/lists/date.txt
-}}}
-== iptables ==
-{{{
-$ cif -q infrastructure/scan -p iptables -s medium
-iptables -N CIF_IN
-iptables -F CIF_IN
-iptables -N CIF_OUT
-iptables -F CIF_OUT
-iptables -A CIF_IN -s 124.162.54.219 -j DROP
-iptables -A CIF_OUT -d 124.162.54.219 -j DROP
-iptables -A CIF_IN -s 85.25.144.108 -j DROP
-iptables -A CIF_OUT -d 85.25.144.108 -j DROP
-iptables -A CIF_IN -s 88.191.130.49 -j DROP
-iptables -A CIF_OUT -d 88.191.130.49 -j DROP
-}}}
-= Malware Infrastructure =
-== Table ==
-{{{
-$ cif -q infrastructure/malware -s low
-
-restriction |severity|address        |portlist|detecttime            |description                                                                                |alternativeid_restriction|alternativeid                                                                       
-need-to-know|low     |114.207.244.145|        |2011-01-20 17:38:11+00|malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.145                      |public                   |http://www.malwaredomains.com/files/domains.txt                                     
-need-to-know|low     |114.207.244.144|        |2011-01-20 17:38:11+00|malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.144                      |public                   |http://www.malwaredomains.com/files/domains.txt                                     
-need-to-know|low     |114.207.244.146|        |2011-01-20 17:38:11+00|malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.146                      |public                   |http://www.malwaredomains.com/files/domains.txt                                     
-need-to-know|low     |114.207.244.143|        |2011-01-20 17:38:12+00|malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.143                      |public                   |http://www.malwaredomains.com/files/domains.txt   
-}}}
-== Snort Rules ==
-{{{
-$ cif -q infrastructure/malware -s low -p snort
-
-alert ip any any -> 114.207.244.145 any ( msg:"need-to-know - malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.145"; threshold:type limit,track by_src,count 1,seconds 3600; sid; reference:http://www.malwaredomains.com/files/domains.txt; )
-alert ip any any -> 114.207.244.144 any ( msg:"need-to-know - malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.144"; threshold:type limit,track by_src,count 1,seconds 3600; sid:1; reference:http://www.malwaredomains.com/files/domains.txt; )
-alert ip any any -> 114.207.244.146 any ( msg:"need-to-know - malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.146"; threshold:type limit,track by_src,count 1,seconds 3600; sid:2; reference:http://www.malwaredomains.com/files/domains.txt; )
-alert ip any any -> 114.207.244.143 any ( msg:"need-to-know - malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.143"; threshold:type limit,track by_src,count 1,seconds 3600; sid:3; reference:http://www.malwaredomains.com/files/domains.txt; )
-alert ip any any -> 174.36.71.44 any ( msg:"need-to-know - malicious infrastructure harmful adplus.in 174.36.71.44"; threshold:type limit,track by_src,count 1,seconds 3600; sid:4; reference:http://www.malwaredomains.com/files/domains.txt; )
-alert ip any any -> 205.209.184.136 any ( msg:"need-to-know - malicious infrastructure unknown bellmorefinancial.com 205.209.184.136"; threshold:type limit,track by_src,count 1,seconds 3600; sid:5; reference:http://www.malwaredomains.com/files/domains.txt; )
-alert ip any any -> 61.191.55.37 any ( msg:"need-to-know - malicious infrastructure unknown bidz.cn 61.191.55.37"; threshold:type limit,track by_src,count 1,seconds 3600; sid:6; reference:http://www.malwaredomains.com/files/domains.txt; )
-alert ip any any -> 65.254.60.240 any ( msg:"need-to-know - malicious infrastructure malvertising blerin.com 65.254.60.240"; threshold:type limit,track by_src,count 1,seconds 3600; sid:7; reference:http://www.malwaredomains.com/files/domains.txt; )
-alert ip any any -> 68.67.68.10 any ( msg:"need-to-know - malicious infrastructure harmful bluelinefreight.in 68.67.68.10"; threshold:type limit,track by_src,count 1,seconds 3600; sid:8; reference:http://www.malwaredomains.com/files/domains.txt; )
-alert ip any any -> 210.114.175.151 any ( msg:"need-to-know - malicious infrastructure harmful bumin.org 210.114.175.151"; threshold:type limit,track by_src,count 1,seconds 3600; sid:9; reference:http://www.malwaredomains.com/files/domain.txt; )
-}}}
-
-= Malware =
-{{{
-$ cif -q malware -s medium
-
-restriction|asn|asn_desc|cidr|address|hash_md5                        |hash_sha1                               |description                                                                                                                          |severity|detecttime            |created                      |alternativeid_restriction|alternativeid                                                                                                  
-need-to-know |   |        |    |       |0c27b16b999a6656bb39a297cccb38af|840a89fc018ae07ae771da2b0204375644b3fe48|malware binary Virus.Win32.Virut.a                                                                                                   |medium  |2011-03-08 00:00:00+00|2011-03-08 00:28:54.045894+00|LIMITED                  |http://www.malware.com.br/cgi/search.pl?id=VmlydXMuV2luMzIuVmlydXQuYQ==                                        
-need-to-know |   |        |    |       |18a5bc3997771d2bcd9935b8bea1fefc|312876bce93f8f424ffafe876c2eda8e512b69f9|malware binary :Spyware.Relevantknowledge.A                                                                                          |medium  |2011-03-08 00:00:00+00|2011-03-08 00:22:10.386712+00|LIMITED                  |http://www.malware.com.br/cgi/search.pl?id=OlNweXdhcmUuUmVsZXZhbnRrbm93bGVkZ2UuQQ==                            
-need-to-know |   |        |    |       |3ed38d1e353087a9b0fea7aadb88655c|eb47983cd2a50bacafcd8dcb54677a2496c99121|malware binary Trojan-Downloader.Win32.Agent.dbff                                                                                    |medium  |2011-03-08 00:00:00+00|2011-03-08 00:25:07.978252+00|LIMITED                  |http://www.malware.com.br/cgi/search.pl?id=VHJvamFuLURvd25sb2FkZXIuV2luMzIuQWdlbnQuZGJmZg==  
-}}}
-
-= Phishing =
-== Infrastructure ==
-=== Table Form ===
-{{{
-$ cif -q infrastructure/phishing -s low
-
-restriction|severity|address        |protocol|portlist|detecttime            |impact                 |description                                                                     |alternativeid_restriction|alternativeid                                             
-need-to-know    |low     |190.123.46.115 |        |        |2011-01-13 17:25:12+00|phishing infrastructure|phishing infrastructure target:Other 190.123.46.115                             |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101217
-need-to-know    |low     |83.64.29.203   |        |        |2011-01-13 17:30:56+00|phishing infrastructure|phishing infrastructure target:PayPal 83.64.29.203                              |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101221
-need-to-know    |low     |67.221.186.208 |        |        |2011-01-13 17:51:05+00|phishing infrastructure|phishing infrastructure target:Amazon.com 67.221.186.208                        |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101223
-need-to-know    |low     |64.62.181.46   |        |        |2011-01-13 18:01:33+00|phishing infrastructure|phishing infrastructure target:Facebook 64.62.181.46                            |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101243
-need-to-know    |low     |216.52.115.2   |        |        |2011-01-13 18:02:46+00|phishing infrastructure|phishing infrastructure target:Facebook 216.52.115.2                            |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101246
-}}}
-
-=== Snort Rules ===
-{{{
-$ cif -q infrastructure/phishing -s low -p snort
-
-alert ip any any -> 190.123.46.115 any ( msg:"need-to-know - phishing infrastructure target:Other 190.123.46.115"; threshold:type limit,track by_src,count 1,seconds 3600; sid; reference:http://www.phishtank.com/phish_detail.php?phish_id=1101217; )
-alert ip any any -> 83.64.29.203 any ( msg:"need-to-know - phishing infrastructure target:PayPal 83.64.29.203"; threshold:type limit,track by_src,count 1,seconds 3600; sid:1; reference:http://www.phishtank.com/phish_detail.php?phish_id=1101221; )
-alert ip any any -> 67.221.186.208 any ( msg:"need-to-know - phishing infrastructure target:Amazon.com 67.221.186.208"; threshold:type limit,track by_src,count 1,seconds 3600; sid:2; reference:http://www.phishtank.com/phish_detail.php?phish_id=1101223; )
-alert ip any any -> 64.62.181.46 any ( msg:"need-to-know - phishing infrastructure target:Facebook 64.62.181.46"; threshold:type limit,track by_src,count 1,seconds 3600; sid:3; reference:http://www.phishtank.com/phish_detail.php?phish_id=1101243; )
-}}}
-== Urls ==
-{{{
-$ cif -q url/phishing -s low
-
-restriction|severity|address|url_md5                         |url_sha1                                |malware_md5|malware_sha1|detecttime            |impact      |description                                                                                |alternativeid_restriction|alternativeid                                             
-need-to-know |medium  |http://us.worldofwarcraft.accountadmin-service.net/customersupport.htm|4f566ced52f11c4e44ab5e16ff6c1e83|a62e153af62552215eb859cdca8c1c6da871948e|           |            |2011-01-13 17:25:12+00|phishing url|phishing url target:Other md5:4f566ced52f11c4e44ab5e16ff6c1e83                             |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101217
-need-to-know |medium  |http://www.toyoida.org/components/com_hotornot2/phpthumb/cache/index.html|dcb967c05b2b22c38d6379392b89830e|3226551520c3051c81f98ff68a05dadc43e47604|           |            |2011-01-13 17:30:56+00|phishing url|phishing url target:PayPal md5:dcb967c05b2b22c38d6379392b89830e                            |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101221
-need-to-know |medium  |http://sport-ro.limewebs.com/amz/processing.php|05db9301b3b5d504570e3bff47e00d39|7d7dd147feaaba43fdbf576b1f6a81a05c168d68|           |            |2011-01-13 17:51:05+00|phishing url|phishing url target:Amazon.com md5:05db9301b3b5d504570e3bff47e00d39 
 }}}
