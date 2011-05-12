@@ -49,7 +49,7 @@ alert ip any any -> 204.28.104.0/21 any ( msg:"need-to-know - hijacked network i
 alert ip any any -> 200.106.128.0/20 any ( msg:"need-to-know - hijacked network infrastructure 200.106.128.0/20"; threshold:type limit,track by_src,count 1,seconds 3600; sid:3; reference:http://www.spamhaus.org/sbl/sbl.lasso?query=SBL8587
 }}}
 
-= Suspicious Nameservers =
+= Domain(s) =
 == Table Form ==
 {{{
 $> cif -q domain/nameserver -s low
@@ -59,6 +59,27 @@ need-to-know|low     |ns1.tophostingcenter.com                   |67.228.41.55  
 need-to-know|low     |ns2.tophostingcenter.com                   |74.86.129.68   |A   |2011-01-20 17:38:24+00|suspicious nameserver malicious domain harmful adplus.in                             |public                   |http://www.malwaredomains.com/files/domains.txt                                  
 need-to-know|low     |ns1.reg.ru                                 |217.16.28.64   |A   |2011-01-20 17:38:27+00|suspicious nameserver malicious domain unknown banderboss.ru                         |public                   |http://www.malwaredomains.com/files/domains.txt                                  
 need-to-know|low     |ns2.reg.ru                                 |178.218.208.130|A   |2011-01-20 17:38:28+00|suspicious nameserver malicious domain unknown banderboss.ru                         |public                   |http://www.malwaredomains.com/files/domains.txt                                  
+}}}
+{{{
+Query: tophostingcenter.com
+Feed Restriction: RESTRICTED
+Feed Created: 2011-05-12T13:07:02Z
+
+restriction|severity|address                 |rdata        |type|detecttime            |impact                                    |description                                                       |alternativeid_restriction|alternativeid                                  
+PRIVILEGED |low     |ns1.tophostingcenter.com|67.228.41.55 |A   |2011-01-18 17:42:08+00|suspicious nameserver adplus.in           |suspicious nameserver malicious domain harmful adplus.in          |LIMITED                  |http://www.malwaredomains.com/files/domains.txt
+PRIVILEGED |low     |ns2.tophostingcenter.com|74.86.129.68 |A   |2011-01-26 15:31:27+00|suspicious nameserver adplus.in           |suspicious nameserver malicious domain harmful adplus.in          |LIMITED                  |http://www.malwaredomains.com/files/domains.txt
+PRIVILEGED |low     |ns1.tophostingcenter.com|67.228.41.55 |A   |2011-01-26 15:31:27+00|suspicious nameserver adplus.in           |suspicious nameserver malicious domain harmful adplus.in          |LIMITED                  |http://www.malwaredomains.com/files/domains.txt
+PRIVILEGED |low     |ns1.tophostingcenter.com|67.228.41.55 |A   |2011-01-26 19:02:13+00|suspicious nameserver adplus.in           |suspicious nameserver malicious domain harmful adplus.in adplus.in|LIMITED                  |http://www.malwaredomains.com/files/domains.txt
+PRIVILEGED |low     |ns2.tophostingcenter.com|74.86.129.68 |A   |2011-01-26 19:02:14+00|suspicious nameserver adplus.in           |suspicious nameserver malicious domain harmful adplus.in adplus.in|LIMITED                  |http://www.malwaredomains.com/files/domains.txt
+RESTRICTED |low     |ns4.tophostingcenter.com|208.43.34.231|A   |2011-02-15 10:28:44+00|suspicious nameserver siteihosting.com    |suspicious nameserver malware domain siteihosting.com             |RESTRICTED               |                                               
+RESTRICTED |low     |ns5.tophostingcenter.com|208.43.34.232|A   |2011-02-15 10:28:45+00|suspicious nameserver siteihosting.com    |suspicious nameserver malware domain siteihosting.com             |RESTRICTED               |                                               
+                                         
+RESTRICTED |low     |ns5.tophostingcenter.com|208.43.34.232|A   |2011-02-15 21:25:27+00|suspicious nameserver siteihosting.com    |suspicious nameserver malware domain siteihosting.com             |RESTRICTED               |                                               
+RESTRICTED |low     |ns4.tophostingcenter.com|208.43.34.231|A   |2011-02-16 04:25:22+00|suspicious nameserver siteihosting.com    |suspicious nameserver malware domain siteihosting.com             |RESTRICTED               |                                               
+RESTRICTED |low     |ns5.tophostingcenter.com|208.43.34.232|A   |2011-02-16 04:25:22+00|suspicious nameserver siteihosting.com    |suspicious nameserver malware domain siteihosting.com             |RESTRICTED               |                                               
+RESTRICTED |low     |ns5.tophostingcenter.com|208.43.34.232|A   |2011-02-16 08:24:50+00|suspicious nameserver servidoronline.co.cc|suspicious nameserver malware domain servidoronline.co.cc         |RESTRICTED               |                                               
+RESTRICTED |low     |ns4.tophostingcenter.com|208.43.34.231|A   |2011-02-16 08:24:50+00|suspicious nameserver servidoronline.co.cc|suspicious nameserver malware domain servidoronline.co.cc         |RESTRICTED               |                                               
+RESTRICTED |low     |ns5.tophostingcenter.com|208.43.34.232|A   |2011-02-16 09:24:23+00|suspicious nameserver servidoronline.co.cc|suspicious nameserver malware domain servidoronline.co.cc         |RESTRICTED               |                                               
 }}}
 == Bind Zone ==
 {{{
