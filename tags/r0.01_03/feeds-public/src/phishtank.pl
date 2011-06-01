@@ -35,6 +35,8 @@ if(! -e $cache || $download){
     my $url = "http://data.phishtank.com/data/$apikey/online-valid.xml";
     warn 'pulling xml from: '.$url;
     my $content = get($url);
+    
+    $content =~ s/[^[:ascii:]]//g;
 
     warn 'xml downloaded';
     open(F,">$cache");
