@@ -18,5 +18,7 @@ foreach my $xml ( @contentIn )
    $xml =~ s/[^[:ascii:]]//g;
    push @contentOut, $xml;
 }
+
+ref: http://code.google.com/p/collective-intelligence-framework/source/detail?spec=svn562&r=562
 }}}
  * host-file.net.pl -- never finished, unknown if this feed is worth it
