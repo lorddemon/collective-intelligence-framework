@@ -10,6 +10,7 @@ use DateTime::Format::DateParse;
 use LWP::Simple;
 use Digest::MD5 qw(md5_hex);
 use Unicode::String qw/utf8/;
+use Encode qw/encode_utf8/;
 
 use CIF::Message::UrlPhishing;
 use CIF::Message::InfrastructureSimple;
@@ -34,7 +35,7 @@ die('missing apikey') unless($apikey);
 if(! -e $cache || $download){
     my $url = "http://data.phishtank.com/data/$apikey/online-valid.xml";
     warn 'pulling xml from: '.$url;
-    my $content = get($url);
+    my $content = encode_utf8(get($url));
     
     $content =~ s/[^[:ascii:]]//g;
 
