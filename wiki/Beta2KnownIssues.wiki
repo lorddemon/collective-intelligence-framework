@@ -11,14 +11,5 @@
 - installed Crypt::SSLeay 0.58
 - rebuilt openssl for ubuntu 10.10 from source (0.9.8o)
 }}}
- * phishtank -- unicode (sometimes non-ascii) errors -- try using the json feed instead (requires re-write of the phishtank script) or something along the lines of:
-{{{
-foreach my $xml ( @contentIn )
-{ 
-   $xml =~ s/[^[:ascii:]]//g;
-   push @contentOut, $xml;
-}
-
-ref: http://code.google.com/p/collective-intelligence-framework/source/detail?spec=svn562&r=562
-}}}
+ * phishtank -- unicode (sometimes non-ascii) errors -- try with [http://code.google.com/p/collective-intelligence-framework/source/browse/tags/r0.01_03/feeds-public/src/phishtank.pl this script]
  * host-file.net.pl -- never finished, unknown if this feed is worth it
