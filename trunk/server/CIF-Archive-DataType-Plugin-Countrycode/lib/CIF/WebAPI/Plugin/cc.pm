@@ -1,11 +1,11 @@
-package CIF::WebAPI::Plugin;
+package CIF::WebAPI::Plugin::cc;
 use base 'CIF::WebAPI::Plugin';
 
 sub prepare {
     my $self = shift;
     my $frag = shift;
 
-    return unless(lc($frag) =~ /^[a-z]{2,3}$/);
+    return unless(lc($frag) =~ /^[a-z]{2}$/);
     return(1);
 }
 
