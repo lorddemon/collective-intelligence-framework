@@ -11,9 +11,21 @@ $VERSION = eval $VERSION;  # see L<perlmodstyle>
 use Module::Pluggable require => 1, search_path => [__PACKAGE__];
 
 __PACKAGE__->table('countrycode');
-__PACKAGE__->columns(Primary => 'id');__PACKAGE__->columns(All => qw/id uuid description cc source severity restriction alternativeid alternativeid_restriction detecttime created/);
-__PACKAGE__->columns(Essential => qw/id uuid description cc restriction created/);
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(All => qw/id uuid cc source severity confidence restriction detecttime created/);
+__PACKAGE__->columns(Essential => qw/id uuid cc source severity confidence restriction detecttime created/);
 __PACKAGE__->sequence('countrycode_id_seq');
+
+__PACKAGE__->set_sql('feed' => qq{
+    SELECT count(cc),cc
+    FROM __TABLE__
+    WHERE detecttime >= ?
+    AND severity >= ?
+    AND restriction <= ?
+    GROUP BY cc
+    ORDER BY count DESC
+    LIMIT ?
+});
 
 sub prepare {
     my $class = shift;
@@ -42,14 +54,12 @@ sub insert {
 
     my $id = eval { $class->SUPER::insert({
         uuid        => $info->{'uuid'},
-        description => lc($info->{'description'}),
         cc          => $info->{'cc'},
         source      => $info->{'source'},
         severity    => $info->{'severity'},
+        confidence  => $info->{'confidence'},
         restriction => $info->{'restriction'} || 'private',
         detecttime  => $info->{'detecttime'},
-        alternativeid   => $info->{'alternativeid'},
-        alternativeid_restriction => $info->{'alternativeid_restriction'} || 'private',
     }) };
     if($@){
         return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
@@ -64,7 +74,8 @@ sub lookup {
     my $info = shift;
     my $q = $info->{'query'};
     $q = uc($q);
-    return unless($q =~ /^[A-Z]{2}$/);
+    return unless($q =~ /^[A-Z]{2,2}$/);
+    warn $q;
 
     my $sth = $class->sql_by_cc();
     my $r = $sth->execute($q,10000);
@@ -72,8 +83,9 @@ sub lookup {
     return($ret);
 }
 
-__PACKAGE__->set_sql('by_cc' => qq{
-    SELECT * FROM __TABLE__
+__PACKAGE__->set_sql('lookup' => qq{
+    SELECT __ESSENTIAL__
+    FROM __TABLE__
     WHERE cc = ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
