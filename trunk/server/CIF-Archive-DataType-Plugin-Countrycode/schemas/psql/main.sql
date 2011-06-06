@@ -5,8 +5,9 @@ CREATE TABLE countrycode (
     cc varchar(5),
     source uuid NOT NULL,
     severity severity,
-    confidence REAL CHECK (confidence >= 0.0 AND 10.0 >= confidence),
+    confidence REAL,
     restriction restriction not null default 'private',
     detecttime timestamp with time zone DEFAULT NOW(),
-    created timestamp with time zone DEFAULT NOW()
+    created timestamp with time zone DEFAULT NOW(),
+    unique(uuid,cc)
 );
