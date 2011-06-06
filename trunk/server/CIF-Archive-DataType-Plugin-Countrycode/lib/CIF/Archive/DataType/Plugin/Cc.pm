@@ -1,4 +1,4 @@
-package CIF::Archive::DataType::Plugin::Cc;
+package CIF::Archive::DataType::Plugin::Countrycode;
 use base 'CIF::Archive::DataType';
 
 use 5.008008;
@@ -89,17 +89,20 @@ sub feed {
 sub lookup {
     my $class = shift;
     my $info = shift;
-    my $q = $info->{'query'};
-    $q = uc($q);
-    return unless($q =~ /^[A-Z]{2,2}$/);
+    my $severity = $info->{'severity'};
+    my $restriction = $info->{'restriction'};
+    my $query = $info->{'query'}.' feed';
 
-    return $class->search_lookup($q,$info->{'limit'});
+    my @args = ($query,$severity,$restriction,$info->{'limit'});
+    return $class->SUPER::lookup(@args);
 }
 
 __PACKAGE__->set_sql('lookup' => qq{
     SELECT __ESSENTIAL__
     FROM __TABLE__
     WHERE cc = ?
+    AND severity = ?
+    AND restriction = ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });
