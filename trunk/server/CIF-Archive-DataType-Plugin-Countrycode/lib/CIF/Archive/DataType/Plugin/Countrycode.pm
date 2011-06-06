@@ -1,4 +1,4 @@
-package CIF::Archive::DataType::Plugin::Countrycode;
+package CIF::Archive::DataType::Plugin::Cc;
 use base 'CIF::Archive::DataType';
 
 use 5.008008;
@@ -20,6 +20,7 @@ __PACKAGE__->set_sql('feed' => qq{
     SELECT count(cc),cc
     FROM __TABLE__
     WHERE detecttime >= ?
+    AND confidence >= ?
     AND severity >= ?
     AND restriction <= ?
     GROUP BY cc
@@ -34,7 +35,7 @@ sub prepare {
     ## TODO -- download list of IANA country codes for use in regex
     ## http://data.iana.org/TLD/tlds-alpha-by-domain.txt
     return unless($info->{'cc'});
-    return unless($info->{'cc'} =~ /^[a-zA-Z]{2,3}$/);
+    return unless($info->{'cc'} =~ /^[a-zA-Z]{2,2}$/);
     return(1);
 }
 
@@ -69,18 +70,30 @@ sub insert {
     return($id);
 }
 
+sub feed {
+    my $class = shift;
+    my $info = shift;
+    my @feeds;
+    $info->{'key'} = 'cc';
+    my $ret = $class->SUPER::feed($info);
+    push(@feeds,$ret) if($ret);
+
+    foreach($class->plugins()){
+        my $t = $_->set_table();
+        my $r = $_->SUPER::feed($info);
+        push(@feeds,$r) if($r);
+    }
+    return(\@feeds);
+}
+
 sub lookup {
     my $class = shift;
     my $info = shift;
     my $q = $info->{'query'};
     $q = uc($q);
     return unless($q =~ /^[A-Z]{2,2}$/);
-    warn $q;
 
-    my $sth = $class->sql_by_cc();
-    my $r = $sth->execute($q,10000);
-    my $ret = $sth->fetchall_hash();
-    return($ret);
+    return $class->search_lookup($q,$info->{'limit'});
 }
 
 __PACKAGE__->set_sql('lookup' => qq{
