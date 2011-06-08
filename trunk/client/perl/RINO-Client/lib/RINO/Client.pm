@@ -4,73 +4,190 @@ use 5.008008;
 use strict;
 use warnings;
 
-use XML::IODEF;
-use XML::Simple;
-use Data::Dumper;
-
 our $VERSION = '0.00_01';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
+use Module::Pluggable require => 1;
+require XML::IODEF;
+
 # Preloaded methods go here.
 
-sub in {
+sub _plugins {
+    my @plugs = plugins();
+    foreach (@plugs){
+        $_ = lc($_);
+        $_ =~ s/rino::client::plugin:://;
+    }
+    return(@plugs);
+}
+
+sub new {
+    my ($class,%args) = (shift,@_);
+    my $self = {};
+    bless($self,$class);
+    if($args{'iodef'}){
+        $self->to_hash($args{'iodef'});
+    }
+    return($self);
+}
+
+sub write_out {
+    my $self = shift;
+    my $plugin = shift || 'csv';
+
+    $plugin = 'RINO::Client::Plugin::'.ucfirst($plugin);
+    eval "require $plugin";
+    die($@) if($@);
+
+    my $ref = $self->to_simple();
+    return $plugin->write_out($ref);
+}
+
+sub to_hash {
+    my $self = shift;
     my $xml = shift;
+    return($self->{'_tree'}) if(defined($self->{'_tree'}));
+
     return unless($xml);
-    return XMLin($xml);
+    my $iodef = XML::IODEF->new();
+    $iodef->in($xml) || return('invalid iodef object',undef);
+    $self->{'_xml'} = $iodef;
+    $self->{'_tree'} = $iodef->to_tree();
+    return(undef,$self->{'_tree'});
+}
+
+sub to_simple {
+    my $self = shift;
+    my $xml = shift;
+    my $hash = $self->to_hash($xml); 
+    my @incidents;
+    my @header = ['IncidentID','Description','Address','DetectTime','Port','Destination','AdditionalData'];
+
+    $hash = $hash->{'Incident'};
+    if(ref($hash) eq 'HASH'){
+        push(@incidents,$hash);
+    } else {
+        @incidents = @{$hash};
+    }
+
+    #only pass back the header info if we're being called from a plugin
+    my $caller = caller();
+    my @return_array;
+    if($caller =~ /Client$/){
+        @return_array = @header;
+    }
+
+    foreach my $ri (@incidents) {
+        ## embedded " in CSV needs to be ""
+        $ri->{IncidentID}{content} =~ s/"/""/g;
+        $ri->{Description} =~ s/"/""/g;
+
+        ## within each Incident there may be one or more EventData, "normalize"
+        my $re = $ri->{'EventData'};
+        my @events_array = ();
+        if(ref($re) eq 'HASH') { push(@events_array,$re); } else { @events_array = @{$re}; }
+
+        ## process each EventData
+        foreach my $re (@events_array) {
+            $re->{DetectTime} =~ s/"/""/g;
+            $re->{Flow}{System}{Node}{Address}{content} =~ s/"/""/g;
+            if (exists $re->{Flow}{System}{Service}{Port}) {
+                $re->{Flow}{System}{Service}{Port} =~ s/"/""/g;
+            } else {
+                $re->{Flow}{System}{Service}{Port} = '';
+            }
+
+            ## within each EventData there may be zero or more AdditionalData
+            ## if "destination address" is one of those, it will have it's own position in the CSV
+            ## all others will be combined into paired values (JSON-like) and placed in one position in the CSV
+            my $destination = '';
+            my $additional = '';
+
+            if (exists $re->{AdditionalData}) {
+                ## "normalize"
+                my $ra = $re->{AdditionalData};
+                my @additionaldata_array = ();
+                if(ref($ra) eq 'HASH') { push(@additionaldata_array,$ra); } else { @additionaldata_array = @{$ra}; }
+
+                ## process each AdditionalData
+                foreach my $ra (@additionaldata_array) {
+                    ## if "destination address", then hold separately, otherwise accumulate pairs in $additional
+                    if ($ra->{meaning} eq 'destination address') {
+                        $destination = $ra->{content};
+                    } else {
+                        $additional .= qq|""$ra->{meaning}"": ""$ra->{content}"", |;
+                    }
+                }
+                ## if there is additiona, remove trailing comma and wrap in braces
+                if ($additional) { $additional =~ s/, $//; $additional = '{ '.$additional.' }'; }
+            }
+            push(@return_array, {
+                IncidentID  => $ri->{'IncidentID'}{'content'},
+                Description => $ri->{'Description'},
+                Address     => $re->{'Flow'}{'System'}{'Node'}{'Address'}{'content'},
+                DetectTime  => $re->{'DetectTime'},
+                Port        => $re->{'Flow'}{'System'}{'Service'}{'Port'},
+                Destination => $destination,
+                AdditionalData  => $additional
+           });
+        }
+    }
+    return(\@return_array);
+}
+    
+
+sub sources {
+    my $self = shift;
+    return('you must ->to_hash($xml) first',undef) unless($self->{'_tree'});
+    my $h = $self->{'_tree'};
+    my @events = @{$h->{'Incident'}->{'EventData'}};
+    foreach my $event (@events){
+        my $sys = $event->{'Flow'}->{'System'};
+        next unless($sys->{'category'} eq 'source');
+    }
+
 }
 1;
 __END__
-# Below is stub documentation for your module. You'd better edit it!
-
 =head1 NAME
 
-RINO::Client - Perl extension for parsing RINO data
+RINO::Client - Perl extension for parsing and handling RINO data
 
 =head1 SYNOPSIS
 
  use RINO::Client;
- use Data::Dumper;
 
- my $f = '/tmp/iodef.txt';
- open(F,$f);
- my @array = <F>;
- my $xml = join('',@array);
+ my @input;
+ while(<STDIN>){
+    push(@input,$_);
+ }
+ my $iodef_xml = join("",@input);
 
- my $hash = RINO::Client::in($xml);
- warn Dumper($hash);
+ my $rino = RINO::Client->new(iodef => $iodef_xml);
+ print $rino->write_out('table');
+ print $rino->write_out('csv');
+ print $rino->write_out('json');
 
-=head1 DESCRIPTION
-
-Stub documentation for RINO::Client, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
-
-Blah blah blah.
-
-=head2 EXPORT
-
-None by default.
-
-
+ my $simple_hash = $rino->to_simple();
+ my $complex_hash = $rino->to_hash();
 
 =head1 SEE ALSO
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
-
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+  http://tools.ietf.org/html/rfc5070
+  http://www.ren-isac.net/notifications/using_iodef.html
+  http://code.google.com/p/collective-intelligence-framework/
+  XML::IODEF
 
 =head1 AUTHOR
 
-Wes Young, E<lt>wes@E<gt>
+  Wes Young, E<lt>wes@ren-isac.netE<gt>
+  Doug Pearson, E<lt>dodpears@ren-isac.netE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2011 by Wes Young
+Copyright (C) 2011 by Doug Pearson
+Copyright (C) 2010 REN-ISAC and The Trustees of Indiana University
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.0 or,
