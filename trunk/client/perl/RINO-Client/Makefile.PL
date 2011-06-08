@@ -4,9 +4,9 @@ name        'RINO-Client';
 all_from    'lib/RINO/Client.pm';
 
 requires    'XML::IODEF'    => '0.11';
-requires    'JSON'          => '10';
-requires    'Text::Table'   => '10';
-requires    'Class::CSV'    => '1.03';
+requires    'JSON'          => '2.07';
+requires    'Text::Table'   => '1.114';
+requires    'Class::CSV'    => undef;
 
 install_script  'rino';
 

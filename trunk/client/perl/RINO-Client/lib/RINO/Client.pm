@@ -155,6 +155,13 @@ RINO::Client - Perl extension for parsing and handling RINO data
 
 =head1 SYNOPSIS
 
+ # using the command line client
+ $ rino -h
+ $ rino -f /tmp/rino.xml -p table
+ $ rino -f /tmp/rino.xml -p csv
+ $ cat /tmp/rino.xml | rino -p json
+
+ # using the lib
  use RINO::Client;
 
  my @input;
@@ -185,9 +192,9 @@ RINO::Client - Perl extension for parsing and handling RINO data
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2011 by Wes Young
-Copyright (C) 2011 by Doug Pearson
-Copyright (C) 2010 REN-ISAC and The Trustees of Indiana University
+  Copyright (C) 2011 by Wes Young
+  Copyright (C) 2011 by Doug Pearson
+  Copyright (C) 2010 REN-ISAC and The Trustees of Indiana University
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.0 or,
