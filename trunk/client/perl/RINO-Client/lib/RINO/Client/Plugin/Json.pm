@@ -9,6 +9,16 @@ sub write_out {
     my @array = @{$ref};
     @array = splice(@array,1,$#array);
 
+    ## fix for AdditionalData Glob
+    foreach my $a (@array){
+        foreach my $k (keys %{$a}){
+            my $x = $a->{$k};
+            my $h = eval { JSON::from_json($x) };
+            next if($@);
+            $a->{$k} = $h;
+        }
+    }
+
     return JSON::to_json(\@array);
 }
 

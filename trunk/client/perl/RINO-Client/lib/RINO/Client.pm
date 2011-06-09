@@ -4,7 +4,7 @@ use 5.008008;
 use strict;
 use warnings;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 use Module::Pluggable require => 1;
@@ -101,7 +101,7 @@ sub to_simple {
             ## if "destination address" is one of those, it will have it's own position in the CSV
             ## all others will be combined into paired values (JSON-like) and placed in one position in the CSV
             my $destination = '';
-            my $additional = '';
+            my $additional;
 
             if (exists $re->{AdditionalData}) {
                 ## "normalize"
@@ -110,12 +110,12 @@ sub to_simple {
                 if(ref($ra) eq 'HASH') { push(@additionaldata_array,$ra); } else { @additionaldata_array = @{$ra}; }
 
                 ## process each AdditionalData
-                foreach my $ra (@additionaldata_array) {
+                foreach my $a (@additionaldata_array) {
                     ## if "destination address", then hold separately, otherwise accumulate pairs in $additional
-                    if ($ra->{meaning} eq 'destination address') {
-                        $destination = $ra->{content};
+                    if ($a->{meaning} eq 'destination address') {
+                        $destination = $a->{content};
                     } else {
-                        $additional .= qq|""$ra->{meaning}"": ""$ra->{content}"", |;
+                        $additional .= qq|"$a->{meaning}":"$a->{content}", |;
                     }
                 }
                 ## if there is additiona, remove trailing comma and wrap in braces
