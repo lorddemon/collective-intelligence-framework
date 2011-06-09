@@ -8,7 +8,7 @@ require 5.008;
 use strict;
 use warnings;
 
-use XML::IODEF;
+require XML::IODEF;
 use Module::Pluggable search_path => [__PACKAGE__], require => 1;
 
 sub prepare {
@@ -44,6 +44,7 @@ sub convert {
     my $rir                         = $info->{'rir'},
     my $protocol                    = $info->{'protocol'};
     my $portlist                    = $info->{'portlist'};
+    my $purpose                     = $info->{'purpose'} || 'mitigation';
 
     my $dt = $info->{'detecttime'};
     # default it to the hour
@@ -56,6 +57,7 @@ sub convert {
     $info->{'format'}   = 'iodef';
 
     my $iodef = XML::IODEF->new();
+    $iodef->add('Incidentpurpose',$purpose);
     $iodef->add('IncidentIncidentIDname',$source) if($source);
     $iodef->add('IncidentDetectTime',$detecttime) if($detecttime);
     $iodef->add('IncidentRelatedActivityIncidentID',$relatedid) if($relatedid);
@@ -81,53 +83,39 @@ sub convert {
             $iodef = $_->convert($info,$iodef);
         }
     }
-    return($iodef->out());
+    require JSON;
+    return(JSON::to_json($iodef->to_tree()));
 }
 
-sub from {
-    my $self = shift;
-    my $msg = shift;
+sub data_hash_simple {
+    my $class = shift;
+    my $data = shift;
+    my $h = $class->data_hash($data);
+    return unless($h);
 
-    my $iodef = XML::IODEF->new();
-    $iodef->in($msg);
-    my $hash = $iodef->to_hash();
+    my $sh = {
+        relatedid                   => $h->{'RelatededActivity'}->{'IncidentID'}->{'content'},
+        description                 => $h->{'Description'},
+        impact                      => $h->{'Assessment'}->{'Impact'}->{'content'},
+        severity                    => $h->{'Assessment'}->{'Impact'}->{'severity'},
+        confidence                  => $h->{'Assessment'}->{'Confidence'}->{'content'},
+        source                      => $h->{'IncidentID'}->{'name'},
+        restriction                 => $h->{'restriction'},
+        alternativeid               => $h->{'AlternativeID'}->{'IncidentID'}->{'content'},
+        alternativeid_restriction   => $h->{'AlternativeID'}->{'IncidentID'}->{'restriction'},
+        detecttime                  => $h->{'DetectTime'},
+        purpose                     => $h->{'purpose'},
+   };
 
-    my ($prefix,$asn,$rir,$cc,$type,$rdata);
-    if(exists($hash->{'IncidentEventDataFlowSystemAdditionalData'})){
-        my @adm = @{$hash->{'IncidentEventDataFlowSystemAdditionalDatameaning'}};
-        my @ad = @{$hash->{'IncidentEventDataFlowSystemAdditionalData'}};
-        my %m = map { $adm[$_],$ad[$_] } (0 ... $#adm);
-        $prefix = $m{'prefix'};
-        $asn    = $m{'asn'};
-        $rir    = $m{'rir'};
-        $type   = $m{'type'};
-        $rdata  = $m{'rdata'};
+    foreach my $p ($class->plugins()){
+        my $ret = eval { $p->data_hash_simple($h) };
+        warn $@ if($@);
+        next unless($ret);
+        map { $sh->{$_} = $ret->{$_} } keys %$ret;
     }
+    return($sh);
+}        
 
-    my $h = {
-        relatedid   => $hash->{'IncidentRelatedActivityIncidentID'}[0],
-        address     => $hash->{'IncidentEventDataFlowSystemNodeAddress'}[0],
-        description => $hash->{'IncidentDescription'}[0],
-        detecttime  => $hash->{'IncidentDetectTime'}[0],
-        confidence  => $hash->{'IncidentAssessmentConfidence'}[0],
-        impact      => $hash->{'IncidentAssessmentImpact'}[0],
-        protocol    => $hash->{'IncidentEventDataFlowSystemServiceip_protocol'}[0],
-        portlist    => $hash->{'IncidentEventDataFlowSystemServicePortlist'}[0],
-        severity    => $hash->{'IncidentAssessmentImpactseverity'}[0],
-        source      => $hash->{'IncidentIncidentIDname'}[0],
-        restriction => $hash->{'Incidentrestriction'}[0],
-        asn         => $asn,
-        cidr        => $prefix,
-        cc          => $hash->{'IncidentEventDataFlowSystemNodeLocation'}[0],
-        rir         => $rir,
-        type        => $type,
-        rdata       => $rdata,
-        alternativeid               => $hash->{'IncidentAlternativeIDIncidentID'}[0],
-        alternativeid_restriction   => $hash->{'IncidentAlternativeIDIncidentIDrestriction'}[0],
-    };
-    return($h);
-}
-    
 1;
 
 =head1 SYNOPSIS
