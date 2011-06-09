@@ -10,11 +10,25 @@ To install this module type the following:
    make test
    make install
 
+EXAMPLES
+
+Procmail:
+
+:0
+* ^Return-Path: <soc@ren-isac.net>
+{
+    :0 c
+    | /usr/local/bin/my_rino.pl
+
+    :0
+    $DEFAULT
+}
+
 DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-XML::Simple 
+XML::IODEF, JSON, Text::Table, Class::CSV, Module::Pluggable
 
 COPYRIGHT AND LICENCE
 
