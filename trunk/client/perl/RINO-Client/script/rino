@@ -2,11 +2,8 @@
 
 use strict;
 
-use lib '/home/wes/projects/src/cif/client/perl/RINO-Client/lib';
-
 use Getopt::Std;
 require RINO::Client;
-use Data::Dumper;
 
 my %opts;
 getopt('p:f:', \%opts);
