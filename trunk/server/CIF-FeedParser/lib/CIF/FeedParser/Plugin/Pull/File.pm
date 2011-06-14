@@ -4,10 +4,11 @@ sub pull {
     my $class = shift;
     my $f = shift;
     return unless($f->{'feed'} =~ /^(\/\S+)/);
-    open(F,$1) || die($!.': '.$_);
+    my $file = $1;
+    open(F,$file) || die($!.': '.$file);
     my $content = join('',<F>);
     return('no content',undef) unless($content && $content ne '');
-    return($content);
+    return(undef,$content);
 }
 
 1;
