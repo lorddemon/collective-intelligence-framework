@@ -24,6 +24,8 @@ sub parse {
             $a->{'alternativeid_restriction'} = $map{lc($a->{'alternativeid_restriction'})};
         }
     }
+    delete($f->{'restrictions'});
+    delete($f->{'restrictions_map'});
     return(@feed);
 }
 

@@ -9,7 +9,7 @@ $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 use DateTime::Format::DateParse;
 use DateTime;
-use Regexp::Common qw/net/;
+use Regexp::Common qw/net URI/;
 use Regexp::Common::net::CIDR;
 use Encode qw/decode_utf8 encode_utf8/;
 use Data::Dumper;
@@ -18,7 +18,9 @@ use threads;
 use threads::shared;
 use Linux::Cpuinfo;
 use Module::Pluggable require => 1;
-
+use Digest::MD5 qw/md5_hex/;
+use Digest::SHA1 qw/sha1_hex/;
+use URI::Escape;
 # Preloaded methods go here.
 
 sub new {
@@ -41,6 +43,8 @@ sub get_feed {
     #$content =~ s/[^[:print:]]//g;
     # remove any CR's
     $content =~ s/\r//g;
+    uri_escape($content);
+    delete($f->{'feed'});
     return($content);
 }
 
@@ -61,40 +65,43 @@ sub _get_feed {
 ## TODO -- turn this into plugins
 sub parse {
     my $f = shift;
-    my $content = get_feed($f);
+    my ($content,$err) = get_feed($f);
+    return($err,undef) if($err);
 
+    my @array;
     # see if we designate a delimiter
     if(my $d = $f->{'delimiter'}){
         require CIF::FeedParser::ParseDelim;
-        return CIF::FeedParser::ParseDelim::parse($f,$content,$d);
+        @array = CIF::FeedParser::ParseDelim::parse($f,$content,$d);
     } else {
         # try to auto-detect the file
         if($content =~ /<\?xml version=/){
             if($content =~ /<rss version=/){
                 require CIF::FeedParser::ParseRss;
-                return CIF::FeedParser::ParseRss::parse($f,$content);
+                @array = CIF::FeedParser::ParseRss::parse($f,$content);
             } else {
                 require CIF::FeedParser::ParseXml;
-                return CIF::FeedParser::ParseXml::parse($f,$content);
+                @array = CIF::FeedParser::ParseXml::parse($f,$content);
             }
         } elsif($content =~ /^?\[{/){
             # possible json content or CIF
             if($content =~ /^{"status"\:/){
                 require CIF::FeedParser::ParseCIF;
-                return CIF::FeedParser::ParseCIF::parse($f,$content);
+                @array = CIF::FeedParser::ParseCIF::parse($f,$content);
             } else {
                 require CIF::FeedParser::ParseJson;
-                return CIF::FeedParser::ParseJson::parse($f,$content);
+                @array = CIF::FeedParser::ParseJson::parse($f,$content);
             }
         ## TODO -- fix this; double check it
         } elsif($content =~ /^#?\s?"\S+","\S+"/){
             require CIF::FeedParser::ParseCsv;
-            return CIF::FeedParser::ParseCsv::parse($f,$content);
+            @array = CIF::FeedParser::ParseCsv::parse($f,$content);
         } else {
             require CIF::FeedParser::ParseTxt;
-            return CIF::FeedParser::ParseTxt::parse($f,$content);
+            @array = CIF::FeedParser::ParseTxt::parse($f,$content);
         }
     }
+    return(undef,@array);
 }
 
 sub _decode {
@@ -168,7 +175,7 @@ sub _sort_detecttime {
 sub _insert {
     my $f = shift;
     my $b = shift;
-    my $a = $f->{'hash_md5'} || $f->{'address'};
+    my $a = $f->{'malware_md5'} || $f->{'address'};
     return unless($a && length($a) > 2);
     $a = encode_utf8($a);
     $f->{'impact'} = lc($f->{'impact'});
@@ -184,8 +191,24 @@ sub _insert {
         $bucket->connection($f->{'database'});
         local $^W = 1;
     }
+    # some feeds don't put the http(s) in front
+    # Regexp::Common::URI doesn't do a good job of recognizing the format of a URL
+    ## TODO -- submit a fix to Regexp::Common::URI
+    if($f->{'address'} && $f->{'impact'} && $f->{'impact'} =~ /url$/ && $f->{'address'} !~ /^(http|https|ftp):\/\//){
+        if($f->{'address'} =~ /[\/]+/){
+            $f->{'address'} = 'http://'.$f->{'address'};
+        }
+    }
+    if($f->{'address'} && $f->{'address'} =~ /^$RE{'URI'}/){
+        # we do this here so ::Plugin::Hash will pick it up
+        $f->{'address'} = uri_escape($f->{'address'},'\x00-\x1f\x7f-\xff');
+        $f->{'md5'} = md5_hex($f->{'address'});
+        $f->{'sha1'} = sha1_hex($f->{'address'});
+    }
+    my $source = $f->{'source'};
     my ($err,$id) = $bucket->insert($f);
-    die($err) unless($id);
+    ## TODO -- setup a mailer that returns this in cif_feed_parser
+    warn($err) unless($id);
     
     my $rid;
     if($id =~ /^\d+$/){
@@ -193,15 +216,17 @@ sub _insert {
     } else {
         $rid = $id;
     }
-    print $f->{'source'}.' -- '.$a.' -- '.$rid."\n";
+    $a = substr($a,0,40);
+    $a .= '...';
+    print $source.' -- '.$rid.' -- '.$f->{'impact'}.' '.$f->{'description'}.' -- '.$a."\n";
     return(0);
 }
 
 sub insert {
     my ($full,@recs) = (shift,@_);
-    my $goback = DateTime->from_epoch(epoch => (time() - (84600 * 5)));
-    $goback = $goback->ymd().'T'.$goback->hms().'Z';
-    @recs = _sort_detecttime(@recs);
+    #my $goback = DateTime->from_epoch(epoch => (time() - (84600 * 5)));
+    #$goback = $goback->ymd().'T'.$goback->hms().'Z';
+#    @recs = _sort_detecttime(@recs);
 
     foreach (@recs){
         foreach my $key (keys %$_){
@@ -214,10 +239,13 @@ sub insert {
             }
         }
     }
-    foreach(@recs){
-        unless($full){
-            next if(($_->{'detecttime'} cmp $goback) == -1);
-        }
+    #foreach(@recs){
+    #    unless($full){
+    #        next if(($_->{'detecttime'} cmp $goback) == -1);
+    #    }
+    #    _insert($_);
+    #}
+    foreach (@recs){
         _insert($_);
     }
     return(0);
@@ -232,12 +260,13 @@ sub throttle {
     return(1) if($cores eq 1);
     return($cores) unless($throttle && $throttle ne 'medium');
     return($cores/2) if($throttle eq 'low');
-    return($cores * 2);
+    return($cores * 1.5);
 }
 
 sub _split_batches {
+    my $config = shift;
     my @recs = @_;
-    my $tc = $recs[0]->{'threads_count'};
+    my $tc = $config->{'threads_count'};
     my @batches;
     my $batch = (($#recs/$tc) == int($#recs/$tc)) ? ($#recs/$tc) : (int($#recs/$tc) + 1);
     for(my $x = 0; $x <= $#recs; $x += $batch){
@@ -248,18 +277,33 @@ sub _split_batches {
         push(@batches,\@a);
         $x++;
     }
-    return(@batches);
+    delete($config->{'threads_count'});
+    return(\@batches);
 }
 
 sub t_insert {
-    my ($full,$fctn,@recs) = (shift,shift,@_);
+    my ($full,$fctn,$config,@recs) = (shift,shift,shift,@_);
     $fctn = 'CIF::FeedParser::insert' unless($fctn);
-    my @batches = _split_batches(@recs);
+    @recs = _sort_detecttime(@recs);
+    my $batches;
+    if($full){ 
+        $batches = _split_batches($config,@recs);
+    } else {
+        my $goback = DateTime->from_epoch(epoch => (time() - (84600 * 5)));
+        $goback = $goback->ymd().'T'.$goback->hms().'Z';
+        my @rr;
+        foreach (@recs){
+            last if(($_->{'detecttime'} cmp $goback) == -1);
+            push(@rr,$_);
+        }
+        $batches = _split_batches($config,@rr);
+    }
+       
     # don't thread me out if we only have one batch
     # Crypt::SSLeay is NOT really thread safe, so we do simple https feeds with 1 bath where possible
-    return insert($full,@recs) unless($#batches > -1);
+    return insert($full,@recs) unless(scalar @{$batches} > -1);
     # go nuts...
-    foreach(@batches){
+    foreach(@{$batches}){
         my $t = threads->create($fctn,$full,@{$_});
     }
     while(threads->list()){
