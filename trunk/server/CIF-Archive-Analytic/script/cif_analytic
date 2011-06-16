@@ -2,32 +2,138 @@
 
 use strict;
 
-use CIF::Archive;
-use CIF::Archive::Analytic;
+
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-Analytic-Plugin-Resolver/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-Analytic-Plugin-Nameserver/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-Analytic-Plugin-Spamhaus/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-Analytic-Plugin-SpamhausDBL/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-Analytic-Plugin-ResolveUrl/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-Analytic-Plugin-DNSParse/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-Analytic-Plugin-ResolveMalware/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-Analytic-Plugin-RdataInfrastructure/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-Analytic-Plugin-DomainWhitelistPrefix/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-Analytic/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-Storage-Plugin-Iodef/lib';
+
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-Infrastructure/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-ASN/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-Countrycode/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-Storage-Plugin-Iodef/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-Domain/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-Url/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-Malware/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-Email/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-Analytic/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-Hash/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-RIR/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-Feed/lib';
+
 use Data::Dumper;
 use Config::Simple;
+use Getopt::Std;
+use threads;
+use Linux::Cpuinfo;
+use threads::shared;
+require CIF::Client;
 
-my $c = Config::Simple->new('~/.cif') || die 'missing config';
+my %opts;
+getopts('m:bChdT:c:', \%opts);
+our $debug = $opts{'d'};
 
-my @plugs = CIF::Archive::Analytic->plugins();
-my $max = '500';
+my $config = $opts{'c'} || $ENV{'HOME'}.'/.cif';
+$config = Config::Simple->new($config) || die 'missing config';
+my $cfg = $config->param(-block => 'cif_analytic');
 
-my $ret = CIF::Archive::Analytic->start_run({
-    description => 'analytics run start',
-});
-my $startid = $ret->{'startid'};
-my $endid = $ret-{'endid'};
+my $max = $opts{'m'} || $config->{'max_batch'} || 300;
+my $throttle = $opts{'T'} || $config->{'throttle'} || 'low';
+my $cron_mode = $opts{'C'} || $config->{'cron_mode'} || 0;
+my $max_backoff = $opts{'b'} || $config->{'backoff'} || 30;
 
-my @recs = CIF::Archive->retrieve_from_sql(qq{
-    id >= $startid
-    AND id <= $endid
-    ORDER BY id ASC
-});
+die usage() if($opts{'h'});
 
-warn 'processing: '.($#recs + 1).' recs';
+sub usage {
+    return <<EOF;
+Usage: perl $0 -c ~/.cif -d -T medium -m 500
+    -h  --help:     this message
+    -d  --debug:    enable debugging
+    -m  --max:      max batch of records per cycle, default: $max
+    -T  --throttle: cpu threading throttle (high,medium,low) default: $throttle
+                    high    = 1.5xCores
+                    medium  = Cores
+                    low     = 0.5xCores
+    -C  --cronmode: run in cron mode (don't loop), default: $cron_mode
+    -b  --backoff:  when there's nothing to do, what's the max time (in seconds)
+                    the analytics process should back-off (or slowdown), default: $max_backoff
+EOF
+}
 
-foreach(@recs){
-    foreach my $p (@plugs){
-        my $r = $p->process($_->data(),$c);
+my $backoff = 1;
+
+do {
+    # we do this in a thread to avoid memory leaks in CIF::Archive
+    my $res = threads->create('get_recs')->join();
+    if($res){
+        warn 'processing: '.(scalar(@{$res})).' recs' if($debug);
+        threads->create('process',$res)->join();
+    }
+    unless($cron_mode){
+        if((scalar @{$res}) == 1) {
+            $backoff = ($backoff * 2) unless($backoff >= $max_backoff);
+            warn 'backing off: '.$backoff if($debug);
+            sleep($backoff);
+        } else {
+            $backoff = 1;
+        }
+    }
+} while(!$cron_mode);
+
+sub get_recs {
+    require CIF::Archive::Analytic;
+    my $ret = CIF::Archive::Analytic->start_run({
+        description => 'analytics run start',
+        max         => $max,
+    });
+    return($ret);
+}
+
+sub process {
+    my $recs = shift;
+
+    # more thread-safe this way
+    require CIF::Archive;
+    my $tc = CIF::Archive->throttle($throttle);
+    if($tc == 1){
+        # don't thread out if there's only one batch
+        return _process($recs);
+        # go nuts...
+    }
+    my $batches = CIF::Archive->split_batches($tc,$recs);
+    foreach(@{$batches}){
+        my $t = threads->create('_process',$_);
+    }
+    while(threads->list()){
+        my @joinable = threads->list(threads::joinable);
+        unless($#joinable > -1){
+            sleep(1);
+            next();
+        }
+        foreach(@joinable){
+            $_->join();
+        }
+    }
+}
+
+sub _process {
+    my $recs = shift;
+
+    require CIF::Archive::Analytic;
+    my @plugs = CIF::Archive::Analytic->plugins();
+    foreach(@$recs){
+        $_->{'impact'}.' '.$_->{'description'} if($debug);
+        foreach my $p (@plugs){
+            my $r = $p->process($_,$config);
+        }
     }
 }
