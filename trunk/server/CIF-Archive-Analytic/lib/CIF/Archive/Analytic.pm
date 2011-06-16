@@ -10,35 +10,33 @@ $VERSION = eval $VERSION;  # see L<perlmodstyle>
 use Module::Pluggable require => 1;
 require CIF::Archive;
 require CIF::Archive::DataType::Plugin::Analytic;
+require CIF::Client;
 
 sub start_run {
     my $self = shift;
     my $info = shift;
-    unless($info->{'max'}){
-        $info->{'max'} = 500;
-    }
 
-    my $last_id = CIF::Archive::DataType::Plugin::Analytic->last_run();
-    my $x = CIF::Archive->maximum_value_of('id');
-    if(($x - $last_id) < $info->{'max'}){
-        $info->{'max'} = ($x - $last_id);
-    }
+    my $ret = CIF::Archive::DataType::Plugin::Analytic->next_run($info);
+    my $startid = $ret->{'startid'};
+    my $endid = $ret->{'endid'};
 
-    my $nextid = 0;
-    if($last_id){
-        $nextid = $last_id + 1;
-    }
-    my $endid = $nextid + $info->{'max'};
-
-    my $ret = CIF::Archive->insert({
-        description => $info->{'description'} || 'analytics run start',
-        startid     => $nextid,
-        endid       => $endid,
+    require CIF::Archive;
+    my @recs = CIF::Archive->retrieve_from_sql(qq{
+        id >= $startid
+        AND id <= $endid
+        ORDER BY id ASC
     });
-    return({
-        startid => $nextid,
-        endid   => $endid
-    });
+    @recs = map { $_->{'data'} = $_->data_hash } @recs;
+    my $f;
+    @{$f->{'data'}->{'feed'}->{'entry'}} = @recs;
+    $f = CIF::Client->hash_simple($f);
+    @recs = @{$f->{'data'}->{'feed'}->{'entry'}};
+    my @array;
+    foreach(@recs){
+        next unless(ref($_) eq 'HASH');
+        push(@array,$_);
+    }
+    return(\@array);
 }
 
 1;
