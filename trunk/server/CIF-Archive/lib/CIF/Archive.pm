@@ -72,22 +72,17 @@ sub normalize_timestamp {
     return $dt;
 }
 
-## TODO -- this could get really slow
-## might be best to not use the XML storage and just use straight up JSON
-
-__PACKAGE__->add_trigger(select => \&data);
-
-sub data {
+sub data_hash {
     my $class = shift;
-    my $data = $class->{'data'};
-    my $format = $class->{'format'};
-    return $data unless($format && $format eq 'iodef');
 
-    use CIF::Archive::Storage::Plugin::Iodef;
-    $data = CIF::Archive::Storage::Plugin::Iodef->from($data);
-    $data->{'uuid'} = $class->uuid();
-    return($data);
-    
+    foreach my $p ($class->plugins('storage')){
+        if(my $h = $p->data_hash($class->data(),$class->uuid())){
+            return($h);
+        }
+    }
+    my $hash = JSON::from_json($class->data());
+    $hash->{'uuid'} = $class->uuid();
+    return JSON::from_json($class->data());
 }
 
 sub insert {
@@ -144,7 +139,7 @@ sub insert {
     };
     if($@){
         return($@,undef) unless($@ =~ /duplicate key value violates unique constraint/);
-        $id = $self->retrieve(uuid => $info->{'uuid'});
+        $id = eval { $self->retrieve(uuid => $info->{'uuid'}) };
     }
     $info->{'uuid'} = $id->uuid();
     delete($info->{'format'});
@@ -152,6 +147,7 @@ sub insert {
     foreach my $p (@dt_plugs){
         my ($did,$err) = $p->insert($info);
         if($err){
+            warn $err;
             $id->delete();
             return($err,undef);
         }
@@ -164,41 +160,47 @@ sub lookup {
     my $info = shift;
     $info->{'limit'} = 10000 unless($info->{'limit'});
 
-    foreach($class->plugins('datatype')){
-        if(my $ret = $_->lookup($info)){
-            unless($info->{'nolog'}){
-                my $source = genSourceUUID($info->{'source'} || 'unknown');
-                my $dt = DateTime->from_epoch(epoch => time());
-                $dt = $dt->ymd().'T'.$dt->hour().':00:00Z';
-                my $q = lc($info->{'query'});
-                my ($md5,$sha1,$addr);
-                for($q){
-                    if(/^[a-f0-9]{32}$/){
-                        $md5 = $q;
-                        last;
-                    }
-                    if(/^[a-f0-9]{40}$/){
-                        $sha1 = $q;
-                        last;
-                    }
-                    $addr = $q;
-                }
-
-                my ($err,$id) = CIF::Archive->insert({
-                    address => $addr || '',
-                    source  => $source,
-                    impact  => 'search',
-                    description => 'search '.$info->{'query'},
-                    detecttime  => $dt,
-                    hash_md5    => $md5 || '',
-                    hash_sha1   => $sha1 || '',
-                });
-                warn ($err) if($err);
-            }
-            return($ret);
+    my $ret;
+    if(isUUID($info->{'query'})){
+        $ret = CIF::Archive->retrieve(uuid => $info->{'query'});
+    } else {
+        foreach my $p ($class->plugins('datatype')){
+            $ret = $p->lookup($info);
+            last if($ret);
         }
     }
-    return(undef);
+
+    unless($info->{'nolog'}){
+        my $source = genSourceUUID($info->{'source'} || 'unknown');
+        my $dt = DateTime->from_epoch(epoch => time());
+        $dt = $dt->ymd().'T'.$dt->hour().':00:00Z';
+        my $q = lc($info->{'query'});
+        my ($md5,$sha1,$addr);
+        for($q){
+            if(/^[a-f0-9]{32}$/){
+                $md5 = $q;
+                last;
+            }
+            if(/^[a-f0-9]{40}$/){
+                $sha1 = $q;
+                last;
+            }
+            $addr = $q;
+        }
+
+        my ($err,$id) = CIF::Archive->insert({
+            address     => $addr,
+            source      => $source,
+            impact      => 'search',
+            description => 'search '.$info->{'query'},
+            detecttime  => $dt,
+            md5         => $md5,
+            sha1        => $sha1,
+            confidence  => 50,
+            severity    => 'low',
+        });
+    }
+    return($ret);
 }
 
 sub genMessageUUID {
@@ -232,6 +234,49 @@ sub genSourceUUID {
     my $str = $uuid->export('str');
     undef $uuid;
     return($str);
+}
+
+sub throttle {
+    my $class = shift;
+    my $throttle = shift;
+
+    require Linux::Cpuinfo;
+    my $cpu = Linux::Cpuinfo->new();
+    return(1) unless($cpu);
+    my $cores = $cpu->num_cpus();
+    return(1) unless($cores && $cores =~ /^\d$/);
+    return(1) if($cores eq 1);
+    return($cores) unless($throttle && $throttle ne 'medium');
+    return($cores/2) if($throttle eq 'low');
+    return($cores * 1.5);
+}
+
+sub split_batches {
+    my $class = shift;
+    ## TODO -- think through this.
+    my $tc = shift || 1;
+    my $recs = shift || return;
+    my @array = @{$recs};
+
+    my @batches;
+    if($#array == 0){
+        push(@batches,$recs);
+        return(\@batches);
+    }
+    
+    my $num_recs = $#array + 1;
+    my $batch = (($num_recs/$tc) == int($num_recs/$tc)) ? ($num_recs/$tc) : (int($num_recs/$tc) + 1);
+    warn 'batch: '.$batch if($::debug);
+    for(my $x = 0; $x <= $#array; $x += $batch){
+        my $start = $x;
+        my $end = ($x+$batch);
+        $end = $#array if($end > $#array);
+        my @a = @array[$x ... $end];
+        warn 'start: '.$start.' -- end: '.$end if($::debug);
+        push(@batches,\@a);
+        $x++;
+    }
+    return(\@batches);
 }
 
 

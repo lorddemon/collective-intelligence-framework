@@ -14,9 +14,10 @@ sub convert {
     return($json);
 }
 
-sub from {
+sub to_hash {
     my $self = shift;
     my $data = shift;
+    return unless($self->{'format'} eq 'json');
     return JSON::from_json($data);
 }
     
