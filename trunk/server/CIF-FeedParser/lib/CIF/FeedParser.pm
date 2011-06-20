@@ -4,24 +4,22 @@ use 5.008008;
 use strict;
 use warnings;
 
+
 our $VERSION = '0.01_01';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
-use DateTime::Format::DateParse;
-use DateTime;
+use CIF::Utils ':all';
 use Regexp::Common qw/net URI/;
 use Regexp::Common::net::CIDR;
 use Encode qw/decode_utf8 encode_utf8/;
 use Data::Dumper;
 use File::Type;
 use threads;
-use threads::shared;
-use Linux::Cpuinfo;
+#use threads::shared;
 use Module::Pluggable require => 1;
 use Digest::MD5 qw/md5_hex/;
 use Digest::SHA1 qw/sha1_hex/;
 use URI::Escape;
-# Preloaded methods go here.
 
 sub new {
     my ($class,%args) = (shift,@_);
@@ -40,10 +38,8 @@ sub get_feed {
 
     # encode to utf8
     $content = encode_utf8($content);
-    #$content =~ s/[^[:print:]]//g;
     # remove any CR's
     $content =~ s/\r//g;
-    uri_escape($content);
     delete($f->{'feed'});
     return($content);
 }
@@ -68,40 +64,40 @@ sub parse {
     my ($content,$err) = get_feed($f);
     return($err,undef) if($err);
 
-    my @array;
+    my $return;
     # see if we designate a delimiter
     if(my $d = $f->{'delimiter'}){
         require CIF::FeedParser::ParseDelim;
-        @array = CIF::FeedParser::ParseDelim::parse($f,$content,$d);
+        $return = CIF::FeedParser::ParseDelim::parse($f,$content,$d);
     } else {
         # try to auto-detect the file
         if($content =~ /<\?xml version=/){
             if($content =~ /<rss version=/){
                 require CIF::FeedParser::ParseRss;
-                @array = CIF::FeedParser::ParseRss::parse($f,$content);
+                $return = CIF::FeedParser::ParseRss::parse($f,$content);
             } else {
                 require CIF::FeedParser::ParseXml;
-                @array = CIF::FeedParser::ParseXml::parse($f,$content);
+                $return = CIF::FeedParser::ParseXml::parse($f,$content);
             }
         } elsif($content =~ /^?\[{/){
             # possible json content or CIF
             if($content =~ /^{"status"\:/){
                 require CIF::FeedParser::ParseCIF;
-                @array = CIF::FeedParser::ParseCIF::parse($f,$content);
+                $return = CIF::FeedParser::ParseCIF::parse($f,$content);
             } else {
                 require CIF::FeedParser::ParseJson;
-                @array = CIF::FeedParser::ParseJson::parse($f,$content);
+                $return = CIF::FeedParser::ParseJson::parse($f,$content);
             }
         ## TODO -- fix this; double check it
         } elsif($content =~ /^#?\s?"\S+","\S+"/){
             require CIF::FeedParser::ParseCsv;
-            @array = CIF::FeedParser::ParseCsv::parse($f,$content);
+            $return = CIF::FeedParser::ParseCsv::parse($f,$content);
         } else {
             require CIF::FeedParser::ParseTxt;
-            @array = CIF::FeedParser::ParseTxt::parse($f,$content);
+            $return = CIF::FeedParser::ParseTxt::parse($f,$content);
         }
     }
-    return(undef,@array);
+    return(undef,$return);
 }
 
 sub _decode {
@@ -118,38 +114,10 @@ sub _decode {
     }
 }
 
-## TODO -- commit some of this to DateTime::Format::DateParse
-sub normalize_date {
-    my $dt = shift;
-    return $dt if($dt =~ /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/);
-    if($dt && ref($dt) ne 'DateTime'){
-        if($dt =~ /^\d+$/){
-            if($dt =~ /^\d{8}$/){
-                $dt.= 'T00:00:00Z';
-                $dt = eval { DateTime::Format::DateParse->parse_datetime($dt) };
-                unless($dt){
-                    $dt = DateTime->from_epoch(epoch => time());
-                }
-            } else {
-                $dt = DateTime->from_epoch(epoch => $dt);
-            }
-        } elsif($dt =~ /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\S+)?$/) {
-            my ($year,$month,$day,$hour,$min,$sec,$tz) = ($1,$2,$3,$4,$5,$6,$7);
-            $dt = DateTime::Format::DateParse->parse_datetime($year.'-'.$month.'-'.$day.' '.$hour.':'.$min.':'.$sec,$tz);
-        } else {
-            $dt =~ s/_/ /g;
-            $dt = DateTime::Format::DateParse->parse_datetime($dt);
-            return undef unless($dt);
-        }
-    }
-    $dt = $dt->ymd().'T'.$dt->hms().'Z';
-    return $dt;
-}
-
 sub _sort_detecttime {
-    my @recs = @_;
+    my $recs = shift;
 
-    foreach (@recs){
+    foreach (@{$recs}){
         delete($_->{'regex'}) if($_->{'regex'});
         my $dt = $_->{'detecttime'};
         if($dt){
@@ -168,8 +136,9 @@ sub _sort_detecttime {
         $_->{'detecttime'} = $dt;
         $_->{'description'} = '' unless($_->{'description'});
     }
-    @recs = sort { $b->{'detecttime'} cmp $a->{'detecttime'} } @recs;
-    return(@recs);
+    ## TODO -- can we get around having to create a new array?
+    my @new = sort { $b->{'detecttime'} cmp $a->{'detecttime'} } @$recs;
+    return(\@new);
 }
 
 sub _insert {
@@ -202,6 +171,7 @@ sub _insert {
     if($f->{'address'} && $f->{'address'} =~ /^$RE{'URI'}/){
         # we do this here so ::Plugin::Hash will pick it up
         $f->{'address'} = uri_escape($f->{'address'},'\x00-\x1f\x7f-\xff');
+        $f->{'address'} = lc($f->{'address'});
         $f->{'md5'} = md5_hex($f->{'address'});
         $f->{'sha1'} = sha1_hex($f->{'address'});
     }
@@ -223,12 +193,10 @@ sub _insert {
 }
 
 sub insert {
-    my ($full,@recs) = (shift,@_);
-    #my $goback = DateTime->from_epoch(epoch => (time() - (84600 * 5)));
-    #$goback = $goback->ymd().'T'.$goback->hms().'Z';
-#    @recs = _sort_detecttime(@recs);
+    my $full = shift;
+    my $recs = shift;
 
-    foreach (@recs){
+    foreach (@$recs){
         foreach my $key (keys %$_){
             next unless($_->{$key});
             if($_->{$key} =~ /<(\S+)>/){
@@ -238,14 +206,6 @@ sub insert {
                 }
             }
         }
-    }
-    #foreach(@recs){
-    #    unless($full){
-    #        next if(($_->{'detecttime'} cmp $goback) == -1);
-    #    }
-    #    _insert($_);
-    #}
-    foreach (@recs){
         _insert($_);
     }
     return(0);
@@ -282,17 +242,17 @@ sub _split_batches {
 }
 
 sub t_insert {
-    my ($full,$fctn,$config,@recs) = (shift,shift,shift,@_);
+    my ($full,$fctn,$config,$recs) = (shift,shift,shift,shift);
     $fctn = 'CIF::FeedParser::insert' unless($fctn);
-    @recs = _sort_detecttime(@recs);
+    $recs = _sort_detecttime($recs);
     my $batches;
     if($full){ 
-        $batches = _split_batches($config,@recs);
+        $batches = _split_batches($config,$recs);
     } else {
         my $goback = DateTime->from_epoch(epoch => (time() - (84600 * 5)));
         $goback = $goback->ymd().'T'.$goback->hms().'Z';
         my @rr;
-        foreach (@recs){
+        foreach (@$recs){
             last if(($_->{'detecttime'} cmp $goback) == -1);
             push(@rr,$_);
         }
@@ -301,10 +261,10 @@ sub t_insert {
        
     # don't thread me out if we only have one batch
     # Crypt::SSLeay is NOT really thread safe, so we do simple https feeds with 1 bath where possible
-    return insert($full,@recs) unless(scalar @{$batches} > -1);
+    return insert($full,$recs) unless(scalar @{$batches} > -1);
     # go nuts...
     foreach(@{$batches}){
-        my $t = threads->create($fctn,$full,@{$_});
+        my $t = threads->create($fctn,$full,$_);
     }
     while(threads->list()){
         my @joinable = threads->list(threads::joinable);
