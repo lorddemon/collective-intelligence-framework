@@ -17,7 +17,7 @@ sub parse {
         map { $a->{$_} = $f->{$_} } keys %$f;
         push(@array,$a);
     }
-    return(@array);
+    return(\@array);
 }
 
 1;

@@ -79,13 +79,13 @@ if($sconfig && $sconfig->param(-block => 'database')){
     $c->{'database'} = ['DBI:'.$sconfig->{'driver'}.':database='.$sconfig->{'database'}.';host='.$sconfig->{'host'},$sconfig->{'user'},$sconfig->{'password'},{AutoCommit => 1}];
 }
 
-my ($err,@items) = CIF::FeedParser::parse($c);
+my ($err,$items) = CIF::FeedParser::parse($c);
 if($err){
     die($err) unless($err =~ /no content/);
     exit(0);
 }
    
-exit(0) unless($#items > -1);
-my $ret = CIF::FeedParser::t_insert($full_load,undef,$c,@items);
+exit(0) unless($items);
+my $ret = CIF::FeedParser::t_insert($full_load,undef,$c,$items);
 
 exit(0);

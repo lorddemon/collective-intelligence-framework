@@ -26,7 +26,7 @@ sub parse {
         map { $h->{$_} = $f->{$_} } keys %$f;
         push(@array,$h);
     }
-    return(@array);
+    return(\@array);
 
 }
 
