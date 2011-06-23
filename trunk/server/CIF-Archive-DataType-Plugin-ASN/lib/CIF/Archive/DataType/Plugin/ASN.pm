@@ -12,8 +12,8 @@ use Module::Pluggable require => 1, search_path => [__PACKAGE__];
 
 __PACKAGE__->table('asn');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid description asn asn_desc cc source severity restriction alternativeid alternativeid_restriction detecttime created/);
-__PACKAGE__->columns(Essential => qw/id uuid description asn asn_desc cc restriction created/);
+__PACKAGE__->columns(All => qw/id uuid asn asn_desc source confidence severity restriction detecttime created/);
+__PACKAGE__->columns(Essential => qw/id uuid asn asn_desc source confidence severity restriction detecttime created/);
 __PACKAGE__->sequence('asn_id_seq');
 
 # Preloaded methods go here.
@@ -45,20 +45,17 @@ sub insert {
 
     my $id = eval { $class->SUPER::insert({
         uuid        => $info->{'uuid'},
-        description => lc($info->{'description'}),
         asn         => $info->{'asn'},
         asn_desc    => $info->{'asn_desc'},
-        cc          => $info->{'cc'},
         source      => $info->{'source'},
-        severity    => $info->{'severity'},
+        confidence  => $info->{'confidence'},
+        severity    => $info->{'severity'} || 'null',
         restriction => $info->{'restriction'} || 'private',
         detecttime  => $info->{'detecttime'},
-        alternativeid   => $info->{'alternativeid'},
-        alternativeid_restriction => $info->{'alternativeid_restriction'} || 'private',
     }) };
     if($@){
         return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
-        $id = $class->retrieve(uuid => $info->{'uuid'});
+        $id = CIF::Archive->retrieve(uuid => $info->{'uuid'});
     }
     $class->table($tbl);
     return($id);
@@ -69,7 +66,15 @@ sub lookup {
     my $info = shift;
     my $q = $info->{'query'};
     return unless($q =~ /^[0-9]*\.?[0-9]*$/);
-    return($class->SUPER::lookup($q,$info->{'limit'}));
+
+    return(
+        $class->SUPER::lookup(
+            $q,
+            $info->{'severity'},
+            $info->{'confidence'},
+            $info->{'limit'}
+        )
+    );
 }
 
 sub feed {
@@ -88,9 +93,24 @@ sub feed {
     return(\@feeds);
 }
 
+__PACKAGE__->set_sql('feed' => qq{
+    SELECT count(asn),asn,asn_desc,max(detecttime) as detecttime
+    FROM __TABLE__
+    WHERE detecttime >= ?
+    AND confidence >= ?
+    AND severity >= ?
+    AND restriction <= ?
+    GROUP BY asn,asn_desc
+    ORDER BY count DESC
+    LIMIT ?
+});
+
 __PACKAGE__->set_sql('lookup' => qq{
-    SELECT * FROM __TABLE__
+    SELECT __ESSENTIAL__
+    FROM __TABLE__
     WHERE asn = ?
+    and severity >= ?
+    and confidence >= ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });
