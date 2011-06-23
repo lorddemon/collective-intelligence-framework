@@ -17,6 +17,7 @@ sub start_run {
     my $info = shift;
 
     my $ret = CIF::Archive::DataType::Plugin::Analytic->next_run($info);
+    return unless($ret);
     my $startid = $ret->{'startid'};
     my $endid = $ret->{'endid'};
 
