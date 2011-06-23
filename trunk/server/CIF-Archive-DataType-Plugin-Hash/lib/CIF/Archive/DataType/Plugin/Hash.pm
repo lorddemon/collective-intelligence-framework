@@ -11,8 +11,9 @@ $VERSION = eval $VERSION;  # see L<perlmodstyle>
 use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/SUPER$/;
 
 __PACKAGE__->table('hash');
-__PACKAGE__->columns(Primary => 'id');__PACKAGE__->columns(All => qw/id uuid description hash type source severity restriction alternativeid alternativeid_restriction detecttime created/);
-__PACKAGE__->columns(Essential => qw/id uuid description hash type restriction created/);
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(All => qw/id uuid hash confidence source type severity restriction detecttime created/);
+__PACKAGE__->columns(Essential => qw/id uuid hash confidence source type severity restriction detecttime created/);
 __PACKAGE__->sequence('hash_id_seq');
 
 sub prepare {
@@ -30,26 +31,24 @@ sub insert {
     my $info = shift;
 
     my $tbl = $class->table();
+    my $id;
     foreach($class->plugins()){
         if(my $t = $_->prepare($info)){
             $class->table($t);
+            $id = eval { $class->SUPER::insert({
+                uuid        => $info->{'uuid'},
+                hash        => $info->{'hash'},
+                source      => $info->{'source'},
+                confidence  => $info->{'confidence'},
+                severity    => $info->{'severity'} || 'null',
+                restriction => $info->{'restriction'} || 'private',
+                detecttime  => $info->{'detecttime'},
+            }) };
+            if($@){
+                return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
+                $id = CIF::Archive->retrieve(uuid => $info->{'uuid'});
+            }
         }
-    }
-
-    my $id = eval { $class->SUPER::insert({
-        uuid        => $info->{'uuid'},
-        description => lc($info->{'description'}),
-        hash        => $info->{'hash'},
-        source      => $info->{'source'},
-        severity    => $info->{'severity'},
-        restriction => $info->{'restriction'} || 'private',
-        detecttime  => $info->{'detecttime'},
-        alternativeid   => $info->{'alternativeid'},
-        alternativeid_restriction => $info->{'alternativeid_restriction'} || 'private',
-    }) };
-    if($@){
-        return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
-        $id = $class->retrieve(uuid => $info->{'uuid'});
     }
     $class->table($tbl);
     return($id);
@@ -79,15 +78,18 @@ sub lookup {
     my $q = $info->{'query'};
     foreach($class->plugins()){
         if(my $r = $_->lookup($q)){
-            return($class->SUPER::lookup($q,$info->{'limit'}));
+            return($class->SUPER::lookup($q,$info->{'severity'},$info->{'confidence'},$info->{'limit'}));
         }
     }
     return(undef);
 }
 
 __PACKAGE__->set_sql('lookup' => qq{
-    SELECT * FROM __TABLE__
+    SELECT __ESSENTIAL__
+    FROM __TABLE__
     WHERE lower(hash) = lower(?)
+    and severity >= ?
+    and confidence >= ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });

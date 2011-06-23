@@ -4,10 +4,16 @@ use base 'CIF::Archive::DataType::Plugin::Hash';
 sub prepare {
     my $class = shift;
     my $info = shift;
-    my $h = $info->{'hash_uuid'} || $info->{'hash'};
-    return unless(_prepare($h));
-    $info->{'hash'} = $h;
-    return('hash_uuid');
+    foreach(keys %$info){
+        next if($_ eq 'uuid');
+        next if($_ eq 'source');
+        next unless($info->{$_});
+        if(_prepare($info->{$_})){
+            $info->{'hash'} = $info->{$_};
+            return('hash_uuid');
+        }
+    }
+    return(undef);
 }
 
 sub lookup {

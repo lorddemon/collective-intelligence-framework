@@ -8,6 +8,7 @@ CREATE TABLE feed (
     signature text,
     impact VARCHAR(140) default 'feed',
     severity severity,
+    confidence real,
     restriction restriction not null default 'private',
     detecttime timestamp with time zone default NOW(),
     created timestamp with time zone DEFAULT NOW(),

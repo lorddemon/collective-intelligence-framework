@@ -11,4 +11,6 @@ requires    'JSON'              => '2.07';
 requires    'Config::Simple'    => '4.59';
 requires    'DateTime'          => '0.47';
 
+install_script  'cif_feeds';
+
 WriteAll();

@@ -3,6 +3,8 @@ use base 'CIF::WebAPI::Plugin';
 
 # Plugin::Hash pics up the prepare
 
+sub prepare {}
+
 sub buildNext {
     my ($self,$frag,$req) = @_;    
 
