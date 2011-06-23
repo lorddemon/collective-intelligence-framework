@@ -13,11 +13,14 @@ sub process {
     my $self = shift;
     my $data = shift;
 
+    return unless(ref($data) eq 'HASH');
     my $a = $data->{'address'};
     return unless($a && $a =~ /^$RE{'URI'}{'HTTP'}/);
 
     my $address;
     my $port;
+    ## todo -- fix this, it flags on things like trainer.exe
+    ## test with malc0de specifically
     if($a =~ /^(http?\:\/\/)?([A-Za-z-\.]+\.[a-z]{2,5})(:\d+)?\//){
         $address = $2;
         $port = $3;
@@ -30,15 +33,12 @@ sub process {
     $port =~ s/^:// if($port);
     $port = 80 unless($port && ($port ne ''));
     my $severity = $data->{'severity'};
-    $severity = ($severity eq 'high') ? 'medium' : 'low';
     my $conf = $data->{'confidence'};
-    $conf = ($conf >= 2) ? ($conf - 2) : 0;
+    $conf = ($conf / 2);
     my $impact = $data->{'impact'};
-    #$impact =~ s/url//;
-    #$impact =~ s/\s//;
-    #$impact = $impact.' domain';
     require CIF::Archive;
-    my ($err,$id) = CIF::Archive->insert({
+    my $bucket = CIF::Archive->new();
+    my ($err,$id) = $bucket->insert({
         relatedid                   => $data->{'uuid'},
         address                     => $address,
         impact                      => $impact,
@@ -51,9 +51,10 @@ sub process {
         protocol                    => 6,
         source                      => $data->{'source'},
         restriction                 => $data->{'restriction'},
+        detecttime                  => $data->{'detecttime'},
     });
     warn $err if($err);
-    warn $id;
+    warn $id if($::debug);
 }
 
 1;
