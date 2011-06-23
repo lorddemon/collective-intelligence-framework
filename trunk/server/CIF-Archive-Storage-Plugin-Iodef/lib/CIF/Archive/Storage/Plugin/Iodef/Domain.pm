@@ -9,36 +9,6 @@ sub prepare {
     return(0);
 }
 
-sub data_hash_simple {
-    my $class = shift;
-    my $hash = shift;
-
-    my $address = $hash->{'EventData'}->{'Flow'}->{'System'}->{'Node'}->{'Address'};
-    $address = $address->{'content'} if(ref($address) eq 'HASH');
-    return unless($address =~ /^[a-zA-Z0-9.-]+\.[a-z]{2,5}$/);
-
-    my ($rdata,$type);
-    my $ad = $hash->{'EventData'}->{'Flow'}->{'System'}->{'AdditionalData'};
-    my @array;
-    if(ref($ad) eq 'ARRAY'){
-        @array = @$ad;
-    } else {
-        push(@array,$ad);
-    }
-    foreach my $a (@array){
-        for(lc($a->{'meaning'})){
-            $rdata  = $a->{'content'} if(/rdata/);
-            $type   = $a->{'content'} if(/type/);
-        }
-    }
-    
-    return({
-        rdata   => $asn,
-        type    => $prefix,
-        address => $address,
-    });
-}
-
 sub convert {
     my $self = shift;
     my $info = shift;
@@ -50,6 +20,12 @@ sub convert {
     $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','ext-value');
     $iodef->add('IncidentEventDataFlowSystemNodeAddressext-category','domain');
     $iodef->add('IncidentEventDataFlowSystemNodeAddress',$address);
+
+    if($info->{'tld'}){
+        $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
+        $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','tld');
+        $iodef->add('IncidentEventDataFlowSystemAdditionalData',$_);
+    }
     
     if($info->{'rdata'}){
         $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');

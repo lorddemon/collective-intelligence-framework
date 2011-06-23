@@ -13,18 +13,6 @@ sub prepare {
     return(1);
 }
 
-sub data_hash_simple {
-    my $class = shift;
-    my $hash = shift;
-
-    my $address = $hash->{'EventData'}->{'Flow'}->{'System'}->{'Node'}->{'Address'};
-    $address = $address->{'content'} if(ref($address) eq 'HASH');
-
-    return({
-        address => $address,
-    });
-}
-
 sub convert {
     my $self = shift;
     my $info = shift;

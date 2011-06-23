@@ -11,20 +11,6 @@ sub prepare {
     return(0);
 }
 
-sub data_hash_simple {
-    my $clas = shift;
-    my $hash = shift;
-    my $sh = shift;
-
-    my $address = $hash->{'EventData'}->{'Flow'}->{'System'}->{'Node'}->{'Address'};
-    $address = $address->{'content'} if(ref($address) eq 'HASH');
-    return unless($address && $address =~ /^$RE{'net'}{'IPv4'}/);
-
-    return({
-        address => $address,
-    });
-}
-
 sub convert {
     my $class = shift;
     my $info = shift;

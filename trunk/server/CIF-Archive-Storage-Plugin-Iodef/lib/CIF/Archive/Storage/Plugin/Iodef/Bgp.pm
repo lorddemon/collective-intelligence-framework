@@ -11,35 +11,6 @@ sub prepare {
     return(0);
 }
 
-sub data_hash_simple {
-    my $class = shift;
-    my $hash = shift;
-    my $sh = shift;
-
-    my ($asn,$prefix,$rir,$cc);
-
-    my $ad = $hash->{'EventData'}->{'Flow'}->{'System'}->{'AdditionalData'};
-    my @array;
-    if(ref($ad) eq 'ARRAY'){
-        @array = @$ad;
-    } else {
-        push(@array,$ad);
-    }
-    foreach my $a (@array){
-        for(lc($a->{'meaning'})){
-            $asn    = $a->{'content'} if(/asn/);
-            $prefix = $a->{'content'} if(/prefix/);
-            $rir    = $a->{'content'} if(/rir/);
-            $cc     = $a->{'content'} if(/cc/);
-        }
-    }
-    $sh->{'asn'} = $asn;
-    $sh->{'prefix'} = $prefix;
-    $sh->{'rir'} = $rir;
-    $sh->{'cc'} = $cc;
-    return($sh);
-}
-
 sub convert {
     my $self = shift;
     my $info = shift;
