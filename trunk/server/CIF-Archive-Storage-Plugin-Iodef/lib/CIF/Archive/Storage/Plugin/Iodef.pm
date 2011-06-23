@@ -16,7 +16,17 @@ sub prepare {
     my $info = shift;
 
     foreach($class->plugins()){
-        return(1) if($_->prepare($info));
+        if($_->prepare($info)){
+            my $dt = $info->{'detecttime'};
+            # default it to the hour
+            unless($dt){
+                $dt = DateTime->from_epoch(epoch => time());
+                $dt = $dt->ymd().'T'.$dt->hour().':00:00Z';
+            }
+            $info->{'detecttime'} = $dt;
+            $info->{'format'}   = 'iodef';
+            return(1);
+        } 
     }
     return(0);
 }
@@ -32,16 +42,10 @@ sub convert {
     my $severity                    = $info->{'severity'};
     my $restriction                 = $info->{'restriction'} || 'private';
     my $source                      = $info->{'source'};
-    my $sourceid                    = $info->{'sourceid'};
     my $relatedid                   = $info->{'relatedid'};
     my $detecttime                  = $info->{'detecttime'};
     my $alternativeid               = $info->{'alternativeid'};
     my $alternativeid_restriction   = $info->{'alternativeid_restriction'} || 'private';
-    my $cidr                        = $info->{'cidr'};
-    my $asn                         = $info->{'asn'};
-    my $asn_desc                    = $info->{'asn_desc'};
-    my $cc                          = $info->{'cc'},
-    my $rir                         = $info->{'rir'},
     my $protocol                    = $info->{'protocol'};
     my $portlist                    = $info->{'portlist'};
     my $purpose                     = $info->{'purpose'} || 'mitigation';
@@ -72,7 +76,7 @@ sub convert {
         $iodef->add('IncidentAssessmentConfidencerating','numeric');
         $iodef->add('IncidentAssessmentConfidence',$confidence);
     }
-    if($severity){
+    if($severity && $severity =~ /(low|medium|high)/){
         $iodef->add('IncidentAssessmentImpactseverity',$severity);
     }
     $iodef->add('IncidentEventDataFlowSystemServicePortlist',$portlist) if($portlist);
@@ -87,34 +91,14 @@ sub convert {
     return(JSON::to_json($iodef->to_tree()));
 }
 
-sub data_hash_simple {
+sub data_hash {
     my $class = shift;
     my $data = shift;
-    my $h = $class->data_hash($data);
-    return unless($h);
-
-    my $sh = {
-        relatedid                   => $h->{'RelatededActivity'}->{'IncidentID'}->{'content'},
-        description                 => $h->{'Description'},
-        impact                      => $h->{'Assessment'}->{'Impact'}->{'content'},
-        severity                    => $h->{'Assessment'}->{'Impact'}->{'severity'},
-        confidence                  => $h->{'Assessment'}->{'Confidence'}->{'content'},
-        source                      => $h->{'IncidentID'}->{'name'},
-        restriction                 => $h->{'restriction'},
-        alternativeid               => $h->{'AlternativeID'}->{'IncidentID'}->{'content'},
-        alternativeid_restriction   => $h->{'AlternativeID'}->{'IncidentID'}->{'restriction'},
-        detecttime                  => $h->{'DetectTime'},
-        purpose                     => $h->{'purpose'},
-   };
-
-    foreach my $p ($class->plugins()){
-        my $ret = eval { $p->data_hash_simple($h) };
-        warn $@ if($@);
-        next unless($ret);
-        map { $sh->{$_} = $ret->{$_} } keys %$ret;
-    }
-    return($sh);
-}        
+    my $uuid = shift;
+    my $hash = JSON::from_json($data);
+    $hash->{'Incident'}->{'IncidentID'}->{'content'} = $uuid;
+    return($hash);
+}
 
 1;
 
