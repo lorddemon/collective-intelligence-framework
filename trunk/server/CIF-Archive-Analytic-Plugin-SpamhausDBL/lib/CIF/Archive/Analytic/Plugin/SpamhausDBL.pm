@@ -9,44 +9,46 @@ $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 my $codes = {
     '127.0.1.2' => {
-        impact      => 'spam domain',
-        description => 'spam domain',
-        severity    => 'medium',
-        confidence  => 7,
+        impact      => 'suspicious domain',
+        description => 'spammed domain',
+        severity    => 'low',
+        confidence  => 95,
     },
-    '127.0.0.3' => {
-        impact      => 'spam domain',
+    '127.0.1.3' => {
+        impact      => 'suspicious domain',
         description => 'spammed redirector domain',
-        severity    => 'medium',
-        confidence  => 7,
+        severity    => 'low',
+        confidence  => 95,
     },
-    '127.0.1.255'   => 'YOU ARE BANNED!',
+    '127.0.1.255'   => {
+        description => 'YOU ARE BANNED!',
+    },
 };
 
 foreach(4 ... 19){
-    $codes->{'127.0.1.'.$_} => {
-        impact  => 'spam domain',
-        description => 'spam domain',
-        severity    => 'medium',
-        confidence  => 7,
+    $codes->{'127.0.1.'.$_} = {
+        impact  => 'suspicious domain',
+        description => 'spammed domain',
+        severity    => 'low',
+        confidence  => 95,
     };
 }
 
 foreach(20 ... 39){
-   $codes->{'127.0.1.'.$_} => {
+   $codes->{'127.0.1.'.$_} = {
         impact      => 'phishing domain',
-        description => 'pishing domain',
+        description => 'phishing domain',
         severity    => 'medium',
-        confidence  => 7,
+        confidence  => 95,
     };
 }
 
 foreach(20 ... 39){
-   $codes->{'127.0.1.'.$_} => {
+   $codes->{'127.0.1.'.$_} = {
         impact      => 'malware domain',
         description => 'malware domain',
         severity    => 'medium',
-        confidence  => 7,
+        confidence  => 95,
     };
 }
 
@@ -55,39 +57,48 @@ sub process {
     my $data = shift;
 
     return unless(ref($data) eq 'HASH');
-    my $a = $data->{'address'};
-    return unless($a);
-    $a = lc($a);
-    return unless($a =~ /^[a-z0-9.-]+\.[a-z]{2,5}$/);
+    my $addr = $data->{'address'};
+    return unless($addr);
+    $addr = lc($addr);
+    return unless($addr =~ /^[a-z0-9.-]+\.[a-z]{2,5}$/);
     my $aid = $data->{'alternativeid'};
-    return if($aid =~ /spamhaus\.org/);
+    return if($aid && $aid =~ /spamhaus\.org/);
+    return unless($data->{'impact'});
+    return if($data->{'impact'} =~ /whitelist/ && $data->{'confidence'} >= 50);
 
     require Net::DNS::Resolver;
     my $r = Net::DNS::Resolver->new(recursive => 0);
-    $a .= '.dbl.spamhaus.org';
-
-    my $pkt = $r->send($a);
+    my $lookup = $addr.'.dbl.spamhaus.org';
+    my $pkt = $r->send($lookup);
     my @rdata = $pkt->answer();
     return unless(@rdata);
 
     require CIF::Archive;
     foreach(@rdata){
+        next unless($_->{'type'} eq 'A');
         my $code = $codes->{$_->{'address'}};
+        unless($codes->{$_->{'address'}}){
+            warn ::Dumper($_) if($::debug);
+        }
+        if($code->{'description'} =~ /BANNED/){
+            warn ::Dumper($_);
+            warn 'BANNED';
+            return;
+        }
         return if($code->{'description'} =~ /BANNED/);
 
         my ($err,$id) = CIF::Archive->insert({
             address                     => $data->{'address'},
             impact                      => $code->{'impact'},
             description                 => $code->{'description'},
-            relatedid                   => $data->{'uuid'},
-            severity                    => $code->{'severity'},
-            confidence                  => $code->{'confidence'},
+            severity                    => $code->{'severity'} || 'medium',
+            confidence                  => $code->{'confidence'} || 85,
             restriction                 => 'need-to-know', 
-            alternativeid               => 'http://www.spamhaus.org/query/dbl?domain='.$a,
-            alternativdid_restriction   => 'public',
+            alternativeid               => 'http://www.spamhaus.org/query/dbl?domain='.$addr,
+            alternativedid_restriction   => 'public',
         });
         warn $err if($err);
-        warn $id;
+        warn $id if $::debug;
     }
 }
 
