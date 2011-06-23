@@ -151,7 +151,7 @@ sub split_batches {
     ## TODO -- think through this.
     my $tc = shift;
     my $recs = shift || return;
-    my @array = @{$recs};
+    my @array = @$recs;
 
     my @batches;
     if($#array == 0){
@@ -161,13 +161,11 @@ sub split_batches {
 
     my $num_recs = $#array + 1;
     my $batch = (($num_recs/$tc) == int($num_recs/$tc)) ? ($num_recs/$tc) : (int($num_recs/$tc) + 1);
-    warn 'batch: '.$batch if($::debug);
     for(my $x = 0; $x <= $#array; $x += $batch){
         my $start = $x;
         my $end = ($x+$batch);
         $end = $#array if($end > $#array);
         my @a = @array[$x ... $end];
-        warn 'start: '.$start.' -- end: '.$end if($::debug);
         push(@batches,\@a);
         $x++;
     }
