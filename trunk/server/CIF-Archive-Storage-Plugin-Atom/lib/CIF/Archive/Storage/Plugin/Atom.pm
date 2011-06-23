@@ -18,8 +18,9 @@ sub prepare {
     my $class = shift;
     my $info = shift;
 
-    return unless($info->{'impact'} =~ /feed/);
-    return(1);
+#    return unless($info->{'impact'} =~ /feed/);
+#    return(1);
+    return;
 }
 
 sub convert {
