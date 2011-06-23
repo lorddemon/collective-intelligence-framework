@@ -1,0 +1,49 @@
+#labels Phase-Deploy
+this guide shows how to remove 'beta2' code from your host
+
+= Introduction =
+
+This set of steps should be done before you install any Beta3 code.
+
+= Exporting your old data =
+
+ * INSERT perl code here to export
+
+= Removal of Perl Modules =
+
+* locate your perl modules
+{{{
+$ sudo updatedb
+$ locate Message.pm
+}}}
+
+  it should be somewhere under /usr/local/share/perl/5.X.X/CIF
+
+{{{
+$ locate Message.pm | grep CIF
+/usr/local/share/perl/5.10.0/CIF/Message.pm
+/usr/local/share/perl/5.10.0/CIF/Message/FeedMessage.pm
+}}}
+
+* remove the old libraries
+{{{
+$ sudo -s
+# cd /usr/local/share/perl/5.10.0/
+# tar -cf /tmp/CIF-beta2.tar CIF
+# rm -R -f CIF
+# rm /usr/local/lib/perl/5.10.0/auto/CIF -R -f
+# rm /usr/local/lib/perl/5.10.0/auto/CIF -R -f
+# rm /usr/local/share/man/man3/CIF* -R -f
+}}}
+
+* double check that everything is gone
+{{{
+# updatedb && locate CIF | grep -v home
+}}}
+
+* be sure to copy your old apache config file to a safe place
+* move your old feed scripts to a safe place
+{{{
+# tar -cf /tmp/feeds-beta2.tar /opt/cif-feeds-public
+# rm /opt/cif-feeds-public -R -f
+}}}
