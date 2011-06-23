@@ -44,21 +44,52 @@ sub next_run {
 
     # need to do this outside of the transaction lock
     require CIF::Archive;
-    my $last_val = CIF::Archive->minimum_value_of('id') || $class->sql_lastval->select_val();
+
+    # first check to see if there are any values in the database
+    my $min_val = CIF::Archive->minimum_value_of('id');
+    return unless($min_val);
+    # we have at-least one value
+
+    # find the max value
+    # there should be at-least one
     my $max_val = CIF::Archive->maximum_value_of('id');
 
+    # now populate the two
+    $min_val = CIF::Archive->retrieve($min_val);
+    $max_val = CIF::Archive->retrieve($max_val);
+
+    my $min_uuid = $min_val->uuid();
+    my $max_uuid = $max_val->uuid();
+
+    # here's where we start the transaction lock
+    # it sticks till we move out of scope / exit the function
     local $class->db_Main->{'AutoCommit'};
+
+    # we have a value in the db
+    # now check out the last analytics run
     my @recs = $class->search__last_run();
+    
+    my ($startid,$endid);
+    ## TODO -- test start -- end when there has been a last run
+    ## cif -q goog.com
 
     if($#recs > -1){
-        $last_val = $recs[0]->endid();
+        # if our last value was an anlaytics run return
+        return if($max_uuid eq $recs[0]->uuid->uuid()); 
+        $startid = $recs[0]->endid() + 1;
+    } else {
+        $startid = $min_val->id();
     }
-    my ($startid,$endid) = 0;
-    return if($max_val && $max_val == $last_val);
-    $startid = $last_val + 1;
-    $endid = (($max_val - $startid) < $info->{'max'}) ? ($startid + ($max_val - $startid)) : $startid + $info->{'max'};
-    warn $startid.' - '.$endid if($::debug);
 
+    # if max - start is less than our maximum record limit
+    if(($max_val->id() - $startid) < $info->{'max'}){
+        # set the endid
+        $endid = ($startid + ($max_val->id() - $startid));
+    } else {
+        $endid = $startid + $info->{'max'};
+    }
+    warn $startid.' - '.$endid if($::debug);
+    
     my $ret = CIF::Archive->insert({
         description => $info->{'description'} || 'analytics run start: '.($endid - $startid).' records',
         startid     => $startid,
@@ -68,19 +99,6 @@ sub next_run {
         startid => $startid,
         endid   => $endid,
     });
-}
-
-sub _do_transaction {
-    my $class = shift;
-    my ($code) = @_;
-    local $class->db_Main->{'AutoCommit'};
-    my @recs = eval { $code->() };
-    if($@){
-        my $err = $@;
-        eval { $class->dbi_rollback() };
-        die($err);
-    }
-    return(\@recs);
 }
 
 __PACKAGE__->set_sql('_last_run'  => qq{
