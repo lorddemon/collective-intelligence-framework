@@ -2,6 +2,7 @@ use inc::Module::Install;
 
 all_from    'lib/CIF/FeedParser.pm';
 
+requires    'CIF::Client'                   => '0.01_01';
 requires    'CIF::Archive'                  => '0.01_01';
 requires    'LWP::Simple'                   => '5.810';
 requires    'LWP::UserAgent'                => '5.813';

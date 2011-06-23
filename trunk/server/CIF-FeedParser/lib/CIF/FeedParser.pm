@@ -4,27 +4,29 @@ use 5.008008;
 use strict;
 use warnings;
 
-
 our $VERSION = '0.01_01';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 use CIF::Utils ':all';
 use Regexp::Common qw/net URI/;
 use Regexp::Common::net::CIDR;
-use Encode qw/decode_utf8 encode_utf8/;
+use Encode qw/encode_utf8/;
 use Data::Dumper;
 use File::Type;
 use threads;
-#use threads::shared;
 use Module::Pluggable require => 1;
 use Digest::MD5 qw/md5_hex/;
 use Digest::SHA1 qw/sha1_hex/;
 use URI::Escape;
 
+my @processors = __PACKAGE__->plugins;
+@processors = grep(/Processor/,@processors);
+
 sub new {
     my ($class,%args) = (shift,@_);
     my $self = {};
     bless($self,$class);
+
     return $self;
 }
 
@@ -44,6 +46,8 @@ sub get_feed {
     return($content);
 }
 
+# we do this sep cause it's in a thread
+# this gets around memory leak issues and TLS threading issues with Crypt::SSLeay, etc
 sub _get_feed {
     my $f = shift;
     return unless($f->{'feed'});
@@ -60,6 +64,7 @@ sub _get_feed {
 
 ## TODO -- turn this into plugins
 sub parse {
+    my $class = shift;
     my $f = shift;
     my ($content,$err) = get_feed($f);
     return($err,undef) if($err);
@@ -121,7 +126,7 @@ sub _sort_detecttime {
         delete($_->{'regex'}) if($_->{'regex'});
         my $dt = $_->{'detecttime'};
         if($dt){
-            $dt = normalize_date($dt);
+            $dt = normalize_timestamp($dt);
         }
         unless($dt){
             $dt = DateTime->from_epoch(epoch => time());
@@ -141,60 +146,45 @@ sub _sort_detecttime {
     return(\@new);
 }
 
+## TODO _- clean this up
 sub _insert {
     my $f = shift;
-    my $b = shift;
-    my $a = $f->{'malware_md5'} || $f->{'address'};
-    return unless($a && length($a) > 2);
-    $a = encode_utf8($a);
-    $f->{'impact'} = lc($f->{'impact'});
-    unless($f->{'description'}){
-        $f->{'description'} = $f->{'impact'};
-    }
-    $f->{'description'} = lc($f->{'description'});
+    my $a = $f->{'address'} || $f->{'md5'} || $f->{'sha1'} || $f->{'malware_md5'} || $f->{'malware_sha1'};
+    # protect against feeds that suck and put things like "-" in there
+    # you know how the hell you are! >:0
+    return(0) unless($a && length($a) > 2);
 
-    require CIF::Archive;
-    my $bucket = CIF::Archive->new();
-    if($f->{'database'}){
-        local $^W = 0;
-        $bucket->connection($f->{'database'});
-        local $^W = 1;
+    foreach my $p (@processors){
+        $p->process($f);
     }
-    # some feeds don't put the http(s) in front
-    # Regexp::Common::URI doesn't do a good job of recognizing the format of a URL
-    ## TODO -- submit a fix to Regexp::Common::URI
-    if($f->{'address'} && $f->{'impact'} && $f->{'impact'} =~ /url$/ && $f->{'address'} !~ /^(http|https|ftp):\/\//){
-        if($f->{'address'} =~ /[\/]+/){
-            $f->{'address'} = 'http://'.$f->{'address'};
-        }
-    }
-    if($f->{'address'} && $f->{'address'} =~ /^$RE{'URI'}/){
-        # we do this here so ::Plugin::Hash will pick it up
-        $f->{'address'} = uri_escape($f->{'address'},'\x00-\x1f\x7f-\xff');
-        $f->{'address'} = lc($f->{'address'});
-        $f->{'md5'} = md5_hex($f->{'address'});
-        $f->{'sha1'} = sha1_hex($f->{'address'});
-    }
+
+    # snag this before it goes through the insert
+    # and gets converted to a uuid
     my $source = $f->{'source'};
-    my ($err,$id) = $bucket->insert($f);
+    my ($err,$id) = CIF::Archive->insert($f);
     ## TODO -- setup a mailer that returns this in cif_feed_parser
     warn($err) unless($id);
     
-    my $rid;
-    if($id =~ /^\d+$/){
-        $rid = $id->description().' -- '.$id->uuid();
-    } else {
-        $rid = $id;
-    }
     $a = substr($a,0,40);
     $a .= '...';
-    print $source.' -- '.$rid.' -- '.$f->{'impact'}.' '.$f->{'description'}.' -- '.$a."\n";
+    print $source.' -- '.$id->uuid().' -- '.$f->{'impact'}.' '.$f->{'description'}.' -- '.$a."\n";
     return(0);
 }
 
 sub insert {
-    my $full = shift;
+    my $config = shift;
     my $recs = shift;
+
+    require CIF::Archive;
+    if($config->{'database'}){
+        local $^W = 0;
+        eval { CIF::Archive->connection(@{$config->{'database'}}) };
+        ## TODO -- do a better catching of this
+        if($@){
+            die($@);
+        }
+        local $^W = 1;
+    }
 
     foreach (@$recs){
         foreach my $key (keys %$_){
@@ -211,44 +201,26 @@ sub insert {
     return(0);
 }
 
-sub throttle {
-    my $throttle = shift;
-    my $cpu = Linux::Cpuinfo->new();
-    return(1) unless($cpu);
-    my $cores = $cpu->num_cpus();
-    return(1) unless($cores && $cores =~ /^\d$/);
-    return(1) if($cores eq 1);
-    return($cores) unless($throttle && $throttle ne 'medium');
-    return($cores/2) if($throttle eq 'low');
-    return($cores * 1.5);
-}
+sub process {
+    my $class = shift;
+    my %args = @_;
 
-sub _split_batches {
-    my $config = shift;
-    my @recs = @_;
-    my $tc = $config->{'threads_count'};
-    my @batches;
-    my $batch = (($#recs/$tc) == int($#recs/$tc)) ? ($#recs/$tc) : (int($#recs/$tc) + 1);
-    for(my $x = 0; $x <= $#recs; $x += $batch){
-        my $start = $x;
-        my $end = ($x+$batch);
-        $end = $#recs if($end > $#recs);
-        my @a = @recs[$x ... $end];
-        push(@batches,\@a);
-        $x++;
-    }
-    delete($config->{'threads_count'});
-    return(\@batches);
-}
+    my $threads = $args{'threads'};
+    my $recs    = $args{'entries'};
+    my $full    = $args{'full_load'};
+    my $config  = $args{'config'};
 
-sub t_insert {
-    my ($full,$fctn,$config,$recs) = (shift,shift,shift,shift);
-    $fctn = 'CIF::FeedParser::insert' unless($fctn);
+    # we do this so other scripts can hook into us
+    my $fctn = ($args{'function'}) ? $args{'function'} : 'CIF::FeedParser::insert';
+
+    # do the sort before we split
     $recs = _sort_detecttime($recs);
     my $batches;
     if($full){ 
-        $batches = _split_batches($config,$recs);
+        $batches = split_batches($threads,$recs);
     } else {
+        # sort by detecttime and only process the last 5 days of stuff
+        ## TODO -- make this configurable
         my $goback = DateTime->from_epoch(epoch => (time() - (84600 * 5)));
         $goback = $goback->ymd().'T'.$goback->hms().'Z';
         my @rr;
@@ -256,26 +228,21 @@ sub t_insert {
             last if(($_->{'detecttime'} cmp $goback) == -1);
             push(@rr,$_);
         }
-        $batches = _split_batches($config,@rr);
+        # TODO -- round robin the split?
+        $batches = split_batches($threads,\@rr);
     }
-       
-    # don't thread me out if we only have one batch
-    # Crypt::SSLeay is NOT really thread safe, so we do simple https feeds with 1 bath where possible
-    return insert($full,$recs) unless(scalar @{$batches} > -1);
-    # go nuts...
+    return insert($config,$recs) unless(scalar @{$batches} > 1);
+
     foreach(@{$batches}){
-        my $t = threads->create($fctn,$full,$_);
+        my $t = threads->create($fctn,$config,$_);
     }
     while(threads->list()){
         my @joinable = threads->list(threads::joinable);
         unless($#joinable > -1){
-            sleep(2);
+            sleep(1);
             next();
         }
         foreach(@joinable){
-            # crypto libs might seg fault here. its OK
-            ## TODO -- patch here for Crypt::SSLeay
-            ## https://rt.cpan.org/Ticket/Display.html?id=41007
             $_->join();
         }
     }
