@@ -8,11 +8,12 @@ use warnings;
 our $VERSION = '0.01_01';
 eval $VERSION;
 
-use Module::Pluggable require => 1, search_path => [__PACKAGE__];
+use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/SUPER$/;
+use Regexp::Common qw/URI/;
 
 __PACKAGE__->table('email');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid description address subject impact source confidence severity restriction alternativeid alternativeid_restriction detecttime created/);
+__PACKAGE__->columns(All => qw/id uuid address source confidence severity restriction detecttime created/);
 __PACKAGE__->sequence('email_id_seq');
 
 sub prepare {
@@ -20,7 +21,8 @@ sub prepare {
     my $info = shift;
    
     my $address = $info->{'address'} || return(undef);
-    return(undef) unless($address =~ /\w+@\w+/);
+    return if($address =~ /^$RE{'URI'}/);
+    return unless($address =~ /\w+@\w+/);
     return(1);
 }
 
@@ -37,23 +39,37 @@ sub insert {
     
     my $id = eval { $self->SUPER::insert({
         uuid            => $info->{'uuid'},
-        description     => lc($info->{'description'}),
         address         => $info->{'address'},
         source          => $info->{'source'},
-        impact          => $info->{'impact'},
         confidence      => $info->{'confidence'},
-        severity        => $info->{'severity'},
+        severity        => $info->{'severity'} || 'null',
         restriction     => $info->{'restriction'} || 'private',
         detecttime      => $info->{'detecttime'},
-        alternativeid   => $info->{'alternativeid'},
-        alternativeid_restriction   => $info->{'alternativeid_restriction'} || 'private',
     }) };
     if($@){
         die unless($@ =~ /duplicate key value violates unique constraint/);
-        $id = $self->retrieve(uuid => $info->{'uuid'});
+        $id = CIF::Archive->retrieve(uuid => $info->{'uuid'});
     }
     $self->table($tbl);
     return($id);
+}
+
+sub feed {
+    my $class = shift;
+    my $info = shift;
+
+    my @feeds;
+    $info->{'key'} = 'address';
+    my $ret = $class->SUPER::feed($info);
+    push(@feeds,$ret) if($ret);
+
+    my $tbl = $class->table();
+    foreach($class->plugins()){
+        my $t = $_->set_table();
+        my $r = $_->SUPER::feed($info);
+        push(@feeds,$r) if($r);
+    }
+    return(\@feeds);
 }
 
 sub lookup {

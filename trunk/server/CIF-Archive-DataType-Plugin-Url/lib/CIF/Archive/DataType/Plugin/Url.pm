@@ -8,45 +8,40 @@ use warnings;
 our $VERSION = '0.01_01';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
-use Module::Pluggable require => 1, search_path => [__PACKAGE__];
-
+use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/SUPER$/;
 use Digest::SHA1 qw(sha1_hex);
 use Digest::MD5 qw(md5_hex);
 use Encode qw/encode_utf8/;
+use URI::Escape;
+use Regexp::Common qw/URI/;
 
 __PACKAGE__->table('url');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid description address impact source url_md5 url_sha1 malware_md5 malware_sha1 confidence severity restriction alternativeid alternativeid_restriction detecttime created/);
-__PACKAGE__->columns(Essential => qw/id uuid description address restriction created/);
+__PACKAGE__->columns(All => qw/id uuid source address confidence severity restriction detecttime created/);
+__PACKAGE__->columns(Essential => qw/id uuid source address confidence severity restriction detecttime created/);
 __PACKAGE__->sequence('url_id_seq');
 
 ## sub lookup {} is via Plugin::Hash
+sub lookup { return; }
 
 sub prepare {
     my $class = shift;
     my $info = shift;
-    return(undef) unless($info->{'impact'});
-    return(undef) unless($info->{'impact'} =~ /url$/);
+    return unless($info->{'impact'});
+    return unless($info->{'impact'} =~ /url$/);
+    return unless($info->{'address'});
+    return unless($info->{'address'} =~ /^$RE{'URI'}/);
+    $info->{'md5'} = md5_hex($info->{'address'}) unless($info->{'md5'});
+    $info->{'sha1'} = sha1_hex($info->{'address'}) unless($info->{'sha1'});
     return(1);
 }
 
 sub insert {
     my $self = shift;
     my $info = shift;
-    $info->{'address'} = encode_utf8($info->{'address'}) if($info->{'address'});
-
+    
     my $uuid    = $info->{'uuid'};
     my $address = $info->{'address'};
-
-    my $md5     = $info->{'md5'};
-    my $sha1    = $info->{'sha1'};
-
-    if($address){
-        $md5 = md5_hex($address) unless($md5);
-        $sha1 = sha1_hex($address) unless($sha1);
-    } else {
-        $info->{'address'} = $md5 || $sha1;
-    }
 
     my $tbl = $self->table();
     foreach($self->plugins()){
@@ -57,27 +52,37 @@ sub insert {
 
     my $id = eval { $self->SUPER::insert({
         uuid            => $info->{'uuid'},
-        description     => lc($info->{'description'}),
         address         => $address,
-        url_md5         => $md5,
-        url_sha1        => $sha1,
-        malware_md5     => $info->{'malware_md5'},
-        malware_sha1    => $info->{'malware_sha1'},
         source          => $info->{'source'},
-        impact          => $info->{'impact'},
         confidence      => $info->{'confidence'},
-        severity        => $info->{'severity'},
+        severity        => $info->{'severity'} || 'null',
         restriction     => $info->{'restriction'} || 'private',
         detecttime      => $info->{'detecttime'},
-        alternativeid   => $info->{'alternativeid'},
-        alternativeid_restriction   => $info->{'alternativeid_restriction'} || 'private',
     }) };
     if($@){
         die unless($@ =~ /duplicate key value violates unique constraint/);
-        $id = $self->retrieve(uuid => $uuid);
+        $id = CIF::Archive->retrieve(uuid => $uuid);
     }
     $self->table($tbl);
     return($id);
+}
+
+sub feed {
+    my $class = shift;
+    my $info = shift;
+
+    my @feeds;
+    $info->{'key'} = 'address';
+    my $ret = $class->SUPER::feed($info);
+    push(@feeds,$ret) if($ret);
+
+    my $tbl = $class->table();
+    foreach($class->plugins()){
+        my $t = $_->set_table();
+        my $r = $_->SUPER::feed($info);
+        push(@feeds,$r) if($r);
+    }
+    return(\@feeds);
 }
 
 1;

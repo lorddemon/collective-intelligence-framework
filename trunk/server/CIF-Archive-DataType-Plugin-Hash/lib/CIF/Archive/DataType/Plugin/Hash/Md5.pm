@@ -4,18 +4,29 @@ use base 'CIF::Archive::DataType::Plugin::Hash';
 sub prepare {
     my $class = shift;
     my $info = shift;
-    my $h = $info->{'hash_md5'} || $info->{'hash'};
-    return unless($h);
-
-    return unless($h =~ /^[a-fA-F0-9]{32}$/);
-    $info->{'hash'} = $h;
+    
+    ## TODO -- fix this
+    ## collision with CIF::Archive::DataType::Plugin::Feed
+    return if($info->{'impact'} && $info->{'impact'} =~ /feed$/);
+    my $hash = $info->{'md5'} || $info->{'hash'};
+    return unless($hash);
+    $hash = lc($hash);
+    ## TODO -- set this up to accomodate multiple hashes
+    return unless(_prepare($hash));
+    $info->{'hash'} = $hash;
     return('hash_md5');
 }
 
 sub lookup {
     my $class = shift;
-    my $q = shift;
-    return unless($q && $q =~ /^[a-fA-F0-9]{32}$/);
+    my $q = shift || return;
+    return unless(_prepare($q));
+    return(1);
+}
+
+sub _prepare {
+    my $arg = shift || return;
+    return unless($arg =~ /^[a-fA-F0-9]{32}$/);
     return(1);
 }
 

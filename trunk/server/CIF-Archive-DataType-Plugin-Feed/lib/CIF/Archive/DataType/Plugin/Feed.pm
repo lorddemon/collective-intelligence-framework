@@ -9,8 +9,8 @@ our $VERSION = '0.01_01';
 $VERSION = eval $VERSION;
 
 __PACKAGE__->table('feed');
-__PACKAGE__->columns(All => qw/id uuid description source hash_sha1 signature impact severity restriction detecttime created data/);
-__PACKAGE__->columns(Essential => qw/id uuid description source hash_sha1 signature impact severity restriction detecttime created data/);
+__PACKAGE__->columns(All => qw/id uuid description confidence source hash_sha1 signature impact severity restriction detecttime created data/);
+__PACKAGE__->columns(Essential => qw/id uuid description confidence source hash_sha1 signature impact severity restriction detecttime created data/);
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->sequence('feed_id_seq');
 
@@ -30,17 +30,19 @@ sub insert {
     my $id = eval { $self->SUPER::insert($info) };
     if($@){
         return(undef,$@) unless($@ =~ /unique/);
-        $id = $self->retrieve(uuid => $uuid);
+        $id = CIF::Archive->retrieve(uuid => $uuid);
     }
     return($id);
 }
 
 __PACKAGE__->set_sql('lookup' => qq{
-    SELECT * FROM __TABLE__
+    SELECT __ESSENTIAL__
+    FROM __TABLE__
     WHERE impact = ?
     AND severity = ?
+    and confidence >= ?
     and restriction = ?
-    ORDER BY id DESC LIMIT 1
+    ORDER BY confidence asc, detecttime desc, created desc, id DESC LIMIT 1
 });
 
 sub lookup {
@@ -51,7 +53,7 @@ sub lookup {
     my $restriction = $info->{'restriction'};
     my $query = $info->{'query'}.' feed';
 
-    my @args = ($query,$severity,$restriction);
+    my @args = ($query,$severity,$info->{'confidence'},$restriction);
     return $class->SUPER::lookup(@args);
 }
 

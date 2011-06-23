@@ -1,41 +1,29 @@
-package CIF::Archive::DataType::Plugin::Countrycode;
+package CIF::Archive::DataType::Plugin::RIR;
 use base 'CIF::Archive::DataType';
 
 use 5.008008;
 use strict;
 use warnings;
 
-our $VERSION = '0.00_01';
+our $VERSION = '0.01_01';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 use Module::Pluggable require => 1, search_path => [__PACKAGE__];
 
-__PACKAGE__->table('countrycode');
+__PACKAGE__->table('rir');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid cc source severity confidence restriction detecttime created/);
-__PACKAGE__->columns(Essential => qw/id uuid cc source severity confidence restriction detecttime created/);
-__PACKAGE__->sequence('countrycode_id_seq');
+__PACKAGE__->columns(All => qw/id uuid rir source confidence severity restriction detecttime created/);
+__PACKAGE__->columns(Essential => qw/id uuid rir source confidence severity restriction detecttime created/);
+__PACKAGE__->sequence('asn_id_seq');
 
-__PACKAGE__->set_sql('feed' => qq{
-    SELECT count(cc),cc,max(detecttime) as detecttime
-    FROM __TABLE__
-    WHERE detecttime >= ?
-    AND confidence >= ?
-    AND severity >= ?
-    AND restriction <= ?
-    GROUP BY cc
-    ORDER BY count DESC
-    LIMIT ?
-});
+# Preloaded methods go here.
 
 sub prepare {
     my $class = shift;
     my $info = shift;
 
-    ## TODO -- download list of IANA country codes for use in regex
-    ## http://data.iana.org/TLD/tlds-alpha-by-domain.txt
-    return unless($info->{'cc'});
-    return unless($info->{'cc'} =~ /^[a-zA-Z]{2,2}$/);
+    return unless($info->{'rir'});
+    return unless($class->isrir($info->{'rir'}));
     return(1);
 }
 
@@ -43,9 +31,6 @@ sub insert {
     my $class = shift;
     my $info = shift;
 
-    return unless($info->{'cc'});
-
-    # you could create different buckets for different country codes
     my $tbl = $class->table();
     foreach($class->plugins()){
         if(my $t = $_->prepare($info)){
@@ -55,10 +40,10 @@ sub insert {
 
     my $id = eval { $class->SUPER::insert({
         uuid        => $info->{'uuid'},
-        cc          => $info->{'cc'},
+        rir         => $info->{'rir'},
         source      => $info->{'source'},
-        severity    => $info->{'severity'} || 'null',
         confidence  => $info->{'confidence'},
+        severity    => $info->{'severity'},
         restriction => $info->{'restriction'} || 'private',
         detecttime  => $info->{'detecttime'},
     }) };
@@ -70,11 +55,26 @@ sub insert {
     return($id);
 }
 
+sub lookup {
+    my $class = shift;
+    my $info = shift;
+    my $q = $info->{'query'};
+    return unless($class->isrir($q));
+    return($class->SUPER::lookup($q,$info->{'severity'},$info->{'confidence'},$info->{'limit'}));
+}
+
+sub isrir {
+    my $class = shift;
+    my $rir = shift;
+    return unless($rir =~ /^(apnic|arin|ripencc|lacnic|afrinic)$/);
+    return(1);
+}
+
 sub feed {
     my $class = shift;
     my $info = shift;
     my @feeds;
-    $info->{'key'} = 'cc';
+    $info->{'key'} = 'rir';
     my $ret = $class->SUPER::feed($info);
     push(@feeds,$ret) if($ret);
 
@@ -86,20 +86,22 @@ sub feed {
     return(\@feeds);
 }
 
-sub lookup {
-    my $class = shift;
-    my $info = shift;
-    my $query = ($info->{'query'});
-    return unless($query =~ /^[a-z]{2,2}$/);
-
-    my @args = ($query,$info->{'severity'},$info->{'confidence'},$info->{'limit'});
-    return $class->SUPER::lookup(@args);
-}
+__PACKAGE__->set_sql('feed' => qq{
+    SELECT count(rir),rir,max(detecttime) as detecttime
+    FROM __TABLE__
+    WHERE detecttime >= ?
+    AND confidence >= ?
+    AND severity >= ?
+    AND restriction <= ?
+    GROUP BY rir
+    ORDER BY count DESC
+    LIMIT ?
+});
 
 __PACKAGE__->set_sql('lookup' => qq{
     SELECT __ESSENTIAL__
     FROM __TABLE__
-    WHERE upper(cc) = upper(?)
+    WHERE rir = ?
     AND severity >= ?
     AND confidence >= ?
     ORDER BY detecttime DESC, created DESC, id DESC
@@ -108,11 +110,9 @@ __PACKAGE__->set_sql('lookup' => qq{
 
 1;
 __END__
-# Below is stub documentation for your module. You'd better edit it!
-
 =head1 NAME
 
-CIF::Archive::DataType::Plugin::Countrycode - CIF::Archive plugin for indexing country codes
+ CIF::Archive::DataType::Plugin::RIR - Perl extension for indexing RIR's
 
 =head1 SEE ALSO
 
