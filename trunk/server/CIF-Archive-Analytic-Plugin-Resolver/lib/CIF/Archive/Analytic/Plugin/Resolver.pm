@@ -8,50 +8,59 @@ our $VERSION = '0.01_01';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 use Net::Abuse::Utils qw(:all); 
+use DateTime::Format::DateParse;
 
 sub process {
     my $self = shift;
     my $data = shift;
 
     return unless(ref($data) eq 'HASH');
-    my $a = $data->{'address'};
-    return unless($a);
-    return if($data->{'rdata'});
+    return unless($data->{'impact'});
+    my $addr = $data->{'address'};
+    return unless($addr);
+    return if($data->{'rdata'} && $data->{'rdata'} ne 'unknown');
     return unless($data->{'type'} && $data->{'type'} eq 'A'); 
-    $a = lc($a);
-    return unless($a =~ /[a-z0-9\.-]+\.[a-z]{2,5}$/);
+    $addr = lc($addr);
+    return unless($addr =~ /[a-z0-9.-]+\.[a-z]{2,5}$/);
+    my $dt = DateTime::Format::DateParse->parse_datetime($data->{'detecttime'});
+    return unless((time() - $dt->epoch()) < (3*84600));
+    warn $addr;
 
     require Net::DNS::Resolver;
     my $r = Net::DNS::Resolver->new(recursive => 0);
-    my $pkt = $r->send($a);
-    my $ns = $r->send($a,'NS');
-    my $mx = $r->send($a,'MX');
-    my @rdata = $pkt->answer();
-    push(@rdata,$mx->answer());
-    # work-around for things like co.cc, co.uk, etc..
-    ## TODO -- clean this up with official TLD lists
-    unless($ns->answer()){
-        $a =~ m/([a-z0-9-]+\.[a-z]{2,5})$/;
-        $a = $1;
-        $ns = $r->send($a,'NS');
+    $r->udp_timeout(2);
+    $r->tcp_timeout(2);
+    my $pkt = $r->send($addr);
+    my $ns;
+    unless($data->{'impact'} =~ /whitelist/){
+        $ns = $r->send($addr,'NS');
+        # work-around for things like co.cc, co.uk, etc..
+        ## TODO -- clean this up with official TLD lists
+        unless($ns && $ns->answer()){
+            $addr =~ m/([a-z0-9-]+\.[a-z]{2,5})$/;
+            $addr = $1;
+            $ns = $r->send($addr,'NS');
+        }
     }
-    push(@rdata,$ns->answer());
+    return unless($pkt);
+    my @rdata = $pkt->answer();
+    push(@rdata,$ns->answer()) if($ns);
     return unless(@rdata);
-
-    my $sev = ($data->{'severity'} eq 'high') ? 'medium' : 'low';
-    my $conf = ($data->{'confidence'} >= 2) ? ($data->{'confidence'} - 2) : 0;
 
     foreach(@rdata){
         my ($as,$network,$ccode,$rir,$date,$as_desc) = asninfo($_->{'address'});
+        my $conf = $data->{'confidence'};
+        #$conf = ($conf/2) unless($_->{'type'} =~ /^(A|CNAME|PTR)$/);
+        $conf = ($conf / 2);
         my ($err,$id) = CIF::Archive->insert({
             impact      => $data->{'impact'},
             description => $data->{'description'},
             relatedid   => $data->{'uuid'},
             address     => $data->{'address'},
-            rdata       => $_->{'address'} || $_->{'nsdname'},
+            rdata       => $_->{'address'} || $_->{'cname'} || $_->{'nsdname'} || $_->{'exchange'} || 'unknown',
             type        => $_->{'type'},
             class       => $_->{'class'},
-            severity    => $sev,
+            severity    => $data->{'severity'},
             restriction => $data->{'restriction'},
             alternativeid   => $data->{'alternativeid'},
             alternativeid_restriction   => $data->{'alternativeid_restriction'},
@@ -60,12 +69,13 @@ sub process {
             asn         => $as,
             asn_desc    => $as_desc,
             cc          => $ccode,
-            cidr        => $network,
+            prefix      => $network,
             rir         => $rir,
             portlist    => $data->{'portlist'},
             protocol    => $data->{'protocol'},
         });
         warn $err if($err);
+        warn $id->uuid() if($::debug);
     }
 }
 
