@@ -2,6 +2,7 @@ use inc::Module::Install;
 
 all_from    'lib/CIF/Archive/DataType/Plugin/Infrastructure.pm';
 
+requires    'CIF::WebAPI'               => '0.01';
 requires    'CIF::Archive'              => '0.01_01';
 requires    'Net::CIDR'                 => '0.13';
 requires    'Net::Abuse::Utils'         => '0.10';

@@ -18,8 +18,8 @@ use DateTime;
 
 __PACKAGE__->set_table();
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid description impact address cidr asn asn_desc cc rir protocol portlist confidence source severity restriction alternativeid alternativeid_restriction detecttime created/);
-__PACKAGE__->columns(Essential => qw/id uuid description address restriction created/);
+__PACKAGE__->columns(All => qw/id uuid address confidence source severity restriction detecttime/);
+__PACKAGE__->columns(Essential => qw/uuid address restriction detecttime confidence source severity detecttime/);
 __PACKAGE__->sequence('infrastructure_id_seq');
 
 
@@ -48,12 +48,13 @@ sub prepare {
     # when we move to ipv6, be sure to for() this and anchor them down
     # the DataType::Plugin::Url can confuse it if you don't
     return(undef) unless($address =~ /^$RE{'net'}{'IPv4'}$/ || $address =~ /^$RE{'net'}{'CIDR'}{'IPv4'}$/);
-    return(0,'invalid address: private address space -- '.$address) if(isPrivateAddress($address));
-    return(0,'invalid address: whitelisted -- '.$address) if(isWhitelisted($address));
-    unless($info->{'asn'} || $info->{'cidr'}){
+    # moving this to the feeds section.
+    #return(0,'invalid address: private address space -- '.$address) if(isPrivateAddress($address));
+    #return(0,'invalid address: whitelisted -- '.$address) if(isWhitelisted($address));
+    unless($info->{'asn'} || $info->{'prefix'}){
         my ($as,$network,$ccode,$rir,$date,$as_desc) = asninfo($address);
         $info->{'asn'}  = $as;
-        $info->{'cidr'} = $network;
+        $info->{'prefix'} = $network;
         $info->{'cc'}   = $ccode;
         $info->{'rir'}  = $rir;
         $info->{'asn_desc'} = $as_desc;
@@ -65,6 +66,9 @@ sub isPrivateAddress {
     my $addr = shift;
     return(undef) unless($addr && $addr =~ /^$RE{'net'}{'IPv4'}/);
     return if($addr =~ /^$RE{'URI'}/);
+
+    ## Net::Patricia this
+    ## store the list in the database?
     my $found = Net::CIDR::cidrlookup($addr,@list);
     return($found);
 }
@@ -90,18 +94,18 @@ sub feed {
     my $class = shift;
     my $info = shift;
 
-    my @feeds;
+    my @snapshots;
     $info->{'key'} = 'address';
     my $ret = $class->SUPER::feed($info);
-    push(@feeds,$ret) if($ret);
+    push(@snapshots,$ret) if($ret);
 
     my $tbl = $class->table();
     foreach($class->plugins()){
         my $t = $_->set_table();
         my $r = $_->SUPER::feed($info);
-        push(@feeds,$r) if($r);
+        push(@snapshots,$r) if($r);
     }
-    return(\@feeds);
+    return(\@snapshots);
 }
 
 sub insert {
@@ -122,51 +126,23 @@ sub insert {
         }
     }
 
-    my $proto = convertProto($info->{'protocol'});
     my $uuid = $info->{'uuid'};
-    $info->{'protocol'} = $proto;
 
     my $id = eval { $self->SUPER::insert({
         uuid        => $uuid,
-        description => lc($info->{'description'}),
-        impact      => $info->{'impact'},
         address     => $address,
-        cidr        => $info->{'cidr'},
-        asn         => $info->{'asn'},
-        asn_desc    => $info->{'asn_desc'},
-        cc          => $info->{'cc'},
-        rir         => $info->{'rir'},
-        protocol    => $info->{'protocol'},
-        portlist    => $info->{'portlist'},
         confidence  => $info->{'confidence'},
         source      => $info->{'source'},
-        severity    => $info->{'severity'},
+        severity    => $info->{'severity'} || 'null',
         restriction => $info->{'restriction'} || 'private',
         detecttime  => $info->{'detecttime'},
-        impact      => $info->{'impact'},
-        alternativeid   => $info->{'alternativeid'},
-        alternativeid_restriction => $info->{'alternativeid_restriction'} || 'private',
     }) };
     if($@){
         return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
-        $id = $self->retrieve(uuid => $uuid);
+        $id = CIF::Archive->retrieve(uuid => $uuid);
     }
     $self->table($tbl);
     return($id);
-}
-
-sub convertProto {
-    my $proto = shift;
-    return unless($proto);
-    return($proto) if($proto =~ /^\d+$/);
-
-    for(lc($proto)){
-        if(/^tcp$/){ $proto = 6; }
-        if(/^udp$/){ $proto = 17; }
-        if(/^icmp$/){ $proto = 1; }
-    }
-    $proto = undef unless($proto =~ /^\d+$/);
-    return($proto);
 }
 
 sub lookup {
@@ -174,14 +150,17 @@ sub lookup {
     my $info = shift;
     my $q = $info->{'query'};
     return(undef) unless($q && $q =~ /^$RE{'net'}{'IPv4'}/);
-    return($class->SUPER::lookup($q,$q,$info->{'limit'}));
+    my $sev = $info->{'severity'};
+    my $conf = $info->{'confidence'};
+    warn $class;
+    return($class->SUPER::lookup($q,$q,$sev,$conf,$info->{'limit'}));
 }
 
 sub isWhitelisted {
     my $self = shift;
     my $a = shift;
-
-    return undef unless($a);
+    return (undef) unless($a);
+    return (0,'is private address') if(isPrivateAddress($a));
 
     my $sql = qq{
         family(address) = 4 AND masklen(address) < 32 AND '$a' <<= address 
@@ -196,9 +175,12 @@ sub isWhitelisted {
 }
 
 __PACKAGE__->set_sql('lookup' => qq{
-    SELECT * FROM __TABLE__
+    SELECT __ESSENTIAL__ 
+    FROM __TABLE__
     WHERE address != '0/0'
     AND (address >>= ? OR address <<= ?)
+    AND severity >= ?
+    AND confidence >= ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });
