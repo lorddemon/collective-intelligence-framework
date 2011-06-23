@@ -44,8 +44,7 @@ sub asBytes{
     my @e = @{$f->{'entry'}};
     my $iodef = XML::IODEF->new();
     ## TODO -- need to re-map this out
-    #$iodef->add('Incidentrestriction',$f->{'restriction'});
-    warn Dumper($f);
+    $iodef->add('Incidentrestriction',$f->{'restriction'});
     $iodef->add('IncidentDetectTime',$f->{'detecttime'});
     $iodef->add('IncidentDescription',$f->{'description'});
 
