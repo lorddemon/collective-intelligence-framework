@@ -8,12 +8,23 @@ use warnings;
 our $VERSION = '0.01_03';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
-use CIF::WebAPI::APIKey;
-use JSON;
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-Storage-Plugin-Iodef/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-Url/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-Hash/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-Domain/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-Infrastructure/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-RIR/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-Countrycode/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-ASN/lib';
+use lib '/home/wes/projects/src/cif/server/CIF-Archive-DataType-Plugin-Feed/lib';
+
+require CIF::WebAPI::APIKey;
 use DateTime;
 use DateTime::Format::DateParse;
-use CIF::Archive;
+require CIF::Archive;
 use Digest::SHA1 qw/sha1_hex/;
+use Data::Dumper;
 
 use Module::Pluggable require => 1, except => qr/::Plugin::\S+::/;
 
@@ -31,6 +42,8 @@ sub isAuth {
 
 sub map_restrictions {
     my ($self,$req,$res,@feed) = @_;
+    my $nomap = $req->{'r'}->param('nomap');
+    return($res,@feed) if($nomap);
 
     if(my %m = $req->{'r'}->dir_config->get('CIFRestrictionMap')){
         foreach my $r (keys %m){
@@ -73,15 +86,17 @@ sub GET {
     }
 
     my $nolog = $request->{'r'}->param('nolog');
-    my $severity = $request->{'r'}->param('severity') || $request->{'r'}->dir_config->get('CIFDefaultFeedSeverity') || 'high';
-    my $restriction = $request->{'r'}->param('restriction') || $request->{'r'}->dir_config->get('CIFDefaultFeedRestriction') ||'private';
+    my $restriction = $request->{'r'}->param('restriction') || $request->{'r'}->dir_config->get('CIFDefaultFeedRestriction') || 'need-to-know';
     my $q = $self->{'query'};
     if($q && $q =~ /^ERROR/){
         $response->{'message'} = $q;
         return Apache2::Const::HTTP_OK;
     }
 
-    if(my %m = $request->{'r'}->dir_config->get('CIFRestrictionMap')){
+    ## TODO -- clean this up
+    my $no_restriction_map = $request->{'r'}->param('nomap');
+
+    if(!$no_restriction_map && (my %m = $request->{'r'}->dir_config->get('CIFRestrictionMap'))){
         foreach (keys %m){
             $restriction = $_ if(lc($m{$_}) eq lc($restriction));
         }
@@ -90,9 +105,18 @@ sub GET {
     my $feed;
     if($q){
         $restriction = 'private';
-        my $ret = CIF::Archive->lookup({ nolog => $nolog, query => $q, source => $apikey, severity => $severity, restriction => $restriction, max => $maxresults });
-        return Apache2::Const::HTTP_OK unless(@$ret);
-        my @recs = @$ret;
+        my $severity = $request->{'r'}->param('severity') || 'null';
+        my $confidence = $request->{'r'}->param('confidence') || 0;
+        my $ret = CIF::Archive->lookup({ nolog => $nolog, query => $q, source => $apikey, severity => $severity, restriction => $restriction, max => $maxresults, confidence => $confidence });
+        return Apache2::Const::HTTP_OK unless($ret);
+        my @recs;
+        if(ref($ret) ne 'CIF::Archive'){
+            @recs = $ret->slice(0,$ret->count());
+            @recs = map { $_ = $_->uuid->data_hash() } @recs;
+        } else {
+            $ret = $ret->data_hash();
+            push(@recs,$ret);
+        }
         ($restriction,@recs) = $self->map_restrictions($request,$restriction,@recs);
         my $dt = DateTime->from_epoch(epoch => time());
         my $f = {
@@ -104,18 +128,31 @@ sub GET {
         };
         $feed->{'feed'} = $f;
     } else {
+        ## TODO -- clean this up
         $q = lc($type);
-        $q .= ' '.lc($impact) if($impact);
-        my $ret = CIF::Archive->lookup({ nolog => $nolog, query => $q, source => $apikey, severity => $severity, restriction => $restriction, max => $maxresults });
-        return Apache2::Const::HTTP_OK unless(@$ret);
+        $q = lc($impact).' '.$q if($impact);
+        my $severity = $request->{'r'}->param('severity') || $request->{'r'}->dir_config->get('CIFDefaultFeedSeverity') || 'high';
+        my $confidence = $request->{'r'}->param('confidence') || $request->{'r'}->dir_config->get('CIFDefaultFeedConfidence') || 85;
+        my $ret = CIF::Archive->lookup({ nolog => $nolog, query => $q, source => $apikey, severity => $severity, restriction => $restriction, max => $maxresults, confidence => $confidence });
+        return Apache2::Const::HTTP_OK unless($ret);
 
-        my @recs = @$ret;
+        # we do it with @recs cause of the map_restrictions function
+        my @recs = $ret->slice(0,$ret->count());
+        my $uuid = $recs[0]->uuid->uuid();
+        @recs = map { $_ = $_->uuid->data_hash() } @recs;
+        
+
+        my $old_restriction = $restriction;
         ($restriction,@recs) = $self->map_restrictions($request,$restriction,@recs);
 
-        my $f = from_json($recs[0]->{'data'});
-        $f->{'id'} = $recs[0]->{'uuid'};
-        $f->{'entry'} = [$f->{'data'}];
-        delete($f->{'data'});
+        my $f;
+        $f->{'id'} = $uuid;
+        $f->{'entry'} = [$recs[0]->{'data'}];
+        $f->{'restriction'} = $restriction;
+        $f->{'description'} = $recs[0]->{'description'};
+
+        # don't laugh. it was hard to write this.
+        $f->{'description'} =~ s/$old_restriction/$restriction/ if($f->{'description'});
         $feed->{'feed'} = $f;
     }
     $response->{'data'} = $feed;
@@ -127,6 +164,11 @@ sub GET {
 sub buildNext {
     my ($self,$frag,$req) = @_;
     $frag = lc($frag);
+
+    if(CIF::Archive::isUUID($frag)){
+        $self->{'query'} = $frag;
+        return($self);
+    }
 
     my @plugins = grep(!/SUPER$/,$self->plugins());
     foreach(@plugins){
