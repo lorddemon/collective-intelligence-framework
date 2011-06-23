@@ -13,7 +13,9 @@ To install this module type the following:
    make
    make test
    make install
-   sh database_rebuild.sh (modify this if you want to use something other than db://cif)
+   psql -U postgres -c 'DROP DATABASE IF EXISTS cif'
+   psql -U postgres -c 'CREATE DATABASE cif'
+   psql -U postgres -d cif < schemas/psql/main.sql
 
 DEPENDENCIES
 

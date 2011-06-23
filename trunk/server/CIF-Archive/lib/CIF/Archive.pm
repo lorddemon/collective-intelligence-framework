@@ -5,13 +5,12 @@ require 5.008;
 use strict;
 use warnings;
 
-our $VERSION = '0.01_01';
+our $VERSION = '0.01_02';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 use Data::Dumper;
 use Config::Simple;
-use DateTime::Format::DateParse;
-use OSSP::uuid;
+use CIF::Utils ':all';
 
 __PACKAGE__->table('archive');
 __PACKAGE__->columns(Primary => 'id');
@@ -38,43 +37,8 @@ sub plugins {
     }
 }
 
-sub isUUID {
-    my $arg = shift;
-    return undef unless($arg);
-    return undef unless($arg =~ /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
-    return(1);
-}
-
-sub normalize_timestamp {
-    my $dt = shift;
-    return $dt if($dt =~ /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/);
-    if($dt && ref($dt) ne 'DateTime'){
-        if($dt =~ /^\d+$/){
-            if($dt =~ /^\d{8}$/){
-                $dt.= 'T00:00:00Z';
-                $dt = eval { DateTime::Format::DateParse->parse_datetime($dt) };
-                unless($dt){
-                    $dt = DateTime->from_epoch(epoch => time());
-                }
-            } else {
-                $dt = DateTime->from_epoch(epoch => $dt);
-            }
-        } elsif($dt =~ /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\S+)?$/) {
-            my ($year,$month,$day,$hour,$min,$sec,$tz) = ($1,$2,$3,$4,$5,$6,$7);
-            $dt = DateTime::Format::DateParse->parse_datetime($year.'-'.$month.'-'.$day.' '.$hour.':'.$min.':'.$sec,$tz);
-        } else {
-            $dt =~ s/_/ /g;
-            $dt = DateTime::Format::DateParse->parse_datetime($dt);
-            return undef unless($dt);
-        }
-    }
-    $dt = $dt->ymd().'T'.$dt->hms().'Z';
-    return $dt;
-}
-
 sub data_hash {
     my $class = shift;
-
     foreach my $p ($class->plugins('storage')){
         if(my $h = $p->data_hash($class->data(),$class->uuid())){
             return($h);
@@ -202,83 +166,6 @@ sub lookup {
     }
     return($ret);
 }
-
-sub genMessageUUID {
-    my ($source,$msg) = @_;
-    return undef unless($msg && $source);
-
-    my $uuid = new OSSP::uuid();
-    my $uuid_ns = new OSSP::uuid();
-    $uuid_ns->load("UUID_NIL");
-    $uuid->make("v5", $uuid_ns, $source.$msg);
-    undef $uuid_ns;
-    my $str = $uuid->export("str");
-    undef $uuid;
-    return($str);
-}
-
-sub genUUID {
-    my $uuid    = OSSP::uuid->new();
-    $uuid->make('v4');
-    my $str = $uuid->export('str');
-    undef $uuid;
-    return($str);
-}
-
-sub genSourceUUID {
-    my $source = shift;
-    my $uuid = OSSP::uuid->new();
-    my $uuid_ns = OSSP::uuid->new();
-    $uuid_ns->load('ns::URL');
-    $uuid->make("v3",$uuid_ns,$source);
-    my $str = $uuid->export('str');
-    undef $uuid;
-    return($str);
-}
-
-sub throttle {
-    my $class = shift;
-    my $throttle = shift;
-
-    require Linux::Cpuinfo;
-    my $cpu = Linux::Cpuinfo->new();
-    return(1) unless($cpu);
-    my $cores = $cpu->num_cpus();
-    return(1) unless($cores && $cores =~ /^\d$/);
-    return(1) if($cores eq 1);
-    return($cores) unless($throttle && $throttle ne 'medium');
-    return($cores/2) if($throttle eq 'low');
-    return($cores * 1.5);
-}
-
-sub split_batches {
-    my $class = shift;
-    ## TODO -- think through this.
-    my $tc = shift || 1;
-    my $recs = shift || return;
-    my @array = @{$recs};
-
-    my @batches;
-    if($#array == 0){
-        push(@batches,$recs);
-        return(\@batches);
-    }
-    
-    my $num_recs = $#array + 1;
-    my $batch = (($num_recs/$tc) == int($num_recs/$tc)) ? ($num_recs/$tc) : (int($num_recs/$tc) + 1);
-    warn 'batch: '.$batch if($::debug);
-    for(my $x = 0; $x <= $#array; $x += $batch){
-        my $start = $x;
-        my $end = ($x+$batch);
-        $end = $#array if($end > $#array);
-        my @a = @array[$x ... $end];
-        warn 'start: '.$start.' -- end: '.$end if($::debug);
-        push(@batches,\@a);
-        $x++;
-    }
-    return(\@batches);
-}
-
 
 1;
 =head1 NAME

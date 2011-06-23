@@ -4,6 +4,7 @@ name        'CIF-Archive';
 all_from    'lib/CIF/Archive.pm';
 version_from    'lib/CIF/Archive.pm';
 
+requires    'CIF::Utils'                    => '0.01';
 requires    'Class::DBI'                    => '3.0.17';
 requires    'OSSP::uuid'                    => '1.0501';
 requires    'Config::Simple'                => '4.59';
