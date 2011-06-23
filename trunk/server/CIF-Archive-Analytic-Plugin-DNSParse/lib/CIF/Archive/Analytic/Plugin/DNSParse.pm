@@ -27,11 +27,13 @@ sub process {
     my $self = shift;
     my $data = shift;
     my $config = shift;
-
-    my $a = $data->{'address'};
-    return unless($a);
+    return unless(ref($data) eq 'HASH');
+    my $addr = $data->{'address'};
+    return unless($addr);
+    return unless($data->{'impact'});
+    return if($data->{'confidence'} >= 20 && $data->{'impact'} =~ /whitelist/);
     return unless($data->{'impact'} =~ /search/);
-    return unless($a =~ /^$RE{'net'}{'IPv4'}$/);
+    return unless($addr =~ /^$RE{'net'}{'IPv4'}$/);
 
     $config = $config->param(-block => 'dnsparse');
 
@@ -39,18 +41,46 @@ sub process {
     require LWP::UserAgent;
     require XML::Simple;
     my $ua = LWP::UserAgent->new();
-    $ua->timeout(10);
+    $ua->timeout($config->{'timeout'} || 60);
     $ua->credentials($config->{'site'},$config->{'realm'},$config->{'user'},$config->{'pass'});
 
-    my $r = $ua->get($config->{'url'}.$a);
+    warn 'getting: '.$addr if($::debug);
+    my $r;
+    ## TODO -- fix this
+    eval { 
+        local $SIG{ALRM} = sub { die "alarm\n" };
+        alarm 1;
+        $r = $ua->get($config->{'url'}.$addr);
+        alarm 0;
+    };
+    if($@){
+        warn $@ if($::debug);
+        return;
+    }
+    return unless($r);
+    warn 'processing: '.$addr if($::debug);
+    my $content = $r->decoded_content();
+    $content =~ s/[^[:ascii:]]//g;
     my $xml = XML::Simple::XMLin($r->decoded_content());
+    warn 'xml done' if($::debug);
     my $res = $xml->{'results'}->{'result'};
     return unless($res);
 
-    my @rdata = $res;
+    my @rdata;
+    if(ref($res) eq 'HASH'){
+        push(@rdata,$res);
+    } else {
+        @rdata = @$res;
+    }
+    warn 'processing: '.$#rdata.' recs';
+
+    @rdata = sort { $b->{'lastseen'} cmp $a->{'lastseen'} } @rdata;
+    my $max = $config->{'max'} || 50;
+    $max = $#rdata if($max > $#rdata);
 
     require CIF::Archive;
-    foreach(@rdata){
+    foreach(0 ... $max){
+        $_ = $rdata[$_];
         $_->{'rrtype'} = $codes->{$_->{'rrtype'}};
         my ($err,$id) = CIF::Archive->insert({
             impact          => 'passive dns',
@@ -59,8 +89,11 @@ sub process {
             rdata           => $_->{'answer'},
             detecttime      => $_->{'lastseen'},
             type            => $_->{'rrtype'},
+            severity        => 'low',
+            confidence      => 85,
         });
         warn $err if($err);
+        warn $id if $::debug;
     }
 }
 1;
