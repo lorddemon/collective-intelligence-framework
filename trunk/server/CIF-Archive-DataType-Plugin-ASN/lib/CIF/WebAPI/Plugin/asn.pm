@@ -5,7 +5,9 @@ sub prepare {
     my $self = shift;
     my $frag = shift;
 
-    return unless(lc($frag) =~ /^as[0-9]*\.?[0-9]*$/);
+    return unless($frag);
+    $frag = uc($frag);
+    return unless($frag =~ /^AS[0-9]*\.?[0-9]*$/);
     return(1);
 }
 
