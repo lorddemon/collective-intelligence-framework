@@ -1,0 +1,44 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use Config::Simple;
+use Getopt::Std;
+use JSON;
+use Data::Dumper;
+use Compress::Zlib;
+use MIME::Base64;
+use DateTime;
+use DateTime::Format::DateParse;
+use CIF::Archive;
+
+my %opts;
+getopts('hd:g:f:ce',\%opts);
+
+my $compress    = $opts{'c'} || 1;
+my $encode      = $opts{'e'} || 1;
+
+my ($start,$end,$date);
+if($opts{'d'}){
+    $date = DateTime::Format::DateParse->parse_datetime($opts{'d'}) || die('unable to parse date');
+} else {
+    $date = DateTime->from_epoch(epoch => time());
+}
+my $file = $opts{'f'} || '/tmp/archive-'.$date->ymd();
+$start = $date->ymd().'T'.'00:00:00Z';
+$end = $date->ymd().'T'.'23:59:59Z';
+
+my $sql = qq{
+    WHERE created >= '$start' and created <= '$end'
+    ORDER by archive.id ASC
+};
+my @recs = CIF::Archive->retrieve_from_sql($sql);
+@recs = map { $_ = $_->data() } @recs;
+my $str = join("\n",@recs);
+$str = compress($str) if($compress);
+$str = encode_base64($str) if($encode);
+
+open(F,'>',$file) || die($!);
+print F $str;
+close(F);

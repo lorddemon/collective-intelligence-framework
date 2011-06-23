@@ -1,5 +1,9 @@
 Revision history for Perl extension CIF::Archive.
 
+0.01_02 2011-06-23
+    - cleaned up plugins
+    - refined API
+
 0.01_01 2011-04-19
     - re-architected CIF::DBI to be CIF::Archive
     - split out plugin stack for both DataTypes and Storage
