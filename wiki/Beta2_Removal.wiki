@@ -47,3 +47,15 @@ $ sudo -s
 # tar -cf /tmp/feeds-beta2.tar /opt/cif-feeds-public
 # rm /opt/cif-feeds-public -R -f
 }}}
+
+* remove old bin scripts
+{{{
+# cd /usr/local/bin
+# ls -all | grep cif
+# rm -f `ls | grep cif`
+}}}
+
+* if you have any other scripts laying around, remove those as well (back them up if needed)
+{{{
+# locate cif | grep bin
+}}}
