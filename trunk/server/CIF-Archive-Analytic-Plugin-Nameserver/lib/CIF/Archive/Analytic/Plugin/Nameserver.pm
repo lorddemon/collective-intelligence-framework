@@ -14,32 +14,46 @@ sub process {
     my $data = shift;
 
     return unless(ref($data) eq 'HASH');
-    my $a = $data->{'rdata'};
+    return unless($data->{'impact'});
+    return if($data->{'impact'} =~ /whitelist/);
+    my $a = $data->{'address'};
     return unless($a);
     return unless($data->{'type'} && $data->{'type'} eq 'NS'); 
     $a = lc($a);
     return unless($a =~ /[a-z0-9\.-]+\.[a-z]{2,5}$/);
+    my $rdata = $data->{'rdata'};
+    return unless($rdata && $rdata =~ /[a-z0-9\.-]+\.[a-z]{2,5}$/);
 
     require Net::DNS::Resolver;
     my $r = Net::DNS::Resolver->new(recursive => 0);
-    my $pkt = $r->send($a);
+    $r->udp_timeout(2);
+    $r->tcp_timeout(2);
+    my $pkt = $r->send($rdata);
+    return unless($pkt);
     my @rdata = $pkt->answer();
     return unless(@rdata);
+    warn 'processing: '.$rdata if($::debug);
 
-    my $sev = ($data->{'severity'} eq 'high') ? 'medium' : 'low';
-    my $conf = ($data->{'confidence'} >= 2) ? ($data->{'confidence'} - 2) : 0;
+    my $conf = $data->{'confidence'};
+    $conf = ($conf) ? ($conf / 2) : 0;
+    my $impact = 'suspicious nameserver';
 
+    # because nameservers are "a degree" away from the original infrastructure
+    my $sev = $data->{'severity'} || 'null';
+    unless($sev eq 'null'){
+        $sev = ($sev eq 'high') ? 'medium' : 'low';
+    }
     foreach(@rdata){
         my ($as,$network,$ccode,$rir,$date,$as_desc) = asninfo($_->{'address'});
         my ($err,$id) = CIF::Archive->insert({
-            impact      => 'suspicious nameserver',
+            impact      => $impact,
             description => $data->{'description'},
             relatedid   => $data->{'uuid'},
-            address     => $a,
+            address     => $rdata,
             rdata       => $_->{'address'},
             type        => $_->{'type'},
             class       => $_->{'class'},
-            severity    => $sev,
+            severity    => $data->{'severity'},
             restriction => $data->{'restriction'},
             alternativeid   => $data->{'alternativeid'},
             alternativeid_restriction   => $data->{'alternativeid_restriction'},
@@ -48,10 +62,11 @@ sub process {
             asn         => $as,
             asn_desc    => $as_desc,
             cc          => $ccode,
-            cidr        => $network,
+            prefix      => $network,
             rir         => $rir,
         });
         warn $err if($err);
+        warn $id if $::debug;
     }
 }
 
