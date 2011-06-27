@@ -10,57 +10,52 @@ Trust me, these scripts do a lot of dns queries. You're gonna wanna install bind
 Once installed, monitor your dns traffic a bit, your server will be looking up some interesting information. Get a good handle on this and work with your security teams to whitelist this server.
 
 = System Deps =
- # ServerInstall_Generic
- # ServerInstall_Lenny
- # ServerInstall_Ubuntu10
+ # ServerInstall_Beta3_Generic
+ # ServerInstall_Beta3_Lenny
+ # ServerInstall_Beta3_Ubuntu10
+ # PostgresInstall
 
-= Postgres =
- # Modify your postgres config
+= Details =
+ # create your "cif" user/group
 {{{
-$ diff -u pg_hba.conf.orig pg_hba.conf
---- pg_hba.conf.orig	2010-09-02 12:06:29.000000000 +0000
-+++ pg_hba.conf	2010-09-02 12:21:43.000000000 +0000
-@@ -71,13 +71,13 @@
- # (autovacuum, daily cronjob, replication, and similar tasks).
- #
- # Database administrative login by UNIX sockets
--local   all         postgres                          ident sameuser
-+local   all         postgres                          trust 
- 
- # TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
- 
- # "local" is for Unix domain socket connections only
--local   all         all                               ident sameuser
-+local   all         all                               trust 
- # IPv4 local connections:
--host    all         all         127.0.0.1/32          md5
-+host    all         all         127.0.0.1/32          trust
- # IPv6 local connections:
--host    all         all         ::1/128               md5
-+host    all         all         ::1/128               trust
+$ sudo useradd -U -m cif
 }}}
- # set error logging in postgres to "log" (key violations generate lots of errors):
+ # install the core server interface
 {{{
-vi /etc/postgresql/8.X/main/postgresql.conf +300 (or so)
-log_min_messages = log
+$ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01_03.tar.gz
+$ tar -zxvf cif-0.01_3.tar.gz
+$ cd cif-0.01_03
+$ ./configure --with-user=cif --prefix=/opt/cif-0.01_03
+$ make testdeps
+$ make fixdeps
+$ make initdb
+$ make tables
+$ sudo make install
 }}}
- # restart postgres
+ # modify your local path, vi ~/.profile
 {{{
-$ sudo /etc/init.d/postgresql restart
+if [ -d "/opt/cif/bin" ]; then
+    PATH="/opt/cif/bin:$PATH"
+fi
 }}}
- # make sure your user can:
+ # perform the "first run" to prime the database with it's initial intel (should take about 30min).
 {{{
-$> psql -U postgres
-postgres=#
-postgres=#\l
-                                 List of databases
-   Name    |  Owner   | Encoding | Collation  |   Ctype    |   Access privileges   
------------+----------+----------+------------+------------+-----------------------
- postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 | 
- template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres
-                                                           : postgres=CTc/postgres
- template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres
-                                                           : postgres=CTc/postgres
-(3 rows)
+$ time /opt/cif/bin/cif_crontool -f
+}}}
+ # after this starts, run your first batch of analytics (should take about 3 hours)
+{{{
+$ time /opt/cif/bin/cif_analytics -d
+}}}
+ # log into the cif user (sudo su - cif) and modify it's cron tab (crontab -e)
+{{{
+# run analytics
+*/5 * * * * /opt/cif/bin/cif_analytics &> /dev/null
 
+# pull feed data
+05     *       * * * /opt/cif/bin/cif_crontool -p hourly -T medium &> /dev/null
+45     00      * * * /opt/cif/bin/cif_crontool -p daily -T low &> /dev/null
+
+# update the feeds
+*/5     *       * * * /opt/cif/bin/cif_feeds &> /dev/null
+00      *       * * * /opt/cif/bin/cif_feeds -s medium &> /dev/null
 }}}
