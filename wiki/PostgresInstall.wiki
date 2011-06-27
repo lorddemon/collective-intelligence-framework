@@ -1,0 +1,57 @@
+starting from scratch; postgresql
+
+= Introduction =
+
+This guide will show you how to setup an embedded instance of postgres using localhost. If you need to access the db from another host, modify accordingly. This config assumes you have trusted access to the instance from localhost.
+
+= Details =
+
+ # Modify your postgres config
+{{{
+$ diff -u pg_hba.conf.orig pg_hba.conf
+--- pg_hba.conf.orig	2010-09-02 12:06:29.000000000 +0000
++++ pg_hba.conf	2010-09-02 12:21:43.000000000 +0000
+@@ -71,13 +71,13 @@
+ # (autovacuum, daily cronjob, replication, and similar tasks).
+ #
+ # Database administrative login by UNIX sockets
+-local   all         postgres                          ident sameuser
++local   all         postgres                          trust 
+ 
+ # TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+ 
+ # "local" is for Unix domain socket connections only
+-local   all         all                               ident sameuser
++local   all         all                               trust 
+ # IPv4 local connections:
+-host    all         all         127.0.0.1/32          md5
++host    all         all         127.0.0.1/32          trust
+ # IPv6 local connections:
+-host    all         all         ::1/128               md5
++host    all         all         ::1/128               trust
+}}}
+ # set error logging in postgres to "log" (key violations generate lots of errors):
+{{{
+vi /etc/postgresql/8.X/main/postgresql.conf +300 (or so)
+log_min_messages = log
+}}}
+ # restart postgres
+{{{
+$ sudo /etc/init.d/postgresql restart
+}}}
+ # make sure your user can:
+{{{
+$> psql -U postgres
+postgres=#
+postgres=#\l
+                                 List of databases
+   Name    |  Owner   | Encoding | Collation  |   Ctype    |   Access privileges   
+-----------+----------+----------+------------+------------+-----------------------
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 | 
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres
+                                                           : postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres
+                                                           : postgres=CTc/postgres
+(3 rows)
+
+}}}
