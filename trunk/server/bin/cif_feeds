@@ -71,7 +71,7 @@ if(ref($cf) eq 'ARRAY'){
 }
 
 @plugs = grep(!/(Feed|Analytic)/,@plugs);
-#@plugs = grep(/Domain$/,@plugs);
+#@plugs = grep(/Email$/,@plugs);
 
 my $restriction_map = $cfg->param(-block => 'restrictions');
 unless($restriction){
