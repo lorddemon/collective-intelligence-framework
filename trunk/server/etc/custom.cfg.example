@@ -1,0 +1,12 @@
+[phishtank]
+feed = 'http://data.phishtank.com/data/XXXXXXXXXXXXXXXXXXXXXXXXXXXX INSERT YOUR KEY HERE XXXXXXXXXXXXXXXXXXXXXX/online-valid.json.gz'
+impact = 'phishing url'
+source = 'phishtank.com'
+fields = 'url,target,phish_detail_url,submission_time'
+fields_map = 'address,description,alternativeid,detecttime'
+severity = 'medium'
+confidence = 85
+period = hourly
+restriction = 'need-to-know'
+alternativeid_restriction = 'public'
+first_run = true
