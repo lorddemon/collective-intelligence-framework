@@ -2,9 +2,9 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.64])
-AC_INIT([collective-intelligence-framework], m4_esyscmd([cat ./.tag 2> /dev/null | tr -d "\n"]), [ci-framework@googlegroups.com])
-AM_INIT_AUTOMAKE(collective-intelligence-framework,m4_esyscmd([cat ./.tag 2> /dev/null | tr -d "\n"]))
+AC_INIT(cif, m4_esyscmd([cat ./.tag | tr -d "\n"]), [ci-framework@googlegroups.com])
 AC_CONFIG_SRCDIR([lib/CIF.pm])
+AM_INIT_AUTOMAKE
 
 # Checks for programs.
 AC_ARG_VAR([PERL],[Perl interpreter command])
