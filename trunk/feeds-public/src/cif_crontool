@@ -6,20 +6,33 @@ use warnings;
 use Config::Simple;
 use Getopt::Std;
 use Data::Dumper;
+use MIME::Lite;
 
 my %opts;
-getopts('fdT:C:c:p:h',\%opts);
+getopts('afdT:C:c:p:c:hL',\%opts);
 my $period = $opts{'p'} || 'hourly';
 my $throttle = $opts{'T'} || 'medium';
 my $cron_tool = $opts{'C'} || 'cif_feed_parser';
 my $first_run = $opts{'f'};
 my $debug = $opts{'d'};
+my $mutex = $opts{'L'} || '/tmp/.cif_crontool.lock';
 
+$SIG{'INT'} = 'cleanup';
+sub cleanup {
+    print "\n\nCaught Interrupt (^C), Aborting\n";
+    system('rm '.$mutex) unless($opts{'h'});
+    exit(1);
+}
+
+my @files;
 my $feedsdir = '/etc/cif';
-
-opendir(F,$feedsdir) || die($!);
-my @files = grep(/.cfg$/,readdir(F));
-close(F);
+unless($opts{'c'}){
+    opendir(F,$feedsdir) || die($!);
+    @files = sort { $a cmp $b } grep(/.cfg$/,readdir(F));
+    close(F);
+} else {
+    push(@files,$opts{'c'});
+}
 
 my @crons;
 foreach(@files){
@@ -28,20 +41,21 @@ foreach(@files){
     my @sections = keys %{$cc->{'_DATA'}};
     foreach my $sec (@sections){
         next if($sec =~ /^default/);
-        my $skip = $cc->param(-block => $sec)->{'skip'};
+        my $skip = $cc->param(-block => $sec)->{'disabled'};
         next if($skip);
+        my $tool = $cc->param(-block => $sec)->{'cron_tool'};
         if($first_run){
             my $f = $cc->param(-block => $sec)->{'first_run'};
             next unless($f  && $f eq 'true');
         } else {
-            my $tool = $cc->param(-block => $sec)->{'cron_tool'};
             next if($tool && $tool eq 'false');
-            my $cron_period = $cc->param(-block => $sec)->{'cron'} || 'hourly';
+            my $cron_period = $cc->param(-block => $sec)->{'period'} || 'hourly';
             next unless($cron_period eq $period);
         }
         my $h = {
-            feed => $sec,
-            config => $cc_name,
+            feed    => $sec,
+            config  => $cc_name,
+            tool    => $tool,
         };
         push(@crons,$h);
     }
@@ -49,7 +63,10 @@ foreach(@files){
 
 my @feeds = map { $_->{'config'}.' -- '.$_->{'feed'} } @crons;
 my $f = join("\n",@feeds);
-die(usage()) if($opts{'h'});
+if($opts{'h'}){
+    print usage();
+    die();
+}
 sub usage {
     return <<EOF;
 Usage: $0 -p hourly
@@ -59,6 +76,7 @@ Usage: $0 -p hourly
     
     -p  --period:   which period to run (hourly, daily, monthly, default: $period)
     -d  --debug:    debug
+    -L  --lock:     path for the mutex to go (default: $mutex);
     -T  --throttle: throttle (how man threads to use, default: $throttle)
                     low:    threads = 1/2 number of cores
                     medium: threads = number of cores
@@ -73,18 +91,52 @@ $f
 EOF
 } 
 
-$SIG{'INT'} = 'exit';
-
+if(-e $mutex){
+    print 'already running, mutex found: '.$mutex."\n" if($debug);
+    exit(-1);
+}
+my $ret = system('touch '.$mutex);
+unless(defined($ret) && $ret == 0){
+    die($!);
+}
 foreach(@crons){
-    my $cmd = $cron_tool.' -T '.$throttle.' -c '.$_->{'config'}.' -f '.$_->{'feed'};
+    my $c_tool = $_->{'tool'} || $cron_tool;
+    my $cmd = $c_tool.' -T '.$throttle.' -c '.$_->{'config'}.' -f '.$_->{'feed'};
     $cmd .= ' -F' if($first_run);
     warn $cmd if($debug);
     my $ret = system($cmd);
     warn $ret if($debug);
-    die($!) unless(defined($ret) && $ret == 0 || $ret == 11);
+#    unless(defined($ret) && $ret == 0 || $ret == 11){
+#        warn 'retrying...' if($debug);
+#        $ret = system($cmd);
+        die($!) unless(defined($ret) && $ret == 0 || $ret == 11);
+#    }
+}
+remove_lock();
+
+sub bail {
+    my $msg = shift;
+    if(-e '/tmp/.cif_crontool.err'){
+        print $msg."\n";
+    } else {
+        my $msg = MIME::Lite->new(
+            From    => 'CIF',
+            To      => $opts{'a'} || 'root',
+            Subject => 'cif_crontool failure',
+            Data    => $msg || 'unknown',
+        );
+        $msg->send();
+        system('touch /tmp/.cif_crontool.err');
+    }
+    die($msg);
 }
 
 sub exit {
     print "\n\nCaught Interrupt (^C), Aborting\n";
+    remove_lock();
     exit(1);
+}
+
+sub remove_lock {
+    system('rm '.$mutex);
 }
