@@ -31,7 +31,7 @@ AC_SUBST(CIF_USER)
 
 #dnl CIF_USER
 AC_ARG_WITH(group,
-    AC_HELP_STRING([--with-user=GROUP],
+    AC_HELP_STRING([--with-group=GROUP],
         [group the cif scripts will run as (default: cif)]),
     CIF_GROUP=$withval,
     CIF_GROUP=cif
