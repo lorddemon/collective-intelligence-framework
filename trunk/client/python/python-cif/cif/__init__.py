@@ -58,40 +58,33 @@ class Client(object):
         self.responseCode = ret['status']
 
         """ check to see if we've got a feed object, auto-de(code/compress) it """
-        if ret['data'].get('result') and ret['data']['result'].get('hash_sha1'):
-            hash = hashlib.sha1()
-            feed = ret['data']['result']['feed']
-            hash.update(feed)
-            if hash.hexdigest() != ret['data']['result']['hash_sha1']:
-                print "sha1's don't match, possible data corruption... try re-downloading"
-                return
+        feed = ret['data']
+        entry = feed['feed']['entry']
+        if type(entry[0]) == str:
+            jstring = zlib.decompress(b64decode(entry[0]))
+            entry = json.loads(jstring)
+            feed['feed']['entry'] = entry
 
-            feed = zlib.decompress(b64decode(feed))
-            ret['data']['result']['feed'] = json.loads(feed)
-        
-        """ again, mirroring the perl module with responseContent() """
-        self.responseContent = json.dumps(ret)
+        #""" again, mirroring the perl module with responseContent() """
+        #self.responseContent = json.dumps(ret)
+        return feed
 
-    def table(self,j):
+    def table(self,feed):
         """
         Take in the JSON object and print a neat table out of the data
 
         Keyword args:
         self -- self
-        j -- json data
+        feed -- feed dict
         """
-        j = json.loads(j)
-        if not j['data'].get('result'): 
-            return 0
-
-        j = j['data']['result']
         
+        j = feed
         created = j.get('created') 
         feedid = j.get('id')
         restriction = j['feed'].get('restriction')
         severity = j['feed'].get('severity')
 
-        feed = j['feed']['items']
+        feed = j['feed']['entry']
         
         t = Texttable(max_width=0)
         t.set_deco(Texttable.VLINES)

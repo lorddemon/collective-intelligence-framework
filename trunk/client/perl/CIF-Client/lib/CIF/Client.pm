@@ -14,7 +14,8 @@ use Data::Dumper;
 use Encode qw/decode_utf8/;
 use Digest::SHA1 qw/sha1_hex/;
 use MIME::Base64;
-use Module::Pluggable search_path => ['CIF::Client::Plugin'];
+use Module::Pluggable search_path => ['CIF::Client::Plugin'], require => 1, except => qr/Plugin::\S+::/;
+use URI::Escape;
 
 __PACKAGE__->mk_accessors(qw/apikey config/);
 
@@ -26,6 +27,7 @@ $VERSION = eval $VERSION;  # see L<perlmodstyle>
 sub _plugins {
     my @plugs = plugins();
     foreach (@plugs){
+        next unless($_->type eq 'output');
         $_ =~ s/CIF::Client::Plugin:://;
         $_ = lc($_);
     }
@@ -62,19 +64,29 @@ sub new {
 }
 
 sub GET  {
-    my ($self,$q,$s,$r,$nolog) = @_;
+    my $self = shift;
+    my %args = @_;
 
+    my $q = $args{'query'};
     if(lc($q) =~ /^http(s)?:\/\//){
-        $q = 'url/'.sha1_hex($q);
+        ## escape unsafe chars, that's what the data-warehouse does
+        ## TODO -- doc this
+        $q = uri_escape($q,'\x00-\x1f\x7f-\xff');
+        $q = lc($q);
+        $q = sha1_hex($q);
     }
     my $rest = '/'.$q.'?apikey='.$self->apikey();
-    my $severity = ($s) ? $s : $self->{'severity'};
-    my $restriction = ($r) ? $r : $self->{'restriction'};
-    $nolog = ($nolog) ? $nolog : $self->{'nolog'};
+    my $severity = ($args{'severity'}) ? $args{'severity'} : $self->{'severity'};
+    my $restriction = ($args{'restriction'}) ? $args{'restriction'} : $self->{'restriction'};
+    my $nolog = ($args{'nolog'}) ? $args{'nolog'} : $self->{'nolog'};
+    my $nomap = ($args{'nomap'}) ? $args{'nomap'} : $self->{'nomap'};
+    my $confidence = ($args{'confidence'}) ? $args{'confidence'} : $self->{'confidence'};
 
     $rest .= '&severity='.$severity if($severity);
     $rest .= '&restriction='.$restriction if($restriction);
     $rest .= '&nolog='.$nolog if($nolog);
+    $rest .= '&nomap=1' if($nomap);
+    $rest .= '&confidence='.$confidence if($confidence);
 
     $self->SUPER::GET($rest);
     my $content = $self->{'_res'}->{'_content'};
@@ -89,11 +101,41 @@ sub GET  {
         $r = uncompress(decode_base64($r));
         $r = from_json($r);
         $hash->{'data'}->{'feed'}->{'entry'} = $r;
-        ## TODO -- do we really need to do this?
-        #$self->{'_res'}->{'_content'} = to_json($hash);
+    }
+    if(1 || $args{'conf'}->{'simple'}){
+        $self->hash_simple($hash);
     }
     return($hash->{'data'});
 }       
+
+sub hash_simple {
+    my $self = shift;
+    my $hash = shift;
+    my @entries = @{$hash->{'data'}->{'feed'}->{'entry'}};
+
+    my @plugs = $self->plugins();
+    my @a;
+    foreach (@plugs){
+        next if(/Parser$/);
+        push(@a,$_) if($_->type eq 'parser');
+    }
+    @plugs = @a;
+    my @return;
+    foreach my $p (@plugs){
+        foreach my $e (@entries){
+            if($p->prepare($e)){
+                my @ary = @{$p->hash_simple($e)};
+                push(@return,@ary);
+            } else {
+                push(@return,$e);
+            }
+        }
+    }
+    return unless(@return);
+    @{$hash->{'data'}->{'feed'}->{'entry'}} = @return;
+    return($hash);
+}
+
 
 1;
 __END__

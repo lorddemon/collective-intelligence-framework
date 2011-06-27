@@ -2,6 +2,8 @@ package CIF::Client::Plugin::Csv;
 
 use Regexp::Common qw/net/;
 
+sub type { return 'output'; }
+
 sub write_out {
     my $self = shift;
     my $config = shift;

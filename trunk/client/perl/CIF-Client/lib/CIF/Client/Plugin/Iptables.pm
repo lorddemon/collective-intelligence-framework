@@ -1,5 +1,6 @@
 package CIF::Client::Plugin::Iptables;
 
+sub type { return 'output'; }
 sub write_out {
     my $self = shift;
     my $config = shift;
