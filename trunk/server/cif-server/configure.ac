@@ -48,7 +48,7 @@ AC_ARG_WITH(group,
     AC_HELP_STRING([--with-group=GROUP],
         [group the cif scripts will run as (default: cif)]),
     CIF_GROUP=$withval,
-    CIF_GROUP=cif
+    CIF_GROUP=$CIF_USER
 )
 AC_SUBST(CIF_GROUP)
 

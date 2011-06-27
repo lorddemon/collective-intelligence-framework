@@ -1,4 +1,4 @@
-EXTRA_DIST = lib etc bin schemas example_api.conf
+EXTRA_DIST = lib etc sbin bin schemas example_api.conf
 
 all: default
 
@@ -24,12 +24,13 @@ apikey:
 	[ -e .apikey ] || $(prefix)/bin/cif_apikeys -u root -a
 	touch ".apikey"
 
-deps: depends
-
 depends: fixdeps
 
 fixdeps:
-	$(PERL) ./sbin/test-dependencies
+	$(PERL) ./sbin/test-dependencies --verbose --install
+
+testdeps:
+	$(PERL) ./sbin/test-dependencies --verbose
 
 local-whitelist:
 	[ -e $(prefix)/etc/whitelist_domains ] || touch "$(prefix)/etc/whitelist_domains"
@@ -53,10 +54,16 @@ etc-install:
 	$(INSTALL) -m 0660 "etc/$$file" "$(sysconfdir)/$$file" ; \
 	done
 
+sbin-install:
+	[ -d $(sbindir) || $(INSTALL) -m 0770 -d $(sbindir)
+	-( cd lib && find . -type f -print ) | grep -v svn | while read file ; do \
+        $(INSTALL) -m 0750 "sbin/$$file" "$(sbindir)/$$file" ; \
+    done
+
 bin-install:
 	[ -d $(bindir) || $(INSTALL) -m 0770 -d $(bindir)
 	-( cd bin && find . -type f -print ) | grep -v svn | while read file ; do \
-	$(INSTALL) -m 0755 "bin/$$file" "$(bindir)/$$file" ; \
+		$(INSTALL) -m 0750 "bin/$$file" "$(bindir)/$$file" ; \
 	done
 
 dropdb:
@@ -65,7 +72,7 @@ dropdb:
 initdb:
 	$(PSQL) -U $(DB_DBA) -h $(DB_HOST) -p $(DB_PORT) -c 'CREATE DATABASE $(DB_DATABASE)'
 
-inittables:
+tables:
 	-( cd schemas/$(DB_TYPE) && find -type f -print | grep -v svn | sort ) | while read file ; do \
 	$(PSQL) -U $(DB_DBA) -d $(DB_DATABASE) -h $(DB_HOST) -p $(DB_PORT) < "schemas/$(DB_TYPE)/$$file" ; \
 	done
