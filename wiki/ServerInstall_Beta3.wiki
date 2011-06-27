@@ -4,16 +4,18 @@ this page describes the Beta3 Server Installation
 = THIS PAGE UNDER CONSTRUCTION =
 
 = Preamble =
-
-Trust me, these scripts do a lot of dns queries. You're gonna wanna install bind and configure it to use forwarders. Maybe something like google public dns to help mask your queries. Then point your resolv.conf to localhost
+These scripts do a lot of dns queries. You're gonna wanna install bind and configure it to use forwarders. Maybe something like google public dns to help mask your queries. Then point your resolv.conf to localhost
 
 Once installed, monitor your dns traffic a bit, your server will be looking up some interesting information. Get a good handle on this and work with your security teams to whitelist this server.
+
+= Before you begin =
+ # PostgresInstall
+ # BindSetup
 
 = System Deps =
  # ServerInstall_Beta3_Generic
  # ServerInstall_Beta3_Lenny
  # ServerInstall_Beta3_Ubuntu10
- # PostgresInstall
 
 = Details =
  # create your "cif" user/group
