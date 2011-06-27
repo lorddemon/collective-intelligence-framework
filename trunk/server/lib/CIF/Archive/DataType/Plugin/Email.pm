@@ -1,18 +1,15 @@
 package CIF::Archive::DataType::Plugin::Email;
 use base 'CIF::Archive::DataType';
 
-require 5.008;
 use strict;
 use warnings;
-
-our $VERSION = '0.01_01';
-eval $VERSION;
 
 use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/SUPER$/;
 use Regexp::Common qw/URI/;
 
 __PACKAGE__->table('email');
 __PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/id uuid address source confidence severity restriction detecttime created/);
 __PACKAGE__->columns(All => qw/id uuid address source confidence severity restriction detecttime created/);
 __PACKAGE__->sequence('email_id_seq');
 
@@ -77,9 +74,17 @@ sub lookup {
     my $info = shift;
     my $address = $info->{'query'};
     return(undef) unless($address =~ /\w+@\w+$/);
-    return($self->SUPER::lookup($address,$info->{'limit'}));
+    return($self->SUPER::lookup($address,$info->{'severity'},$info->{'confidence'},$info->{'limit'}));
 }
 
+__PACKAGE__->set_sql('lookup' => qq{
+    SELECT __ESSENTIAL__ 
+    FROM __TABLE__
+    WHERE lower(address) = lower(?)
+    AND severity >= ?
+    AND confidence >= ?
+    LIMIT ?
+});
 1;
 __END__
 
