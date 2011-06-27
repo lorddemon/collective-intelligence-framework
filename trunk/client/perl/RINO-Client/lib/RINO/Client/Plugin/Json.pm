@@ -13,6 +13,7 @@ sub write_out {
     foreach my $a (@array){
         foreach my $k (keys %{$a}){
             my $x = $a->{$k};
+            next unless($x);
             my $h = eval { JSON::from_json($x) };
             next if($@);
             $a->{$k} = $h;

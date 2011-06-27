@@ -5,20 +5,22 @@ use strict;
 use Data::Dumper;
 use Getopt::Std;
 use CIF::Client;
-use JSON;
 
 my %opts;
-getopt('hL:p:f:q:c:s:r:', \%opts);
+getopt('hNL:p:f:q:c:s:r:C:', \%opts);
 
 my $query       = $opts{'q'} || shift;
 my $debug       = ($opts{'d'}) ? 1 : 0;
-my $c           = $opts{'c'} || $ENV{'HOME'}.'/.cif';
+my $c           = $opts{'C'} || $ENV{'HOME'}.'/.cif';
 my $fields      = $opts{'f'};
 my $severity    = $opts{'s'};
 my $restriction = $opts{'r'};
 my $plugin      = $opts{'p'} || 'table';
 my $max_desc    = $opts{'L'} || 100;
-my $nolog       = $opts{'n'};
+my $nolog       = $opts{'n'} || 0;
+my $summary     = $opts{'S'};
+my $nomap       = $opts{'N'};
+my $confidence  = $opts{'c'};
 my $plugs = join(',',CIF::Client::_plugins);
 
 die(usage()) unless($query || $opts{'h'});
@@ -31,7 +33,11 @@ Usage: perl $0 -q xyz.com
     -q  --query:    query string (use 'url\\/<md5|sha1>' for url hash lookups)
     -s  --severity: severity (low,medium,high), default: high
     -p  --plugin:   output plugin ($plugs), default: $plugin
-    -n  --nolog     perform a "silent" query (no log query)
+    -n  --nolog     perform a "silent" query (no log query), default: $nolog
+    -f  --fields:   set default output fields for default table display
+    -S  --summary:  consolidated Text::Table output (default: 1 -- True)
+    -N  --nomap:    don't map restrictions on server (queries only)
+    -c  --confidence: lowest tolerated confidence (0.00 -- 100.00), default $confidence
 
 Queries:
 
@@ -67,19 +73,19 @@ die($err) unless($client);
 
 my @q = split(/\,/,$query);
 foreach (@q){
-    $client->GET($_,$severity,$restriction,$nolog);
+    #my $feed = $client->GET($_,$severity,$restriction,$nolog,$nomap,$c);
+    my $feed = $client->GET(
+        query       => $_,
+        severity    => $severity,
+        restriction => $restriction,
+        nolog       => $nolog,
+        nomap       => $nomap,
+        confidence  => $confidence,
+    );
     die('request failed with code: '.$client->responseCode()."\n\n".$client->responseContent()) unless($client->responseCode == 200);
-    my $text = $client->responseContent();
    
-    if($plugin && lc($plugin) ne 'table'){
-        my $plug = 'CIF::Client::Plugin::'.ucfirst($plugin);
-        eval "require $plug";
-        die($@) if($@);
-        my $json = from_json($text);
-        print $plug->write_out($client->{'config'},@{$json->{'data'}->{'result'}->{'feed'}->{'items'}}) if($json->{'data'}->{'result'});
-    } else {
-        print "Query: ".$_;
-        $text = $client->table($text) || "\n".'no records'."\n";
-        print $text."\n";
-    }
+    my $plug = 'CIF::Client::Plugin::'.ucfirst($plugin);
+    eval "require $plug";
+    die($@) if($@);
+    print $plug->write_out($client->{'config'},$feed,$summary) if($feed->{'feed'});
 }

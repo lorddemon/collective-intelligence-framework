@@ -3,6 +3,8 @@ package CIF::Client::Plugin::Pcapfilter;
 use Regexp::Common qw/net/;
 use Regexp::Common::net::CIDR;
 
+sub type { return 'output'; }
+
 sub write_out {
     my $self = shift;
     my $config = shift;

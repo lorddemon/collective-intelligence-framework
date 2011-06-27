@@ -4,6 +4,8 @@ use Snort::Rule;
 use Regexp::Common qw/net/;
 use Data::Dumper;
 
+sub type { return 'output'; }
+
 sub write_out {
     my $self = shift;
     my $config = shift;

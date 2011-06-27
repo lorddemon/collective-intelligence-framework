@@ -1,5 +1,7 @@
 package CIF::Client::Plugin::Bindzone;
 
+sub type { return 'output'; }
+
 sub write_out {
     my $self = shift;
     my $config = shift;

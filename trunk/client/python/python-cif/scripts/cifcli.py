@@ -28,11 +28,13 @@ if __name__ == '__main__':
     rclient = cif.ClientINI(path=args.config,fields=args.fields,nolog=args.nolog)
 
     for query in args.query:
-        rclient.GET(query,args.severity,args.restriction,args.nolog)
+        # this returns a dict
+        # need to translate it to an object with "plugin" type properties
+        feed = rclient.GET(query,args.severity,args.restriction,args.nolog)
         if rclient.responseCode != 200:
             print 'request failed with code: ' + str(rclient.responseCode)
             os._exit(-1)
 
         print "Query: " + query
-        text = rclient.table(rclient.responseContent)
+        text = rclient.table(feed)
         print text

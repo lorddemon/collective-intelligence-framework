@@ -1,4 +1,5 @@
 package CIF::Client::Plugin::Table;
+use base 'CIF::Client::Plugin::Output';
 
 use Text::Table;
 
@@ -6,33 +7,61 @@ sub write_out {
     my $self = shift;
     my $config = shift;
     my $feed = shift;
+    my $summary = shift;
 
     my $hash = $feed->{'feed'};
     my $created = $hash->{'created'} || $hash->{'detecttime'};
     my $feedid = $hash->{'id'};
     my @a = @{$hash->{'entry'}};
-    my @cols = (
-        'restriction',
-        'severity',
-    );
-    if(exists($a[0]->{'hash_md5'})){
-        push(@cols,('hash_md5','hash_sha1'));
-    } elsif(exists($a[0]->{'url_md5'})){
-        push(@cols,('address','url_md5','url_sha1','malware_md5','malware_sha1'));
-    } elsif(exists($a[0]->{'rdata'})) {
-        push(@cols,('address','rdata','type'));
-    } elsif($a[0]->{'asn'} && !$a[0]->{'address'}) {
-        push(@cols,'asn','asn_desc','cc');
+    my @cols;
+    if($a[0]->{'count'}){
+        push(@cols,'count');
     } else {
-        push(@cols,'address','portlist');
+        @cols = (
+            'uuid',
+
+            'restriction',
+            'severity',
+            'confidence',
+            'detecttime',
+        );
     }
-    push(@cols,(
-        'detecttime',
-        'description',
-        'alternativeid_restriction',
-        'alternativeid',
-    ));
-    if($self->{'fields'}){
+    unless($summary){
+        my $t = $a[0];
+        if(exists($t->{'address'})){
+            push(@cols,('address'));
+        }
+        if(exists($t->{'protocol'})){
+            push(@cols,'protocol');
+        }
+        if(exists($t->{'portlist'})){
+            push(@cols,'portlist');
+        }
+        if(exists($t->{'rdata'})) {
+            push(@cols,('rdata','type'));
+        } 
+        if(exists($t->{'asn'})) {
+            push(@cols,'asn','prefix');
+        } 
+        if(exists($t->{'rir'})){
+            push(@cols,'rir');
+        }
+        if(exists($t->{'md5'})){
+            push(@cols,('md5','sha1'));
+        } 
+        if(exists($t->{'cc'})){
+            push(@cols,'cc');
+        }
+    }
+    unless($a[0]->{'count'}){
+        push(@cols,(
+            'impact',
+            'description',
+            'alternativeid_restriction',
+            'alternativeid',
+        ));
+   }
+   if($self->{'fields'}){
         @cols = @{$self->{'fields'}};
     }
     if(my $c = $self->{'config'}->{'display'}){
