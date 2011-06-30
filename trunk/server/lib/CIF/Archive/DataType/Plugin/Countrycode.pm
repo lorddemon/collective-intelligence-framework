@@ -74,6 +74,9 @@ sub feed {
     my $class = shift;
     my $info = shift;
     my @feeds;
+
+    ## TODO -- same as rir ans asn
+    return(\@feeds);
     $info->{'key'} = 'cc';
     my $ret = $class->SUPER::feed($info);
     push(@feeds,$ret) if($ret);

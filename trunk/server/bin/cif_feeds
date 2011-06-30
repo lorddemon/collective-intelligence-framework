@@ -50,12 +50,34 @@ my $maxdays     = $opts{'d'} || 3;
 my $debug       = $opts{'D'};
 my $config      = $opts{'c'} || $ENV{'HOME'}.'/.cif';
 my $last_feeds  = $opts{'F'} || 5;
+my $mutex       = $opts{'L'} || '/tmp/cif_feeds.lock';
 
 my $cfg = Config::Simple->new($config) || die('missing config file');
 my $maxrecords  = $opts{'m'} || $cfg->param(-block => 'cif_feeds')->{'maxrecords'} || 50000;
 my @plugs = CIF::Archive->plugins('datatype');
 my $sf = $cfg->param(-block  => 'cif_feeds')->{'severity_feeds'};
 my $cf = $cfg->param(-block => 'cif_feeds')->{'confidence_feeds'};
+
+$SIG{'INT'} = 'cleanup';
+
+sub cleanup {
+    print "\n\nCaught Interrupt (^C), Aborting\n";
+    remove_lock();
+    exit(1);
+}
+
+sub remove_lock {
+    system('rm '.$mutex);
+}
+
+if(-e $mutex){
+    print 'already running, mutex found: '.$mutex."\n" if($debug);
+    exit(-1);
+}
+my $ret = system('touch '.$mutex);
+unless(defined($ret) && $ret == 0){
+    die($!);
+}
 
 my @severity_feeds;
 my @confidence_feeds;
@@ -71,7 +93,7 @@ if(ref($cf) eq 'ARRAY'){
 }
 
 @plugs = grep(!/(Feed|Analytic)/,@plugs);
-#@plugs = grep(/Email$/,@plugs);
+#@plugs = grep(/ASN$/,@plugs);
 
 my $restriction_map = $cfg->param(-block => 'restrictions');
 unless($restriction){
@@ -126,79 +148,88 @@ foreach (@plugs){
     my $detecttime = DateTime->from_epoch(epoch => (time() - (84600 * $maxdays)));
     _profile('searching',$start);
     foreach my $sev (@severity_feeds){
-    foreach my $conf (@confidence_feeds){
-    my $ret = $_->feed({
-        severity    => $sev,
-        confidence  => $conf,
-        detecttime  => $detecttime,
-        maxrecords  => 50000,
-    });
-    unless($ret){
-        _debug('no records');
-        next();
-    }
-    my @feeds = @$ret;
-    _profile('mapping',$start);
-    my @types = map { $_->{'feed'}->{'title'} } @feeds;
-    foreach my $f (@feeds){
-        my @recs = @{$f->{'feed'}->{'entry'}};
-        _debug('records: '.@recs);
-        next unless(defined($#recs));
-        my $loc_restriction = $restriction;
-        if(keys %$restriction_map){
-            $loc_restriction = $restriction_map->{$restriction};
-            foreach my $r (@recs){
+        foreach my $conf (@confidence_feeds){
+            my $ret = $_->feed({
+                severity    => $sev,
+                confidence  => $conf,
+                detecttime  => $detecttime,
+                maxrecords  => 50000,
+            });
+            unless($ret){
+                _debug('no records');
+                next();
+            }
+            my @feeds = @$ret;
+            _profile('mapping',$start);
+            my @types = map { $_->{'feed'}->{'title'} } @feeds;
+            foreach my $f (@feeds){
+                my @recs = @{$f->{'feed'}->{'entry'}};
+                _debug('records: '.@recs);
+                next unless(defined($#recs));
+                my $loc_restriction = $restriction;
+                if(keys %$restriction_map){
+                    $loc_restriction = $restriction_map->{$restriction};
+                    foreach my $r (@recs){
+                        if($r->{'restriction'} && exists($restriction_map->{$r->{'restriction'}})){
+                            $r->{'restriction'} = $restriction_map->{$r->{'restriction'}};
+                        }
+                        if($r->{'alternativeid_restriction'} && exists($restriction_map->{$r->{'alternativeid_restriction'}})){
+                            $r->{'alternativeid_restriction'} = $restriction_map->{$r->{'alternativeid_restriction'}};
+                        }
+                    }
+                }
                 
-                if($r->{'restriction'} && exists($restriction_map->{$r->{'restriction'}})){
-                    $r->{'restriction'} = $restriction_map->{$r->{'restriction'}};
-                }
-                if($r->{'alternativeid_restriction'} && exists($restriction_map->{$r->{'alternativeid_restriction'}})){
-                    $r->{'alternativeid_restriction'} = $restriction_map->{$r->{'alternativeid_restriction'}};
+                my $json = to_json(\@recs);
+                my $description = $f->{'feed'}->{'title'}.' '.$sev.' severity '.$conf.'% confidence '.$restriction.' feed';
+                my $impact = $f->{'feed'}->{'title'}.' feed';
+                my $zcontent = encode_base64(compress($json));
+                my ($err,$id) = CIF::Archive->insert({
+                    source      => 'localhost',
+                    data        => $zcontent,
+                    hash_sha1   => sha1_hex($zcontent),
+                    severity    => $sev,
+                    confidence  => $conf,
+                    description => lc($description),
+                    impact      => lc($impact),
+                    restriction => lc($restriction),
+                    detecttime  => $dt,
+                    format      => 'text/base64'
+                });
+                cleanup($err) unless($id);
+                print lc($description).': '.$id.' created -- '.$id->uuid()."\n";
+                my @feeds = CIF::Archive::DataType::Plugin::Feed->retrieve_from_sql(qq{
+                    impact = '$impact'
+                    AND severity = '$sev'
+                    AND restriction = '$restriction'
+                    AND confidence = '$conf'
+                    ORDER BY id ASC
+                });
+                if($#feeds >= $last_feeds){
+                    foreach (0 ... $last_feeds-1){
+                        pop(@feeds);
+                    }
+                    foreach (@feeds){
+                        print 'removing feed: '.$_->id().' -- '.$_->uuid->uuid()."\n";
+                        eval {
+                            CIF::Archive->retrieve(uuid => $_->uuid->uuid())->delete();
+                        };
+                        if($@){
+                            warn $@;
+                            remove_lock();
+                            exit(-1);
+                        }
+                    }
                 }
             }
         }
-        my $json = to_json(\@recs);
-    
-        my $description = $f->{'feed'}->{'title'}.' '.$sev.' severity '.$conf.'% confidence '.$restriction.' feed';
-        my $impact = $f->{'feed'}->{'title'}.' feed';
-        my $zcontent = encode_base64(compress($json));
-        my ($err,$id) = CIF::Archive->insert({
-            source      => 'localhost',
-            data        => $zcontent,
-            hash_sha1   => sha1_hex($zcontent),
-            severity    => $sev,
-            confidence  => $conf,
-            description => lc($description),
-            impact      => lc($impact),
-            restriction => lc($restriction),
-            detecttime  => $dt,
-            format      => 'text/base64'
-        });
-        die($err) unless($id);
-        print lc($description).': '.$id.' created -- '.$id->uuid()."\n";
-        my @feeds = CIF::Archive::DataType::Plugin::Feed->retrieve_from_sql(qq{
-            impact = '$impact'
-            AND severity = '$sev'
-            AND restriction = '$restriction'
-            AND confidence = '$conf'
-            ORDER BY id ASC
-        });
-        if($#feeds >= $last_feeds){
-            foreach (0 ... $last_feeds-1){
-                pop(@feeds);
-            }
-            foreach (@feeds){
-                print 'removing feed: '.$_->id().' -- '.$_->uuid()."\n";
-                CIF::Archive->retrieve(uuid => $_->uuid())->delete();
-            }
-        }
-    }
-    }
     }
         
     ## TODO -- if $id is < than most recent feed (of this type), we need to re-insert this as a new feed (or delete the old feed)
     _profile('finished',$start);
 }
+
+remove_lock();
+exit(0);
 
 sub _debug {
     return unless($debug);
