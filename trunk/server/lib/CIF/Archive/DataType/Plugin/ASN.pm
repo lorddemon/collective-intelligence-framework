@@ -1,14 +1,10 @@
 package CIF::Archive::DataType::Plugin::ASN;
 use base 'CIF::Archive::DataType';
 
-use 5.008008;
 use strict;
 use warnings;
 
-our $VERSION = '0.01_01';
-$VERSION = eval $VERSION;  # see L<perlmodstyle>
-
-use Module::Pluggable require => 1, search_path => [__PACKAGE__];
+use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/SUPER$/;;
 
 __PACKAGE__->table('asn');
 __PACKAGE__->columns(Primary => 'id');
@@ -80,7 +76,13 @@ sub lookup {
 sub feed {
     my $class = shift;
     my $info = shift;
+
     my @feeds;
+
+    # this doesn't work quite yet.
+    # gets stuck on recursive loop because of count()
+    ## TODO -- finish
+    return(\@feeds);
     $info->{'key'} = 'asn';
     my $ret = $class->SUPER::feed($info);
     push(@feeds,$ret) if($ret);

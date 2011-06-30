@@ -1,12 +1,8 @@
 package CIF::Archive::DataType::Plugin::Domain;
 use base 'CIF::Archive::DataType';
 
-require 5.008;
 use strict;
 use warnings;
-
-our $VERSION = '0.01_01';
-$VERSION = eval $VERSION;
 
 use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/SUPER$/;
 use Net::Abuse::Utils qw(:all);
@@ -132,7 +128,6 @@ sub feed {
     my $ret = $class->SUPER::feed($info);
     push(@feeds,$ret) if($ret);
 
-    my $tbl = $class->table();
     foreach($class->plugins()){
         my $t = $_->set_table();
         my $r = $_->SUPER::feed($info);

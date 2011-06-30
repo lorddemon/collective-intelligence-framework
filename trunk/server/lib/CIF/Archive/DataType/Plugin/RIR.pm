@@ -74,6 +74,10 @@ sub feed {
     my $class = shift;
     my $info = shift;
     my @feeds;
+    # this doesn't work quite yet.
+    # gets stuck in a recursive loop for some reason on count()
+    return(\@feeds);
+
     $info->{'key'} = 'rir';
     my $ret = $class->SUPER::feed($info);
     push(@feeds,$ret) if($ret);

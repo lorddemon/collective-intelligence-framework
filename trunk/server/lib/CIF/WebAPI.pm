@@ -1,7 +1,6 @@
 package CIF::WebAPI;
 use base 'Apache2::REST::Handler';
 
-use 5.008008;
 use strict;
 use warnings;
 
@@ -35,12 +34,13 @@ sub map_restrictions {
         foreach my $r (keys %m){
             $res = $m{$r} if(lc($res) eq lc($r));
         }
+        warn Dumper(@feed);
         foreach (@feed){
-            my $r = lc($_->{'restriction'});
-            my $ar = lc($_->{'alternativeid_restriction'});
+            my $r = lc($_->{'Incident'}->{'restriction'});
+            my $ar = lc($_->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'});
 
-            $_->{'restriction'} = $m{$r} if(exists($m{$r}));
-            $_->{'alternativeid_restriction'} = $m{$ar} if(exists($m{$ar}));
+            $_->{'Incident'}->{'restriction'} = $m{$r} if(exists($m{$r}));
+            $_->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'} = $m{$ar} if(exists($m{$ar}));
         }
     }
     return ($res,@feed);
