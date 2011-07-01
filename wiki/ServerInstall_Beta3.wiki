@@ -8,6 +8,15 @@ These scripts do a lot of dns queries. You're gonna wanna install bind and confi
 
 Once installed, monitor your dns traffic a bit, your server will be looking up some interesting information. Get a good handle on this and work with your security teams to whitelist this server.
 
+= System Requirements =
+These requirements will handle everything on the same box pretty well with the default open source data-sets. The more (bigger) data-sets you add, the more ram / disk space you'll need. The more cores you add, the more threads that can "batch out" the feed parsers (thus, resulting in faster data consumption).
+
+These specs will handle around 10k feeds at once with minimal impact on memory usage. Past that you'll need to start doubling your specs. Virtual machine technology is great for prototyping your implementation and will give you a good baseline of what you'll need for production.
+
+ # at-least 4 gig of ram
+ # at-least 4 cores
+ # at-least 35gig of disk space
+
 = Before you begin =
  # PostgresInstall
  # BindSetup
