@@ -7,9 +7,9 @@ initial how-to explaining the initial setup of your client
  1. install the client library
 {{{
 $> sudo perl -MCPAN -e 'install REST::Client, Text::Table, JSON, Module::Pluggable, Config::Simple, Snort::Rule, Class::Accessor, Digest::MD5, Digest::SHA1, Regexp::Common::net'
-$> wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.00_04.tar.gz
-$> tar -zxvf CIF-Client-0.00_04.tar.gz
-$> cd CIF-Client-0.00_04
+$> wget http://cpan.develooper.com/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.01_03.tar.gz
+$> tar -zxvf CIF-Client-0.01_01.tar.gz
+$> cd CIF-Client-0.01_01
 $> perl Makefile.PL && make && sudo make install
 }}}
  1. run a sample query for testing:
@@ -27,6 +27,7 @@ $> cif -q url -w low | grep -v private
 }}}
 
 === Python ===
+*NOTE PYCLIENT IS NOT YET COMPATIBLE WITH cif-0.01_03*
 
  1. make sure setup tools is installed
  1. easy_install [http://pypi.python.org/pypi?:action=pkg_edit&name=cif cif]
