@@ -40,7 +40,7 @@ my $throttle = $opts{'T'} || 'medium';
 my $cron_tool = $opts{'C'} || 'cif_feedparser';
 my $first_run = $opts{'f'};
 my $debug = $opts{'d'};
-my $mutex = $opts{'L'} || '/tmp/cif_crontool.lock'.$period;
+my $mutex = $opts{'L'} || '/tmp/cif_crontool.lock.'.$period;
 
 $SIG{'INT'} = 'cleanup';
 sub cleanup {

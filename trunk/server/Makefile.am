@@ -16,13 +16,12 @@ dirs:
 	$(INSTALL) -m 0770 -d $(prefix)/local/etc
 	$(INSTALL) -m 0775 -d $(prefix)/local/lib
 
-install: dirs files-install fixperms etc-link apikey
+install: dirs files-install fixperms etc-link
 
 files-install: libs-install etc-install bin-install local-whitelist
 
 apikey:
-	[ -e .apikey ] || $(prefix)/bin/cif_apikeys -u root -a
-	touch ".apikey"
+	$(prefix)/bin/cif_apikeys -u root -a
 
 depends: fixdeps
 
@@ -49,9 +48,9 @@ libs-install:
 	done
 
 etc-install:
-	[ -d $(sysconfdir) || $(INSTALL) -m 0770 -d $(sysconfdir)
+	[ -d $(sysconfdir) ] || $(INSTALL) -m 0770 -d $(sysconfdir)
 	-( cd etc && find . -type f -print ) | grep -v svn | while read file ; do \
-	$(INSTALL) -m 0660 "etc/$$file" "$(sysconfdir)/$$file" ; \
+	    [ -e $(sysconfdir)/$$file ] || $(INSTALL) -m 0660 "etc/$$file" "$(sysconfdir)/$$file" ; \
 	done
 
 sbin-install:

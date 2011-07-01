@@ -40,7 +40,7 @@ use CIF::Archive;
 use CIF::Archive::DataType::Plugin::Feed;
 
 my %opts;
-getopts('hDc:d:f:s:r:m:F:C:',\%opts);
+getopts('S:hDc:d:f:s:r:m:F:C:',\%opts);
 
 my $feed        = $opts{'f'} || shift || '';
 my $severity    = $opts{'s'} || 'high';
@@ -51,6 +51,7 @@ my $debug       = $opts{'D'};
 my $config      = $opts{'c'} || $ENV{'HOME'}.'/.cif';
 my $last_feeds  = $opts{'F'} || 5;
 my $mutex       = $opts{'L'} || '/tmp/cif_feeds.lock';
+my $specific    = $opts{'S'};
 
 my $cfg = Config::Simple->new($config) || die('missing config file');
 my $maxrecords  = $opts{'m'} || $cfg->param(-block => 'cif_feeds')->{'maxrecords'} || 50000;
@@ -59,6 +60,7 @@ my $sf = $cfg->param(-block  => 'cif_feeds')->{'severity_feeds'};
 my $cf = $cfg->param(-block => 'cif_feeds')->{'confidence_feeds'};
 
 $SIG{'INT'} = 'cleanup';
+#$SIG{__DIE__} = 'cleanup';
 
 sub cleanup {
     print "\n\nCaught Interrupt (^C), Aborting\n";
@@ -70,7 +72,7 @@ sub remove_lock {
     system('rm '.$mutex);
 }
 
-if(-e $mutex){
+if(-e $mutex && !$specific){
     print 'already running, mutex found: '.$mutex."\n" if($debug);
     exit(-1);
 }
@@ -93,8 +95,10 @@ if(ref($cf) eq 'ARRAY'){
 }
 
 @plugs = grep(!/(Feed|Analytic)/,@plugs);
-#@plugs = grep(/ASN$/,@plugs);
-
+if($specific){
+    $specific = ucfirst($specific);
+    @plugs = grep(/$specific$/,@plugs);
+}
 my $restriction_map = $cfg->param(-block => 'restrictions');
 unless($restriction){
     if(my $x = $restriction_map->{'default'}){
@@ -103,7 +107,11 @@ unless($restriction){
         $restriction = 'private';
     }
 }
-die usage() if($opts{'h'});
+if($opts{'h'}){
+    print usage();
+    remove_lock();
+    exit(0);
+}
 
 my %map;
 my @feeds;
@@ -151,6 +159,7 @@ foreach (@plugs){
         foreach my $conf (@confidence_feeds){
             my $ret = $_->feed({
                 severity    => $sev,
+                restriction => $restriction,
                 confidence  => $conf,
                 detecttime  => $detecttime,
                 maxrecords  => 50000,
@@ -167,17 +176,29 @@ foreach (@plugs){
                 _debug('records: '.@recs);
                 next unless(defined($#recs));
                 my $loc_restriction = $restriction;
-                if(keys %$restriction_map){
+                if($recs[0] && keys %$restriction_map){
                     $loc_restriction = $restriction_map->{$restriction};
-                    foreach my $r (@recs){
-                        if($r->{'restriction'} && exists($restriction_map->{$r->{'restriction'}})){
-                            $r->{'restriction'} = $restriction_map->{$r->{'restriction'}};
+                    foreach my $rec (@recs){
+                        my ($r,$alt_r);
+                        if(exists($rec->{'Incident'}->{'restriction'})){
+                            $r = $rec->{'Incident'}->{'restriction'};
                         }
-                        if($r->{'alternativeid_restriction'} && exists($restriction_map->{$r->{'alternativeid_restriction'}})){
-                            $r->{'alternativeid_restriction'} = $restriction_map->{$r->{'alternativeid_restriction'}};
+                        if(exists($rec->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'})){
+                            $alt_r = $rec->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'};
+                        }
+                        if($r && exists($restriction_map->{$r})){
+                            $r = $restriction_map->{$r};
+                        }
+                        if($alt_r && exists($restriction_map->{$alt_r})){
+                            $alt_r = $restriction_map->{$alt_r};
+                        }
+                        $rec->{'Incident'}->{'restriction'} = $r if($r);
+                        if($alt_r){
+                            $rec->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'} = $alt_r if($alt_r);
                         }
                     }
                 }
+                
                 
                 my $json = to_json(\@recs);
                 my $description = $f->{'feed'}->{'title'}.' '.$sev.' severity '.$conf.'% confidence '.$restriction.' feed';
@@ -233,7 +254,9 @@ exit(0);
 
 sub _debug {
     return unless($debug);
-    warn shift;
+    my $msg = shift;
+    my ($pkg,$f,$line) = caller();
+    warn "[DEBUG] $line: $msg";
 }
 
 sub _profile {

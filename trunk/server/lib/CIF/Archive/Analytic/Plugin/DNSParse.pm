@@ -23,6 +23,7 @@ sub process {
     my $self = shift;
     my $data = shift;
     my $config = shift;
+    $config = $config->param(-block => 'dnsparse') || return;
     return unless(ref($data) eq 'HASH');
     my $addr = $data->{'address'};
     return unless($addr);
@@ -31,7 +32,6 @@ sub process {
     return unless($data->{'impact'} =~ /search/);
     return unless($addr =~ /^$RE{'net'}{'IPv4'}$/);
 
-    $config = $config->param(-block => 'dnsparse');
 
     ## TODO -- whitelist?
     require LWP::UserAgent;

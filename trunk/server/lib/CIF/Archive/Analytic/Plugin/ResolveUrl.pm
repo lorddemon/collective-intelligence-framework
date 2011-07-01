@@ -17,7 +17,7 @@ sub process {
     my $port;
     ## todo -- fix this, it flags on things like trainer.exe
     ## test with malc0de specifically
-    if($a =~ /^(http?\:\/\/)?([A-Za-z-\.]+\.[a-z]{2,5})(:\d+)?\//){
+    if($a =~ /^(http?\:\/\/)?([A-Za-z0-9-\.]+\.[a-z]{2,5})(:\d+)?\//){
         $address = $2;
         $port = $3;
     } elsif($a =~ /^(https?\:\/\/)?($RE{'net'}{'IPv4'})(:\d+)?\//) {

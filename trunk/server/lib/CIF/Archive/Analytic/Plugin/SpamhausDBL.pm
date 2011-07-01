@@ -91,7 +91,7 @@ sub process {
             confidence                  => $code->{'confidence'} || 85,
             restriction                 => 'need-to-know', 
             alternativeid               => 'http://www.spamhaus.org/query/dbl?domain='.$addr,
-            alternativedid_restriction   => 'public',
+            alternativeid_restriction   => 'public',
         });
         warn $err if($err);
         warn $id->uuid() if($::debug);
