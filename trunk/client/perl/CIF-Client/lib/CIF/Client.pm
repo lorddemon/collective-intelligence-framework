@@ -55,6 +55,7 @@ sub new {
     $self->{'restriction'} = $cfg->{'restriction'};
     $self->{'severity'} = $cfg->{'severity'};
     $self->{'nolog'} = $cfg->{'nolog'};
+    $self->{'simple_hashes'} = $args->{'simple_hashes'} || $cfg->{'simple_hashes'};
     
     if($args->{'fields'}){
         @{$self->{'fields'}} = split(/,/,$args->{'fields'}); 
@@ -90,11 +91,12 @@ sub GET  {
 
     $self->SUPER::GET($rest);
     my $content = $self->{'_res'}->{'_content'};
+    warn $content if($::debug);
     return unless($content);
     return unless($self->responseCode == 200);
     my $text = $self->responseContent();
     my $hash = from_json($content, {utf8 => 1});
-    my $t = ref(@{$hash->{'data'}->{'feed'}->{'entry'}}[0]) || '';
+    my $t = ref(@{$hash->{'data'}->{'feed'}->{'entry'}}[0]);
     unless($t eq 'HASH'){
         my $r = @{$hash->{'data'}->{'feed'}->{'entry'}}[0];
         return unless($r);
@@ -102,7 +104,8 @@ sub GET  {
         $r = from_json($r);
         $hash->{'data'}->{'feed'}->{'entry'} = $r;
     }
-    if(1 || $args{'conf'}->{'simple'}){
+    ## TODO -- finish implementing this into the config
+    if($self->{'simple_hashes'}){
         $self->hash_simple($hash);
     }
     return($hash->{'data'});

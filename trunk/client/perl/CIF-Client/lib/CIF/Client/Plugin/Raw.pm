@@ -18,6 +18,6 @@ sub write_out {
     } else {
         $json = JSON::to_json($feed->{'feed'}->{'entry'});
     }
-    return $json;
+    return $json."\n";
 }
 1;

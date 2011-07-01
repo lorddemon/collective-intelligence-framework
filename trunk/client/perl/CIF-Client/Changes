@@ -1,5 +1,9 @@
 Revision history for Perl extension CIF::Client.
 
+0.01_01  2011-07-01
+    - revamped for working with cif-0.01_03 api
+    - added Iodef plugin to trasnlate IODEF json documents to simple hashes
+
 0.00_03  2011-01-19
     - updated for use with new CIF::WebAPI
     - CIF::WebAPI now handles the regex
