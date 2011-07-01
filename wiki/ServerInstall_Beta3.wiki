@@ -11,6 +11,7 @@ Once installed, monitor your dns traffic a bit, your server will be looking up s
 = Before you begin =
  # PostgresInstall
  # BindSetup
+ # ClientSetup
 
 = System Deps =
  # ServerInstall_Beta3_Generic
