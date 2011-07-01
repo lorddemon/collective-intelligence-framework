@@ -1,10 +1,8 @@
 package CIF::Client::Plugin::Snort;
+use base 'CIF::Client::Plugin::Output';
 
 use Snort::Rule;
 use Regexp::Common qw/net/;
-use Data::Dumper;
-
-sub type { return 'output'; }
 
 sub write_out {
     my $self = shift;
@@ -15,12 +13,17 @@ sub write_out {
     my $sid = ($config->{'snortsid'}) ? $config->{'snortsid'} : 1;
     my $rules = '';
     foreach (@array){
-        #next unless($_->{'address'} =~ /^$RE{'net'}{'IPv4'}/);
         next unless($_->{'address'});
         if(exists($_->{'rdata'})){
             $_->{'portlist'} = 53;
         }
         my $portlist = ($_->{'portlist'}) ? $_->{'portlist'} : 'any';
+
+        my $priority = 1;
+        for(lc($_->{'severity'})){
+            $priority = 5 if(/medium/);
+            $priority = 9 if(/high/);
+        }
 
         my $r = Snort::Rule->new(
             -action => 'alert',
@@ -35,6 +38,7 @@ sub write_out {
         $r->opts('threshold','type limit,track by_src,count 1,seconds 3600');
         $r->opts('sid',$sid++);
         $r->opts('reference',$_->{'alternativeid'}) if($_->{'alternativeid'});
+        $r->opts('priority',$priority);
         $rules .= $r->string()."\n";
     }
     return $rules;

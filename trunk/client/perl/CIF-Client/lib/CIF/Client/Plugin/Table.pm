@@ -13,13 +13,12 @@ sub write_out {
     my $created = $hash->{'created'} || $hash->{'detecttime'};
     my $feedid = $hash->{'id'};
     my @a = @{$hash->{'entry'}};
+    return unless(keys(%{$a[0]}));
     my @cols;
     if($a[0]->{'count'}){
         push(@cols,'count');
     } else {
         @cols = (
-            'uuid',
-
             'restriction',
             'severity',
             'confidence',
@@ -91,6 +90,10 @@ sub write_out {
     if($feedid){
         $table = 'Feed Id: '.$feedid."\n".$table;
     }
+    if($config->{'description'}){
+        $table = 'Description: '.$config->{'description'}."\n".$table;
+    }
+
     return "\n".$table;
 }
 
