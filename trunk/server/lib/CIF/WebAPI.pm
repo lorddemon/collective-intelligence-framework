@@ -136,6 +136,7 @@ sub GET {
         $f->{'entry'} = [$recs[0]->{'data'}];
         $f->{'restriction'} = $restriction;
         $f->{'description'} = $recs[0]->{'description'};
+        $f->{'detecttime'} = $recs[0]->{'detecttime'};
 
         # don't laugh. it was hard to write this.
         $f->{'description'} =~ s/$old_restriction/$restriction/ if($f->{'description'});
