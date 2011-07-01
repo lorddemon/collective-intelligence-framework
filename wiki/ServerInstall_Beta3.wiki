@@ -57,6 +57,10 @@ $ time /opt/cif/bin/cif_crontool -f
 {{{
 $ time /opt/cif/bin/cif_analytics -d
 }}}
+ # when that's finished, run your first batch of feeds
+{{{
+$ time /opt/cif/bin/cif_feeds -D
+}}}
  # log into the cif user (sudo su - cif) and modify it's cron tab (crontab -e)
 {{{
 # run analytics
