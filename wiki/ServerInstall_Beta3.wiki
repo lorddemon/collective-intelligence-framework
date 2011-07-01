@@ -11,7 +11,6 @@ Once installed, monitor your dns traffic a bit, your server will be looking up s
 = Before you begin =
  # PostgresInstall
  # BindSetup
- # ClientSetup
 
 = System Deps =
  # ServerInstall_Beta3_Generic
@@ -19,6 +18,14 @@ Once installed, monitor your dns traffic a bit, your server will be looking up s
  # ServerInstall_Beta3_Ubuntu10
 
 = Details =
+ # install the CIF::Client (we use some functions in it for the server)
+{{{
+$> sudo perl -MCPAN -e 'install REST::Client, Text::Table, JSON, Module::Pluggable, Config::Simple, Snort::Rule, Class::Accessor, Digest::MD5, Digest::SHA1, Regexp::Common::net'
+$> wget http://cpan.develooper.com/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.01_03.tar.gz
+$> tar -zxvf CIF-Client-0.01_01.tar.gz
+$> cd CIF-Client-0.01_01
+$> perl Makefile.PL && make && sudo make install
+}}}
  # create your "cif" user/group
 {{{
 $ sudo useradd -U -m cif
@@ -60,6 +67,5 @@ $ time /opt/cif/bin/cif_analytics -d
 45     00      * * * /opt/cif/bin/cif_crontool -p daily -T low &> /dev/null
 
 # update the feeds
-*/5     *       * * * /opt/cif/bin/cif_feeds &> /dev/null
-00      *       * * * /opt/cif/bin/cif_feeds -s medium &> /dev/null
+00,15,30,45     *       * * * /opt/cif/bin/cif_feeds &> /dev/null
 }}}
