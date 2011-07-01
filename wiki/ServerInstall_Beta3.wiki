@@ -51,7 +51,7 @@ fi
 }}}
  # perform the "first run" to prime the database with it's initial intel (should take about 30min).
 {{{
-$ time /opt/cif/bin/cif_crontool -f
+$ time /opt/cif/bin/cif_crontool -f -d
 }}}
  # after this starts, run your first batch of analytics (should take about 3 hours)
 {{{
