@@ -1,11 +1,11 @@
-package CIF::Archive::DataType::Plugin::Infrastructure::Scanning;
+package CIF::Archive::DataType::Plugin::Infrastructure::Scan;
 use base 'CIF::Archive::DataType::Plugin::Infrastructure';
 
 sub prepare {
     my $class = shift;
     my $info = shift;
     return(0) unless($info->{'impact'} =~ /scan/);
-    return('infrastructure_scanning');
+    return('infrastructure_scan');
 }
 
 1;
