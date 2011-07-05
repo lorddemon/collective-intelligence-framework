@@ -54,6 +54,8 @@ my $last_feeds  = $opts{'F'} || 5;
 my $mutex       = $opts{'L'} || '/tmp/cif_feeds.lock';
 my $specific    = $opts{'S'};
 my $throttle    = $opts{'T'} || 'low';
+$opts{'t'} = 1 if($specific);
+ 
 
 my $cfg = Config::Simple->new($config) || die('missing config file');
 my $maxrecords  = $opts{'m'} || $cfg->param(-block => 'cif_feeds')->{'maxrecords'} || 50000;
@@ -165,7 +167,7 @@ $dt = $dt->ymd().'T'.$dt->hms().'Z';
 my $threads = $opts{'t'} || CIF::Utils::throttle($throttle);
 my $batches = CIF::Utils::split_batches($threads,\@plugs);
 if(scalar @{$batches} == 1){
-    process($batches);
+    process(@{$batches});
 } else {
     foreach (@{$batches}){
         my $t = threads->create('process',$_);
