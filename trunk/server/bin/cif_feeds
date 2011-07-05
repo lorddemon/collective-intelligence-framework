@@ -38,32 +38,40 @@ use Data::Dumper;
 use Compress::Zlib;
 use CIF::Archive;
 use CIF::Archive::DataType::Plugin::Feed;
+use CIF::Utils ':all';
+use threads;
 
 my %opts;
-getopts('S:hDc:d:f:s:r:m:F:C:',\%opts);
+getopts('ht:S:c:df:s:r:m:F:C:T:',\%opts);
 
-my $feed        = $opts{'f'} || shift || '';
 my $severity    = $opts{'s'} || 'high';
-my $confidence  = $opts{'C'} || '85';
+my $confidence  = $opts{'c'} || '85';
 my $restriction = $opts{'r'};
 my $maxdays     = $opts{'d'} || 3;
 my $debug       = $opts{'D'};
-my $config      = $opts{'c'} || $ENV{'HOME'}.'/.cif';
+my $config      = $opts{'C'} || $ENV{'HOME'}.'/.cif';
 my $last_feeds  = $opts{'F'} || 5;
 my $mutex       = $opts{'L'} || '/tmp/cif_feeds.lock';
 my $specific    = $opts{'S'};
+my $throttle    = $opts{'T'} || 'low';
 
 my $cfg = Config::Simple->new($config) || die('missing config file');
 my $maxrecords  = $opts{'m'} || $cfg->param(-block => 'cif_feeds')->{'maxrecords'} || 50000;
 my @plugs = CIF::Archive->plugins('datatype');
 my $sf = $cfg->param(-block  => 'cif_feeds')->{'severity_feeds'};
 my $cf = $cfg->param(-block => 'cif_feeds')->{'confidence_feeds'};
+my $disabled_feeds = $cfg->param(-block => 'cif_feeds')->{'disabled_feeds'};
 
 $SIG{'INT'} = 'cleanup';
-#$SIG{__DIE__} = 'cleanup';
+$SIG{__DIE__} = 'cleanup';
 
 sub cleanup {
-    print "\n\nCaught Interrupt (^C), Aborting\n";
+    my $msg = shift;
+    if($msg){   
+        print $msg."\n";
+    } else {
+        print "\n\nCaught Interrupt (^C), Aborting\n";
+    }
     remove_lock();
     exit(1);
 }
@@ -95,6 +103,17 @@ if(ref($cf) eq 'ARRAY'){
 }
 
 @plugs = grep(!/(Feed|Analytic)/,@plugs);
+if($disabled_feeds){    
+    if(ref($disabled_feeds) eq 'ARRAY'){
+        foreach(@{$disabled_feeds}){
+            my $f = ucfirst($_);
+            @plugs = grep(!/$f$/,@plugs);
+        }
+    } else {
+        my $f = ucfirst($disabled_feeds);
+        @plugs = grep(!/$f$/,@plugs);
+    }
+}
 if($specific){
     $specific = ucfirst($specific);
     @plugs = grep(/$specific$/,@plugs);
@@ -115,40 +134,65 @@ if($opts{'h'}){
 
 my %map;
 my @feeds;
+
+## TODO -- re-write this 
 sub usage {
     my $usage_feeds = join("\n\t",@feeds);
     return <<EOF;
 Usage: perl $0 -s medium -f infrastructure/botnet
     -h  --help:         this meessage
-    -c  --config:       specify config file, default: $config
-    -f  --feed:         feed to pull, comma seperated, default:
-
-        $usage_feeds
 
     -s  --severity:     feed severity (low|medium|high), default: $severity
-    -C  --confidence:   minimal confidence (0.00 - 100.0), default: $confidence
+    -c  --confidence:   minimal confidence (0.00 - 100.0), default: $confidence
     -r  --restriction:  feed restriction (default|public|need-to-know|private), default: $restriction
     -m  --maxrecords:   max feed records, default: $maxrecords
-    -d  --maxdays:      max days to go back in feed search, default: $maxdays
-
+    -D  --maxdays:      max days to go back in feed search, default: $maxdays
+    -T  --throttle:     throttle the feed generation (low|medium|high), default: $throttle
+    -S  --specific:     generate a specific feed (eg: infrastructure, domain, etc)
+    -C  --config:       specify an alternate config location, default $config
+    -d  --debug
+    -M  --mutex:        specify a different lockfile location, default: $mutex
+    -L  --lastfeeds:    specify how many feeds to keep in the archive, default: $last_feeds
 
 Examples:
-    \$> perl $0 -f infrastructure
-    \$> perl $0 -f infrastructure/botnet -s low
-    \$> perl $0 -f domain/malware -D
 
 EOF
 }
 
-my %sev = (
-    'high'      => 3,
-    'medium'    => 2,
-    'low'       => 1,
-);
 my $dt = DateTime->from_epoch(epoch => time());
 $dt = $dt->ymd().'T'.$dt->hms().'Z';
 
-foreach (@plugs){
+my $threads = $opts{'t'} || CIF::Utils::throttle($throttle);
+my $batches = CIF::Utils::split_batches($threads,\@plugs);
+if(scalar @{$batches} == 1){
+    process($batches);
+} else {
+    foreach (@{$batches}){
+        my $t = threads->create('process',$_);
+    }
+    while(threads->list()){
+        my @joinable = threads->list(threads::joinable);
+        unless($#joinable > -1){
+            sleep(1);
+            next();
+        }
+        foreach(@joinable){
+            $_->join();
+        }
+    }
+}
+
+sub process {
+    my $p = shift;
+
+    foreach (@{$p}){
+        generate_feed($_);
+    }
+}    
+
+sub generate_feed {
+    my $plug = shift;
+
     my $start = time();
 
     _debug('processing: '.$_);
@@ -244,7 +288,6 @@ foreach (@plugs){
             }
         }
     }
-        
     ## TODO -- if $id is < than most recent feed (of this type), we need to re-insert this as a new feed (or delete the old feed)
     _profile('finished',$start);
 }
