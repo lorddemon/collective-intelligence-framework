@@ -53,7 +53,19 @@ my $mutex       = $opts{'M'} || $config->{'mutex'} || '/tmp/cif_analytic.lock';
 my $admin       = $opts{'A'} || $config->{'admin'} || 'root';
 
 die usage() if($opts{'h'});
-$SIG{'INT'} = 'cleanup';
+
+$SIG{__DIE__} = 'cleanup';
+
+sub cleanup {
+    my $msg = shift;
+    if($msg){
+        print $msg."\n";
+    } else {
+        print "\n\nCaught Interrupt (^C), Aborting\n";
+    }
+    remove_lock();
+    exit(1);
+}
 
 sub log_error {
     my $msg = shift;
@@ -87,12 +99,6 @@ sub mail_log {
         Data    => $msg,
     );
     $m->send();
-}
-
-sub cleanup {
-    print "\n\nCaught Interrupt (^C), Aborting\n" if($debug);
-    remove_lock();
-    exit(-1);
 }
 
 sub remove_lock {

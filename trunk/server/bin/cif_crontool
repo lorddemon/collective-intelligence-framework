@@ -42,10 +42,16 @@ my $first_run = $opts{'f'};
 my $debug = $opts{'d'};
 my $mutex = $opts{'L'} || '/tmp/cif_crontool.lock.'.$period;
 
-$SIG{'INT'} = 'cleanup';
+$SIG{__DIE__} = 'cleanup';
+
 sub cleanup {
-    print "\n\nCaught Interrupt (^C), Aborting\n";
-    system('rm '.$mutex) unless($opts{'h'});
+    my $msg = shift;
+    if($msg){
+        print $msg."\n";
+    } else {
+        print "\n\nCaught Interrupt (^C), Aborting\n";
+    }
+    remove_lock();
     exit(1);
 }
 
