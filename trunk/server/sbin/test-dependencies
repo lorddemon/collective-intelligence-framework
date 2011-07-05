@@ -116,7 +116,7 @@ File::Spec 0.8
 JSON 2.07
 MIME::Base64 3.06
 MIME::Lite 0.13
-Module::Pluggable 3.6
+Module::Pluggable 3.8
 Net::Abuse::Utils 0.10
 Net::CIDR 0.13
 Encode 2.23
