@@ -5,9 +5,33 @@ this guide shows how to remove 'beta2' code from your host
 
 This set of steps should be done before you install any Beta3 code.
 
-= Exporting your old data =
+= Before you begin =
 
- * INSERT perl code here to export
+ * Stop apache2
+{{{
+$ sudo /etc/init.d/apache2 stop
+}}}
+ * Rename the old database
+{{{
+$ psql -U postgres -d postgres -c 'ALTER DATABASE cif RENAME TO cif_beta2'
+}}}
+ * Drop the index tables (this won't kill off any raw data stored in the message tables)
+{{{
+#!/bin/bash
+
+TABLES='url infrastructure feed email domain malware'
+
+echo "Dropping Index Tables"
+for TABLE in $TABLES; do
+    echo "DROPPING Table $TABLE"
+    psql -U postgres -d cif_beta2 -c "DROP TABLE IF EXISTS $TABLE CASCADE"
+done
+}}}
+ * if you don't have a ton of space allocated for the new database and the old database to run in parallel (this might take a while)
+{{{
+psql -U postgres -d cif_beta2 -c "VACUUM FULL"
+}}}
+= Exporting your old data =
 
 = Removal of Perl Modules =
 
