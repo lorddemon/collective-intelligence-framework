@@ -18,8 +18,6 @@ sub process {
     return unless($data->{'type'} && $data->{'type'} eq 'A'); 
     $addr = lc($addr);
     return unless($addr =~ /[a-z0-9.-]+\.[a-z]{2,5}$/);
-    my $dt = DateTime::Format::DateParse->parse_datetime($data->{'detecttime'});
-    return unless((time() - $dt->epoch()) < (3*84600));
 
     require Net::DNS::Resolver;
     my $r = Net::DNS::Resolver->new(recursive => 0);

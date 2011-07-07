@@ -124,15 +124,17 @@ sub insert {
 
     my $uuid = $info->{'uuid'};
 
-    my $id = eval { $self->SUPER::insert({
-        uuid        => $uuid,
-        address     => $address,
-        confidence  => $info->{'confidence'},
-        source      => $info->{'source'},
-        severity    => $info->{'severity'} || 'null',
-        restriction => $info->{'restriction'} || 'private',
-        detecttime  => $info->{'detecttime'},
-    }) };
+    my $id = eval {
+        $self->SUPER::insert({
+            uuid        => $uuid,
+            address     => $address,
+            confidence  => $info->{'confidence'},
+            source      => $info->{'source'},
+            severity    => $info->{'severity'} || 'null',
+            restriction => $info->{'restriction'} || 'private',
+            detecttime  => $info->{'detecttime'},
+        });
+    };
     if($@){
         return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
         $id = CIF::Archive->retrieve(uuid => $uuid);
