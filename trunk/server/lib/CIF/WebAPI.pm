@@ -34,7 +34,6 @@ sub map_restrictions {
         foreach my $r (keys %m){
             $res = $m{$r} if(lc($res) eq lc($r));
         }
-        warn Dumper(@feed);
         foreach (@feed){
             my $r = lc($_->{'Incident'}->{'restriction'});
             my $ar = lc($_->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'});

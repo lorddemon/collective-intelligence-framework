@@ -2,7 +2,7 @@ package CIF::FeedParser::ParseXml;
 
 use strict;
 use warnings;
-use XML::LibXML;
+require XML::LibXML;
 
 sub parse {
     my $f = shift;
