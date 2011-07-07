@@ -91,7 +91,9 @@ sub insert {
     $info->{'uuid'} = genMessageUUID($source,$msg);
     $info->{'data'} = $msg;
 
+    local $@;
     my $id = eval {
+        local $SIG{__DIE__};
         $self->SUPER::insert({
             uuid        => $info->{'uuid'},
             format      => $info->{'format'},
@@ -99,7 +101,7 @@ sub insert {
             data        => $info->{'data'},
             restriction => $info->{'restriction'} || 'private',
             source      => $info->{'source'} || 'unknown',
-        })
+        });
     };
     if($@){
         return($@,undef) unless($@ =~ /duplicate key value violates unique constraint/);
@@ -109,7 +111,14 @@ sub insert {
     delete($info->{'format'});
     # now do the plugin insert
     foreach my $p (@dt_plugs){
-        my ($did,$err) = $p->insert($info);
+        my ($did,$err) = eval {
+            local $SIG{__DIE__};
+            $p->insert($info);
+        };
+        if($@ && $@ !~ /duplicate key value violates/){
+            $id->delete();
+            return($@,undef);
+        }
         if($err){
             warn $err;
             $id->delete();

@@ -42,7 +42,9 @@ my $first_run = $opts{'f'};
 my $debug = $opts{'d'};
 my $mutex = $opts{'L'} || '/tmp/cif_crontool.lock.'.$period;
 
+
 $SIG{__DIE__} = 'cleanup';
+$SIG{'INT'} = 'cleanup';
 
 sub cleanup {
     my $msg = shift;
