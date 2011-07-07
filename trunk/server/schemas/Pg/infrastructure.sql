@@ -47,10 +47,10 @@ ALTER TABLE infrastructure_whitelist ADD UNIQUE(uuid,address);
 -- infrastructure_scan
 --
 
-CREATE TABLE infrastructure_scanning () INHERITS (infrastructure);
-ALTER TABLE infrastructure_scanning ADD PRIMARY KEY (id);
-ALTER TABLE infrastructure_scanning ADD CONSTRAINT infrastructure_scanning_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
-ALTER TABLE infrastructure_scanning ADD UNIQUE(uuid,address);
+CREATE TABLE infrastructure_scan () INHERITS (infrastructure);
+ALTER TABLE infrastructure_scan ADD PRIMARY KEY (id);
+ALTER TABLE infrastructure_scan ADD CONSTRAINT infrastructure_scan_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
+ALTER TABLE infrastructure_scan ADD UNIQUE(uuid,address);
 
 --
 -- infrastructure_spam 
