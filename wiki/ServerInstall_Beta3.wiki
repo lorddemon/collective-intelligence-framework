@@ -81,12 +81,15 @@ $ time /opt/cif/bin/cif_feeds -D
 }}}
  # log into the cif user (sudo su - cif) and modify it's cron tab (crontab -e)
 {{{
+# set the path
+PATH=/bin:/usr/local/bin:/opt/cif/bin
+
 # run analytics
 */5 * * * * /opt/cif/bin/cif_analytics &> /dev/null
 
 # pull feed data
 05     *       * * * /opt/cif/bin/cif_crontool -p hourly -T medium &> /dev/null
-45     00      * * * /opt/cif/bin/cif_crontool -p daily -T low &> /dev/null
+30     00      * * * /opt/cif/bin/cif_crontool -p daily -T low &> /dev/null
 
 # update the feeds
 00,15,30,45     *       * * * /opt/cif/bin/cif_feeds &> /dev/null
