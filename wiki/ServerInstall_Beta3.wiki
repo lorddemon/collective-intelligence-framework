@@ -66,6 +66,15 @@ $ time /opt/cif/bin/cif_crontool -f -d
 {{{
 $ time /opt/cif/bin/cif_analytics -d
 }}}
+ # configure your ~/.cif for generating feeds
+{{{
+[cif_feeds]
+maxrecords = 1000000
+severity_feeds = high,medium
+confidence_feeds = 40,85,95
+max_days = 2
+disabled_feeds = hash
+}}}
  # when that's finished, run your first batch of feeds
 {{{
 $ time /opt/cif/bin/cif_feeds -D
