@@ -37,7 +37,7 @@ my %opts;
 getopts('afdT:C:c:p:c:hL',\%opts);
 my $period = $opts{'p'} || 'hourly';
 my $throttle = $opts{'T'} || 'medium';
-my $cron_tool = $opts{'C'} || 'cif_feedparser';
+my $cron_tool = $opts{'C'} || '/opt/cif/bin/cif_feedparser';
 my $first_run = $opts{'f'};
 my $debug = $opts{'d'};
 my $mutex = $opts{'L'} || '/tmp/cif_crontool.lock.'.$period;
