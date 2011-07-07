@@ -43,9 +43,10 @@ sub process {
     warn 'getting: '.$addr if($::debug);
     my $r;
     ## TODO -- fix this
+    ## https://rt.perl.org/rt3//Public/Bug/Display.html?id=16807
     eval { 
         local $SIG{ALRM} = sub { die "alarm\n" };
-        alarm 1;
+        alarm 10;
         $r = $ua->get($config->{'url'}.$addr);
         alarm 0;
     };
@@ -89,7 +90,7 @@ sub process {
             confidence      => 85,
         });
         warn $err if($err);
-        warn $id if $::debug;
+        warn $id->uuid() if $::debug;
     }
 }
 1;
