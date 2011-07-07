@@ -107,7 +107,7 @@ $deps{'CORE'} = [ text_to_hash( << '.') ];
 Config::Simple 4.59
 Class::DBI 3.0.17
 Compress::Zlib 2.008
-DateTime 0.44
+DateTime 0.42
 DateTime::Format::DateParse 0.04
 Digest::MD5 2.27
 Digest::SHA 2.10
@@ -118,7 +118,7 @@ MIME::Base64 3.06
 MIME::Lite 0.13
 Module::Pluggable 3.8
 Net::Abuse::Utils 0.10
-Net::CIDR 0.13
+Net::CIDR 0.11
 Encode 2.23
 Net::DNS::Resolver 737
 OSSP::uuid 1.0501
@@ -130,12 +130,13 @@ Apache2::REST 0.06
 URI::Escape 1.56
 XML::IODEF 0.11
 XML::LibXML 1.70
-XML::RSS 1.44
+XML::RSS 1.33
 File::Type 0.22
 CIF::Client 0.01
 LWP::Simple 5.810
 Linux::Cpuinfo 1.7
 LWP::UserAgent 5.813
+VT::API 0.12
 .
 
 $deps{'POSTGRESQL'} = [ text_to_hash( << '.') ];
