@@ -137,6 +137,8 @@ LWP::Simple 5.810
 Linux::Cpuinfo 1.7
 LWP::UserAgent 5.813
 VT::API 0.12
+IO::Socket::INET6 2.54
+Class::Trigger 0.14
 .
 
 $deps{'POSTGRESQL'} = [ text_to_hash( << '.') ];
