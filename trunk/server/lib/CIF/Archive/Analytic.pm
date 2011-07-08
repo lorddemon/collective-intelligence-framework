@@ -16,17 +16,24 @@ sub start_run {
     my $self = shift;
     my $info = shift;
 
-    my $ret = CIF::Archive::DataType::Plugin::Analytic->next_run($info);
-    return unless($ret);
-    my $startid = $ret->{'startid'};
-    my $endid = $ret->{'endid'};
-
+    my $ret;
+    my @recs;
     require CIF::Archive;
-    my @recs = CIF::Archive->retrieve_from_sql(qq{
-        id >= $startid
-        AND id <= $endid
-        ORDER BY id ASC
-    });
+    do {
+        $ret = CIF::Archive::DataType::Plugin::Analytic->next_run($info);
+        return unless($ret);
+        my $startid = $ret->{'startid'};
+        my $endid = $ret->{'endid'};
+
+        @recs = CIF::Archive->retrieve_from_sql(qq{
+            id >= $startid
+            AND id <= $endid
+            ORDER BY id ASC
+        });
+        unless(@recs && $::debug){
+            warn 'no recs between id '.$startid.' and '.$endid;
+        }
+    } until(@recs);
     @recs = map { $_->{'data'} = $_->data_hash } @recs;
     my $f;
     @{$f->{'data'}->{'feed'}->{'entry'}} = @recs;

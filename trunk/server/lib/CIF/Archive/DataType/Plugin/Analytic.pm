@@ -75,7 +75,7 @@ sub next_run {
 
     if($#recs > -1){
         # if our last value was an anlaytics run return
-        return if($max_uuid eq $recs[0]->uuid->uuid()); 
+        return if($recs[0]->endid() == $recs[0]->startid() && $recs[0]->uuid->uuid() eq $max_uuid);
         $startid = $recs[0]->endid() + 1;
     } else {
         $startid = $min_val->id();

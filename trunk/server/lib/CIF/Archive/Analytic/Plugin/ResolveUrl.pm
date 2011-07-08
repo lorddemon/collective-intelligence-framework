@@ -50,7 +50,7 @@ sub process {
         detecttime                  => $data->{'detecttime'},
     });
     warn $err if($err);
-    warn $id if($::debug);
+    warn $id->uuid() if($::debug);
 }
 
 1;
