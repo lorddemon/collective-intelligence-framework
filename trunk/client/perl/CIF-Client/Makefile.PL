@@ -10,10 +10,11 @@ requires    'Compress::Zlib'    => '2.008';
 requires    'Config::Simple'    => '4.58';
 requires    'Snort::Rule'       => '1.07';
 requires    'Class::Accessor'   => '0.31';
-requires    'Digest::MD5'        => '2.36';
-requires    'Digest::SHA1'       => '2.11';
-requires    'Module::Pluggable' => '3.6';
-requires    'Regexp::Common::net'   => '2.108';
+requires    'Digest::MD5'       => '2.36';
+requires    'Digest::SHA1'      => '2.11';
+requires    'Module::Pluggable'             => '3.6';
+requires    'Regexp::Common::net'           => '2.108';
+requires    'Regexp::Common::net::CIDR'     => '0.02';
 
 install_script 'cif';
 
