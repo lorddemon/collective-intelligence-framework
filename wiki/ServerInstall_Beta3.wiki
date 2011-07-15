@@ -58,6 +58,9 @@ if [ -d "/opt/cif/bin" ]; then
     PATH="/opt/cif/bin:$PATH"
 fi
 }}}
+ # install the apache2 config
+  # [Beta3Apache2Debian Debian]
+
  # perform the "first run" to prime the database with it's initial intel (should take about 30min).
 {{{
 $ time /opt/cif/bin/cif_crontool -f -d
