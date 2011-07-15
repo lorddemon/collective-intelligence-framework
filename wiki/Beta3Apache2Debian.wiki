@@ -1,0 +1,5 @@
+ # copy the config, enable the site
+{{{
+$ sudo cp example_api.conf /etc/apache2/sites-available/api
+$ sudo a2ensite api
+}}
