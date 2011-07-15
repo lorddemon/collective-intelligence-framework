@@ -3,3 +3,10 @@
 $ sudo cp example_api.conf /etc/apache2/sites-available/api
 $ sudo a2ensite api
 }}
+ # add this line to your default-ssl site (or default if you're not using TLS)
+{{{
+<IfModule mod_ssl.c>
+<VirtualHost _default_:443>
++      PerlRequire /opt/cif/bin/webapi.pl
+....
+}}}
