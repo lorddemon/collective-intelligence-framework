@@ -89,7 +89,7 @@ $ time /opt/cif/bin/cif_crontool -f -d
 }}}
  # after this starts, run your first batch of analytics (should take about 3 hours)
 {{{
-$ time /opt/cif/bin/cif_analytics -d
+$ time /opt/cif/bin/cif_analytic -d
 }}}
  # configure your ~/.cif for generating feeds
 {{{
