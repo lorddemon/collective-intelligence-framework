@@ -24,10 +24,15 @@ sub hash_simple {
         }
     }
 
+    my $portlist = $hash->{'EventData'}->{'Flow'}->{'System'}->{'Service'}->{'Portlist'};
+    my $protocol = $hash->{'EventData'}->{'Flow'}->{'System'}->{'Service'}->{'ip_protocol'};
+
     return({
-        rdata   => $rdata,
-        type    => $type,
-        address => $address,
+        rdata       => $rdata,
+        type        => $type,
+        address     => $address,
+        portlist    => $portlist,
+        protocol    => $protocol,
     });
 }
 1;
