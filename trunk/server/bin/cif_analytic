@@ -35,21 +35,22 @@ use threads::shared;
 require CIF::Client;
 
 my %opts;
-getopts('m:b:hdT:c:D:t:a:G:', \%opts);
+getopts('z:m:b:hdT:c:D:t:a:G:', \%opts);
 our $debug = $opts{'d'};
 
 my $config = $opts{'c'} || $ENV{'HOME'}.'/.cif';
 $config = Config::Simple->new($config) || die 'missing config';
 my $cfg = $config->param(-block => 'cif_analytic');
 
-my $max         = $opts{'m'} || $config->{'max_batch'} || 100;
-my $throttle    = $opts{'T'} || $config->{'throttle'} || 'low';
-my $max_backoff = $opts{'b'} || $config->{'backoff'} || 30;
-my $detecttime  = $opts{'D'} || $config->{'detecttime'};
+my $max         = $opts{'m'} || $cfg->{'max_batch'} || 100;
+my $throttle    = $opts{'T'} || $cfg->{'throttle'} || 'low';
+my $max_backoff = $opts{'b'} || $cfg->{'backoff'} || 30;
+my $detecttime  = $opts{'D'} || $cfg->{'detecttime'};
 my $goback      = $opts{'G'} || 60;
 my $threads     = $opts{'t'};
-my $mutex       = $opts{'M'} || $config->{'mutex'} || '/tmp/cif_analytic.lock';
-my $admin       = $opts{'A'} || $config->{'admin'} || 'root';
+my $mutex       = $opts{'M'} || $cfg->{'mutex'} || '/tmp/cif_analytic.lock';
+my $admin       = $opts{'A'} || $cfg->{'admin'} || 'root';
+my $disabled    = $opts{'z'} || $cfg->{'disabled'};
 
 die usage() if($opts{'h'});
 
@@ -198,6 +199,30 @@ sub _process {
     require CIF::Archive;
     require CIF::Archive::Analytic;
     my @plugs = CIF::Archive::Analytic->plugins();
+    if($disabled){
+        if(ref($disabled) eq 'ARRAY'){
+            foreach my $d (@$disabled){
+                $d = lc($d);
+                foreach my $p (@plugs){
+                    my $pp = lc($p);
+                    if($pp =~ /$d$/){
+                        @plugs = grep(!/$p/,@plugs);
+                    }
+                }
+            }
+        } else {
+            foreach my $p (@plugs){
+                my $pp = lc($p);
+                $disabled = lc($disabled);
+                if($pp =~ /$disabled$/){
+                    @plugs = grep(!/$p/,@plugs);
+                }
+            }
+        }
+    }
+
+    die Dumper(@plugs);
+
     foreach(@$recs){
         foreach my $p (@plugs){
             my $r = eval { $p->process($_,$config) };
