@@ -37,23 +37,11 @@ sub process {
     require LWP::UserAgent;
     require XML::Simple;
     my $ua = LWP::UserAgent->new();
-    $ua->timeout($config->{'timeout'} || 60);
     $ua->credentials($config->{'site'},$config->{'realm'},$config->{'user'},$config->{'pass'});
 
     warn 'getting: '.$addr if($::debug);
     my $r;
-    ## TODO -- fix this
-    ## https://rt.perl.org/rt3//Public/Bug/Display.html?id=16807
-    eval { 
-        local $SIG{ALRM} = sub { die "alarm\n" };
-        alarm 10;
-        $r = $ua->get($config->{'url'}.$addr);
-        alarm 0;
-    };
-    if($@){
-        warn $@ if($::debug);
-        return;
-    }
+    $r = $ua->get($config->{'url'}.$addr);
     return unless($r);
     warn 'processing: '.$addr if($::debug);
     my $content = $r->decoded_content();

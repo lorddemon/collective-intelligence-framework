@@ -93,15 +93,23 @@ unless(defined($ret) && $ret == 0){
 
 my @severity_feeds;
 my @confidence_feeds;
-if(ref($sf) eq 'ARRAY'){
-    @severity_feeds = @{$sf};
+if($severity){
+    push(@severity_feeds,$severity);
 } else {
-    push(@severity_feeds,$sf);
+    if(ref($sf) eq 'ARRAY'){
+        @severity_feeds = @{$sf};
+    } else {
+        push(@severity_feeds,$sf);
+    }
 }
-if(ref($cf) eq 'ARRAY'){
-    @confidence_feeds = @{$cf};
+if($confidence){
+    push(@confidence_feeds,$confidence);
 } else {
-    push(@confidence_feeds,$cf);
+    if(ref($cf) eq 'ARRAY'){
+        @confidence_feeds = @{$cf};
+    } else {
+        push(@confidence_feeds,$cf);
+    }
 }
 
 @plugs = grep(!/(Feed|Analytic)/,@plugs);
@@ -141,7 +149,7 @@ my @feeds;
 sub usage {
     my $usage_feeds = join("\n\t",@feeds);
     return <<EOF;
-Usage: perl $0 -s medium -f infrastructure/botnet
+Usage: perl $0 -s medium -c 95
     -h  --help:         this meessage
 
     -s  --severity:     feed severity (low|medium|high), default: $severity
@@ -157,6 +165,11 @@ Usage: perl $0 -s medium -f infrastructure/botnet
     -L  --lastfeeds:    specify how many feeds to keep in the archive, default: $last_feeds
 
 Examples:
+
+    cif_feeds -d -S infrastructure
+    cif_feeds -c 40
+    cif_feeds -c 40 -s medium
+    cif_feeds -c 95 -s high -T high
 
 EOF
 }
