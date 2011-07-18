@@ -2,6 +2,7 @@
 this page describes the Beta3 Server Installation
 
 = THIS PAGE UNDER CONSTRUCTION =
+= WE'RE STILL SQUASHING FINAL RELEASE BUGS, TEST AT OWN RISK =
 
 = Preamble =
 These scripts do a lot of dns queries. You're gonna wanna install bind and configure it to use forwarders. Maybe something like google public dns to help mask your queries. Then point your resolv.conf to localhost
