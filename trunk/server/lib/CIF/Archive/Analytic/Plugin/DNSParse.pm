@@ -28,7 +28,7 @@ sub process {
     my $addr = $data->{'address'};
     return unless($addr);
     return unless($data->{'impact'});
-    return if($data->{'confidence'} >= 20 && $data->{'impact'} =~ /whitelist/);
+    return if($data->{'confidence'} && $data->{'confidence'} >= 20 && $data->{'impact'} =~ /whitelist/);
     return unless($data->{'impact'} =~ /search/);
     return unless($addr =~ /^$RE{'net'}{'IPv4'}$/);
 
@@ -45,8 +45,16 @@ sub process {
     return unless($r);
     warn 'processing: '.$addr if($::debug);
     my $content = $r->decoded_content();
-    $content =~ s/[^[:ascii:]]//g;
-    my $xml = XML::Simple::XMLin($r->decoded_content());
+    my $xml;
+    $xml = eval {
+        XML::Simple::XMLin($r->decoded_content());
+    };
+    if($@ && $::debug){
+        warn $content;
+        warn $@;
+        warn $addr;
+    }
+    return if($@);
     warn 'xml done' if($::debug);
     my $res = $xml->{'results'}->{'result'};
     return unless($res);
