@@ -45,6 +45,63 @@ sub map_restrictions {
     return ($res,@feed);
 }
 
+sub POST {
+    my ($self,$req,$resp) = @_;
+    my $buffer;
+    my $len = $req->headers_in->{'content-length'};
+    return Apache2::Const::FORBIDDEN unless($len > 0);
+    $req->read($buffer,$req->headers_in->{'content-length'});
+    my $json;
+    $json = eval {
+        JSON::from_json($buffer);
+    };
+    if($@){
+        ## TODO -- add well-formed error msg here
+        return Apache2::Const::FORBIDDEN;
+    }
+    my @recs;
+    if(ref($json) eq 'ARRAY'){
+        @recs = @$json;
+    } else {
+        push(@recs,$json);
+    }
+    my $source = $req->param('apikey');
+
+    foreach (@recs){
+        my $impact      = $_->{'impact'};
+        my $description = $_->{'description'};
+    
+        my $err;
+        unless($impact){
+            $err = 'missing impact';
+        }
+        unless($description){
+            $err = 'missing description';
+        }
+        if($err){   
+            $resp->{'message'} = $err;
+            return Apache2::Const::FORBIDDEN;
+        }
+    }
+    require CIF::Archive;
+
+    my @ids;
+    foreach (@recs){
+        my ($err,$id) = CIF::Archive->insert($_);
+        if($err){
+            foreach my $x (@ids){
+                $x->delete();
+            }
+            $resp->{'message'} = $err;
+            return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+        }
+        push(@ids,$id->uuid());
+    }
+    
+    $resp->{'data'} = \@ids;
+    return Apache2::Const::HTTP_CREATED;
+}
+
 sub GET {
     my ($self,$request,$response) = @_;
 
