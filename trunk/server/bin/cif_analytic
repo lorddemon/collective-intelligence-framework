@@ -221,8 +221,6 @@ sub _process {
         }
     }
 
-    die Dumper(@plugs);
-
     foreach(@$recs){
         foreach my $p (@plugs){
             my $r = eval { $p->process($_,$config) };
