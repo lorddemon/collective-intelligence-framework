@@ -58,7 +58,7 @@ $SIG{__DIE__} = \&cleanup;
 
 # work-around SIGALRM issue
 # http://www.nntp.perl.org/group/perl.ithreads/2003/10/msg762.html
-$SIG{ALRM} = {};
+$SIG{ALRM} = sub { warn "Alarm clock\n" };
 
 sub cleanup {
     my $msg = shift;

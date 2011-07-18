@@ -90,7 +90,7 @@ realclean: clean
 reconf:
 	autoreconf -vf
 
-SNAPSHOT=cif_0.01_01
+SNAPSHOT=cif_0.01_04
 snapshot: build-snapshot
 
 build-snapshot:
