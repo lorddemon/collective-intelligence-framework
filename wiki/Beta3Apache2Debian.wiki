@@ -11,3 +11,4 @@ $ sudo a2enmod apreq
 +      PerlRequire /opt/cif/bin/webapi.pl
 ....
 }}}
+ # add the www-data user to the cif group (or whatever group you've created for this app)
