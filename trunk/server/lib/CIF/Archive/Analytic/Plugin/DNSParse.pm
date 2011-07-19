@@ -35,7 +35,6 @@ sub process {
 
     ## TODO -- whitelist?
     require LWP::UserAgent;
-    require XML::Simple;
     my $ua = LWP::UserAgent->new();
     $ua->credentials($config->{'site'},$config->{'realm'},$config->{'user'},$config->{'pass'});
 
@@ -45,18 +44,14 @@ sub process {
     return unless($r);
     warn 'processing: '.$addr if($::debug);
     my $content = $r->decoded_content();
-    my $xml;
-    $xml = eval {
-        XML::Simple::XMLin($r->decoded_content());
+    $content =~ s/[\n|\s]//g;
+    $content =~ s/[^[:ascii:]]//g;
+    require JSON;
+    my $res;
+    $res = eval {
+        JSON::from_json($content);
     };
-    if($@ && $::debug){
-        warn $content;
-        warn $@;
-        warn $addr;
-    }
     return if($@);
-    warn 'xml done' if($::debug);
-    my $res = $xml->{'results'}->{'result'};
     return unless($res);
 
     my @rdata;
@@ -65,7 +60,8 @@ sub process {
     } else {
         @rdata = @$res;
     }
-    warn 'processing: '.$#rdata.' recs';
+    return if($#rdata == -1);
+    warn 'processing: '.$#rdata.' recs' if($::debug);
 
     @rdata = sort { $b->{'lastseen'} cmp $a->{'lastseen'} } @rdata;
     my $max = $config->{'max'} || 50;
