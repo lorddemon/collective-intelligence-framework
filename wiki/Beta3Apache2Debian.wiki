@@ -2,6 +2,7 @@
 {{{
 $ sudo cp api.conf /etc/apache2/sites-available/api
 $ sudo a2ensite api
+$ sudo a2enmod apreq
 }}}
  # add this line to your default-ssl site (or default if you're not using TLS)
 {{{
