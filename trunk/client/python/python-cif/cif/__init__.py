@@ -10,7 +10,7 @@ import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
 class Client(object):
-    def __init__(self, host, apikey, fields=None, severity=None, restriction=None, nolog=None, **args):
+    def __init__(self, host, apikey, fields=None, severity=None, restriction=None, nolog=None, confidence=None, **args):
         self.host = host
         self.apikey = apikey
 
@@ -19,6 +19,7 @@ class Client(object):
         self.severity = severity
         self.restriction = restriction
         self.nolog = nolog
+        self.confidence = confidence
 
     def _get_fields(self):
         return self._fields
@@ -63,11 +64,11 @@ class Client(object):
         """ check to see if we've got a feed object, auto-de(code/compress) it """
         feed = ret['data']
 
-        if not feed.get('feed'):
+        if 'feed' not in feed:
             return
 
         entry = feed['feed']['entry']
-        if type(entry[0]) == str:
+        if isinstance(entry[0],basestring):
             jstring = zlib.decompress(b64decode(entry[0]))
             entry = json.loads(jstring)
             feed['feed']['entry'] = entry
@@ -88,29 +89,25 @@ class Client(object):
             ret['description'] = incident['Description']
             ret['confidence'] = incident['Assessment']['Confidence']['content']
 
-            if(incident['EventData'].has_key('AdditionalData')):
+            if 'AdditionalData' in incident['EventData']:
                 data = incident['EventData']['AdditionalData']
                 dlist = [] 
-                if(type(data) == dict):
+                if(isinstance(data,dict)):
                     dlist.extend([data])
                 else:
                     dlist = data
 
                 for d in dlist:
-                    if d['meaning'] == 'malware_md5':
-                        ret['malware_md5'] = d['content']
-                    if d['meaning'] == 'malware_sha1':
-                        ret['malware_md5'] = d['content']
-                    if d['meaning'] == 'md5':
-                        ret['md5'] = d['content']
-                    if d['meaning'] == 'sha1':
-                        ret['sha1'] = d['content']
+                    if 'meaning' in d:
+                        meaning = d['meaning']
+                        if meaning in ('malware_md5','malware_sha1','md5','sha1'):
+                            ret[meaning] = d['content']
 
-            if(incident.has_key('RelatedActvity')):
+            if 'RelatedActivity' in incident:
                 ret['relatedid'] = incident['RelatedActivity']['IncidentID']
 
-            if(incident.has_key('AlternativeID')):
-                if incident['AlternativeID']['IncidentID'].has_key('content'):
+            if 'AlternativeID' in incident:
+                if 'content' in incident['AlternativeID']['IncidentID']:
                     ret['alternativeid'] = incident['AlternativeID']['IncidentID']['content']
                     ret['alternativeid_restriction'] = incident['AlternativeID']['IncidentID']['restriction']
                 else:
@@ -119,23 +116,22 @@ class Client(object):
 
             ret['impact'] = impact
             ret['severity'] = None
-            if(type(impact) == dict):
+            if(isinstance(impact,dict)):
                 severity = incident['Assessment']['Impact']['severity']
                 impact = impact['content']
                 ret['severity'] = severity
                 ret['impact'] = impact
 
-            if(incident['EventData'].has_key('Flow')):
+            if 'Flow' in incident['EventData']:
                 system = incident['EventData']['Flow']['System']
                 ret['address'] = system['Node']['Address']
-                if(type(ret['address']) == dict):
+                if(isinstance(ret['address'],dict)):
                     ret['address'] = ret['address']['content']
-                if(system.has_key('Service')):
+                if 'Service' in system:
                     ret['protocol'] = system['Service']['ip_protocol']
                     ret['portlist'] = system['Service']['Portlist']
 
             return ret
-                
 
     def table(self,feed):
         """
@@ -165,25 +161,19 @@ class Client(object):
                     x = self.simple(i['Incident'])
                     dlist.extend(x)
 
+        pp.pprint(dlist)
+
         if self.fields:
             cols = self.fields
         else:
             cols = ['restriction','severity']
+
             if dlist[0].has_key('address'):
                 cols.extend(['address','protocol','portlist'])
 
-            if dlist[0].has_key('md5'):
-                cols.extend(['md5'])
-
-            if dlist[0].has_key('sha1'):
-                cols.extend('sha1')
-
-            if dlist[0].has_key('malware_md5'):
-                cols.extend(['malware_md5'])
-
-            if dlist[0].has_key('malware_sha1'):
-                cols.extend(['malware_sha1'])
-
+            for k in 'md5', 'sha1', 'malware_md5', 'malware_sha1':
+                if k in dlist[0]:
+                    cols.append(k)
 
             cols.extend(['detecttime','description','alternativeid_restriction','alternativeid'])
         
