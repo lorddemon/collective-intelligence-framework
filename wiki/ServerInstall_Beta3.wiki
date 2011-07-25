@@ -120,3 +120,18 @@ PATH=/bin:/usr/local/bin:/opt/cif/bin
 # update the feeds
 00,15,30,45     *       * * * /opt/cif/bin/cif_feeds &> /dev/null
 }}}
+ # or if you want to setup logging (as an example)
+{{{
+# set the path
+PATH=/bin:/usr/local/bin:/opt/cif/bin
+
+# run analytics
+*/5 * * * * /opt/cif/bin/cif_analytic >> /home/cif/analytics.log 2>&1
+
+# pull feed data
+05     *       * * * /opt/cif/bin/cif_crontool -p hourly -T medium >> /home/cif/crontool_hourly.log 2>&1
+30     00      * * * /opt/cif/bin/cif_crontool -p daily -T low >> /home/cif/crontool_daily.log 2>&1
+
+# update the feeds
+00,15,30,45     *       * * * /opt/cif/bin/cif_feeds >> /home/cif/feeds.log 2>&1
+}}}
