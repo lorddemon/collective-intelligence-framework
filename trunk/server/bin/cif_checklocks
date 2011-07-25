@@ -51,7 +51,7 @@ my $now = time();
 foreach my $cron (@crons){
     my @stats = stat($dir."/".$cron);
     my $ctime = $stats[10];
-    if(($now - $ctime) < $period){
+    if(($now - $ctime) > $period){
         sendmsg('CIF: process possibly hung -- '.$cron) unless(test_sent($cron));
     }
 }
