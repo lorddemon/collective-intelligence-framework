@@ -98,7 +98,7 @@ my @feeds = map { $_->{'config'}.' -- '.$_->{'feed'} } @crons;
 my $f = join("\n",@feeds);
 if($opts{'h'}){
     print usage();
-    die();
+    exit(0);
 }
 sub usage {
     return <<EOF;
