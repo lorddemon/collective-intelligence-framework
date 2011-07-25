@@ -31,9 +31,9 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  # install the CIF::Client (we use some functions in it for the server)
 {{{
 $> sudo perl -MCPAN -e 'install REST::Client, Text::Table, JSON, Module::Pluggable, Config::Simple, Snort::Rule, Class::Accessor, Digest::MD5, Digest::SHA1, Regexp::Common::net,Regexp::Common::net::CIDR'
-$> wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.01_02.tar.gz
-$> tar -zxvf CIF-Client-0.01_02.tar.gz
-$> cd CIF-Client-0.01_02
+$> wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.01_03.tar.gz
+$> tar -zxvf CIF-Client-0.01_03.tar.gz
+$> cd CIF-Client-0.01_03
 $> perl Makefile.PL && make && sudo make install
 }}}
  # create your "cif" user/group
