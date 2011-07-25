@@ -1,0 +1,89 @@
+#!/usr/bin/perl -w
+
+use strict;
+use Data::Dumper;
+use Getopt::Std;
+use DateTime;
+use MIME::Lite;
+
+my %opts;
+getopts('P:hT:d',\%opts);
+
+our $debug  = $opts{'d'};
+my $dir     = $opts{'D'} || '/tmp';
+my $period  = $opts{'P'} || 'hour';
+my $admin   = $opts{'A'} || 'root';
+
+die(usage()) if($opts{'h'});
+
+sub usage {
+    return <<EOF;
+Usage: perl $0
+    
+    -h      --help:     this message
+    -A      --admin:    admin address to send too, default: $admin
+    -P      --period:   delay before a 'lock' is stale, (hour, day), default: $period
+    -D      --dir       default lockfie directory, default: $dir
+    -d      --debug:    enable debugging
+
+EOF
+}
+
+for(lc($period)){
+    if(/hour/){
+        $period = 3600;
+        last;
+    }
+    if(/day/){
+        $period = 84600;
+        last;
+    }
+}
+
+opendir(D,$dir) || die($!);
+my @crons = grep { /^cif_.*\.lock$/ && -f "$dir/$_" } readdir(D);
+closedir(D);
+opendir(D,$dir) || die($!);
+my @checklocks = grep { /^cif_checklocks_/ && -f "$dir/$_" } readdir(D);
+closedir(D);
+
+my $now = time();
+foreach my $cron (@crons){
+    my @stats = stat($dir."/".$cron);
+    my $ctime = $stats[10];
+    if(($now - $ctime) < $period){
+        sendmsg('CIF: process possibly hung -- '.$cron) unless(test_sent($cron));
+    }
+}
+
+foreach my $checklock (@checklocks){
+    my $lf = $checklock;
+    $lf =~ s/^cif_checklocks_//;
+    $lf =~ s/\.error$//;
+    unless(-f $dir.'/'.$lf){
+        system('rm '.$dir.'/'.$checklock);
+        sendmsg('CIF: process '.$lf.' cleared');
+    }
+}
+
+sub sendmsg {
+    my $subject = shift;
+
+    my $m = MIME::Lite->new(
+        To      => $admin,
+        Subject => $subject,
+        Data    => '',
+    );
+    $m->send();
+}
+
+sub test_sent {
+    my $file = shift;
+    if(-e '/tmp/cif_checklocks_'.$file.'.error'){
+        return(1);
+    } else {
+        system('touch /tmp/cif_checklocks_'.$file.'.error');
+        return(0);
+    }
+
+}
