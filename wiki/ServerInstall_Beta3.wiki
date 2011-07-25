@@ -103,7 +103,7 @@ disabled_feeds = hash
 }}}
  # when that's finished, run your first batch of feeds
 {{{
-$ time /opt/cif/bin/cif_feeds -D
+$ time /opt/cif/bin/cif_feeds -d
 }}}
  # log into the cif user (sudo su - cif) and modify it's cron tab (crontab -e)
 {{{
