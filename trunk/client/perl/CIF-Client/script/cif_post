@@ -5,67 +5,88 @@ use strict;
 use Data::Dumper;
 use Getopt::Std;
 use CIF::Client;
-use JSON;
+require JSON;
 
 my %opts;
-getopt('hdq:f:c:', \%opts);
-die(usage()) if($opts{'h'});
+getopt('dhHL:p:f:q:c:s:r:C:', \%opts);
 
-my $format = $opts{'f'} || 'table';
-my $debug = ($opts{'d'}) ? 1 : 0;
-my $c = $opts{'c'} || $ENV{'HOME'}.'/.cif';
-my $ref_url = 'https://example.com/Lookup.html?q=';
+my $query       = $opts{'q'} || shift;
+our $debug       = ($opts{'d'}) ? 1 : 0;
+my $c           = $opts{'C'} || $ENV{'HOME'}.'/.cif';
+my $fields      = $opts{'f'};
+my $severity    = $opts{'s'};
+my $restriction = $opts{'r'};
+my $plugin      = $opts{'p'} || 'table';
+my $max_desc    = $opts{'L'} || 100;
+my $nolog       = $opts{'n'} || 0;
+my $summary     = $opts{'S'};
+my $nomap       = $opts{'N'};
+my $confidence  = $opts{'c'} || 40;
+my $plugs = join(',',CIF::Client::_plugins);
+my $simple_hashes = (defined($opts{'H'})) ? $opts{'H'} : 1;
+
+#die(usage()) unless($query || $opts{'h'});
+
 
 sub usage {
     return <<EOF;
-Usage: perl $0 -q xyz.com -f table
-        -h  --help:                 this message
-        -d  --debug:                debug output
-        -q <string>:                query string (use 'url:<md5|sha1>' for url hash lookups)
+Usage: perl $0 -q xyz.com
+
+    -h  --help:             this message
+    -q  --query:            query string (use 'url\\/<md5|sha1>' for url hash lookups)
+    -s  --severity:         severity (low,medium,high), default: high
+    -p  --plugin:           output plugin ($plugs), default: $plugin
+    -n  --nolog             perform a "silent" query (no log query), default: $nolog
+    -f  --fields:           set default output fields for default table display
+    -S  --summary:          consolidated Text::Table output (default: 1 -- True)
+    -N  --nomap:            don't map restrictions on server (queries only)
+    -c  --confidence:       lowest tolerated confidence (0.00 -- 100.00), default $confidence
+    -H  --simplehashes:     translate the complex json documents to simplified key value pairs, default: $simple_hashes
+
+Queries:
+
+    \$> perl $0 -q url\\/f8e74165fb840026fd0fce1fd7d62f5d0e57e7ac
+    \$> perl $0 -q hut2.ru
+    \$> perl $0 -q hut2.ru,url\\/f8e74165fb840026fd0fce1fd7d62f5d0e57e7ac
+    \$> perl $0 hut2.ru
+
+Feeds:
+    
+    \$> perl $0 -q malware
+    \$> perl $0 -q malware -s low
+    \$> perl $0 -q infrastructure/network -s medium -p snort
+    \$> perl $0 -q domain/malware -p bindzone -c 95 -s medium
+    \$> perl $0 -q domain -s medium -c 40 -p raw -H 0
 
     configuration file ~/.cif should be readable and look something like:
 
-    url=https://example.com:443/api
-    apikey=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    [client]
+    host = https://example.com:443/api
+    apikey = xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    timeout = 60
 
 EOF
 }
-
-open(F,$c) || die('could not read configuration file: '.$c.' '.$!);
-
-my ($apikey,$url);
-while(<F>){
-    my ($o,$v) = split(/=/,$_);
-    $url = $v if(lc($o) eq 'url');
-    $apikey = $v if(lc($o) eq 'apikey');
-}
-$url =~ s/\n//;
-$apikey =~ s/\n//;
-close(F);
-
-my $client = CIF::Client->new({ 
-    host    => $url,
-    timeout => 60,
-    apikey  => $apikey,
+my ($client,$err) = CIF::Client->new({ 
+    config      => $c,
+    fields      => $fields,
+    max_desc    => $max_desc,
+    nolog       => $nolog,
+    simple_hashes => $simple_hashes,
 });
+
+die($err) unless($client);
 
 my $h = {
     address     => 'example.com',
     severity    => 'high',
-    confidence  => '7.7',
+    confidence  => '40',
     description => 'zeus',
+    impact      => 'botnet domain',
 };
-my $json = to_json($h);
-#$client->POST('/infrastructure/malware/submit?apikey='.$apikey,$json);
-$client->POST('/malware?apikey='.$apikey,$json);
+my $json = JSON::to_json($h);
+my $ret = $client->POST('?apikey='.$client->{'apikey'},$json);
+warn $client->responseCode();
+warn $client->responseContent();
 
 
-die('request failed with code: '.$client->responseCode()) unless($client->responseCode == 200);
-
-$json = from_json($client->responseContent());
-unless($json->{'message'}){
-    print $json->{'data'}->{'result'}.' created';
-} else {
-    print $json->{'message'};
-}
-print "\n";

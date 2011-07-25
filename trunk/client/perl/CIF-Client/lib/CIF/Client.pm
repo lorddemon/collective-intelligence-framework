@@ -57,6 +57,7 @@ sub new {
     $self->{'restriction'} = $cfg->{'restriction'};
     $self->{'severity'} = $cfg->{'severity'};
     $self->{'nolog'} = $cfg->{'nolog'};
+    $self->{'restriction'} = $args->{'restriction'} || $cfg->{'restriction'};
     $self->{'simple_hashes'} = $args->{'simple_hashes'} || $cfg->{'simple_hashes'};
     
     if($args->{'fields'}){

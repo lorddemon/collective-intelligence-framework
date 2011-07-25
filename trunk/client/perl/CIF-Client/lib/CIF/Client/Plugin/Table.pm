@@ -15,16 +15,18 @@ sub write_out {
     my @a = @{$hash->{'entry'}};
     return unless(keys(%{$a[0]}));
     my @cols;
-    if($a[0]->{'count'}){
-        push(@cols,'count');
-    } else {
-        @cols = (
-            'restriction',
-            'severity',
-            'confidence',
-            'detecttime',
-        );
+    if($::uuid){
+        push(@cols,'uuid');
     }
+    if($::relateduuid){
+        push(@cols,'relatedid');
+    }
+    push(@cols,(
+        'restriction',
+        'severity',
+        'confidence',
+        'detecttime',
+    ));
     unless($summary){
         my $t = $a[0];
         if(exists($t->{'address'})){

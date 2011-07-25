@@ -1,5 +1,8 @@
 Revision history for Perl extension CIF::Client.
 
+0.01_02  2011-07-16
+    - few minor bugfixes
+
 0.01_01  2011-07-01
     - revamped for working with cif-0.01_03 api
     - added Iodef plugin to trasnlate IODEF json documents to simple hashes
