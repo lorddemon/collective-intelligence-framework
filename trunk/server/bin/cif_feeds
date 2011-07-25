@@ -62,6 +62,7 @@ my $maxrecords  = $opts{'m'} || $cfg->param(-block => 'cif_feeds')->{'maxrecords
 my @plugs = CIF::Archive->plugins('datatype');
 my $sf = $cfg->param(-block  => 'cif_feeds')->{'severity_feeds'};
 my $cf = $cfg->param(-block => 'cif_feeds')->{'confidence_feeds'};
+my $rf = $cfg->param(-block => 'cif_feeds')->{'restriction_feeds'};
 my $disabled_feeds = $cfg->param(-block => 'cif_feeds')->{'disabled_feeds'};
 
 $SIG{'INT'} = 'cleanup';
@@ -93,23 +94,41 @@ unless(defined($ret) && $ret == 0){
 
 my @severity_feeds;
 my @confidence_feeds;
+my @restriction_feeds;
 if($severity){
     push(@severity_feeds,$severity);
-} else {
+} elsif($sf) {
     if(ref($sf) eq 'ARRAY'){
         @severity_feeds = @{$sf};
     } else {
         push(@severity_feeds,$sf);
     }
+} else {
+    push(@severity_feeds,'high');
 }
+
 if($confidence){
     push(@confidence_feeds,$confidence);
-} else {
+} elsif($cf) {
     if(ref($cf) eq 'ARRAY'){
         @confidence_feeds = @{$cf};
     } else {
         push(@confidence_feeds,$cf);
     }
+} else {
+    push(@confidence_feeds,'85');
+}
+
+if($restriction){
+    push(@restriction_feeds,$restriction);
+} elsif($rf){
+    if(ref($rf) eq 'ARRAY'){
+        @restriction_feeds = @{$rf};
+    } else {
+        push(@restriction_feeds,$rf);
+    }
+} else {
+    push(@restriction_feeds,'private');
 }
 
 @plugs = grep(!/(Feed|Analytic)/,@plugs);
@@ -129,13 +148,6 @@ if($specific){
     @plugs = grep(/$specific$/,@plugs);
 }
 my $restriction_map = $cfg->param(-block => 'restrictions');
-unless($restriction){
-    if(my $x = $restriction_map->{'default'}){
-        $restriction = $x;
-    } else {
-        $restriction = 'private';
-    }
-}
 if($opts{'h'}){
     print usage();
     remove_lock();
@@ -214,11 +226,12 @@ sub generate_feed {
 
     my $detecttime = DateTime->from_epoch(epoch => (time() - (84600 * $maxdays)));
     _profile('searching',$start);
+    foreach my $r (@restriction_feeds){
     foreach my $sev (@severity_feeds){
         foreach my $conf (@confidence_feeds){
             my $ret = $_->feed({
                 severity    => $sev,
-                restriction => $restriction,
+                restriction => $r,
                 confidence  => $conf,
                 detecttime  => $detecttime,
                 maxrecords  => 50000,
@@ -234,24 +247,24 @@ sub generate_feed {
                 my @recs = @{$f->{'feed'}->{'entry'}};
                 _debug('records: '.@recs);
                 next unless(defined($#recs));
-                my $loc_restriction = $restriction;
+                my $loc_restriction = $r;
                 if($recs[0] && keys %$restriction_map){
-                    $loc_restriction = $restriction_map->{$restriction};
+                    $loc_restriction = $restriction_map->{$r};
                     foreach my $rec (@recs){
-                        my ($r,$alt_r);
+                        my ($x,$alt_r);
                         if(exists($rec->{'Incident'}->{'restriction'})){
-                            $r = $rec->{'Incident'}->{'restriction'};
+                            $x = $rec->{'Incident'}->{'restriction'};
                         }
                         if(exists($rec->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'})){
                             $alt_r = $rec->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'};
                         }
-                        if($r && exists($restriction_map->{$r})){
-                            $r = $restriction_map->{$r};
+                        if($x && exists($restriction_map->{$x})){
+                            $x = $restriction_map->{$x};
                         }
                         if($alt_r && exists($restriction_map->{$alt_r})){
                             $alt_r = $restriction_map->{$alt_r};
                         }
-                        $rec->{'Incident'}->{'restriction'} = $r if($r);
+                        $rec->{'Incident'}->{'restriction'} = $x if($x);
                         if($alt_r){
                             $rec->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'} = $alt_r if($alt_r);
                         }
@@ -260,7 +273,7 @@ sub generate_feed {
                 
                 
                 my $json = to_json(\@recs);
-                my $description = $f->{'feed'}->{'title'}.' '.$sev.' severity '.$conf.'% confidence '.$restriction.' feed';
+                my $description = $f->{'feed'}->{'title'}.' '.$sev.' severity '.$conf.'% confidence '.$r.' feed';
                 my $impact = $f->{'feed'}->{'title'}.' feed';
                 my $zcontent = encode_base64(compress($json));
                 my ($err,$id) = CIF::Archive->insert({
@@ -271,7 +284,7 @@ sub generate_feed {
                     confidence  => $conf,
                     description => lc($description),
                     impact      => lc($impact),
-                    restriction => lc($restriction),
+                    restriction => lc($r),
                     detecttime  => $dt,
                     format      => 'text/base64'
                 });
@@ -280,7 +293,7 @@ sub generate_feed {
                 my @feeds = CIF::Archive::DataType::Plugin::Feed->retrieve_from_sql(qq{
                     impact = '$impact'
                     AND severity = '$sev'
-                    AND restriction = '$restriction'
+                    AND restriction = '$r'
                     AND confidence = '$conf'
                     ORDER BY id ASC
                 });
@@ -302,6 +315,7 @@ sub generate_feed {
                 }
             }
         }
+    }
     }
     ## TODO -- if $id is < than most recent feed (of this type), we need to re-insert this as a new feed (or delete the old feed)
     _profile('finished',$start);
