@@ -23,7 +23,8 @@ sub process {
     my $self = shift;
     my $data = shift;
     my $config = shift;
-    $config = $config->param(-block => 'dnsparse') || return;
+    $config = $config->param(-block => 'dnsparse');
+    return unless($config->{'site'});
     return unless(ref($data) eq 'HASH');
     my $addr = $data->{'address'};
     return unless($addr);

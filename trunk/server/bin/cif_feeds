@@ -42,13 +42,13 @@ use CIF::Utils ':all';
 use threads;
 
 my %opts;
-getopts('ht:S:c:df:s:r:m:F:C:T:',\%opts);
+getopts('D:ht:S:c:df:s:r:m:F:C:T:',\%opts);
 
-my $severity    = $opts{'s'} || 'high';
-my $confidence  = $opts{'c'} || '85';
+my $severity    = $opts{'s'};
+my $confidence  = $opts{'c'};
 my $restriction = $opts{'r'};
-my $maxdays     = $opts{'d'} || 3;
-my $debug       = $opts{'D'};
+my $maxdays     = $opts{'D'} || 3;
+my $debug       = $opts{'d'};
 my $config      = $opts{'C'} || $ENV{'HOME'}.'/.cif';
 my $last_feeds  = $opts{'F'} || 5;
 my $mutex       = $opts{'L'} || '/tmp/cif_feeds.lock';

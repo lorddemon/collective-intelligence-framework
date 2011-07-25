@@ -40,17 +40,6 @@ sub convert {
     $iodef->add('IncidentEventDataFlowSystemAdditionalDatameaning','sha1');
     $iodef->add('IncidentEventDataFlowSystemAdditionalData',$info->{'sha1'});
 
-    if($info->{'malware_md5'}){
-        $iodef->add('IncidentEventDataAdditionalDatadtype','string');
-        $iodef->add('IncidentEventDataAdditionalDatameaning','malware_md5');
-        $iodef->add('IncidentEventDataAdditionalData',$info->{'malware_md5'});
-    }
-    if($info->{'malware_sha1'}){
-        $iodef->add('IncidentEventDataAdditionalDatadtype','string');
-        $iodef->add('IncidentEventDataAdditionalDatameaning','malware_sha1');
-        $iodef->add('IncidentEventDataAdditionalData',$info->{'malware_sha1'});
-    }
-
     return($iodef);
 }
 

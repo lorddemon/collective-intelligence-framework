@@ -54,13 +54,13 @@ etc-install:
 	done
 
 sbin-install:
-	[ -d $(sbindir) || $(INSTALL) -m 0770 -d $(sbindir)
+	[ -d $(sbindir) ] || $(INSTALL) -m 0770 -d $(sbindir)
 	-( cd lib && find . -type f -print ) | grep -v svn | while read file ; do \
         $(INSTALL) -m 0750 "sbin/$$file" "$(sbindir)/$$file" ; \
     done
 
 bin-install:
-	[ -d $(bindir) || $(INSTALL) -m 0770 -d $(bindir)
+	[ -d $(bindir) ] || $(INSTALL) -m 0770 -d $(bindir)
 	-( cd bin && find . -type f -print ) | grep -v svn | while read file ; do \
 		$(INSTALL) -m 0750 "bin/$$file" "$(bindir)/$$file" ; \
 	done
@@ -90,7 +90,7 @@ realclean: clean
 reconf:
 	autoreconf -vf
 
-SNAPSHOT=cif_0.01_04
+SNAPSHOT=cif_0.01_06
 snapshot: build-snapshot
 
 build-snapshot:
