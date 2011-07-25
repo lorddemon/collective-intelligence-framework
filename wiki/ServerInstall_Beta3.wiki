@@ -44,7 +44,7 @@ $ sudo useradd -U -m cif
 {{{
 $ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01_07.tar.gz
 $ tar -zxvf cif-0.01_07.tar.gz
-$ cd cif-0.01_06
+$ cd cif-0.01_07
 $ ./configure --with-user=cif --prefix=/opt/cif-0.01_07
 $ make testdeps
 $ make fixdeps
