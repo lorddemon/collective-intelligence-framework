@@ -42,16 +42,16 @@ $ sudo useradd -U -m cif
 }}}
  # install the core server interface
 {{{
-$ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01_05.tar.gz
-$ tar -zxvf cif-0.01_05.tar.gz
-$ cd cif-0.01_05
-$ ./configure --with-user=cif --prefix=/opt/cif-0.01_05
+$ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01_06.tar.gz
+$ tar -zxvf cif-0.01_06.tar.gz
+$ cd cif-0.01_06
+$ ./configure --with-user=cif --prefix=/opt/cif-0.01_06
 $ make testdeps
 $ make fixdeps
 $ make initdb
 $ make tables
 $ sudo make install
-$ sudo ln -sf /opt/cif-0.01_05 /opt/cif
+$ sudo ln -sf /opt/cif-0.01_06 /opt/cif
 }}}
  # modify your local path, vi ~/.profile
 {{{
