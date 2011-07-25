@@ -7,20 +7,22 @@ use Getopt::Std;
 use CIF::Client;
 
 my %opts;
-getopt('dhHL:p:f:q:c:s:r:C:', \%opts);
+getopt('hHL:p:f:q:c:s:r:C:', \%opts);
 
 my $query       = $opts{'q'} || shift;
 our $debug       = ($opts{'d'}) ? 1 : 0;
 my $c           = $opts{'C'} || $ENV{'HOME'}.'/.cif';
 my $fields      = $opts{'f'};
 my $severity    = $opts{'s'};
-my $restriction = $opts{'r'};
+my $restriction = $opts{'r'} || 'need-to-know';
 my $plugin      = $opts{'p'} || 'table';
 my $max_desc    = $opts{'L'} || 100;
 my $nolog       = $opts{'n'} || 0;
 my $summary     = $opts{'S'};
 my $nomap       = $opts{'N'};
-my $confidence  = $opts{'c'};
+my $confidence  = $opts{'c'} || 0;
+our $uuid        = $opts{'u'} || 0;
+our $relateduuid = $opts{'R'} || 0;
 my $plugs = join(',',CIF::Client::_plugins);
 my $simple_hashes = (defined($opts{'H'})) ? $opts{'H'} : 1;
 
@@ -34,19 +36,23 @@ Usage: perl $0 -q xyz.com
     -h  --help:             this message
     -q  --query:            query string (use 'url\\/<md5|sha1>' for url hash lookups)
     -s  --severity:         severity (low,medium,high), default: high
+    -c  --confidence:       lowest tolerated confidence (0.00 -- 100.00), default $confidence
+    -r  --restriction:      restriction to be applied to results, default: $restriction
     -p  --plugin:           output plugin ($plugs), default: $plugin
     -n  --nolog             perform a "silent" query (no log query), default: $nolog
     -f  --fields:           set default output fields for default table display
     -S  --summary:          consolidated Text::Table output (default: 1 -- True)
     -N  --nomap:            don't map restrictions on server (queries only)
-    -c  --confidence:       lowest tolerated confidence (0.00 -- 100.00), default $confidence
     -H  --simplehashes:     translate the complex json documents to simplified key value pairs, default: $simple_hashes
+    -C  --config:           specify cofiguration file, default $c
 
 Queries:
 
-    \$> perl $0 -q url\\/f8e74165fb840026fd0fce1fd7d62f5d0e57e7ac
+    \$> perl $0 -q 1.2.3.4
+    \$> perl $0 -q 1.2.3.0/24
+    \$> perl $0 -q f8e74165fb840026fd0fce1fd7d62f5d0e57e7ac
     \$> perl $0 -q hut2.ru
-    \$> perl $0 -q hut2.ru,url\\/f8e74165fb840026fd0fce1fd7d62f5d0e57e7ac
+    \$> perl $0 -q hut2.ru,f8e74165fb840026fd0fce1fd7d62f5d0e57e7ac
     \$> perl $0 hut2.ru
 
 Feeds:
@@ -55,7 +61,7 @@ Feeds:
     \$> perl $0 -q malware -s low
     \$> perl $0 -q infrastructure/network -s medium -p snort
     \$> perl $0 -q domain/malware -p bindzone -c 95 -s medium
-    \$> perl $0 -q domain -s medium -c 40 -p raw -H 0
+    \$> perl $0 -q domain -s medium -c 40 -p raw -H 0 -r private
 
     configuration file ~/.cif should be readable and look something like:
 

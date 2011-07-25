@@ -28,7 +28,7 @@ sub hash_simple {
         $impact = $i->{'Assessment'}->{'Impact'}->{'content'} if(ref($impact) eq 'HASH');
         my $h = {
             uuid                        => $i->{'IncidentID'}->{'content'},
-            relatedid                   => $i->{'RelatededActivity'}->{'IncidentID'}->{'content'},
+            relatedid                   => $i->{'RelatedActivity'}->{'IncidentID'},
             description                 => $i->{'Description'},
             impact                      => $impact,
             severity                    => $i->{'Assessment'}->{'Impact'}->{'severity'},

@@ -34,7 +34,7 @@ sub write_out {
             -dport  => $portlist,
             -dir    => '->',
         );
-        $r->opts('msg',$_->{'restriction'}.' - '.$_->{'description'});
+        $r->opts('msg',$_->{'restriction'}.' - '.$_->{'impact'}.' '.$_->{'description'});
         $r->opts('threshold','type limit,track by_src,count 1,seconds 3600');
         $r->opts('sid',$sid++);
         $r->opts('reference',$_->{'alternativeid'}) if($_->{'alternativeid'});
