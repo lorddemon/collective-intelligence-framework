@@ -7,7 +7,8 @@ sub type { return 'output'; }
 sub write_out {
     my $self = shift;
     my $config = shift;
-    my @array = @_;
+    my $feed = shift;
+    my @array = @{$feed->{'feed'}->{'entry'}};
     my @header = keys(%{$array[0]});
     @header = sort { $a cmp $b } @header;
     my $body = '';
