@@ -1,5 +1,13 @@
 Revision history for Perl extension CIF::Client.
 
+0.01_04  2011-07-27
+    - minor bugfixes
+
+0.01_03  2011-07-25
+    - minor bugfixes
+    - doc updates (cif -h)
+    - few changes to the 'defaults' for restriction
+
 0.01_02  2011-07-16
     - few minor bugfixes
 
