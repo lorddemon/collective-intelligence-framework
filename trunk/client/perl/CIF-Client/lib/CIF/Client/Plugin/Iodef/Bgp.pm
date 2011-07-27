@@ -15,6 +15,7 @@ sub hash_simple {
         push(@array,$ad);
     }
     foreach my $a (@array){
+        next unless($a->{'meaning'});
         for(lc($a->{'meaning'})){
             $asn    = $a->{'content'} if(/asn/);
             $prefix = $a->{'content'} if(/prefix/);
