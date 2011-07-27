@@ -7,7 +7,17 @@ sub hash_simple {
     my $hash = shift;
 
     my $address = $hash->{'EventData'}->{'Flow'}->{'System'}->{'Node'}->{'Address'};
-    $address = $address->{'content'} if(ref($address) eq 'HASH');
+    for(ref($address)){
+        if(/HASH/){
+            $address = $address->{'content'};
+            last;
+        }
+        if(/ARRAY/){
+            my @ary = @{$address};
+            $address = $ary[$#ary]->{'content'};
+            last;
+        }
+    }
     return unless($address && $address =~ /^$RE{'net'}{'IPv4'}/);
 
     my $portlist = $hash->{'EventData'}->{'Flow'}->{'System'}->{'Service'}->{'Portlist'};

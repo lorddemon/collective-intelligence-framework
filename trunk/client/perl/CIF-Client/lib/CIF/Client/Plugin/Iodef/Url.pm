@@ -8,22 +8,34 @@ sub hash_simple {
 
     my $address = $data->{'EventData'}->{'Flow'}->{'System'}->{'Node'}->{'Address'};
     return unless($address);
-    $address = $address->{'content'} if(ref($address) eq 'HASH');
+    for(ref($address)){
+        if(/HASH/){
+            $address = $address->{'content'};
+            last;
+        }
+        if(/ARRAY/){
+            my @ary = @{$address};
+            $address = $ary[$#ary]->{'content'};
+            last;
+        }
+    }
+
     return unless($address =~ /^$RE{'URI'}/);
 
     my $ad = $data->{'EventData'}->{'Flow'}->{'System'}->{'AdditionalData'};
-    return unless($ad);
-    my @array;
-    if(ref($ad) eq 'ARRAY'){
-        @array = @$ad;
-    } else {
-        push(@array,$ad);
-    }
-    my ($md5,$sha1);
-    foreach my $a (@array){
-        for(lc($a->{'meaning'})){
-            $md5    = $a->{'content'} if(/^md5/);
-            $sha1   = $a->{'content'} if(/^sha1/);
+    if($ad){
+        my @array;
+        if(ref($ad) eq 'ARRAY'){
+            @array = @$ad;
+        } else {
+            push(@array,$ad);
+        }
+        my ($md5,$sha1);
+        foreach my $a (@array){
+            for(lc($a->{'meaning'})){
+                $md5    = $a->{'content'} if(/^md5/);
+                $sha1   = $a->{'content'} if(/^sha1/);
+            }
         }
     }
 

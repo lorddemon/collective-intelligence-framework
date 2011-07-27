@@ -6,7 +6,17 @@ sub hash_simple {
 
     my $address = $hash->{'EventData'}->{'Flow'}->{'System'}->{'Node'}->{'Address'};
     return unless($address);
-    $address = $address->{'content'} if(ref($address) eq 'HASH');
+    for(ref($address)){
+        if(/HASH/){
+            $address = $address->{'content'};
+            last;
+        }
+        if(/ARRAY/){
+            my @ary = @{$address};
+            $address = $ary[$#ary]->{'content'};
+            last;
+        }
+    }
     return unless($address =~ /^[a-zA-Z0-9.-]+\.[a-z]{2,5}$/);
 
     my ($rdata,$type);
