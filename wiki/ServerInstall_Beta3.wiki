@@ -31,9 +31,9 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  # install the CIF::Client (we use some functions in it for the server)
 {{{
 $> sudo perl -MCPAN -e 'install REST::Client, Text::Table, JSON, Module::Pluggable, Config::Simple, Snort::Rule, Class::Accessor, Digest::MD5, Digest::SHA1, Regexp::Common::net,Regexp::Common::net::CIDR'
-$> wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.01_03.tar.gz
-$> tar -zxvf CIF-Client-0.01_03.tar.gz
-$> cd CIF-Client-0.01_03
+$> wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.01_05.tar.gz
+$> tar -zxvf CIF-Client-0.01_05.tar.gz
+$> cd CIF-Client-0.01_05
 $> perl Makefile.PL && make && sudo make install
 }}}
  # create your "cif" user/group
@@ -42,16 +42,16 @@ $ sudo useradd -U -m cif
 }}}
  # install the core server interface
 {{{
-$ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01_07.tar.gz
-$ tar -zxvf cif-0.01_07.tar.gz
-$ cd cif-0.01_07
-$ ./configure --with-user=cif --prefix=/opt/cif-0.01_07
+$ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01_09.tar.gz
+$ tar -zxvf cif-0.01_09.tar.gz
+$ cd cif-0.01_09
+$ ./configure --with-user=cif --prefix=/opt/cif-0.01_09
 $ make testdeps
 $ make fixdeps
 $ make initdb
 $ make tables
 $ sudo make install
-$ sudo ln -sf /opt/cif-0.01_07 /opt/cif
+$ sudo ln -sf /opt/cif-0.01_09 /opt/cif
 }}}
  # modify your local path, vi ~/.profile
 {{{
