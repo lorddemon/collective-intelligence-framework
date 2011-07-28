@@ -2,6 +2,7 @@ Revision history for Perl extension CIF::Client.
 
 0.01_05  2011-07-27
     - minor bugfixes
+    - added tls_verify option
 
 0.01_04  2011-07-27
     - minor bugfixes

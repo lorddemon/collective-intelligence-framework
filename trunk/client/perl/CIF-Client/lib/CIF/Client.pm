@@ -51,17 +51,23 @@ sub new {
     my $self = REST::Client->new($args);
     bless($self,$class);
 
-    $self->{'apikey'} = $apikey;
-    $self->{'config'} = $cfg;
-    $self->{'max_desc'} = $args->{'max_desc'};
-    $self->{'restriction'} = $cfg->{'restriction'};
-    $self->{'severity'} = $cfg->{'severity'};
-    $self->{'nolog'} = $cfg->{'nolog'};
-    $self->{'restriction'} = $args->{'restriction'} || $cfg->{'restriction'};
-    $self->{'simple_hashes'} = $args->{'simple_hashes'} || $cfg->{'simple_hashes'};
+    $self->{'apikey'}           = $apikey;
+    $self->{'config'}           = $cfg;
+    $self->{'max_desc'}         = $args->{'max_desc'};
+    $self->{'restriction'}      = $cfg->{'restriction'};
+    $self->{'severity'}         = $cfg->{'severity'};
+    $self->{'nolog'}            = $cfg->{'nolog'};
+    $self->{'restriction'}      = $args->{'restriction'} || $cfg->{'restriction'};
+    $self->{'simple_hashes'}    = $args->{'simple_hashes'} || $cfg->{'simple_hashes'};
+
+    $self->{'verify_tls'}       = (defined($args->{'verify_tls'})) ? $args->{'verify_tls'} : $cfg->{'verify_tls'};
     
     if($args->{'fields'}){
         @{$self->{'fields'}} = split(/,/,$args->{'fields'}); 
+    }
+
+    if(defined($self->{'verify_tls'}) && $self->{'verify_tls'} == 0){
+        $self->getUseragent->ssl_opts(verify_hostname => 0);
     }
 
     return($self);
