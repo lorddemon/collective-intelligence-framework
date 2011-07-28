@@ -18,7 +18,7 @@ sub prepare {
     my $info = shift;
 
     return unless($info->{'description'});
-    return unless($info->{'description'} =~ /analytic/);
+    return unless($info->{'description'} =~ /^analytic run/);
     return(1);
 }
 
