@@ -39,6 +39,7 @@ need-to-know|high    |204.28.104.0/21 |        |2011-01-20 00:00:00+00|hijacked 
 need-to-know|high    |200.106.128.0/20|        |2011-01-20 00:00:00+00|hijacked network infrastructure 200.106.128.0/20|public                   |http://www.spamhaus.org/sbl/sbl.lasso?query=SBL85870 
 need-to-know|high    |195.234.159.0/24|        |2011-01-20 00:00:00+00|hijacked network infrastructure 195.234.159.0/24|public                   |http://www.spamhaus.org/sbl/sbl.lasso?query=SBL57950 
 }}}
+=== Snort ===
 {{{
 $ cif -q infrastructure/network -p snort
 
