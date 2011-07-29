@@ -14,11 +14,11 @@ getopts('df:b:t:hsm:M:S:',\%opts);
 
 our $debug      = $opts{'d'};
 my $file        = $opts{'f'} || '/tmp/.cif_upgrade_bookmark';
-my $batch       = $opts{'b'} || 5000;
-my $threads     = $opts{'t'};
+my $batch       = $opts{'b'} || 10000;
+my $threads     = $opts{'t'} || 8;
 my $start       = $opts{'m'};
 my $end         = $opts{'M'};
-my $set         = $opts{'S'} || 250000;
+my $set         = $opts{'S'} || 200000;
 my $bail = 0;
 
 $SIG{'INT'} = sub {

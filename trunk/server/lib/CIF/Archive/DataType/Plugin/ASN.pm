@@ -68,6 +68,7 @@ sub lookup {
             $q,
             $info->{'severity'},
             $info->{'confidence'},
+            $info->{'restriction'},
             $info->{'limit'}
         )
     );
@@ -113,6 +114,7 @@ __PACKAGE__->set_sql('lookup' => qq{
     WHERE asn = ?
     and severity >= ?
     and confidence >= ?
+    and restriction <= ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });

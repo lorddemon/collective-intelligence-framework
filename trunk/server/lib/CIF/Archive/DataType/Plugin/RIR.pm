@@ -60,7 +60,7 @@ sub lookup {
     my $info = shift;
     my $q = $info->{'query'};
     return unless($class->isrir($q));
-    return($class->SUPER::lookup($q,$info->{'severity'},$info->{'confidence'},$info->{'limit'}));
+    return($class->SUPER::lookup($q,$info->{'severity'},$info->{'confidence'},$info->{'restriction'},$info->{'limit'}));
 }
 
 sub isrir {
@@ -108,6 +108,7 @@ __PACKAGE__->set_sql('lookup' => qq{
     WHERE rir = ?
     AND severity >= ?
     AND confidence >= ?
+    and restriction <= ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });

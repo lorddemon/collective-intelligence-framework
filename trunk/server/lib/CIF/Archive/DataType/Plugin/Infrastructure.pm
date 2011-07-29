@@ -150,7 +150,8 @@ sub lookup {
     return(undef) unless($q && $q =~ /^$RE{'net'}{'IPv4'}/);
     my $sev = $info->{'severity'};
     my $conf = $info->{'confidence'};
-    return($class->SUPER::lookup($q,$q,$sev,$conf,$info->{'limit'}));
+    my $restriction = $info->{'restriction'};
+    return($class->SUPER::lookup($q,$q,$sev,$conf,$restriction,$info->{'limit'}));
 }
 
 sub isWhitelisted {
@@ -178,6 +179,7 @@ __PACKAGE__->set_sql('lookup' => qq{
     AND (address >>= ? OR address <<= ?)
     AND severity >= ?
     AND confidence >= ?
+    AND restriction <= ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });

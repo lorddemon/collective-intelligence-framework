@@ -74,7 +74,7 @@ sub lookup {
     my $info = shift;
     my $address = $info->{'query'};
     return(undef) unless($address =~ /\w+@\w+$/);
-    return($self->SUPER::lookup($address,$info->{'severity'},$info->{'confidence'},$info->{'limit'}));
+    return($self->SUPER::lookup($address,$info->{'severity'},$info->{'confidence'},$info->{'restriction'},$info->{'limit'}));
 }
 
 __PACKAGE__->set_sql('lookup' => qq{
@@ -83,6 +83,7 @@ __PACKAGE__->set_sql('lookup' => qq{
     WHERE lower(address) = lower(?)
     AND severity >= ?
     AND confidence >= ?
+    AND restriction <= ?
     LIMIT ?
 });
 1;

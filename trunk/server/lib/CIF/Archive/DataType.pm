@@ -14,7 +14,7 @@ __PACKAGE__->set_sql('feed' => qq{
     AND confidence >= ?
     AND severity >= ?
     AND restriction <= ?
-    ORDER BY confidence ASC, detecttime DESC, created DESC, id DESC
+    ORDER BY severity desc, confidence desc, restriction desc, detecttime desc, id desc
     LIMIT ?
 });
 
@@ -54,8 +54,8 @@ sub feed {
 
     my $key = $info->{'key'};
     my $max = $info->{'maxrecords'} || 10000;
-    my $restriction = $info->{'restriction'} || 'need-to-know';
-    my $severity = $info->{'severity'} || 'medium';
+    my $restriction = $info->{'restriction'} || 'private';
+    my $severity = $info->{'severity'} || 'high';
     my $confidence = $info->{'confidence'} || 85;
 
     my @bits = split(/::/,lc($class));
@@ -69,7 +69,7 @@ sub feed {
     if($recs[0]->{'uuid'}){
         # declassify what we can
         my $hash;
-        foreach (reverse(@recs)){
+        foreach (@recs){
             ## TODO -- test this
             unless($class->table() =~ /_whitelist/){
                 next if($class->isWhitelisted($_->{$key}));

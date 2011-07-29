@@ -90,11 +90,17 @@ realclean: clean
 reconf:
 	autoreconf -vf
 
-SNAPSHOT=cif_0.01_06
+BUILD=0.01_$(shell date +%Y%m%d_%H%M%S)
+SNAPSHOT=cif-$(BUILD)
 snapshot: build-snapshot
 
 build-snapshot:
 	rm -Rf "/tmp/$(SNAPSHOT)"
 	svn export ./ /tmp/$(SNAPSHOT)
-	tar -zvcf "/tmp/$(SNAPSHOT).tar.gz" -C /tmp "$(SNAPSHOT)/"
-	rm -fr "/tmp/$(SNAPSHOT)/"
+	( cd /tmp/$(SNAPSHOT) && \
+		echo "$(BUILD)" > .tag && \
+		sh rebuild.sh && \
+		make dist && \
+		cp $(SNAPSHOT).tar.gz /tmp/ \
+	)
+	rm -R -f "/tmp/$(SNAPSHOT)"
