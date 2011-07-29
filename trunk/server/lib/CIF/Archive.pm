@@ -138,8 +138,9 @@ sub lookup {
         $ret = CIF::Archive->retrieve(uuid => $info->{'query'});
     } else {
         foreach my $p ($class->plugins('datatype')){
-            $ret = $p->lookup($info);
+            $ret = eval { $p->lookup($info) };
             last if($ret);
+            return($@,undef) if($@);
         }
     }
 
@@ -173,7 +174,7 @@ sub lookup {
             severity    => 'low',
         });
     }
-    return($ret);
+    return(undef,$ret);
 }
 
 1;

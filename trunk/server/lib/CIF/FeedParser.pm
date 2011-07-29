@@ -134,8 +134,10 @@ sub _sort_detecttime {
                 $dt = $dt->ymd().'T'.$dt->hour.':00:00Z';
             } elsif(lc($_->{'detection'}) eq 'monthly') {
                 $dt = $dt->year().'-'.$dt->month().'-01T00:00:00Z';
-            } else {
+            } elsif(lc($_->{'detection'} ne 'now')){
                 $dt = $dt->ymd().'T00:00:00Z';
+            } else {
+                $dt = $dt->ymd().'T'.$dt->hms();
             }
         }
         $_->{'detecttime'} = $dt;

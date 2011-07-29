@@ -95,7 +95,7 @@ sub lookup {
     my $query = ($info->{'query'});
     return unless($query =~ /^[a-z]{2,2}$/);
 
-    my @args = ($query,$info->{'severity'},$info->{'confidence'},$info->{'limit'});
+    my @args = ($query,$info->{'severity'},$info->{'confidence'},$info->{'restriction'},$info->{'limit'});
     return $class->SUPER::lookup(@args);
 }
 
@@ -105,6 +105,7 @@ __PACKAGE__->set_sql('lookup' => qq{
     WHERE upper(cc) = upper(?)
     AND severity >= ?
     AND confidence >= ?
+    AND restriction <= ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });

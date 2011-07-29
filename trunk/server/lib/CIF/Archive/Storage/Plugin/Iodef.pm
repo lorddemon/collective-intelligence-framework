@@ -79,8 +79,6 @@ sub convert {
     if($severity && $severity =~ /(low|medium|high)/){
         $iodef->add('IncidentAssessmentImpactseverity',$severity);
     }
-    $iodef->add('IncidentEventDataFlowSystemServicePortlist',$portlist) if($portlist);
-    $iodef->add('IncidentEventDataFlowSystemServiceip_protocol',$protocol) if($protocol);
 
     foreach($class->plugins()){
         if($_->prepare($info)){

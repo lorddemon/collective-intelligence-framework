@@ -19,8 +19,11 @@ sub prepare {
     my $class = shift;
     my $info = shift;
 
-    my $address = $info->{'address'} || return(undef);
-    return(undef) unless($address =~ /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,5}$/);
+    return unless($info->{'address'});
+    $info->{'address'} = lc($info->{'address'});
+    
+    my $address = $info->{'address'};
+    return(undef) unless($address =~ /^[a-z0-9.-]+\.[a-zA-Z]{2,5}$/);
     $info->{'md5'} = md5_hex($address);
     $info->{'sha1'} = sha1_hex($address);
 
@@ -90,8 +93,9 @@ sub lookup {
     $address = md5_hex($address);
     my $sev = $info->{'severity'};
     my $conf = $info->{'confidence'};
+    my $restriction = $info->{'restriction'};
 
-    return($self->SUPER::lookup($address,$sev,$conf,$info->{'limit'}));
+    return($self->SUPER::lookup($address,$sev,$conf,$restriction,$info->{'limit'}));
 }
 
 sub isWhitelisted {
@@ -160,6 +164,7 @@ __PACKAGE__->set_sql('lookup' => qq{
     WHERE md5 = ?
     AND severity >= ?
     AND confidence >= ?
+    AND restriction <= ?
     LIMIT ?
 });
 

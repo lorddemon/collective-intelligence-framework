@@ -128,7 +128,7 @@ sub GET {
     }
 
     my $nolog = $request->{'r'}->param('nolog');
-    my $restriction = $request->{'r'}->param('restriction') || $request->{'r'}->dir_config->get('CIFDefaultFeedRestriction') || 'need-to-know';
+    my $restriction = $request->{'r'}->param('restriction') || $request->{'r'}->dir_config->get('CIFDefaultFeedRestriction') || 'private';
     my $q = $self->{'query'};
     if($q && $q =~ /^ERROR/){
         $response->{'message'} = $q;
@@ -146,10 +146,20 @@ sub GET {
 
     my $feed;
     if($q){
-        $restriction = 'private';
         my $severity = $request->{'r'}->param('severity') || 'null';
         my $confidence = $request->{'r'}->param('confidence') || 0;
-        my $ret = CIF::Archive->lookup({ nolog => $nolog, query => $q, source => $apikey, severity => $severity, restriction => $restriction, max => $maxresults, confidence => $confidence });
+        my ($err,$ret) = CIF::Archive->lookup({ nolog => $nolog, query => $q, source => $apikey, severity => $severity, restriction => $restriction, max => $maxresults, confidence => $confidence });
+        if($err){
+            for(lc($err)){
+                if(/invalid input value for enum restriction/){
+                    $response->{'message'} = 'invalid restriction';
+                    last;
+                }
+                $response->{'message'} = 'unknown error';
+            }
+            $response->{'status'} = '403';
+            return Apache2::Const::HTTP_FORBIDDEN;
+        }
         return Apache2::Const::HTTP_OK unless($ret);
         my @recs;
         if(ref($ret) ne 'CIF::Archive'){

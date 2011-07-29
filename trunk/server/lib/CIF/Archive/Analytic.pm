@@ -4,9 +4,6 @@ use 5.008008;
 use strict;
 use warnings;
 
-our $VERSION = '0.01_01';
-$VERSION = eval $VERSION;  # see L<perlmodstyle>
-
 use Module::Pluggable require => 1;
 require CIF::Archive;
 require CIF::Archive::DataType::Plugin::Analytic;

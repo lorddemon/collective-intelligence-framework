@@ -78,7 +78,7 @@ sub lookup {
     my $q = $info->{'query'};
     foreach($class->plugins()){
         if(my $r = $_->lookup($q)){
-            return($class->SUPER::lookup($q,$info->{'severity'},$info->{'confidence'},$info->{'limit'}));
+            return($class->SUPER::lookup($q,$info->{'severity'},$info->{'confidence'},$info->{'restriction'},$info->{'limit'}));
         }
     }
     return(undef);
@@ -90,6 +90,7 @@ __PACKAGE__->set_sql('lookup' => qq{
     WHERE lower(hash) = lower(?)
     and severity >= ?
     and confidence >= ?
+    and restriction <= ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });
