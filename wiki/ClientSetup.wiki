@@ -1,7 +1,11 @@
 #labels Phase-Implementation,Featured,Phase-Deploy,Client
 initial how-to explaining the initial setup of your client
 
-= [http://bit.ly/gPkjhQ Client Libraries] =
+= Browser Plugins =
+ # FirefoxToolbar
+ # ChromeToolbar
+
+= Client Libraries =
 == Perl ==
 
  1. install the client library
