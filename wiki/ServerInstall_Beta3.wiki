@@ -28,14 +28,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  # ServerInstall_Beta3_Ubuntu10
 
 = Details =
- # install the CIF::Client (we use some functions in it for the server)
-{{{
-$> sudo perl -MCPAN -e 'install REST::Client, Text::Table, JSON, Module::Pluggable, Config::Simple, Snort::Rule, Class::Accessor, Digest::MD5, Digest::SHA1, Regexp::Common::net,Regexp::Common::net::CIDR'
-$> wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.01_05.tar.gz
-$> tar -zxvf CIF-Client-0.01_05.tar.gz
-$> cd CIF-Client-0.01_05
-$> perl Makefile.PL && make && sudo make install
-}}}
+ # install the PerlClient (we use some functions in it for the server)
  # create your "cif" user/group
 {{{
 $ sudo useradd -U -m cif
@@ -84,6 +77,8 @@ fi
 #    PerlAddVar CIFRestrictionMap 'RESTRICTED'
 </Location>
 }}}
+ # add your "www-data" user (whoever apache is set to run under) to the group "cif" (/etc/group)
+ # restart apache2
  # perform the "first run" to prime the database with it's initial intel (should take about 30min).
 {{{
 $ time /opt/cif/bin/cif_crontool -f -d
