@@ -1,6 +1,13 @@
 #labels Phase-Implementation,Featured,Phase-Deploy,Client
 initial how-to explaining the initial setup of your client
 
+<wiki:toc max_depth="3" />
+
+= Before you Begin =
+*BY DEFAULT, ALL QUERIES ARE ANONYMOUSLY LOGGED*
+
+When performing a query, your apikey is hashed (sha1-uuid) and the basics of your search are logged by the system.  This allows others to see when there might be interest in a specific piece of intelligence, but not necessarily any concreate "feed" type data. These searches show up like this:
+
 = Browser Plugins =
  # FirefoxToolbar
  # ChromeToolbar
@@ -59,7 +66,5 @@ timeout = 60
 #verify_tls = 0
 }}}
 
-== Queries ==
-*BY DEFAULT, ALL QUERIES ARE ANONYMOUSLY LOGGED*
-
-When performing a query, your apikey is hashed (sha1-uuid) and the basics of your search are logged by the system.  This allows others to see when there might be interest in a specific piece of intelligence, but not necessarily any concreate "feed" type data. These searches show up like this:
+= Misc =
+ # CookBook
