@@ -77,7 +77,10 @@ fi
 #    PerlAddVar CIFRestrictionMap 'RESTRICTED'
 </Location>
 }}}
- # add your "www-data" user (whoever apache is set to run under) to the group "cif" (/etc/group)
+ # add your "www-data" user (whoever apache is set to run under) to the group "cif" (/etc/group):
+{{{
+$ sudo adduser www-data cif
+}}}
  # restart apache2
  # perform the "first run" to prime the database with it's initial intel (should take about 30min).
 {{{
