@@ -3,8 +3,8 @@ Example Client Commands and outputs
 
 <wiki:toc max_depth="3" />
 
-= Infrastructure =
-== Suspicious Networks ==
+= Suspicious Networks =
+== Table Format ==
  # CIDR query
 {{{
 $ cif -q 130.201.0.0/16
@@ -39,7 +39,7 @@ need-to-know|high    |204.28.104.0/21 |        |2011-01-20 00:00:00+00|hijacked 
 need-to-know|high    |200.106.128.0/20|        |2011-01-20 00:00:00+00|hijacked network infrastructure 200.106.128.0/20|public                   |http://www.spamhaus.org/sbl/sbl.lasso?query=SBL85870 
 need-to-know|high    |195.234.159.0/24|        |2011-01-20 00:00:00+00|hijacked network infrastructure 195.234.159.0/24|public                   |http://www.spamhaus.org/sbl/sbl.lasso?query=SBL57950 
 }}}
-=== Snort ===
+== Snort Format ==
 {{{
 $ cif -q infrastructure/network -p snort
 
@@ -48,6 +48,7 @@ alert ip any any -> 188.229.13.0/24 any ( msg:"need-to-know - hijacked network i
 alert ip any any -> 204.28.104.0/21 any ( msg:"need-to-know - hijacked network infrastructure 204.28.104.0/21"; threshold:type limit,track by_src,count 1,seconds 3600; sid:2; reference:http://www.spamhaus.org/sbl/sbl.lasso?query=SBL96986; )
 alert ip any any -> 200.106.128.0/20 any ( msg:"need-to-know - hijacked network infrastructure 200.106.128.0/20"; threshold:type limit,track by_src,count 1,seconds 3600; sid:3; reference:http://www.spamhaus.org/sbl/sbl.lasso?query=SBL8587
 }}}
+== CSV  Format ==
 {{{
 $ cif -q infrastructure/network -p csv
 # address,alternativeid,alternativeid_restriction,asn,asn_desc,cc,cidr,confidence,created,description,detecttime,impact,message,portlist,protocol,restriction,rir,severity,uuid
@@ -56,7 +57,8 @@ $ cif -q infrastructure/network -p csv
 204.28.104.0/21,http://www.spamhaus.org/sbl/sbl.lasso?query=SBL96986,LIMITED,23504,SPEAKEASY Speakeasy, Inc.,,192.0.0.0/3,9,2011-04-14 00:15:34.525974+00,hijacked network infrastructure 204.28.104.0/21,2011-04-14 00:00:00+00,hijacked network infrastructure,,,,PRIVILEGED,,high,801d0d74-5564-5a2a-bc3f-bb1296faf506
 200.106.128.0/20,http://www.spamhaus.org/sbl/sbl.lasso?query=SBL85870,LIMITED,21560,NETSTREAM-COMMUNICATIONS Netstream Communications, LLC,CO,200.106.128.0/21,9,2011-04-14 00:15:31.856361+00,hijacked network infrastructure 200.106.128.0/20,2011-04-14 00:00:00+00,hijacked network infrastructure,,,,PRIVILEGED,lacnic,high,a333fc42-f0cf-5f6d-a691-c66e3de76899
 }}}
-== Scanners ==
+= Scanners =
+== Table  Format ==
 {{{
 $ cif -q infrastructure/scan -s medium
 
@@ -66,6 +68,7 @@ need-to-know|medium  |85.25.144.108  |22      |2010-12-23 08:55:53+00|ssh scanne
 need-to-know|medium  |88.191.130.49  |22      |2010-12-23 11:09:51+00|ssh scanner 88.191.130.49  |public                   |http://www.sshbl.org/lists/date.txt
 need-to-know|medium  |58.180.49.43   |22      |2010-12-23 12:02:56+00|ssh scanner 58.180.49.43   |public                   |http://www.sshbl.org/lists/date.txt
 }}}
+== IPTABLES  Format ==
 {{{
 $ cif -q infrastructure/scan -p iptables -s medium
 iptables -N CIF_IN
@@ -80,7 +83,8 @@ iptables -A CIF_IN -s 88.191.130.49 -j DROP
 iptables -A CIF_OUT -d 88.191.130.49 -j DROP
 }}}
 
-== Malware Infrastructure ==
+= Malware/Exploit Infrastructure =
+== Table  Format ==
 {{{
 $ cif -q infrastructure/malware -s low
 
@@ -90,6 +94,7 @@ need-to-know|low     |114.207.244.144|        |2011-01-20 17:38:11+00|malicious 
 need-to-know|low     |114.207.244.146|        |2011-01-20 17:38:11+00|malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.146                      |public                   |http://www.malwaredomains.com/files/domains.txt                                     
 need-to-know|low     |114.207.244.143|        |2011-01-20 17:38:12+00|malicious infrastructure rogue abodeflash-vol44.co.cc 114.207.244.143                      |public                   |http://www.malwaredomains.com/files/domains.txt   
 }}}
+== Snort  Format ==
 {{{
 $ cif -q infrastructure/malware -s low -p snort
 
@@ -104,7 +109,8 @@ alert ip any any -> 65.254.60.240 any ( msg:"need-to-know - malicious infrastruc
 alert ip any any -> 68.67.68.10 any ( msg:"need-to-know - malicious infrastructure harmful bluelinefreight.in 68.67.68.10"; threshold:type limit,track by_src,count 1,seconds 3600; sid:8; reference:http://www.malwaredomains.com/files/domains.txt; )
 alert ip any any -> 210.114.175.151 any ( msg:"need-to-know - malicious infrastructure harmful bumin.org 210.114.175.151"; threshold:type limit,track by_src,count 1,seconds 3600; sid:9; reference:http://www.malwaredomains.com/files/domain.txt; )
 }}}
-== Phishing ==
+= Phishing Infrastructure =
+== Table  Format ==
 {{{
 $ cif -q infrastructure/phishing -s low
 
@@ -115,6 +121,7 @@ need-to-know    |low     |67.221.186.208 |        |        |2011-01-13 17:51:05+
 need-to-know    |low     |64.62.181.46   |        |        |2011-01-13 18:01:33+00|phishing infrastructure|phishing infrastructure target:Facebook 64.62.181.46                            |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101243
 need-to-know    |low     |216.52.115.2   |        |        |2011-01-13 18:02:46+00|phishing infrastructure|phishing infrastructure target:Facebook 216.52.115.2                            |need-to-know                  |http://www.phishtank.com/phish_detail.php?phish_id=1101246
 }}}
+== Snort  Format ==
 {{{
 $ cif -q infrastructure/phishing -s low -p snort
 
@@ -124,7 +131,8 @@ alert ip any any -> 67.221.186.208 any ( msg:"need-to-know - phishing infrastruc
 alert ip any any -> 64.62.181.46 any ( msg:"need-to-know - phishing infrastructure target:Facebook 64.62.181.46"; threshold:type limit,track by_src,count 1,seconds 3600; sid:3; reference:http://www.phishtank.com/phish_detail.php?phish_id=1101243; )
 }}}
 
-= Domain(s) =
+= Suspicious Nameservers =
+== Table  Format ==
 {{{
 $> cif -q domain/nameserver -s low
 
@@ -155,6 +163,7 @@ RESTRICTED |low     |ns5.tophostingcenter.com|208.43.34.232|A   |2011-02-16 08:2
 RESTRICTED |low     |ns4.tophostingcenter.com|208.43.34.231|A   |2011-02-16 08:24:50+00|suspicious nameserver servidoronline.co.cc|suspicious nameserver malware domain servidoronline.co.cc         |RESTRICTED               |                                               
 RESTRICTED |low     |ns5.tophostingcenter.com|208.43.34.232|A   |2011-02-16 09:24:23+00|suspicious nameserver servidoronline.co.cc|suspicious nameserver malware domain servidoronline.co.cc         |RESTRICTED               |                                               
 }}}
+== BindZone Format ==
 {{{
 $ cif -q domain/nameserver -s low -p bindzone
 
@@ -170,8 +179,8 @@ zone "dns1.registrar-servers.com" {type master; file "/etc/namedb/cif_blockeddom
 zone "ns2.ndns.cn" {type master; file "/etc/namedb/cif_blockeddomain.hosts";};
 }}}
 
-= URLs =
-== Malware / Exploit ==
+= Malware/Exploit Urls =
+== Table Format ==
 {{{
 
 $ cif -q url/malware -s medium
@@ -182,17 +191,9 @@ need-to-know|medium  |http://holycrosshrco.org/img_49jfdnmgudfg.jpg             
 need-to-know|medium  |http://yyyaanve.ru/b.bin                                                                                                                                                |        |2011-01-04 00:00:00+00|malware url zeus config v2 md5:0052e23360b505e45e099355287ad0a5|public                   |https://zeustracker.abuse.ch/monitor.php?host=yyyaanve.ru                           
 need-to-know|medium  |http://454ht5h59.com/l.7z                                                                                                                                               |        |2011-01-05 00:00:00+00|malware url zeus config v2 md5:e997f4e34c2f61fe91c9c3e32c56f33c|public                   |https://zeustracker.abuse.ch/monitor.php?host=454ht5h59.com                         
 }}}
-{{{
-$ cif 1e81826d3a272ffcb2707913a2218a1f
 
-Feed Restriction: RESTRICTED
-Feed Created: 2011-05-12T13:16:35Z
-
-restriction|severity|address                                                    |portlist|detecttime            |impact|description          |alternativeid_restriction|alternativeid                                                                           
-PRIVILEGED |medium  |http%3A%2F%2Fa.k7h2.org%2Findex.php%3Ftp%3De7908426b507d04c|        |2011-05-09 18:50:00+00|      |blackhole exploit kit|LIMITED                  |http://www.malwaredomainlist.com/mdl.php?search=a.k7h2.org/index.php?tp=e7908426b507d04c
-}}}
-
-== Phishing ==
+= Phishing Urls =
+== Table Format ==
 {{{
 $ cif -q url/phishing -s low
 
@@ -203,6 +204,7 @@ need-to-know |medium  |http://sport-ro.limewebs.com/amz/processing.php|05db9301b
 }}}
 
 = Malware =
+== Table Format ==
 {{{
 $ cif -q malware -s medium
 
