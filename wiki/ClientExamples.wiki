@@ -163,7 +163,7 @@ RESTRICTED |low     |ns5.tophostingcenter.com|208.43.34.232|A   |2011-02-16 08:2
 RESTRICTED |low     |ns4.tophostingcenter.com|208.43.34.231|A   |2011-02-16 08:24:50+00|suspicious nameserver servidoronline.co.cc|suspicious nameserver malware domain servidoronline.co.cc         |RESTRICTED               |                                               
 RESTRICTED |low     |ns5.tophostingcenter.com|208.43.34.232|A   |2011-02-16 09:24:23+00|suspicious nameserver servidoronline.co.cc|suspicious nameserver malware domain servidoronline.co.cc         |RESTRICTED               |                                               
 }}}
-== BindZone Format ==
+== Bindzone Format ==
 {{{
 $ cif -q domain/nameserver -s low -p bindzone
 
