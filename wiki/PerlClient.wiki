@@ -1,0 +1,23 @@
+#howto install the perl client
+
+ 1. install the client library
+{{{
+$> sudo perl -MCPAN -e 'install REST::Client, Text::Table, JSON, Module::Pluggable, Config::Simple, Snort::Rule, Class::Accessor, Digest::MD5, Digest::SHA1, Regexp::Common::net, Regexp::Common::net::CIDR'
+$> wget http://cpan.develooper.com/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.01_05.tar.gz
+$> tar -zxvf CIF-Client-0.01_05.tar.gz
+$> cd CIF-Client-0.01_05
+$> perl Makefile.PL && make && sudo make install
+}}}
+ 1. run a sample query for testing:
+{{{
+$> cif -h
+$> cif -q example.com
+$> cif -q 192.168.1.0/24
+$> cif -q c09bdd5529fa4111758a7e8de0d615a6
+$> cif -q url/246c9fa16cdc19411ace5cb43c301d2c
+$> cif -q malware -s low
+$> cif -q infrastructure
+$> cif -q infrastructure/network -p snort
+$> cif -q domain -p bindzone
+$> cif -q url -w low | grep -v private
+}}}
