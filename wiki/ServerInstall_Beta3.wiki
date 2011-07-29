@@ -42,13 +42,13 @@ $ sudo useradd -U -m cif
 $ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01_09.tar.gz
 $ tar -zxvf cif-0.01_09.tar.gz
 $ cd cif-0.01_09
-$ ./configure --with-user=cif --prefix=/opt/cif-0.01_09
+$ ./configure --with-user=cif --prefix=/opt/cif
 $ make testdeps
 $ make fixdeps
 $ make initdb
 $ make tables
 $ sudo make install
-$ sudo ln -sf /opt/cif-0.01_09 /opt/cif
+$ sudo ln -sf /opt/cif /opt/cif
 }}}
 
 == Configuration ==
