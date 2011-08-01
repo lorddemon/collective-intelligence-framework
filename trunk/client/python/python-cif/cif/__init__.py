@@ -11,7 +11,7 @@ import httplib2
 pp = pprint.PrettyPrinter(indent=4)
 
 class Client(object):
-    def __init__(self, host, apikey, fields=None, severity=None, restriction=None, nolog=None, confidence=None, simple=None, **args):
+    def __init__(self, host, apikey, fields=None, severity=None, restriction=None, nolog=None, confidence=None, simple=False, **args):
         self.host = host
         self.apikey = apikey
 
@@ -32,7 +32,7 @@ class Client(object):
         self._fields = fields
     fields = property(_get_fields, _set_fields)
     
-    def GET(self,q,severity=None,restriction=None,nolog=None,confidence=None,simple=None):
+    def GET(self,q,severity=None,restriction=None,nolog=None,confidence=None,simple=False):
         s = self.host + '/' + q
         
         params={'apikey':self.apikey}
@@ -205,7 +205,7 @@ class Client(object):
         return table
 
 class ClientINI(Client):
-    def __init__(self, path=None, fields=None, severity=None, restriction=None, nolog=None, confidence=None, simple=None):
+    def __init__(self, path=None, fields=None, severity=None, restriction=None, nolog=None, confidence=None, simple=False):
         if not path:
             path = os.path.expanduser("~/.cif")
         c = ConfigParser.ConfigParser()
