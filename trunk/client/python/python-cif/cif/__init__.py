@@ -7,10 +7,11 @@ from base64 import b64decode
 import hashlib
 import zlib
 import pprint
+import httplib2
 pp = pprint.PrettyPrinter(indent=4)
 
 class Client(object):
-    def __init__(self, host, apikey, fields=None, severity=None, restriction=None, nolog=None, confidence=None, **args):
+    def __init__(self, host, apikey, fields=None, severity=None, restriction=None, nolog=None, confidence=None, simple=None, **args):
         self.host = host
         self.apikey = apikey
 
@@ -20,6 +21,7 @@ class Client(object):
         self.restriction = restriction
         self.nolog = nolog
         self.confidence = confidence
+        self.simple = simple
 
     def _get_fields(self):
         return self._fields
@@ -30,7 +32,7 @@ class Client(object):
         self._fields = fields
     fields = property(_get_fields, _set_fields)
     
-    def GET(self,q,severity=None,restriction=None,nolog=None,confidence=None):
+    def GET(self,q,severity=None,restriction=None,nolog=None,confidence=None,simple=None):
         s = self.host + '/' + q
         
         params={'apikey':self.apikey}
@@ -73,11 +75,22 @@ class Client(object):
             entry = json.loads(jstring)
             feed['feed']['entry'] = entry
 
-        #""" again, mirroring the perl module with responseContent() """
-        #self.responseContent = json.dumps(ret)
+        if simple:
+            entries = feed['feed']['entry'] 
+            dlist = []
+            for incident in entries:
+                if(type(incident) == dict):
+                    x = self.make_simple(incident['Incident'])
+                    dlist.extend([x])
+                else:
+                    for i in incident:
+                        x = self.make_simple(i['Incident'])
+                        dlist.extend(x)
+            feed['feed']['entry'] = dlist
+
         return feed
 
-    def simple(self,incident):
+    def make_simple(self,incident):
             ret = {}
             impact = incident['Assessment']['Impact']
             ret['restriction'] = incident['restriction']
@@ -106,13 +119,12 @@ class Client(object):
             if 'RelatedActivity' in incident:
                 ret['relatedid'] = incident['RelatedActivity']['IncidentID']
 
+            ret['alternativeid'] = None
+            ret['alternativeid_restriction'] = None
             if 'AlternativeID' in incident:
                 if 'content' in incident['AlternativeID']['IncidentID']:
                     ret['alternativeid'] = incident['AlternativeID']['IncidentID']['content']
                     ret['alternativeid_restriction'] = incident['AlternativeID']['IncidentID']['restriction']
-                else:
-                    ret['alternativeid'] = None
-                    ret['alternativeid_restriction'] = None
 
             ret['impact'] = impact
             ret['severity'] = None
@@ -125,6 +137,8 @@ class Client(object):
             if 'Flow' in incident['EventData']:
                 system = incident['EventData']['Flow']['System']
                 ret['address'] = system['Node']['Address']
+                ret['protocol'] = None
+                ret['portlist'] = None
                 if(isinstance(ret['address'],dict)):
                     ret['address'] = ret['address']['content']
                 if 'Service' in system:
@@ -151,38 +165,27 @@ class Client(object):
         
         t = Texttable(max_width=0)
         t.set_deco(Texttable.VLINES)
-        dlist = []
-        for incident in entries:
-            if(type(incident) == dict):
-                x = self.simple(incident['Incident'])
-                dlist.extend([x])
-            else:
-                for i in incident:
-                    x = self.simple(i['Incident'])
-                    dlist.extend(x)
-
-        pp.pprint(dlist)
 
         if self.fields:
             cols = self.fields
         else:
-            cols = ['restriction','severity']
+            cols = ['restriction','severity','confidence','detecttime']
 
-            if dlist[0].has_key('address'):
+            if entries[0].has_key('address'):
                 cols.extend(['address','protocol','portlist'])
 
             for k in 'md5', 'sha1', 'malware_md5', 'malware_sha1':
-                if k in dlist[0]:
+                if k in entries[0]:
                     cols.append(k)
 
-            cols.extend(['detecttime','description','alternativeid_restriction','alternativeid'])
+            cols.extend(['impact','description','alternativeid_restriction','alternativeid'])
         
         t.add_row(cols)
-        for item in dlist:
+        for item in entries:
             for col in cols:
-                if isinstance(item[col],unicode):
+                if col in item and isinstance(item[col],unicode):
                     item[col] = item[col].encode('utf-8')
-
+                    
             t.add_row([item[col] or '' for col in cols])
             
         table = t.draw()
@@ -202,7 +205,7 @@ class Client(object):
         return table
 
 class ClientINI(Client):
-    def __init__(self, path=None, fields=None, severity=None, restriction=None, nolog=None, confidence=None):
+    def __init__(self, path=None, fields=None, severity=None, restriction=None, nolog=None, confidence=None, simple=None):
         if not path:
             path = os.path.expanduser("~/.cif")
         c = ConfigParser.ConfigParser()

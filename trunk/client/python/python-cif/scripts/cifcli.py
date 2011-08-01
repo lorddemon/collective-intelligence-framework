@@ -11,12 +11,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Command line interface to CIF APIs")
 
     parser.add_argument("-q",'--query', nargs='*',metavar="QUERY")
-    parser.add_argument('-s','--severity',help="specify the default severity",default='high')
-    parser.add_argument('-c','--confidence',help="specify the default confidence",default='85')
-    parser.add_argument('-r','--restriction',help='specify the default restriction',default='need-to-know')
-    parser.add_argument("-f", '--fields',nargs='*',metavar="FIELD")
+    parser.add_argument('-s','--severity',help="specify the default severity")
+    parser.add_argument('-c','--confidence',help="specify the default confidence")
+    parser.add_argument('-r','--restriction',help='specify the default restriction')
+    parser.add_argument("-f",'--fields',nargs='*',metavar="FIELD")
     parser.add_argument("-C","--config",default=os.path.expanduser("~/.cif"))
     parser.add_argument("-n","--nolog",action="store_true",default=False,help="do not log the query on the server")
+    parser.add_argument("-S","--simple",default=True,help="convert complex json documents to simple documents")
     args = parser.parse_args()
     #print args
 
@@ -28,12 +29,12 @@ if __name__ == '__main__':
         print "python cifcli.py -q 1.2.3.4 -n\n"
         os._exit(-1)        
 
-    rclient = cif.ClientINI(path=args.config,fields=args.fields,nolog=args.nolog)
+    rclient = cif.ClientINI(path=args.config,fields=args.fields,nolog=args.nolog,simple=args.simple)
 
     for query in args.query:
         # this returns a dict
         # need to translate it to an object with "plugin" type properties
-        feed = rclient.GET(query,args.severity,args.restriction,args.nolog,args.confidence)
+        feed = rclient.GET(query,args.severity,args.restriction,args.nolog,args.confidence,args.simple)
         if rclient.responseCode != 200:
             print 'request failed with code: ' + str(rclient.responseCode)
             os._exit(-1)
