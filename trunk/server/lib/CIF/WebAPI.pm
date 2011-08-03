@@ -144,11 +144,13 @@ sub GET {
         }
     }
 
+    my $group = $request->{'r'}->param('group') || 'everyone';
+
     my $feed;
     if($q){
         my $severity = $request->{'r'}->param('severity') || 'null';
         my $confidence = $request->{'r'}->param('confidence') || 0;
-        my ($err,$ret) = CIF::Archive->lookup({ nolog => $nolog, query => $q, source => $apikey, severity => $severity, restriction => $restriction, max => $maxresults, confidence => $confidence });
+        my ($err,$ret) = CIF::Archive->lookup({ nolog => $nolog, query => $q, source => $apikey, severity => $severity, restriction => $restriction, max => $maxresults, confidence => $confidence, group => $group });
         if($err){
             for(lc($err)){
                 if(/invalid input value for enum restriction/){

@@ -221,6 +221,7 @@ sub _process {
         }
     }
 
+    warn 'detecttime: '.@{$recs}[0]->{'detecttime'} if($debug);
     foreach(@$recs){
         foreach my $p (@plugs){
             my $r = eval { $p->process($_,$config) };

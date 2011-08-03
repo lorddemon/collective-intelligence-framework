@@ -7,12 +7,14 @@ use DateTime;
 use MIME::Lite;
 
 my %opts;
-getopts('P:hT:d',\%opts);
+getopts('S:I:P:hT:d',\%opts);
 
-our $debug  = $opts{'d'};
-my $dir     = $opts{'D'} || '/tmp';
-my $period  = $opts{'P'} || 'hour';
-my $admin   = $opts{'A'} || 'root';
+our $debug      = $opts{'d'};
+my $dir         = $opts{'D'} || '/tmp';
+my $period      = $opts{'P'} || 'hour';
+my $admin       = $opts{'A'} || 'root';
+my $interval    = $opts{'I'} || 6;
+my $specific    = $opts{'S'};
 
 die(usage()) if($opts{'h'});
 
@@ -23,7 +25,9 @@ Usage: perl $0
     -h      --help:     this message
     -A      --admin:    admin address to send too, default: $admin
     -P      --period:   delay before a 'lock' is stale, (hour, day), default: $period
+    -I      --interval: interval to test lock against <number>, eg: 6 hours or 3 days, default: $interval
     -D      --dir       default lockfie directory, default: $dir
+    -S      --specific: specific lock to check
     -d      --debug:    enable debugging
 
 EOF
@@ -40,6 +44,8 @@ for(lc($period)){
     }
 }
 
+$period = ($interval * $period);
+
 opendir(D,$dir) || die($!);
 my @crons = grep { /^cif_.*\.lock$/ && -f "$dir/$_" } readdir(D);
 closedir(D);
@@ -47,12 +53,21 @@ opendir(D,$dir) || die($!);
 my @checklocks = grep { /^cif_checklocks_/ && -f "$dir/$_" } readdir(D);
 closedir(D);
 
+if($specific){
+    @crons = grep(/$specific/,@crons);
+    @checklocks = grep(/$specific/,@checklocks);
+}
+
 my $now = time();
 foreach my $cron (@crons){
     my @stats = stat($dir."/".$cron);
     my $ctime = $stats[10];
     if(($now - $ctime) > $period){
         sendmsg('CIF: process possibly hung -- '.$cron) unless(test_sent($cron));
+    } else {
+        if(test_sent($cron)){
+            system('rm '.$dir.'/'.'cif_checklocks_'.$cron.'.error');
+        }
     }
 }
 

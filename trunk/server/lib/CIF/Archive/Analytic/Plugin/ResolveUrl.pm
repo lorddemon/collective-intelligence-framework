@@ -23,6 +23,7 @@ sub process {
     } elsif($a =~ /^(https?\:\/\/)?($RE{'net'}{'IPv4'})(:\d+)?\//) {
         $address = $2;
         $port = $3;
+        $port = '443' unless($port);
     } else {
         return;
     }
