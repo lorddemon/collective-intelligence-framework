@@ -97,7 +97,7 @@ sub insert {
         $self->SUPER::insert({
             uuid        => $info->{'uuid'},
             format      => $info->{'format'},
-            description => $info->{'description'},
+            description => lc($info->{'description'}),
             data        => $info->{'data'},
             restriction => $info->{'restriction'} || 'private',
             source      => $info->{'source'} || 'unknown',

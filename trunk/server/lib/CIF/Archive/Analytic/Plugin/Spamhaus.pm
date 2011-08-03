@@ -11,7 +11,7 @@ my $codes = {
         description => 'Direct UBE sources, spam operations & spam services',
         severity    => 'medium',
         confidence  => 95,
-        portlist    => '25,80,443',
+        portlist    => '25',
     },
     '127.0.0.3' => {
         impact      => 'spam infrastructure',
@@ -105,6 +105,7 @@ sub process {
         # see http://www.spamhaus.org/faq/answers.lasso?section=Spamhaus%20PBL#183
         return if($_->{'address'} =~ /\.(10|11)$/);
         my ($err,$id) = CIF::Archive->insert({
+            relatedid                   => $data->{'uuid'},
             address                     => $data->{'address'},
             impact                      => $code->{'impact'},
             description                 => $code->{'description'},
@@ -116,6 +117,21 @@ sub process {
             portlist                    => $code->{'portlist'},
             protocol                    => $code->{'protocol'} || 6,
         });
+        if(lc($code->{'description'}) =~ /^direct ube sources/){
+            CIF::Archive->insert({
+                relatedid                   => $data->{'uuid'},
+                address                     => $data->{'address'},
+                impact                      => 'malware infrastructure',
+                description                 => $code->{'description'},
+                severity                    => 'medium',
+                confidence                  => 85,
+                restriction                 => 'need-to-know',
+                alternativeid               => 'http://www.spamhaus.org/query/bl?ip='.$addr,
+                alternativeid_restriction   => 'public',
+                portlist                    => '80,443',
+                protocol                    => 6,
+            });
+        }
         warn $err if($err);
         warn $id->uuid() if($::debug);
     }

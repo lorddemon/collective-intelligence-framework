@@ -169,9 +169,20 @@ sub process {
             }
         }
 
-        $ref->{'confidence'} = ($ref->{'confidence'} * 10 / 2);
+        if($impact =~ /^malware binary$/){
+            $impact = 'malware';
+        }
+
+        if($ref->{'confidence'}){
+            $ref->{'confidence'} = ($ref->{'confidence'} * 10 / 2);
+        } else {
+            $ref->{'confidence'} = 0;
+        }
         $ref->{'impact'} = $impact;
         $ref->{'description'} = $description;
+        if($ref->{'restriction'} && $ref->{'restriction'} eq 'public'){
+            $ref->{'restriction'} = 'need-to-know';
+        }
 
         my ($err,$id) = CIF::Archive->insert($ref);
         my $a = $ref->{'address'} || $ref->{'malware_md5'};

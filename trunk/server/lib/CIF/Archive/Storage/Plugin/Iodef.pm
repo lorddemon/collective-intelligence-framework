@@ -49,6 +49,7 @@ sub convert {
     my $protocol                    = $info->{'protocol'};
     my $portlist                    = $info->{'portlist'};
     my $purpose                     = $info->{'purpose'} || 'mitigation';
+    my $group                       = $info->{'groups'} || genSourceUUID('everyone');
 
     my $dt = $info->{'detecttime'};
     # default it to the hour
@@ -65,6 +66,10 @@ sub convert {
     $iodef->add('IncidentIncidentIDname',$source) if($source);
     $iodef->add('IncidentDetectTime',$detecttime) if($detecttime);
     $iodef->add('IncidentRelatedActivityIncidentID',$relatedid) if($relatedid);
+    $iodef->add('IncidentAdditionalDatameaning','groups');
+    $iodef->add('IncidentAdditionalDatadtype','string');
+    $iodef->add('IncidentAdditionalData',$group);
+
     if($alternativeid){
         $iodef->add('IncidentAlternativeIDIncidentID',$alternativeid);
         $iodef->add('IncidentAlternativeIDIncidentIDrestriction',$alternativeid_restriction);
