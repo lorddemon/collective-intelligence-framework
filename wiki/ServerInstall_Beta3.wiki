@@ -33,7 +33,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 = Install =
 == Server ==
  # install the PerlClient (we use some functions in it for the server)
- # create your "cif" user/group
+ # create your "cif" user/group (the configure script will default to this user "cif")
 {{{
 $ sudo useradd -U -m cif
 }}}
@@ -42,13 +42,19 @@ $ sudo useradd -U -m cif
 $ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01_20110729_163359.tar.gz
 $ tar -zxvf cif-0.01_20110729_163359.tar.gz
 $ cd cif-0.01_20110729_163359
-$ ./configure --with-user=cif --prefix=/opt/cif
+$ ./configure
 $ make testdeps
 $ make fixdeps
+$ sudo make install
+}}}
+ # if this is a first-time install:
+{{{
 $ make initdb
 $ make tables
-$ sudo make install
-$ sudo ln -sf /opt/cif /opt/cif
+}}}
+ # if you're upgrading a previous install you'll need to restart apache2
+{{{
+$ sudo /etc/init.d/apache2 restart
 }}}
 
 == Configuration ==
