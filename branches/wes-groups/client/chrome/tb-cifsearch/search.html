@@ -1,0 +1,102 @@
+<html>
+<head>
+<style>
+      html {
+		margin:0px;
+		padding:0px;
+	  }
+	  body {
+	    margin:0px;
+	    padding:0px;
+		//background-color:#ff0000;
+	  }
+	  #title {
+		 font-size:13px;
+		 font-family:arial;
+		 color:#000000;
+		 background-image:url();
+		 background-repeat:no-repeat;
+		 padding-left:20px;
+		 height:17px;
+	  }
+
+	  #searchBox {
+	     width:100%;
+		 height:24px;
+		 font-size:14px;
+		 font-family:arial;
+		 color:#000000;
+		 margin-top:3px;
+	  }
+	  #searchButton {
+	     float:right;
+		 background-image:url(images/searchButton.png);
+		 background-repeat:no-repeat;
+		 width:58px;
+		 height:25px;
+		 margin-top:4px;
+		 margin-right:2px;
+		 cursor:pointer;
+	  }
+	  a {
+		 font-size:11px;
+		 font-family:arial;	
+		 text-decoration:none;
+		 padding-left:3px;
+	  }
+	  a:hover {
+		 text-decoration:underline;
+	  }
+</style>
+
+<script type="text/javascript">
+  function onLoad() {
+
+	var timeout = setTimeout(function() {
+		document.getElementById("searchBox").addEventListener("keyup", function(e) {
+			if (e.keyCode==13) doSearch();
+		},false);
+		document.getElementById("searchButton").addEventListener("mousedown", doSearch ,false);
+
+        try {
+			chrome.tabs.getSelected(null, function (tab) {
+					 chrome.tabs.executeScript(tab.id, {
+						file : "script.js"
+					 })
+			})
+		} catch(ex) {}
+
+	}, 10);
+  }
+  function doSearch() {
+        var host = localStorage.host;
+        var apikey = localStorage.apikey;
+        
+        var q   = document.getElementById("searchBox").value;
+        var url = host + '/' + q + '?apikey=' + apikey;
+	  
+        chrome.tabs.create({
+		  url  : url
+        })
+  }
+  function openManager() {
+	  chrome.tabs.create({
+			url:"manage.html",
+			selected:true
+	  }); 
+  }
+</script>
+</head>
+<body onload="onLoad()">
+  <div id="main" style="min-width:255px;height:50px">
+		<div id="title"></div>
+		<input id="searchBox" type="text" value=""></input>
+	</div>
+    <div id="searchButton" title="Search"></div>
+
+	  <a href="#" onclick="openManager();return false;">API Settings...</a>
+
+
+  </div>
+</body>
+</html>
