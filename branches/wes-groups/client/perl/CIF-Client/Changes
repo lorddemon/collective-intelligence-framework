@@ -1,0 +1,36 @@
+Revision history for Perl extension CIF::Client.
+
+0.01_05  2011-07-27
+    - minor bugfixes
+    - added tls_verify option
+
+0.01_04  2011-07-27
+    - minor bugfixes
+
+0.01_03  2011-07-25
+    - minor bugfixes
+    - doc updates (cif -h)
+    - few changes to the 'defaults' for restriction
+
+0.01_02  2011-07-16
+    - few minor bugfixes
+
+0.01_01  2011-07-01
+    - revamped for working with cif-0.01_03 api
+    - added Iodef plugin to trasnlate IODEF json documents to simple hashes
+
+0.00_03  2011-01-19
+    - updated for use with new CIF::WebAPI
+    - CIF::WebAPI now handles the regex
+    - added transparent zlib layer for use with CIF::WebAPI compression
+    - added ability to modify default ->table() display
+    - now installing example.pl as /usr/local/bin/cif for commandline use
+    - added ability to set fields (it'll autopick based on the feed)
+    - added plugins feature (snort, csv, bindzone, iptables, raw)
+    - updated to be used with Config::Simple
+
+0.00_02  2010-11-08
+    - updated to be used with CIF::WebAPI
+
+0.00_01  Sat Jul 10 03:12:57 2010
+    - original beta version
