@@ -4,6 +4,7 @@ CREATE TABLE url (
     uuid uuid REFERENCES archive(uuid) ON DELETE CASCADE NOT NULL,
     address text,
     source uuid,
+    guid uuid,
     confidence REAL,
     severity severity,
     restriction restriction not null default 'private',

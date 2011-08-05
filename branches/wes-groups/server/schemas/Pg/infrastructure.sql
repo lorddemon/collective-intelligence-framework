@@ -8,6 +8,7 @@ CREATE TABLE infrastructure (
     uuid uuid REFERENCES archive(uuid) ON DELETE CASCADE NOT NULL,
     address INET NOT NULL,
     source uuid NOT NULL,
+    guid uuid,
     severity severity,
     confidence real,
     restriction restriction not null default 'private',

@@ -5,7 +5,7 @@ sub prepare {
     my $class = shift;
     my $info = shift;
     return(0) unless($info->{'impact'} =~ /whitelist/);
-    return('infrastructure_whitelist');
+    return('whitelist');
 }
 
 1;

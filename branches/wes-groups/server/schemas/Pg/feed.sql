@@ -4,6 +4,7 @@ CREATE TABLE feed (
     uuid uuid NOT NULL REFERENCES archive(uuid) ON DELETE CASCADE,
     description text default 'feed',
     source uuid,
+    guid uuid,
     hash_sha1 varchar(40),
     signature text,
     impact VARCHAR(140) default 'feed',

@@ -6,7 +6,7 @@ sub prepare {
     my $info = shift;
     return unless($info->{'impact'});
     return(0) unless($info->{'impact'} =~ /phish/);
-    return('domain_phishing');
+    return('phishing');
 }
 
 1;

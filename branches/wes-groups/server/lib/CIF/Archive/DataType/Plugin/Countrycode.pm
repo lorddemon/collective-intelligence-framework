@@ -12,8 +12,8 @@ use Module::Pluggable require => 1, search_path => [__PACKAGE__];
 
 __PACKAGE__->table('countrycode');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid cc source severity confidence restriction detecttime created/);
-__PACKAGE__->columns(Essential => qw/id uuid cc source severity confidence restriction detecttime created/);
+__PACKAGE__->columns(All => qw/id uuid cc source guid severity confidence restriction detecttime created/);
+__PACKAGE__->columns(Essential => qw/id uuid cc source guid severity confidence restriction detecttime created/);
 __PACKAGE__->sequence('countrycode_id_seq');
 
 __PACKAGE__->set_sql('feed' => qq{
@@ -49,7 +49,7 @@ sub insert {
     my $tbl = $class->table();
     foreach($class->plugins()){
         if(my $t = $_->prepare($info)){
-            $class->table($t);
+            $class->table($tbl.'_'.$t);
         }
     }
 
@@ -61,6 +61,7 @@ sub insert {
         confidence  => $info->{'confidence'},
         restriction => $info->{'restriction'} || 'private',
         detecttime  => $info->{'detecttime'},
+        guid        => $info->{'guid'},
     }) };
     if($@){
         return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);

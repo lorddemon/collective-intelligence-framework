@@ -76,7 +76,7 @@ sub authorize {
     my @stack = split('\/+' , $uri);
     @stack = grep { length($_)>0 } @stack;
 
-    my $rec = CIF::WebAPI::APIKey->retrieve(apikey => $key);
+    my $rec = CIF::WebAPI::APIKey->retrieve(uuid => $key);
     return(0) unless($rec); # no keys
     return(0) if($rec->revoked()); # revoked keys
     return(0) unless($rec->access());

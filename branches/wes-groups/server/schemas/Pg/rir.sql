@@ -5,6 +5,7 @@ CREATE TABLE rir (
     rir varchar(8),
     confidence REAL,
     source uuid NOT NULL,
+    guid uuid,
     severity severity,
     restriction restriction not null default 'private',
     detecttime timestamp with time zone DEFAULT NOW(),

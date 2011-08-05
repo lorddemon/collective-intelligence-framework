@@ -4,6 +4,7 @@ CREATE TABLE email (
     uuid uuid REFERENCES archive(uuid) ON DELETE CASCADE NOT NULL,
     address text,
     source uuid,
+    guid uuid,
     confidence real,
     severity severity,
     restriction restriction not null default 'private',

@@ -5,6 +5,7 @@ CREATE TABLE asn (
     asn float not null,
     asn_desc text,
     source uuid NOT NULL,
+    guid uuid,
     severity severity,
     confidence real,
     restriction restriction not null default 'private',

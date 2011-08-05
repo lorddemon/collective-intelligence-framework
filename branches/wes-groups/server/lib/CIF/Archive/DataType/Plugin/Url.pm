@@ -17,8 +17,8 @@ use Regexp::Common qw/URI/;
 
 __PACKAGE__->table('url');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid source address confidence severity restriction detecttime created/);
-__PACKAGE__->columns(Essential => qw/id uuid source address confidence severity restriction detecttime created/);
+__PACKAGE__->columns(All => qw/id uuid guid source address confidence severity restriction detecttime created/);
+__PACKAGE__->columns(Essential => qw/id uuid guid source address confidence severity restriction detecttime created/);
 __PACKAGE__->sequence('url_id_seq');
 
 ## sub lookup {} is via Plugin::Hash
@@ -46,7 +46,7 @@ sub insert {
     my $tbl = $self->table();
     foreach($self->plugins()){
         if(my $t = $_->prepare($info)){
-            $self->table($t);
+            $self->table($tbl.'_'.$t);
         }
     }
 
@@ -58,6 +58,7 @@ sub insert {
         severity        => $info->{'severity'} || 'null',
         restriction     => $info->{'restriction'} || 'private',
         detecttime      => $info->{'detecttime'},
+        guid            => $info->{'guid'},
     }) };
     if($@){
         die unless($@ =~ /duplicate key value violates unique constraint/);

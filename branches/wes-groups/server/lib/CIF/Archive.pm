@@ -14,7 +14,7 @@ use CIF::Utils ':all';
 
 __PACKAGE__->table('archive');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid format description data restriction created source/);
+__PACKAGE__->columns(All => qw/id uuid source guid format description data restriction created/);
 __PACKAGE__->columns(Essential => qw/id uuid format description source restriction data created/);
 __PACKAGE__->sequence('archive_id_seq');
 
@@ -49,6 +49,16 @@ sub data_hash {
     return JSON::from_json($class->data());
 }
 
+sub data_hash_simple {
+    my $class = shift;
+    foreach my $p ($class->plugins('storage')){
+        if(my $h = $p->data_hash_simple($class->data(),$class->uuid())){
+            return($h);
+        }
+    }
+    return($class->data_hash());
+}
+
 sub insert {
     my $self = shift;
     my $info = shift;
@@ -57,6 +67,9 @@ sub insert {
     $source = genSourceUUID($source) unless(isUUID($source));
     $info->{'source'} = $source;
 
+    my $guid = $info->{'guid'} || 'root';
+    $guid = genSourceUUID($guid) unless(isUUID($guid));
+    $info->{'guid'} = $guid;
     # need to run through this first; make sure it's worth doing the insert
     ## TODO -- make this support multiple plugins, we may want to index this 7 ways to sunday.
     my @dt_plugs;
@@ -101,6 +114,7 @@ sub insert {
             data        => $info->{'data'},
             restriction => $info->{'restriction'} || 'private',
             source      => $info->{'source'} || 'unknown',
+            guid        => $info->{'guid'},
         });
     };
     if($@){
@@ -128,6 +142,14 @@ sub insert {
     return(undef,$id);
 }
 
+__PACKAGE__->set_sql('lookup' => qq{
+    SELECT __TABLE__.id,__TABLE__.uuid
+    FROM __TABLE__
+    LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
+    WHERE __TABLE__.uuid = ?
+    AND apikeys_groups.uuid = ?
+});
+
 sub lookup {
     my $class = shift;
     my $info = shift;
@@ -135,7 +157,12 @@ sub lookup {
 
     my $ret;
     if(isUUID($info->{'query'})){
-        $ret = CIF::Archive->retrieve(uuid => $info->{'query'});
+        ## TODO -- setup group perms
+        my @recs = eval {
+            CIF::Archive->search_lookup($info->{'query'},$info->{'apikey'});
+        };
+        return($@,undef) if($@);
+        $ret = $recs[0];
     } else {
         foreach my $p ($class->plugins('datatype')){
             $ret = eval { $p->lookup($info) };
@@ -149,7 +176,7 @@ sub lookup {
         my $dt = DateTime->from_epoch(epoch => time());
         $dt = $dt->ymd().'T'.$dt->hour().':00:00Z';
         my $q = lc($info->{'query'});
-        my ($md5,$sha1,$addr);
+        my ($uuid,$md5,$sha1,$addr);
         for($q){
             if(/^[a-f0-9]{32}$/){
                 $md5 = $q;
@@ -157,6 +184,10 @@ sub lookup {
             }
             if(/^[a-f0-9]{40}$/){
                 $sha1 = $q;
+                last;
+            }
+            if(isUUID($q)){
+                $uuid = $q;
                 last;
             }
             $addr = $q;
@@ -170,8 +201,10 @@ sub lookup {
             detecttime  => $dt,
             md5         => $md5,
             sha1        => $sha1,
+            uuid        => $uuid,
             confidence  => 50,
             severity    => 'low',
+            guid        => $info->{'guid'},
         });
     }
     return(undef,$ret);
