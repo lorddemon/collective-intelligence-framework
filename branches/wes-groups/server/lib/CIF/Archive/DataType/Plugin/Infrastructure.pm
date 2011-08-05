@@ -14,8 +14,8 @@ use DateTime;
 
 __PACKAGE__->set_table();
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid address confidence source severity restriction detecttime/);
-__PACKAGE__->columns(Essential => qw/uuid address restriction detecttime confidence source severity detecttime/);
+__PACKAGE__->columns(All => qw/id uuid address confidence source guid severity restriction detecttime/);
+__PACKAGE__->columns(Essential => qw/uuid/);
 __PACKAGE__->sequence('infrastructure_id_seq');
 
 
@@ -118,7 +118,7 @@ sub insert {
     my $tbl = $self->table();
     foreach($self->plugins()){
         if(my $t = $_->prepare($info)){
-            $self->table($t);
+            $self->table($tbl.'_'.$t);
         }
     }
 
@@ -130,6 +130,7 @@ sub insert {
             address     => $address,
             confidence  => $info->{'confidence'},
             source      => $info->{'source'},
+            guid        => $info->{'guid'},
             severity    => $info->{'severity'} || 'null',
             restriction => $info->{'restriction'} || 'private',
             detecttime  => $info->{'detecttime'},
@@ -151,7 +152,17 @@ sub lookup {
     my $sev = $info->{'severity'};
     my $conf = $info->{'confidence'};
     my $restriction = $info->{'restriction'};
-    return($class->SUPER::lookup($q,$q,$sev,$conf,$restriction,$info->{'limit'}));
+    return(
+        $class->SUPER::lookup(
+            $q,
+            $q,
+            $sev,
+            $conf,
+            $restriction,
+            $info->{'apikey'},
+            $info->{'limit'},
+        )
+    );
 }
 
 sub isWhitelisted {
@@ -173,6 +184,20 @@ sub isWhitelisted {
 }
 
 __PACKAGE__->set_sql('lookup' => qq{
+    SELECT __TABLE__.id,__TABLE__.uuid 
+    FROM __TABLE__
+    LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
+    WHERE address != '0/0'
+    AND (address >>= ? OR address <<= ?)
+    AND severity >= ?
+    AND confidence >= ?
+    AND restriction <= ?
+    AND apikeys_groups.uuid = ?
+    ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
+    LIMIT ?
+});
+
+__PACKAGE__->set_sql('_lookup' => qq{
     SELECT __ESSENTIAL__ 
     FROM __TABLE__
     WHERE address != '0/0'

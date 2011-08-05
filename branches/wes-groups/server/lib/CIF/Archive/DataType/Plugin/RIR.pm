@@ -12,8 +12,8 @@ use Module::Pluggable require => 1, search_path => [__PACKAGE__];
 
 __PACKAGE__->table('rir');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid rir source confidence severity restriction detecttime created/);
-__PACKAGE__->columns(Essential => qw/id uuid rir source confidence severity restriction detecttime created/);
+__PACKAGE__->columns(All => qw/id uuid rir guid source confidence severity restriction detecttime created/);
+__PACKAGE__->columns(Essential => qw/id uuid rir guid source confidence severity restriction detecttime created/);
 __PACKAGE__->sequence('asn_id_seq');
 
 # Preloaded methods go here.
@@ -34,7 +34,7 @@ sub insert {
     my $tbl = $class->table();
     foreach($class->plugins()){
         if(my $t = $_->prepare($info)){
-            $class->table($t);
+            $class->table($tbl.'_'.$t);
         }
     }
 
@@ -46,6 +46,7 @@ sub insert {
         severity    => $info->{'severity'},
         restriction => $info->{'restriction'} || 'private',
         detecttime  => $info->{'detecttime'},
+        guid        => $info->{'guid'},
     }) };
     if($@){
         return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
@@ -60,7 +61,16 @@ sub lookup {
     my $info = shift;
     my $q = $info->{'query'};
     return unless($class->isrir($q));
-    return($class->SUPER::lookup($q,$info->{'severity'},$info->{'confidence'},$info->{'restriction'},$info->{'limit'}));
+    return(
+        $class->SUPER::lookup(
+            $q,
+            $info->{'severity'},
+            $info->{'confidence'},
+            $info->{'restriction'},
+            $info->{'apikey'},
+            $info->{'limit'},
+        )
+    );
 }
 
 sub isrir {
@@ -103,13 +113,15 @@ __PACKAGE__->set_sql('feed' => qq{
 });
 
 __PACKAGE__->set_sql('lookup' => qq{
-    SELECT __ESSENTIAL__
+    SELECT __TABLE__.id,__TABLE__.uuid
     FROM __TABLE__
+    LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
     WHERE rir = ?
     AND severity >= ?
     AND confidence >= ?
     and restriction <= ?
-    ORDER BY detecttime DESC, created DESC, id DESC
+    and apikeys_groups.uuid = ?
+    ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
     LIMIT ?
 });
 

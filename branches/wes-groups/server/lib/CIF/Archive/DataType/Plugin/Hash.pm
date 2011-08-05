@@ -12,8 +12,8 @@ use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/S
 
 __PACKAGE__->table('hash');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid hash confidence source type severity restriction detecttime created/);
-__PACKAGE__->columns(Essential => qw/id uuid hash confidence source type severity restriction detecttime created/);
+__PACKAGE__->columns(All => qw/id uuid hash confidence guid source type severity restriction detecttime created/);
+__PACKAGE__->columns(Essential => qw/id uuid hash confidence guid source type severity restriction detecttime created/);
 __PACKAGE__->sequence('hash_id_seq');
 
 sub prepare {
@@ -34,7 +34,7 @@ sub insert {
     my $id;
     foreach($class->plugins()){
         if(my $t = $_->prepare($info)){
-            $class->table($t);
+            $class->table($tbl.'_'.$t);
             $id = eval { $class->SUPER::insert({
                 uuid        => $info->{'uuid'},
                 hash        => $info->{'hash'},
@@ -43,6 +43,7 @@ sub insert {
                 severity    => $info->{'severity'} || 'null',
                 restriction => $info->{'restriction'} || 'private',
                 detecttime  => $info->{'detecttime'},
+                guid        => $info->{'guid'},
             }) };
             if($@){
                 return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
@@ -78,20 +79,31 @@ sub lookup {
     my $q = $info->{'query'};
     foreach($class->plugins()){
         if(my $r = $_->lookup($q)){
-            return($class->SUPER::lookup($q,$info->{'severity'},$info->{'confidence'},$info->{'restriction'},$info->{'limit'}));
+            return(
+                $class->SUPER::lookup(
+                    $q,
+                    $info->{'severity'},
+                    $info->{'confidence'},
+                    $info->{'restriction'},
+                    $info->{'apikey'},
+                    $info->{'limit'},
+                )
+            );
         }
     }
     return(undef);
 }
 
 __PACKAGE__->set_sql('lookup' => qq{
-    SELECT __ESSENTIAL__
+    SELECT __TABLE__.id,__TABLE__.uuid
     FROM __TABLE__
+    LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
     WHERE lower(hash) = lower(?)
     and severity >= ?
     and confidence >= ?
     and restriction <= ?
-    ORDER BY detecttime DESC, created DESC, id DESC
+    and apikeys_groups.uuid = ?
+    ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
     LIMIT ?
 });
 

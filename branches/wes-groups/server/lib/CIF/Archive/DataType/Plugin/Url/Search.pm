@@ -6,7 +6,7 @@ sub prepare {
     my $info = shift;
 
     return(0) unless($info->{'impact'} =~ /search/);
-    return('url_search');
+    return('search');
 }
 
 1;

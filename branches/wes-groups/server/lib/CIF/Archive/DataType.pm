@@ -42,8 +42,10 @@ sub set_table {
 
     my @bits = split(/::/,lc($class));
     my $t = $bits[$#bits];
+    my $ptable = $class->SUPER::table();
     if($bits[$#bits-1] ne 'plugin'){
-        $t = $bits[$#bits-1].'_'.$bits[$#bits];
+        #$t = $bits[$#bits-1].'_'.$bits[$#bits];
+        $t = $ptable.'_'.$bits[$#bits];
     }
     return $class->table($t);
 }

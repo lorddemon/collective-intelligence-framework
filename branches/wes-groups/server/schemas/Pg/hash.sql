@@ -4,6 +4,7 @@ CREATE TABLE hash (
     uuid uuid REFERENCES archive(uuid) ON DELETE CASCADE NOT NULL,
     hash text not null,
     source uuid,
+    guid uuid,
     type text,
     severity severity,
     confidence real,

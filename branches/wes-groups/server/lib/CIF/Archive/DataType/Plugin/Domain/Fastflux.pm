@@ -6,7 +6,7 @@ sub prepare {
     my $info = shift;
     return unless($info->{'impact'});
     return(0) unless($info->{'impact'} =~ /fastflux/);
-    return('domain_fastflux');
+    return('fastflux');
 }
 
 1;
