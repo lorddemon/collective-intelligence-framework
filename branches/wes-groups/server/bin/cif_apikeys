@@ -35,7 +35,7 @@ use Data::Dumper;
 my %opts;
 getopt('g:e:k:u:', \%opts);
 die(usage()) if($opts{'h'});
-my $user = $opts{'u'} || die(usage()) unless($opts{'k'} || $opts{'l'});
+my $user = $opts{'u'} || die(usage()) unless($opts{'k'} || $opts{'l'} || $opts{'g'});
 my $access = $opts{'e'};
 my $groups = $opts{'g'};
 
@@ -92,15 +92,23 @@ if(exists($opts{'a'})){
         }
     }
 } elsif($opts{'g'}){
-    die(usage()) unless($opts{'k'});
-    my @r = CIF::WebAPI::APIKey->search(uuid => $opts{'k'});
-    if($#r > -1){
-        foreach (@r){
-            $_->add_groups($opts{'g'});
+    if($opts{'k'}){
+        my @r = CIF::WebAPI::APIKey->search(uuid => $opts{'k'});
+        if($#r > -1){
+            foreach (@r){
+                $_->add_groups($opts{'g'});
+            }
         }
+    } else {
+        my @g = split(/,/,$opts{'g'});
+        my $t = Text::Table->new('group','guid');
+        foreach(@g){
+            $t->load([$_,CIF::Utils::genSourceUUID($_)]);
+        }
+        print $t;
+        exit(0);
     }
 }
-    
 
 if(exists($opts{'d'})){
     die(usage()) unless($opts{'k'} || $opts{'userid'});
