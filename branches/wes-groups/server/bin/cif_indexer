@@ -40,11 +40,13 @@ my $min         = $opts{'m'};
 my $max         = $opts{'M'};
 my $threads     = $opts{'t'} || 8;
 my $plug        = $opts{'p'} || die('missing plugin to run');
-my $schema      = $opts{'S'} || 'cif_new';
+my $batch_limit = $opts{'b'} || 10000;
+my $autocommit  = $opts{'a'} || 1;
 
 my $bail = 0;
 $SIG{'INT'} = sub {
     print "nCaught Interrupt (^C), Aborting\n";
+    exit(-1);
     $bail++;
     if($bail > 1){
         exit(-1);
@@ -59,15 +61,19 @@ $max = $ret->{'max'} unless($max);
 die 'missing min' unless($min);
 die 'missing max' unless($max);
 
-my $sets = int(($max - $min) / $set_limit) + 1;
-$threads = $sets if($sets < $threads);
-foreach (0 ... $sets){
+my $total = ($max - $min);
+my $sets = int($total / $set_limit) + 1;
+warn "sets: $sets" if($debug);
+foreach (1 ... $sets+1){
     if($set_limit > ($max-$min)){
         $set_limit = ($max-$min);
     }
     my $end = $min+$set_limit;
+    warn "running set: $_ $min -- $end" if($debug);
     threads->create('run_set',$min,$end)->join();
     $min = ($min+$end+1);
+    my $completed = (($sets+1)/$_) * 100;
+    warn sprintf('%.3f',$completed).'% completed'; 
     last if($min >= $max);
 }
 
@@ -75,23 +81,12 @@ sub run_set {
     my ($start,$end) = @_;
     my @joinable;
     my $t;
-    do {
-        while(scalar(threads->list()) >= $threads){
-            @joinable = threads->list(threads::joinable);
-            if($#joinable > -1){
-                foreach(@joinable){
-                    $_->join();
-                    $t--;
-                }
-            } else {
-                sleep(1);
-                next();
-            }
-        }
-        my $batch = ($end - $start) / $threads;
-        threads->create(\&process,$start,($start+$batch));
-        $start += $batch+1;
-    } while($start <= $end && !$bail);
+    my @array = map { $_ } ($start ... $end);
+    require CIF::Utils;
+    my $batches = CIF::Utils::split_batches($threads,\@array);
+    foreach (@$batches){
+        threads->create(\&process,$_);
+    }
     
     while(threads->list()){
         @joinable = threads->list(threads::joinable);
@@ -106,23 +101,30 @@ sub run_set {
 }
 
 sub process {
-    my ($start,$end) = @_;
-    warn "$start -- $end";
+    my $b = shift;
 
     require CIF::Archive;
+    $plug = 'CIF::Archive::DataType::Plugin::'.ucfirst($plug) unless($plug =~ /^CIF::/);
     eval "require $plug";
-    my $t = $plug->table();
-    $plug->table($t.'_new');
+    $plug->db_Main->{'AutoCommit'} = 0 unless($autocommit);
 
-    foreach($start ... $end){
+    my $x = 1;
+    my $total = scalar(@$b);
+    foreach(@$b){
         $_ = CIF::Archive->retrieve(id => $_);
         next unless($_);
         my @recs = @{$_->data_hash_simple()};
         foreach my $r (@recs){
+            next unless($plug->prepare($r));
             my $id = $plug->insert($r);
-            warn $id;
-        }   
+        }
+        my $done = (($x++/$total) * 100);
+        $done = sprintf("%.3f",$done);
+        if($x % 1000 == 0){
+            warn 'THREAD: '.threads->tid().' '.$done.'% completed';
+        }
     }
+    $plug->dbi_commit() unless($autocommit);
 
 }
 
