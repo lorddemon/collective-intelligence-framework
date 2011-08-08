@@ -60,6 +60,7 @@ sub process {
             cc          => $ccode,
             prefix      => $network,
             rir         => $rir,
+            guid        => $data->{'guid'},
         });
         warn $err if($err);
         warn $id->uuid() if $::debug;
