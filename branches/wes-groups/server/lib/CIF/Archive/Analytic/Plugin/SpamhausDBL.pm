@@ -85,7 +85,7 @@ sub process {
 
         my ($err,$id) = CIF::Archive->insert({
             guid                        => $data->{'guid'},
-            relatedid                   => $data->{'uuid'}
+            relatedid                   => $data->{'uuid'},
             address                     => $data->{'address'},
             impact                      => $code->{'impact'},
             description                 => $code->{'description'},
