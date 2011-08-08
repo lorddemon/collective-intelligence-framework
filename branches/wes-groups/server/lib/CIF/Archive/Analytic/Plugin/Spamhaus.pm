@@ -119,6 +119,7 @@ sub process {
         });
         if(lc($code->{'description'}) =~ /^direct ube sources/){
             CIF::Archive->insert({
+                guid                        => $data->{'guid'},
                 relatedid                   => $data->{'uuid'},
                 address                     => $data->{'address'},
                 impact                      => 'malware infrastructure',
