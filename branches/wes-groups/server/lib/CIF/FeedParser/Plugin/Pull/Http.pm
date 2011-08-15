@@ -19,10 +19,14 @@ sub pull {
        my $req = HTTP::Request->new(GET => $f->{'feed'});
        $req->authorization_basic($f->{'feed_user'},$f->{'feed_password'});
        my $ress = $ua->request($req);
-       die('request failed: '.$ress->status_line()."\n") unless($ress->is_success());
+       unless($ress->is_success()){
+            print('request failed: '.$ress->status_line()."\n");
+            return;
+       }
        $content = $ress->decoded_content();
     } else {
-        $content = LWP::Simple::get($f->{'feed'}) || die('failed to get feed: '.$f->{'feed'}.': '.$!);
+        $content = LWP::Simple::get($f->{'feed'});
+        print 'failed to get feed: '.$f->{'feed'}."\n" unless($content);
     }
     return($content);
 }
