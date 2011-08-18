@@ -35,21 +35,55 @@ sub genkey {
         revoked     => $args{'revoked'},
     });
     if($args{'groups'}){
-        $r->add_groups($args{'groups'});
+        $r->add_groups($args{'default_guid'},$args{'groups'});
     }
     return($r);
 }
 
 sub add_groups {
-    my ($self,$groups) = @_;
+    my ($self,$default_guid,$groups) = @_;
+    if($default_guid){
+        $default_guid = CIF::Utils::genSourceUUID($default_guid) unless(CIF::Utils::isUUID($default_guid));
+    }
 
     foreach (split(',',$groups)){
         $_ = CIF::Utils::genSourceUUID($_) unless(CIF::Utils::isUUID($_));
-        my $id = CIF::WebAPI::APIKeyGroups->insert({
-            uuid    => $self->uuid(),
-            guid    => $_,
-        });
+        my $isDefault = 1 if($default_guid && ($_ eq $default_guid));
+        my $id = eval {
+            CIF::WebAPI::APIKeyGroups->insert({
+                uuid            => $self->uuid(),
+                guid            => $_,
+                default_guid    => $isDefault,
+            });
+        };
+        if($@){
+            die($@) unless($@ =~ /unique constraint/);
+        }
     }
+}
+
+sub default_guid {
+    my $self = shift;
+    my @groups = $self->groups();
+    foreach (@groups){
+        return($_->guid()) if($_->default_guid());
+    }
+    # this shouldn't happen... in theory.
+    return(0);
+}
+
+sub inGroup {
+    my $self = shift;
+    my $grp = shift;
+    return unless($grp);
+    $grp = lc($grp);
+    $grp = CIF::Utils::genSourceUUID($grp) unless(CIF::Utils::isUUID($grp));
+
+    my @groups = $self->groups();
+    foreach (@groups){
+        return(1) if($grp eq $_->guid());
+    }
+    return(0);
 }
 
 sub mygroups {

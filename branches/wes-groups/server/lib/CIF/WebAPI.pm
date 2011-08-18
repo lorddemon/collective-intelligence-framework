@@ -117,6 +117,7 @@ sub GET {
 
     my $maxresults = $request->{'r'}->param('maxresults') || $request->dir_config->{'CIFFeedResultsDefault'} || 10000;
     my $apikey = $request->{'r'}->param('apikey');
+    my $guid = $request->{'guid'};
 
     # figure out who's calling us
     my @bits    = split(/\:\:/,ref($self));
@@ -129,6 +130,7 @@ sub GET {
 
     my $nolog = $request->{'r'}->param('nolog');
     my $restriction = $request->{'r'}->param('restriction') || $request->{'r'}->dir_config->get('CIFDefaultFeedRestriction') || 'private';
+
     my $q = $self->{'query'};
     if($q && $q =~ /^ERROR/){
         $response->{'message'} = $q;
@@ -157,7 +159,8 @@ sub GET {
             max             => $maxresults, 
             confidence      => $confidence,
             apikey          => $apikey,
-            guid            => 'everyone',
+            guid            => $guid,
+            default_guid    => $request->{'default_guid'},
         });
         if($err){
             for(lc($err)){
@@ -205,6 +208,7 @@ sub GET {
             max         => $maxresults, 
             confidence  => $confidence,
             apikey      => $apikey,
+            guid        => $guid,
         });
         return Apache2::Const::HTTP_OK unless($ret);
 

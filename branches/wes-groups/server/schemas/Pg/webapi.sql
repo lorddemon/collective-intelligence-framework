@@ -16,6 +16,8 @@ CREATE TABLE apikeys_groups (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     uuid uuid references apikeys(uuid) on delete cascade not null,
     guid uuid not null,
+    default_guid bool,
     created timestamp with time zone default now(),
     unique(uuid,guid)
 );
+create unique index apikeys_groups_defaultguid_key on apikeys_groups (uuid,default_guid);

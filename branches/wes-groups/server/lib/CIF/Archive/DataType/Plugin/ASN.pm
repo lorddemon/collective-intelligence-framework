@@ -64,6 +64,18 @@ sub lookup {
     my $q = $info->{'query'};
     return unless($q =~ /^[0-9]*\.?[0-9]*$/);
 
+    if($info->{'guid'}){
+        return(
+            $class->SUPER::_lookup(
+                $q,
+                $info->{'severity'},
+                $info->{'confidence'},
+                $info->{'restriction'},
+                $info->{'guid'},
+                $info->{'limit'}
+            )
+        );
+    }
     return(
         $class->SUPER::lookup(
             $q,
@@ -110,14 +122,26 @@ __PACKAGE__->set_sql('feed' => qq{
     LIMIT ?
 });
 
+__PACKAGE__->set_sql('_lookup' => qq{
+    SELECT id,uuid
+    FROM __TABLE__
+    WHERE asn = ?
+    AND SEVERITY = ?
+    AND confidence >= ?
+    AND restriction <= ?
+    AND guid = ?
+    ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT ?
+});
+
 __PACKAGE__->set_sql('lookup' => qq{
     SELECT __TABLE__.id,__TABLE__.uuid
     FROM __TABLE__
     LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
     WHERE asn = ?
-    and severity >= ?
-    and confidence >= ?
-    and restriction <= ?
+    AND severity >= ?
+    AND confidence >= ?
+    AND restriction <= ?
     AND apikeys_groups.uuid = ?
     ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
     LIMIT ?
