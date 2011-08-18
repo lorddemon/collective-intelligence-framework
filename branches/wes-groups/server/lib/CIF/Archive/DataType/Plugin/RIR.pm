@@ -61,6 +61,18 @@ sub lookup {
     my $info = shift;
     my $q = $info->{'query'};
     return unless($class->isrir($q));
+    if($info->{'guid'}){
+        return(
+            $class->search_lookup(
+                $q,
+                $info->{'severity'},
+                $info->{'confidence'},
+                $info->{'restriction'},
+                $info->{'guid'},
+                $info->{'limit'},
+            )
+        );
+    }
     return(
         $class->SUPER::lookup(
             $q,
@@ -109,6 +121,17 @@ __PACKAGE__->set_sql('feed' => qq{
     AND restriction <= ?
     GROUP BY rir
     ORDER BY count DESC
+    LIMIT ?
+});
+
+__PACKAGE__->set_sql('_lookup' => qq{
+    SELECT id,uuid FROM __TABLE__
+    WHERE rir = ?
+    AND severity >= ?
+    AND confidence >= ?
+    AND restriction <= ?
+    AND guid = ?
+    ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });
 

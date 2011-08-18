@@ -14,10 +14,10 @@ sub hash_simple {
     }
     foreach my $a (@array){
         for(lc($a->{'meaning'})){
-            next unless(/group/);
+            next unless(/guid/);
             $type   = $a->{'content'} if(/type/);
             return({
-                group   => $a->{'content'}
+                guid   => $a->{'content'}
             });
         }
     }

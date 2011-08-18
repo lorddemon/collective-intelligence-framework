@@ -150,6 +150,14 @@ __PACKAGE__->set_sql('lookup' => qq{
     AND apikeys_groups.uuid = ?
 });
 
+__PACKAGE__->set_sql('lookup_guid' => qq{
+    SELECT __TABLE__.id,__TABLE__.uuid
+    FROM __TABLE__
+    WHERE __TABLE__.uuid = ?
+    AND __TABLE__.guid = ?
+});
+
+
 sub lookup {
     my $class = shift;
     my $info = shift;
@@ -158,9 +166,19 @@ sub lookup {
     my $ret;
     if(isUUID($info->{'query'})){
         ## TODO -- setup group perms
-        my @recs = eval {
-            CIF::Archive->search_lookup($info->{'query'},$info->{'apikey'});
-        };
+        my $key = $info->{'guid'} || $info->{'apikey'};
+        my @recs;
+        # we assume here they have the right to do this
+        # acl's should be checked at the door
+        if($info->{'guid'}){
+            @recs = eval {
+                CIF::Archive->search_lookup_guid($info->{'query'},$info->{'guid'});
+            };
+        } else {
+            @recs = eval {
+                CIF::Archive->search_lookup($info->{'query'},$info->{'apikey'});
+            };
+        }
         return($@,undef) if($@);
         $ret = $recs[0];
     } else {
@@ -204,7 +222,7 @@ sub lookup {
             uuid        => $uuid,
             confidence  => 50,
             severity    => 'low',
-            guid        => $info->{'guid'},
+            guid        => $info->{'guid'} || $info->{'default_guid'},
         });
     }
     return(undef,$ret);

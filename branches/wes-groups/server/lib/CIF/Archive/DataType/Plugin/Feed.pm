@@ -1,16 +1,12 @@
 package CIF::Archive::DataType::Plugin::Feed;
 use base 'CIF::Archive::DataType';
 
-require 5.008;
 use strict;
 use warnings;
 
-our $VERSION = '0.01_01';
-$VERSION = eval $VERSION;
-
 __PACKAGE__->table('feed');
-__PACKAGE__->columns(All => qw/id uuid description confidence source hash_sha1 signature impact severity restriction detecttime created data/);
-__PACKAGE__->columns(Essential => qw/id uuid description confidence source hash_sha1 signature impact severity restriction detecttime created data/);
+__PACKAGE__->columns(All => qw/id uuid guid description confidence source hash_sha1 signature impact severity restriction detecttime created data/);
+__PACKAGE__->columns(Essential => qw/id uuid guid description confidence source hash_sha1 signature impact severity restriction detecttime created data/);
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->sequence('feed_id_seq');
 
@@ -36,12 +32,25 @@ sub insert {
 }
 
 __PACKAGE__->set_sql('lookup' => qq{
+   SELECT __TABLE__.id,__TABLE__.uuid FROM __TABLE__
+   LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
+   WHERE impact = ?
+   AND severity >= ?
+   AND confidence >= ?
+   AND restriction <= ?
+   AND apikeys_groups.uuid = ?
+   ORDER BY severity ASC, confidence ASC, restriction ASC, id DESC
+   LIMIT 1
+});
+
+__PACKAGE__->set_sql('_lookup' => qq{
     SELECT __ESSENTIAL__
     FROM __TABLE__
     WHERE impact = ?
     AND severity = ?
-    and confidence >= ?
-    and restriction = ?
+    AND confidence >= ?
+    AND restriction = ?
+    AND guid = ?
     ORDER BY confidence asc, detecttime desc, created desc, id DESC LIMIT 1
 });
 

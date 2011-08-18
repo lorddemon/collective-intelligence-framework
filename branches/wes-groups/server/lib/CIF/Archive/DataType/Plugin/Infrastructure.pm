@@ -152,6 +152,17 @@ sub lookup {
     my $sev = $info->{'severity'};
     my $conf = $info->{'confidence'};
     my $restriction = $info->{'restriction'};
+    if($info->{'guid'}){
+        return($class->search__lookup(
+            $q,
+            $q,
+            $sev,
+            $conf,
+            $restriction,
+            $info->{'guid'},
+            $info->{'limit'},
+        ));
+    }
     return(
         $class->SUPER::lookup(
             $q,
@@ -205,6 +216,7 @@ __PACKAGE__->set_sql('_lookup' => qq{
     AND severity >= ?
     AND confidence >= ?
     AND restriction <= ?
+    AND guid = ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });

@@ -79,6 +79,7 @@ sub insert {
             severity    => $info->{'severity'} || 'null',
             restriction => $info->{'restriction'} || 'private',
             detecttime  => $info->{'detecttime'},
+            guid        => $info->{'guid'},
         })};
     }
     $self->table($tbl);
@@ -96,7 +97,26 @@ sub lookup {
     my $conf = $info->{'confidence'};
     my $restriction = $info->{'restriction'};
 
-    return($self->SUPER::lookup($address,$sev,$conf,$restriction,$info->{'apikey'},$info->{'limit'}));
+    if($info->{'guid'}){
+        return($self->search__lookup(
+            $address,
+            $sev,
+            $conf,
+            $restriction,
+            $info->{'guid'},
+            $info->{'limit'}
+        ));
+    }
+    return(
+        $self->SUPER::lookup(
+            $address,
+            $sev,
+            $conf,
+            $restriction,
+            $info->{'apikey'},
+            $info->{'limit'}
+        )
+    );
 }
 
 sub isWhitelisted {
@@ -169,6 +189,17 @@ __PACKAGE__->set_sql('lookup' => qq{
     AND restriction <= ?
     AND apikeys_groups.uuid = ?
     ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
+    LIMIT ?
+});
+
+__PACKAGE__->set_sql('_lookup' => qq{
+    SELECT __TABLE__.id,__TABLE__.uuid 
+    FROM __TABLE__
+    WHERE md5 = ?
+    AND severity >= ?
+    AND confidence >= ?
+    AND restriction <= ?
+    AND guid = ?
     LIMIT ?
 });
 

@@ -5,9 +5,6 @@ use 5.008008;
 use strict;
 use warnings;
 
-our $VERSION = '0.01_01';
-$VERSION = eval $VERSION;  # see L<perlmodstyle>
-
 use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/SUPER$/;
 
 __PACKAGE__->table('hash');
@@ -79,8 +76,20 @@ sub lookup {
     my $q = $info->{'query'};
     foreach($class->plugins()){
         if(my $r = $_->lookup($q)){
+            if($info->{'guid'}){
+                return(
+                    $class->search__lookup(
+                        $q,
+                        $info->{'severity'},
+                        $info->{'confidence'},
+                        $info->{'restriction'},
+                        $info->{'guid'},
+                        $info->{'limit'},
+                    )
+                );
+            }
             return(
-                $class->SUPER::lookup(
+                $class->search_lookup(
                     $q,
                     $info->{'severity'},
                     $info->{'confidence'},
@@ -93,6 +102,17 @@ sub lookup {
     }
     return(undef);
 }
+
+__PACKAGE__->set_sql('_lookup' => qq{
+    SELECT id,uuid FROM __TABLE
+    WHERE lower(hash) = lower(?)
+    AND severity >= ?
+    AND confidence >= ?
+    AND restriction <= ?
+    AND guid = ?
+    ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT ?
+});
 
 __PACKAGE__->set_sql('lookup' => qq{
     SELECT __TABLE__.id,__TABLE__.uuid

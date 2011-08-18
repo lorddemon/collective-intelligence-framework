@@ -75,6 +75,19 @@ sub lookup {
     my $info = shift;
     my $address = $info->{'query'};
     return(undef) unless($address =~ /\w+@\w+$/);
+
+    if($info->{'guid'}){
+        return(
+            $self->search__lookup(
+                $address,
+                $info->{'severity'},
+                $info->{'confidence'},
+                $info->{'restriction'},
+                $info->{'guid'},
+                $info->{'limit'},
+            )
+        );
+    }
     return(
         $self->SUPER::lookup(
             $address,
@@ -86,6 +99,19 @@ sub lookup {
         )
     );
 }
+
+# this should all be sha1 or uuid or something.
+__PACKAGE__->set_sql('_lookup' => qq{
+    SELECT id,uuid
+    FROM __TABLE__
+    WHERE lower(address) = lower(?)
+    AND severity <= ?
+    AND confidence >= ?
+    AND restriction <= ?
+    AND guid = ?
+    ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT ?
+});
 
 __PACKAGE__->set_sql('lookup' => qq{
     SELECT __TABLE__.id,__TABLE__.uuid 

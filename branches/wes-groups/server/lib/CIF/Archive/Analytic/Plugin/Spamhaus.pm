@@ -106,6 +106,7 @@ sub process {
         return if($_->{'address'} =~ /\.(10|11)$/);
         my ($err,$id) = CIF::Archive->insert({
             relatedid                   => $data->{'uuid'},
+            guid                        => $data->{'guid'},
             address                     => $data->{'address'},
             impact                      => $code->{'impact'},
             description                 => $code->{'description'},

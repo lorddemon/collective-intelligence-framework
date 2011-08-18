@@ -96,9 +96,42 @@ sub lookup {
     my $query = ($info->{'query'});
     return unless($query =~ /^[a-z]{2,2}$/);
 
-    my @args = ($query,$info->{'severity'},$info->{'confidence'},$info->{'restriction'},$info->{'limit'});
-    return $class->SUPER::lookup(@args);
+    if($info->{'guid'}){
+        return(
+            $class->search__lookup(
+                $query,
+                $info->{'severity'},
+                $info->{'confidence'},
+                $info->{'restriction'},
+                $info->{'guid'},
+                $info->{'limit'},
+            )
+        );
+    }
+    return(
+        $class->search_lookup(
+            $query,
+            $info->{'severity'},
+            $info->{'confidence'},
+            $info->{'restriction'},
+            $info->{'apikey'},
+            $info->{'limit'},
+        )
+    );
 }
+
+__PACKAGE__->set_sql('_lookup' => qq{
+    SELECT __TABLE__.id,__TABLE__.uuid
+    FROM __TABLE__
+    LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
+    WHERE upper(cc) = upper(?)
+    AND severity >= ?
+    AND confidence >= ?
+    AND restriction <= ?
+    AND apikeys_groups.uuid = ?
+    ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
+    LIMIT ?
+});
 
 __PACKAGE__->set_sql('lookup' => qq{
     SELECT __ESSENTIAL__
