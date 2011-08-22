@@ -48,11 +48,22 @@ __PACKAGE__->set_sql('_lookup' => qq{
     FROM __TABLE__
     WHERE impact = ?
     AND severity = ?
+<<<<<<< .working
+<<<<<<< .working
     AND confidence >= ?
     AND restriction <= ?
     AND guid = ?
     ORDER BY confidence asc, detecttime desc, created desc, id DESC
     LIMIT 1
+=======
+    AND confidence >= ?
+    AND restriction = ?
+=======
+    AND confidence >= ?
+    AND restriction = ?
+>>>>>>> .merge-right.r781
+    ORDER BY confidence asc, detecttime desc, created desc, id DESC LIMIT 1
+>>>>>>> .merge-right.r781
 });
 
 sub lookup {

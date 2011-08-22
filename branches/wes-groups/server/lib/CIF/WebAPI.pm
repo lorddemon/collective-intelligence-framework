@@ -175,9 +175,21 @@ sub GET {
             $response->{'status'} = '403';
             return Apache2::Const::HTTP_FORBIDDEN;
         }
-        return Apache2::Const::HTTP_OK unless($ret);
+<<<<<<< .working
+        unless($ret){
+            $response->{'message'} = 'no records';
+            return Apache2::Const::HTTP_OK;
+        }
+
         # this needs re-thinking
         # bulk of the results lag comes from this section of code
+=======
+        unless($ret){
+            $response->{'message'} = 'no records';
+            return Apache2::Const::HTTP_OK;
+        }
+
+>>>>>>> .merge-right.r781
         my @recs;
         if(ref($ret) ne 'CIF::Archive'){
             @recs = $ret->slice(0,$ret->count());
@@ -212,6 +224,7 @@ sub GET {
         $q .= ' feed';
         my $severity = $request->{'r'}->param('severity') || $request->{'r'}->dir_config->get('CIFDefaultFeedSeverity') || 'high';
         my $confidence = $request->{'r'}->param('confidence') || $request->{'r'}->dir_config->get('CIFDefaultFeedConfidence') || 85;
+<<<<<<< .working
         my $ret = CIF::Archive->lookup({
             nolog       => $nolog, 
             query       => $q, 
@@ -226,7 +239,17 @@ sub GET {
         });
         use Data::Dumper;
         warn Dumper($ret);
-        return Apache2::Const::HTTP_OK unless($ret);
+        unless($ret){
+            $response->{'message'} = 'no records';
+            return Apache2::Const::HTTP_OK;
+        }
+=======
+        my $ret = CIF::Archive->lookup({ nolog => $nolog, query => $q, source => $apikey, severity => $severity, restriction => $restriction, max => $maxresults, confidence => $confidence });
+        unless($ret){
+            $response->{'message'} = 'no records';
+            return Apache2::Const::HTTP_OK;
+        }
+>>>>>>> .merge-right.r781
 
         # we do it with @recs cause of the map_restrictions function
         my @recs = $ret->slice(0,$ret->count());
