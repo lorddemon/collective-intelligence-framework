@@ -6,7 +6,7 @@ be sure to have FF clear-cache on exit; there will be sensitive data stored as a
 
 how to install the firefox search addon
 
- # download and install [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=cifsearch.xpi cif-search]
+ # download and install [http://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=firefox+toolbar firefox-toolbar]
  # restart firefox
  # open the addons window:
   # On the menu bar, click on the Tools menu and select Add-ons. The Add-ons window will appear.
