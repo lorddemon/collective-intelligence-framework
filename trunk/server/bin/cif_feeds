@@ -42,7 +42,7 @@ use CIF::Utils ':all';
 use threads;
 
 my %opts;
-getopts('D:ht:S:c:df:s:r:m:F:C:T:',\%opts);
+getopts('D:ht:S:c:df:s:r:m:F:C:T:g:',\%opts);
 
 my $severity    = $opts{'s'};
 my $confidence  = $opts{'c'};
@@ -54,6 +54,9 @@ my $last_feeds  = $opts{'F'} || 5;
 my $mutex       = $opts{'L'} || '/tmp/cif_feeds.lock';
 my $specific    = $opts{'S'};
 my $throttle    = $opts{'T'} || 'low';
+my $guid        = $opts{'g'} || 'everyone';
+my $rolekey     = '1e211736-9b73-405a-9477-73f8c8ea1b63';
+$guid = CIF::Utils::genSourceUUID($guid) unless(CIF::Utils::isUUID($guid));
 $opts{'t'} = 1 if($specific);
  
 
@@ -235,6 +238,7 @@ sub generate_feed {
                 confidence  => $conf,
                 detecttime  => $detecttime,
                 maxrecords  => 50000,
+                rolekey     => $rolekey,
             });
             unless($ret){
                 _debug('no records');
@@ -286,7 +290,8 @@ sub generate_feed {
                     impact      => lc($impact),
                     restriction => lc($r),
                     detecttime  => $dt,
-                    format      => 'text/base64'
+                    format      => 'text/base64',
+                    guid        => $guid,
                 });
                 cleanup($err) unless($id);
                 print lc($description).': '.$id.' created -- '.$id->uuid()."\n";
@@ -295,6 +300,7 @@ sub generate_feed {
                     AND severity = '$sev'
                     AND restriction = '$r'
                     AND confidence = '$conf'
+                    AND guid = '$guid'
                     ORDER BY id ASC
                 });
                 if($#feeds >= $last_feeds){

@@ -4,6 +4,7 @@ CREATE TABLE countrycode (
     uuid uuid REFERENCES archive(uuid) ON DELETE CASCADE NOT NULL,
     cc varchar(5),
     source uuid NOT NULL,
+    guid uuid,
     severity severity,
     confidence REAL,
     restriction restriction not null default 'private',

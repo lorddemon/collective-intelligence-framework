@@ -6,9 +6,9 @@ sub prepare {
     my $info = shift;
 
     ## TODO -- figure out how to sanely index cidrs as addresses in the suspicious networks index
-#    return('infrastructure_network') if($info->{'cidr'});
+#    return('network') if($info->{'cidr'});
     return unless($info->{'impact'} =~ /network/);
-    return('infrastructure_network');
+    return('network');
 }
 
 1;

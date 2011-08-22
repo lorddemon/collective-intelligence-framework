@@ -12,8 +12,8 @@ use Module::Pluggable require => 1, search_path => [__PACKAGE__];
 
 __PACKAGE__->table('countrycode');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid cc source severity confidence restriction detecttime created/);
-__PACKAGE__->columns(Essential => qw/id uuid cc source severity confidence restriction detecttime created/);
+__PACKAGE__->columns(All => qw/id uuid cc source guid severity confidence restriction detecttime created/);
+__PACKAGE__->columns(Essential => qw/id uuid cc source guid severity confidence restriction detecttime created/);
 __PACKAGE__->sequence('countrycode_id_seq');
 
 __PACKAGE__->set_sql('feed' => qq{
@@ -49,7 +49,7 @@ sub insert {
     my $tbl = $class->table();
     foreach($class->plugins()){
         if(my $t = $_->prepare($info)){
-            $class->table($t);
+            $class->table($tbl.'_'.$t);
         }
     }
 
@@ -61,6 +61,7 @@ sub insert {
         confidence  => $info->{'confidence'},
         restriction => $info->{'restriction'} || 'private',
         detecttime  => $info->{'detecttime'},
+        guid        => $info->{'guid'},
     }) };
     if($@){
         return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
@@ -95,9 +96,42 @@ sub lookup {
     my $query = ($info->{'query'});
     return unless($query =~ /^[a-z]{2,2}$/);
 
-    my @args = ($query,$info->{'severity'},$info->{'confidence'},$info->{'restriction'},$info->{'limit'});
-    return $class->SUPER::lookup(@args);
+    if($info->{'guid'}){
+        return(
+            $class->search__lookup(
+                $query,
+                $info->{'severity'},
+                $info->{'confidence'},
+                $info->{'restriction'},
+                $info->{'guid'},
+                $info->{'limit'},
+            )
+        );
+    }
+    return(
+        $class->search_lookup(
+            $query,
+            $info->{'severity'},
+            $info->{'confidence'},
+            $info->{'restriction'},
+            $info->{'apikey'},
+            $info->{'limit'},
+        )
+    );
 }
+
+__PACKAGE__->set_sql('_lookup' => qq{
+    SELECT __TABLE__.id,__TABLE__.uuid
+    FROM __TABLE__
+    LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
+    WHERE upper(cc) = upper(?)
+    AND severity >= ?
+    AND confidence >= ?
+    AND restriction <= ?
+    AND apikeys_groups.uuid = ?
+    ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
+    LIMIT ?
+});
 
 __PACKAGE__->set_sql('lookup' => qq{
     SELECT __ESSENTIAL__

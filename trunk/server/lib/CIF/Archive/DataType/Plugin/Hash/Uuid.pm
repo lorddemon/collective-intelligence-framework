@@ -6,11 +6,12 @@ sub prepare {
     my $info = shift;
     foreach(keys %$info){
         next if($_ eq 'uuid');
+        next if($_ eq 'guid');
         next if($_ eq 'source');
         next unless($info->{$_});
         if(_prepare($info->{$_})){
             $info->{'hash'} = $info->{$_};
-            return('hash_uuid');
+            return('uuid');
         }
     }
     return(undef);

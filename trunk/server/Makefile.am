@@ -90,7 +90,7 @@ realclean: clean
 reconf:
 	autoreconf -vf
 
-BUILD=0.01_b$(shell date +%Y%m%d_%H%M%S)
+BUILD=0.01_groups-b$(shell date +%Y%m%d_%H%M%S)
 SNAPSHOT=cif-$(BUILD)
 snapshot: build-snapshot
 

@@ -6,7 +6,7 @@ sub prepare {
     my $info = shift;
     return unless($info->{'impact'});
     return(0) unless($info->{'impact'} =~ /whitelist/);
-    return('domain_whitelist');
+    return('whitelist');
 }
 
 1;

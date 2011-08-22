@@ -12,7 +12,7 @@ sub prepare {
     return unless($hash);
     return unless(lc($hash) =~ /^[a-f0-9]{40}$/);
     $info->{'hash'} = $hash;
-    return('hash_sha1');
+    return('sha1');
 
 
 }

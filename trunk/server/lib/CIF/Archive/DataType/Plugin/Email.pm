@@ -9,8 +9,8 @@ use Regexp::Common qw/URI/;
 
 __PACKAGE__->table('email');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/id uuid address source confidence severity restriction detecttime created/);
-__PACKAGE__->columns(All => qw/id uuid address source confidence severity restriction detecttime created/);
+__PACKAGE__->columns(Essential => qw/id uuid address guid source confidence severity restriction detecttime created/);
+__PACKAGE__->columns(All => qw/id uuid address guid source confidence severity restriction detecttime created/);
 __PACKAGE__->sequence('email_id_seq');
 
 sub prepare {
@@ -30,7 +30,7 @@ sub insert {
     my $tbl = $self->table();
     foreach($self->plugins()){
         if(my $t = $_->prepare($info)){
-            $self->table($t);
+            $self->table($tbl.'_'.$t);
         }
     }
     
@@ -42,6 +42,7 @@ sub insert {
         severity        => $info->{'severity'} || 'null',
         restriction     => $info->{'restriction'} || 'private',
         detecttime      => $info->{'detecttime'},
+        guid            => $info->{'guid'},
     }) };
     if($@){
         die unless($@ =~ /duplicate key value violates unique constraint/);
@@ -74,16 +75,54 @@ sub lookup {
     my $info = shift;
     my $address = $info->{'query'};
     return(undef) unless($address =~ /\w+@\w+$/);
-    return($self->SUPER::lookup($address,$info->{'severity'},$info->{'confidence'},$info->{'restriction'},$info->{'limit'}));
+
+    if($info->{'guid'}){
+        return(
+            $self->search__lookup(
+                $address,
+                $info->{'severity'},
+                $info->{'confidence'},
+                $info->{'restriction'},
+                $info->{'guid'},
+                $info->{'limit'},
+            )
+        );
+    }
+    return(
+        $self->SUPER::lookup(
+            $address,
+            $info->{'severity'},
+            $info->{'confidence'},
+            $info->{'restriction'},
+            $info->{'apikey'},
+            $info->{'limit'},
+        )
+    );
 }
 
-__PACKAGE__->set_sql('lookup' => qq{
-    SELECT __ESSENTIAL__ 
+# this should all be sha1 or uuid or something.
+__PACKAGE__->set_sql('_lookup' => qq{
+    SELECT id,uuid
     FROM __TABLE__
+    WHERE lower(address) = lower(?)
+    AND severity <= ?
+    AND confidence >= ?
+    AND restriction <= ?
+    AND guid = ?
+    ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT ?
+});
+
+__PACKAGE__->set_sql('lookup' => qq{
+    SELECT __TABLE__.id,__TABLE__.uuid 
+    FROM __TABLE__
+    LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
     WHERE lower(address) = lower(?)
     AND severity >= ?
     AND confidence >= ?
     AND restriction <= ?
+    AND apikeys_groups.uuid = ?
+    ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC 
     LIMIT ?
 });
 1;

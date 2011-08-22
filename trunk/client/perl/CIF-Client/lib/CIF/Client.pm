@@ -61,6 +61,7 @@ sub new {
     $self->{'simple_hashes'}    = $args->{'simple_hashes'} || $cfg->{'simple_hashes'};
 
     $self->{'verify_tls'}       = (defined($args->{'verify_tls'})) ? $args->{'verify_tls'} : $cfg->{'verify_tls'};
+    $self->{'guid'}             = $args->{'guid'} || $cfg->{'default_guid'};
     
     if($args->{'fields'}){
         @{$self->{'fields'}} = split(/,/,$args->{'fields'}); 
@@ -91,12 +92,14 @@ sub GET  {
     my $nolog = ($args{'nolog'}) ? $args{'nolog'} : $self->{'nolog'};
     my $nomap = ($args{'nomap'}) ? $args{'nomap'} : $self->{'nomap'};
     my $confidence = ($args{'confidence'}) ? $args{'confidence'} : $self->{'confidence'};
+    my $guid = $args{'guid'} || $self->{'guid'};
 
     $rest .= '&severity='.$severity if($severity);
     $rest .= '&restriction='.$restriction if($restriction);
     $rest .= '&nolog='.$nolog if($nolog);
     $rest .= '&nomap=1' if($nomap);
     $rest .= '&confidence='.$confidence if($confidence);
+    $rest .= '&guid='.$guid if($guid);
 
     $self->SUPER::GET($rest);
     my $content = $self->{'_res'}->{'_content'};

@@ -28,6 +28,7 @@ sub process {
          portlist       => $data->{'portlist'},
          protocol       => $data->{'protocol'},
          address        => $addr,
+         guid           => $data->{'guid'},
          restriction    => $data->{'restriction'},
          alternativeid  => $data->{'alternativeid'},
          alternativeid_restriction  => $data->{'alternativeid_restriction'},

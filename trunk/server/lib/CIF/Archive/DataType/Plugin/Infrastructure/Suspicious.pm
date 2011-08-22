@@ -8,6 +8,6 @@ sub prepare {
     return unless($info->{'impact'} =~ /suspicious/);
     # guard against collisions with the Network plugin
     return if($info->{'impact'} =~ /network/);
-    return('infrastructure_suspicious');
+    return('suspicious');
 }
 1;

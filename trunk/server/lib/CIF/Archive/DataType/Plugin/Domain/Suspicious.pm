@@ -7,7 +7,7 @@ sub prepare {
     return unless($info->{'impact'});
     return(0) unless($info->{'impact'} =~ /suspicious/);
     return(0) if($info->{'impact'} =~ /nameserver/);
-    return('domain_suspicious');
+    return('suspicious');
 }
 
 1;

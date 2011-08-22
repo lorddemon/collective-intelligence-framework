@@ -32,25 +32,72 @@ sub insert {
 }
 
 __PACKAGE__->set_sql('lookup' => qq{
+   SELECT __TABLE__.id,__TABLE__.uuid FROM __TABLE__
+   LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
+   WHERE impact = ?
+   AND severity >= ?
+   AND confidence >= ?
+   AND restriction <= ?
+   AND apikeys_groups.uuid = ?
+   ORDER BY severity ASC, confidence ASC, restriction ASC, id DESC
+   LIMIT 1
+});
+
+__PACKAGE__->set_sql('_lookup' => qq{
     SELECT __ESSENTIAL__
     FROM __TABLE__
     WHERE impact = ?
     AND severity = ?
+<<<<<<< .working
     AND confidence >= ?
     AND restriction = ?
+=======
+<<<<<<< .working
+<<<<<<< .working
+    AND confidence >= ?
+    AND restriction <= ?
+    AND guid = ?
+    ORDER BY confidence asc, detecttime desc, created desc, id DESC
+    LIMIT 1
+=======
+    AND confidence >= ?
+    AND restriction = ?
+=======
+    AND confidence >= ?
+    AND restriction = ?
+>>>>>>> .merge-right.r781
+>>>>>>> .merge-right.r788
     ORDER BY confidence asc, detecttime desc, created desc, id DESC LIMIT 1
+>>>>>>> .merge-right.r781
 });
 
 sub lookup {
     my $class = shift;
     my $info = shift;
 
-    my $severity = $info->{'severity'};
-    my $restriction = $info->{'restriction'};
-    my $query = $info->{'query'}.' feed';
+    use Data::Dumper;
+    warn Dumper($info);
 
-    my @args = ($query,$severity,$info->{'confidence'},$restriction);
-    return $class->SUPER::lookup(@args);
+    if($info->{'guid'}){
+        return(
+            $class->search__lookup(
+                $info->{'query'},
+                $info->{'severity'},
+                $info->{'confidence'},
+                $info->{'restriction'},
+                $info->{'guid'},
+            )
+        );
+    }
+    return(
+        $class->search_lookup(
+            $info->{'query'},
+            $info->{'severity'},
+            $info->{'confidence'},
+            $info->{'restriction'},
+            $info->{'apikey'},
+        )
+    );
 }
 
 1;

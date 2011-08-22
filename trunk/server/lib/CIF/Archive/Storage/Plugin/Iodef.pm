@@ -49,7 +49,7 @@ sub convert {
     my $protocol                    = $info->{'protocol'};
     my $portlist                    = $info->{'portlist'};
     my $purpose                     = $info->{'purpose'} || 'mitigation';
-    my $group                       = $info->{'groups'} || genSourceUUID('everyone');
+    my $guid                        = $info->{'guid'};
 
     my $dt = $info->{'detecttime'};
     # default it to the hour
@@ -66,9 +66,10 @@ sub convert {
     $iodef->add('IncidentIncidentIDname',$source) if($source);
     $iodef->add('IncidentDetectTime',$detecttime) if($detecttime);
     $iodef->add('IncidentRelatedActivityIncidentID',$relatedid) if($relatedid);
-    $iodef->add('IncidentAdditionalDatameaning','groups');
+    $iodef->add('IncidentAdditionalDatameaning','guid');
     $iodef->add('IncidentAdditionalDatadtype','string');
-    $iodef->add('IncidentAdditionalData',$group);
+
+    $iodef->add('IncidentAdditionalData',$guid) if($guid);
 
     if($alternativeid){
         $iodef->add('IncidentAlternativeIDIncidentID',$alternativeid);
@@ -94,10 +95,22 @@ sub convert {
     return(JSON::to_json($iodef->to_tree()));
 }
 
+sub data_hash_simple {
+    my $class = shift;
+    my $data = shift;
+    my $uuid = shift;
+
+    $data = $class->data_hash($data,$uuid);
+    require CIF::Client::Plugin::Iodef;
+    $data = CIF::Client::Plugin::Iodef->hash_simple($data);
+    return($data);
+}
+
 sub data_hash {
     my $class = shift;
     my $data = shift;
     my $uuid = shift;
+    require JSON;
     my $hash = JSON::from_json($data);
     $hash->{'Incident'}->{'IncidentID'}->{'content'} = $uuid;
     return($hash);

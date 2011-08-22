@@ -99,7 +99,10 @@ if($sconfig && $sconfig->param(-block => 'database')){
 
 my ($err,$items) = CIF::FeedParser->parse($c);
 if($err){
-    die($err) unless($err =~ /no content/);
+    unless($err =~ /no content/){
+        warn($err);
+        exit(-1);
+    }
     exit(0);
 }
    

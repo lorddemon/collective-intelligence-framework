@@ -7,14 +7,29 @@ __PACKAGE__->has_a(uuid => 'CIF::Archive');
 
 use Module::Pluggable require => 1, except => qr/::Plugin::\S+::/;
 
-__PACKAGE__->set_sql('feed' => qq{
+__PACKAGE__->set_sql('_feed' => qq{
     SELECT __ESSENTIAL__
     FROM __TABLE__
     WHERE detecttime >= ?
     AND confidence >= ?
     AND severity >= ?
     AND restriction <= ?
+    AND guid = ?
     ORDER BY severity desc, confidence desc, restriction desc, detecttime desc, id desc
+    LIMIT ?
+});
+
+__PACKAGE__->set_sql('feed' => qq{
+    SELECT __TABLE__.id,__TABLE__.uuid, archive.data 
+    FROM __TABLE__
+    LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
+    LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
+    WHERE detecttime >= ?
+    AND __TABLE__.confidence >= ?
+    AND __TABLE__.severity >= ?
+    AND __TABLE__.restriction >= ?
+    AND apikeys_groups.uuid = ?
+    ORDER BY __TABLE__.severity DESC, __TABLE__.confidence DESC, __TABLE__.restriction DESC, __TABLE__.detecttime, __TABLE__.id DESC
     LIMIT ?
 });
 
@@ -42,21 +57,27 @@ sub set_table {
 
     my @bits = split(/::/,lc($class));
     my $t = $bits[$#bits];
+    my $ptable = $class->SUPER::table();
     if($bits[$#bits-1] ne 'plugin'){
-        $t = $bits[$#bits-1].'_'.$bits[$#bits];
+        #$t = $bits[$#bits-1].'_'.$bits[$#bits];
+        $t = $ptable.'_'.$bits[$#bits];
     }
     return $class->table($t);
 }
 
-sub feed {
+sub _feed {
     my $class = shift;
     my $info = shift;
 
-    my $key = $info->{'key'};
-    my $max = $info->{'maxrecords'} || 10000;
-    my $restriction = $info->{'restriction'} || 'private';
-    my $severity = $info->{'severity'} || 'high';
-    my $confidence = $info->{'confidence'} || 85;
+    my $key         = $info->{'key'};
+    my $max         = $info->{'maxrecords'}     || 10000;
+    my $restriction = $info->{'restriction'}    || 'private';
+    my $severity    = $info->{'severity'}       || 'high';
+    my $confidence  = $info->{'confidence'}     || 85;
+    my $rolekey     = $info->{'rolekey'};
+
+    require CIF::Utils;
+    $rolekey = CIF::Utils::genSourceUUID($rolekey) unless(CIF::Utils::isUUID($rolekey));
 
     my @bits = split(/::/,lc($class));
     my $feed_name = '';
@@ -65,9 +86,27 @@ sub feed {
     } else {
         $feed_name = $bits[$#bits].' '.$bits[$#bits-1];
     }
-    my @recs = $class->search_feed($info->{'detecttime'},$confidence,$severity,$restriction,$max);
+    my @recs;
+    if($info->{'guid'}){
+        @recs = $class->search__feed(
+            $info->{'detecttime'},
+            $confidence,
+            $severity,
+            $restriction,
+            $info->{'guid'},
+            $max
+        );
+    } else {
+        @recs = $class->search_feed(
+            $info->{'detecttime'},
+            $confidence,
+            $severity,
+            $restriction,
+            $rolekey,
+            $max
+        );
+    }
     if($recs[0]->{'uuid'}){
-        # declassify what we can
         my $hash;
         foreach (@recs){
             ## TODO -- test this

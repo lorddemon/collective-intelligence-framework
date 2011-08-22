@@ -1,4 +1,5 @@
 [phishtank]
+guid = everyone
 feed = 'http://data.phishtank.com/data/XXXXXXXXXXXXXXXXXXXXXXXXXXXX INSERT YOUR KEY HERE XXXXXXXXXXXXXXXXXXXXXX/online-valid.json.gz'
 impact = 'phishing url'
 source = 'phishtank.com'

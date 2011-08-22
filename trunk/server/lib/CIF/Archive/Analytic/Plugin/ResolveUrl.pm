@@ -37,6 +37,7 @@ sub process {
     my $bucket = CIF::Archive->new();
     my ($err,$id) = $bucket->insert({
         relatedid                   => $data->{'uuid'},
+        guid                        => $data->{'guid'},
         address                     => $address,
         impact                      => $impact,
         description                 => $data->{'description'},
