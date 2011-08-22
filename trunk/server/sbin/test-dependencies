@@ -133,9 +133,9 @@ XML::LibXML 1.70
 XML::RSS 1.33
 File::Type 0.22
 CIF::Client 0.01
-LWP::Simple 5.810
+LWP::Simple 6.00
 Linux::Cpuinfo 1.7
-LWP::UserAgent 5.813
+LWP::UserAgent 6.02
 VT::API 0.12
 IO::Socket::INET6 2.54
 Class::Trigger 0.14
