@@ -31,6 +31,12 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  # ServerInstall_Beta3_Ubuntu10
 
 = Install =
+== Known Issues ==
+ # libwww6 was released mid-stream on us; which drastically changes the way libwww works (LWP, etc). Before you begin, make sure you update your libwww-perl instance to v6 until we fix this in the Makefile.am:
+{{{
+$ sudo perl -MCPAN -e 'install LWP::Simple'
+}}}
+
 == Server ==
  # install the PerlClient (we use some functions in it for the server)
  # create your "cif" user/group (the configure script will default to this user "cif")
