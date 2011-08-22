@@ -70,6 +70,15 @@ if [ -d "/opt/cif/bin" ]; then
     PATH="/opt/cif/bin:$PATH"
 fi
 }}}
+ # generate your initial apikey to be used with your [ClientSetup client]
+{{{
+$ cif_apikeys -u myuser@mydomain.com -a
+}}}
+ # to list all of your apikeys:
+{{{
+$ cif_apikeys -l
+}}}
+ # cif_apikeys -h will give you an example of how to use the tool
  # configure your ~/.cif for generating feeds
 {{{
 [cif_feeds]
