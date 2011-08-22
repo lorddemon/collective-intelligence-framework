@@ -10,6 +10,7 @@ use DateTime::Format::DateParse;
 require CIF::Archive;
 use Digest::SHA1 qw/sha1_hex/;
 use Data::Dumper;
+require JSON;
 
 use Module::Pluggable require => 1, except => qr/::Plugin::\S+::/;
 
@@ -175,14 +176,25 @@ sub GET {
             return Apache2::Const::HTTP_FORBIDDEN;
         }
         return Apache2::Const::HTTP_OK unless($ret);
+        # this needs re-thinking
+        # bulk of the results lag comes from this section of code
         my @recs;
         if(ref($ret) ne 'CIF::Archive'){
             @recs = $ret->slice(0,$ret->count());
-            @recs = map { $_ = $_->uuid->data_hash() } @recs;
+            foreach(@recs){
+                if(exists($_->{'data'})){
+                    $_ = JSON::from_json($_->{'data'});
+                } else {
+                    $_ = $_->uuid->data_hash();
+                }
+            }
+            #@recs = map { $_ = $_->uuid->data_hash() } @recs;
         } else {
             $ret = $ret->data_hash();
             push(@recs,$ret);
         }
+
+        # might need to push this off to a database mapping
         ($restriction,@recs) = $self->map_restrictions($request,$restriction,@recs);
         my $dt = DateTime->from_epoch(epoch => time());
         my $f = {
@@ -197,6 +209,7 @@ sub GET {
         ## TODO -- clean this up
         $q = lc($type);
         $q = lc($impact).' '.$q if($impact);
+        $q .= ' feed';
         my $severity = $request->{'r'}->param('severity') || $request->{'r'}->dir_config->get('CIFDefaultFeedSeverity') || 'high';
         my $confidence = $request->{'r'}->param('confidence') || $request->{'r'}->dir_config->get('CIFDefaultFeedConfidence') || 85;
         my $ret = CIF::Archive->lookup({
@@ -209,7 +222,10 @@ sub GET {
             confidence  => $confidence,
             apikey      => $apikey,
             guid        => $guid,
+            default_guid    => $request->{'default_guid'},
         });
+        use Data::Dumper;
+        warn Dumper($ret);
         return Apache2::Const::HTTP_OK unless($ret);
 
         # we do it with @recs cause of the map_restrictions function

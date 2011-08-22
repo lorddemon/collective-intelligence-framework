@@ -49,21 +49,39 @@ __PACKAGE__->set_sql('_lookup' => qq{
     WHERE impact = ?
     AND severity = ?
     AND confidence >= ?
-    AND restriction = ?
+    AND restriction <= ?
     AND guid = ?
-    ORDER BY confidence asc, detecttime desc, created desc, id DESC LIMIT 1
+    ORDER BY confidence asc, detecttime desc, created desc, id DESC
+    LIMIT 1
 });
 
 sub lookup {
     my $class = shift;
     my $info = shift;
 
-    my $severity = $info->{'severity'};
-    my $restriction = $info->{'restriction'};
-    my $query = $info->{'query'}.' feed';
+    use Data::Dumper;
+    warn Dumper($info);
 
-    my @args = ($query,$severity,$info->{'confidence'},$restriction);
-    return $class->SUPER::lookup(@args);
+    if($info->{'guid'}){
+        return(
+            $class->search__lookup(
+                $info->{'query'},
+                $info->{'severity'},
+                $info->{'confidence'},
+                $info->{'restriction'},
+                $info->{'guid'},
+            )
+        );
+    }
+    return(
+        $class->search_lookup(
+            $info->{'query'},
+            $info->{'severity'},
+            $info->{'confidence'},
+            $info->{'restriction'},
+            $info->{'apikey'},
+        )
+    );
 }
 
 1;
