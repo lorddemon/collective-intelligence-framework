@@ -1,4 +1,4 @@
-#labels Phase-Deploy,Phase-Implementation,Featured
+#labels Phase-Deploy,Phase-Implementation
 Instructions for standing up a CIF instance
 
 = BEFORE YOU BEGIN =
