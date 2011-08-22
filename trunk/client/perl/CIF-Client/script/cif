@@ -102,5 +102,6 @@ foreach (@q){
     my $plug = 'CIF::Client::Plugin::'.ucfirst($plugin);
     eval "require $plug";
     die($@) if($@);
+    $feed->{'query'} = $_;
     print $plug->write_out($client->{'config'},$feed,$summary) if($feed->{'feed'});
 }

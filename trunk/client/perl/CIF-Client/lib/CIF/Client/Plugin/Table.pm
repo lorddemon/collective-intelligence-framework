@@ -9,6 +9,7 @@ sub write_out {
     my $feed = shift;
     my $summary = shift;
 
+    my $query = $feed->{'query'};
     my $hash = $feed->{'feed'};
     my $created = $hash->{'created'} || $hash->{'detecttime'};
     my $feedid = $hash->{'id'};
@@ -95,7 +96,7 @@ sub write_out {
     if($config->{'description'}){
         $table = 'Description: '.$config->{'description'}."\n".$table;
     }
-
+    $table = "Query: ".$query."\n".$table;
     return "\n".$table;
 }
 
