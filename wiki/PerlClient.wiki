@@ -8,6 +8,7 @@ $> tar -zxvf CIF-Client-0.01_05.tar.gz
 $> cd CIF-Client-0.01_05
 $> perl Makefile.PL && make && sudo make install
 }}}
+ 1. setup your [ClientSetup#Global_Configuration_File configuration file]
  1. run a sample query for testing:
 {{{
 $> cif -h
