@@ -3,6 +3,7 @@ package CIF::WebAPI::AppAuth ;
 use warnings ;
 use strict ;
 use CIF::WebAPI::APIKey;
+use CIF::Utils;
 
 use Apache2::Const qw(:common :http);
 
@@ -67,7 +68,17 @@ sub authorize {
     
     # test1
     return(0) unless ($key && $key =~ /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
+    my $rec = CIF::WebAPI::APIKey->retrieve(uuid => $key);
+    return(0) unless($rec);
+    return(0) if($rec->revoked()); # revoked keys
 
+    my $guid = $req->{'r'}->param('guid');
+    if($guid){
+        $guid = lc($guid);
+        $req->{'guid'} = CIF::Utils::genSourceUUID($guid) unless(CIF::Utils::isUUID($guid));
+    } else {
+        $req->{'default_guid'} = $rec->default_guid();
+    }
     # what part of the api are we accessing
     my $uri = $req->uri();
     if(my $base = $req->dir_config('Apache2RESTAPIBase')){
@@ -76,9 +87,7 @@ sub authorize {
     my @stack = split('\/+' , $uri);
     @stack = grep { length($_)>0 } @stack;
 
-    my $rec = CIF::WebAPI::APIKey->retrieve(apikey => $key);
-    return(0) unless($rec); # no keys
-    return(0) if($rec->revoked()); # revoked keys
+    return(0) if($guid && !$rec->inGroup($guid));
     return(0) unless($rec->access());
     return(0) unless($rec->access() eq 'all' || $rec->access() eq $stack[0]); # ACL
     

@@ -11,8 +11,8 @@ use Digest::SHA1 qw/sha1_hex/;
 
 __PACKAGE__->table('domain');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid address md5 sha1 type confidence source severity restriction detecttime created/);
-__PACKAGE__->columns(Essential => qw/id uuid address md5 sha1 type confidence source severity restriction detecttime created/);
+__PACKAGE__->columns(All => qw/id uuid address md5 sha1 type confidence source guid severity restriction detecttime created/);
+__PACKAGE__->columns(Essential => qw/id uuid address md5 sha1 type confidence source guid severity restriction detecttime created/);
 __PACKAGE__->sequence('domain_id_seq');
 
 sub prepare {
@@ -37,7 +37,7 @@ sub insert {
     my $tbl = $self->table();
     foreach($self->plugins()){
         if(my $t = $_->prepare($info)){
-            $self->table($t);
+            $self->table($tbl.'_'.$t);
         }
     }
 
@@ -55,6 +55,7 @@ sub insert {
             severity    => $info->{'severity'} || 'null',
             restriction => $info->{'restriction'} || 'private',
             detecttime  => $info->{'detecttime'},
+            guid        => $info->{'guid'},
         }); 
     };
     if($@){
@@ -78,6 +79,7 @@ sub insert {
             severity    => $info->{'severity'} || 'null',
             restriction => $info->{'restriction'} || 'private',
             detecttime  => $info->{'detecttime'},
+            guid        => $info->{'guid'},
         })};
     }
     $self->table($tbl);
@@ -95,7 +97,26 @@ sub lookup {
     my $conf = $info->{'confidence'};
     my $restriction = $info->{'restriction'};
 
-    return($self->SUPER::lookup($address,$sev,$conf,$restriction,$info->{'limit'}));
+    if($info->{'guid'}){
+        return($self->search__lookup(
+            $address,
+            $sev,
+            $conf,
+            $restriction,
+            $info->{'guid'},
+            $info->{'limit'}
+        ));
+    }
+    return(
+        $self->SUPER::lookup(
+            $address,
+            $sev,
+            $conf,
+            $restriction,
+            $info->{'apikey'},
+            $info->{'limit'}
+        )
+    );
 }
 
 sub isWhitelisted {
@@ -159,12 +180,26 @@ __PACKAGE__->set_sql('feed' => qq{
 ## eg: yahoo.com would result with example.yahoo.com results
 
 __PACKAGE__->set_sql('lookup' => qq{
-    SELECT __ESSENTIAL__ 
+    SELECT __TABLE__.id,__TABLE__.uuid 
+    FROM __TABLE__
+    LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
+    WHERE md5 = ?
+    AND severity >= ?
+    AND confidence >= ?
+    AND restriction <= ?
+    AND apikeys_groups.uuid = ?
+    ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
+    LIMIT ?
+});
+
+__PACKAGE__->set_sql('_lookup' => qq{
+    SELECT __TABLE__.id,__TABLE__.uuid 
     FROM __TABLE__
     WHERE md5 = ?
     AND severity >= ?
     AND confidence >= ?
     AND restriction <= ?
+    AND guid = ?
     LIMIT ?
 });
 

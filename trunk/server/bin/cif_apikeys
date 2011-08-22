@@ -33,10 +33,20 @@ use Text::Table;
 use Data::Dumper;
 
 my %opts;
-getopt('e:k:u:', \%opts);
+getopt('G:g:e:k:u:', \%opts);
 die(usage()) if($opts{'h'});
-my $user = $opts{'u'} || die(usage()) unless($opts{'k'} || $opts{'l'});
+my $user = $opts{'u'};
 my $access = $opts{'e'};
+my $groups = $opts{'g'};
+my $default_guid = $opts{'G'};
+
+if($default_guid){
+    $default_guid = CIF::Utils::genSourceUUID($default_guid) unless(CIF::Utils::isUUID($default_guid));
+}
+
+if($user){
+    die(usage()) unless($opts{'k'} || $opts{'l'} || $opts{'g'});
+}
 
 sub usage {
     return <<EOF;
@@ -49,10 +59,12 @@ Usage: perl $0 -u joe\@example.com
     -d  --delete:   delete key
     -k  --key:      apikey
     -l  --list:     list users
+    -g  --groups:   add user to list of groups (eg: everyone,group1,group2)
+    -G  --default group: set the default group
 
 Examples:
     \$> perl $0 -u joe\@example.com
-    \$> perl $0 -u joe\@example.com -a
+    \$> perl $0 -u joe\@example.com -a everyone,group2
     \$> perl $0 -d -k 96818121-f1b6-482e-8851-8fb49cb2f6c0
     \$> perl $0 -u joe\@example.com -e infrastructure -a
     \$> perl $0 -k 96818121-f1b6-482e-8851-8fb49cb2f6c0 -w
@@ -63,16 +75,18 @@ EOF
 
 if(exists($opts{'a'})){
     die(usage()) unless($user);
-    CIF::WebAPI::APIKey->genkey(
-        userid  => $user,
-        access  => $access,
-        write   => $opts{'w'},
-        revoked => $opts{'r'},
-        parentid => $opts{'p'}
+    my $id = CIF::WebAPI::APIKey->genkey(
+        uuid_alias  => $user,
+        access      => $access,
+        write       => $opts{'w'},
+        revoked     => $opts{'r'},
+        parentid    => $opts{'p'},
+        groups      => $groups,
+        default_guid    => $default_guid,
     );
 } elsif($opts{'r'} || $opts{'w'}) {
     die(usage()) unless($opts{'k'});
-    my @r = CIF::WebAPI::APIKey->search(apikey => $opts{'k'});
+    my @r = CIF::WebAPI::APIKey->search(uuid => $opts{'k'});
     if($#r > -1){
         foreach (@r){
             if($opts{'r'}){
@@ -88,29 +102,76 @@ if(exists($opts{'a'})){
             $_->update();
         }
     }
+} elsif($opts{'g'}){
+    if($opts{'k'}){
+        if($opts{'d'}){
+            my $k = CIF::WebAPI::APIKey->retrieve(uuid => $opts{'k'});
+            my $g = CIF::Utils::genSourceUUID($opts{'g'});
+            foreach ($k->groups()){
+                if($g eq $_->guid()){
+                    $_->delete();
+                }
+            }
+        } else {
+            my @r = CIF::WebAPI::APIKey->search(uuid => $opts{'k'});
+            if($#r > -1){
+                foreach (@r){
+                    $_->add_groups($opts{'G'},$opts{'g'});
+                }
+            }
+        }
+    } else {
+        my @g = split(/,/,$opts{'g'});
+        my $t = Text::Table->new('group','guid');
+        foreach(@g){
+            $t->load([$_,CIF::Utils::genSourceUUID($_)]);
+        }
+        print $t;
+        exit(0);
+    }
+} elsif($opts{'G'}){
+    die(usage()) unless($opts{'k'});
+    my $key = CIF::WebAPI::APIKey->retrieve(uuid => $opts{'k'});
+    foreach ($key->groups()){
+        next unless($_->default_guid());
+        $_->default_guid(undef);
+        $_->update();
+    }
+    foreach ($key->groups()){
+        next unless($_->guid eq $default_guid);
+        $_->default_guid('true');
+        $_->update();
+    }
+
+
 }
 
-if(exists($opts{'d'})){
+if(exists($opts{'d'}) && !$opts{'g'}){
     die(usage()) unless($opts{'k'} || $opts{'userid'});
-    my @recs = CIF::WebAPI::APIKey->search(apikey => $opts{'k'}, userid => $user, access => $access);
+    my @recs = CIF::WebAPI::APIKey->search(uuid => $opts{'k'}, uuid_alias => $user, access => $access);
     foreach (@recs){
         $_->delete();
     }
 }
 my @recs;
 if(!$user && $opts{'k'}){
-    my @r = CIF::WebAPI::APIKey->search(apikey => $opts{'k'});
-    $user = $r[0]->userid();
+    my @r = CIF::WebAPI::APIKey->search(uuid => $opts{'k'});
+    $user = $r[0]->uuid_alias();
 }
 if($user){
-    @recs = CIF::WebAPI::APIKey->search(userid => $user, { order_by => 'created DESC' });
+    @recs = CIF::WebAPI::APIKey->search(uuid_alias => $user, { order_by => 'created DESC' });
 } else {
     @recs = CIF::WebAPI::APIKey->retrieve_all();
 }
 if($#recs > -1){
-    my $t = Text::Table->new('id','uid','key','access','write','revoked','created');
+    my $t = Text::Table->new('userid','key','guid','default_guid','access','write','revoked','created');
     foreach (@recs){
-        $t->load([$_->id(),$_->userid(),$_->apikey(),$_->access(),$_->write(),$_->revoked(),$_->created()]);
+        my $groups = $_->mygroups();
+        my @groups = split(/,/,$groups);
+        foreach my $g (@groups){
+            my $isDefaultGuid = ($g eq $_->default_guid()) ? 'true' : '';
+            $t->load([$_->uuid_alias(),$_->uuid(),$g,$isDefaultGuid,$_->access(),$_->write(),$_->revoked(),$_->created()]);
+        }
     }
     print $t;
 } else {

@@ -14,8 +14,8 @@ use DateTime;
 
 __PACKAGE__->set_table();
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid address confidence source severity restriction detecttime/);
-__PACKAGE__->columns(Essential => qw/uuid address restriction detecttime confidence source severity detecttime/);
+__PACKAGE__->columns(All => qw/id uuid address confidence source guid severity restriction detecttime/);
+__PACKAGE__->columns(Essential => qw/uuid/);
 __PACKAGE__->sequence('infrastructure_id_seq');
 
 
@@ -92,13 +92,12 @@ sub feed {
 
     my @snapshots;
     $info->{'key'} = 'address';
-    my $ret = $class->SUPER::feed($info);
+    my $ret = $class->SUPER::_feed($info);
     push(@snapshots,$ret) if($ret);
 
-    my $tbl = $class->table();
     foreach($class->plugins()){
-        my $t = $_->set_table();
-        my $r = $_->SUPER::feed($info);
+        $_->set_table();
+        my $r = $_->SUPER::_feed($info);
         push(@snapshots,$r) if($r);
     }
     return(\@snapshots);
@@ -118,7 +117,7 @@ sub insert {
     my $tbl = $self->table();
     foreach($self->plugins()){
         if(my $t = $_->prepare($info)){
-            $self->table($t);
+            $self->table($tbl.'_'.$t);
         }
     }
 
@@ -130,6 +129,7 @@ sub insert {
             address     => $address,
             confidence  => $info->{'confidence'},
             source      => $info->{'source'},
+            guid        => $info->{'guid'},
             severity    => $info->{'severity'} || 'null',
             restriction => $info->{'restriction'} || 'private',
             detecttime  => $info->{'detecttime'},
@@ -151,7 +151,28 @@ sub lookup {
     my $sev = $info->{'severity'};
     my $conf = $info->{'confidence'};
     my $restriction = $info->{'restriction'};
-    return($class->SUPER::lookup($q,$q,$sev,$conf,$restriction,$info->{'limit'}));
+    if($info->{'guid'}){
+        return($class->search__lookup(
+            $q,
+            $q,
+            $sev,
+            $conf,
+            $restriction,
+            $info->{'guid'},
+            $info->{'limit'},
+        ));
+    }
+    return(
+        $class->search_lookup(
+            $q,
+            $q,
+            $sev,
+            $conf,
+            $restriction,
+            $info->{'apikey'},
+            $info->{'limit'},
+        )
+    );
 }
 
 sub isWhitelisted {
@@ -173,6 +194,21 @@ sub isWhitelisted {
 }
 
 __PACKAGE__->set_sql('lookup' => qq{
+    SELECT __TABLE__.id,__TABLE__.uuid, archive.data
+    FROM __TABLE__
+    LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
+    LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
+    WHERE address != '0/0'
+    AND (address >>= ? OR address <<= ?)
+    AND severity >= ?
+    AND confidence >= ?
+    AND __TABLE__.restriction <= ?
+    AND apikeys_groups.uuid = ?
+    ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
+    LIMIT ?
+});
+
+__PACKAGE__->set_sql('_lookup' => qq{
     SELECT __ESSENTIAL__ 
     FROM __TABLE__
     WHERE address != '0/0'
@@ -180,6 +216,7 @@ __PACKAGE__->set_sql('lookup' => qq{
     AND severity >= ?
     AND confidence >= ?
     AND restriction <= ?
+    AND guid = ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });

@@ -8,6 +8,7 @@ CREATE TABLE archive (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     uuid uuid NOT NULL,
     source uuid,
+    guid uuid,
     format text, -- IODEF, MetaSharing, IRC, Email, etc...
     description text,
     restriction restriction default 'private',

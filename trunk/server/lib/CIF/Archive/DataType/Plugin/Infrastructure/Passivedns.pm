@@ -6,6 +6,6 @@ sub prepare {
     my $info = shift;
 
     return unless($info->{'impact'} =~ /passive dns/);
-    return('infrastructure_passivedns');
+    return('passivedns');
 }
 1;

@@ -34,9 +34,10 @@ use Data::Dumper;
 use MIME::Lite;
 
 my %opts;
-getopts('afdT:C:c:p:c:hL',\%opts);
+getopts('afdt:T:C:c:p:c:hL',\%opts);
 my $period = $opts{'p'} || 'hourly';
 my $throttle = $opts{'T'} || 'medium';
+my $threads = $opts{'t'};
 my $cron_tool = $opts{'C'} || '/opt/cif/bin/cif_feedparser';
 my $first_run = $opts{'f'};
 my $debug = $opts{'d'};
@@ -134,7 +135,12 @@ unless(defined($ret) && $ret == 0){
 }
 foreach(@crons){
     my $c_tool = $_->{'tool'} || $cron_tool;
-    my $cmd = $c_tool.' -T '.$throttle.' -c '.$_->{'config'}.' -f '.$_->{'feed'};
+    my $cmd = $c_tool.' -c '.$_->{'config'}.' -f '.$_->{'feed'};
+    if($threads){
+        $cmd .= ' -t '.$threads;
+    } else {
+        $cmd .= ' -T '.$throttle;
+    }
     $cmd .= ' -F' if($first_run);
     warn $cmd if($debug);
     my $ret = system($cmd);

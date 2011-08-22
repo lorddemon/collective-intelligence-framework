@@ -12,6 +12,8 @@ sub process {
     my $self = shift;
     my $data = shift;
     my $config = shift;
+
+    ## TODO -- finish implementing and testing
     return;
 
     return unless($data->{'impact'});

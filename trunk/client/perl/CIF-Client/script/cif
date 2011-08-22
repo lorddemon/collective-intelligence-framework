@@ -7,7 +7,7 @@ use Getopt::Std;
 use CIF::Client;
 
 my %opts;
-getopt('hTHL:p:f:q:c:s:r:C:', \%opts);
+getopt('g:hTHL:p:f:q:c:s:r:C:', \%opts);
 
 my $query       = $opts{'q'} || shift;
 our $debug       = ($opts{'d'}) ? 1 : 0;
@@ -23,6 +23,7 @@ my $nomap       = $opts{'N'};
 my $confidence  = $opts{'c'} || 0;
 our $uuid        = $opts{'u'} || 0;
 our $relateduuid = $opts{'R'} || 0;
+my $guid         = $opts{'g'};
 my $plugs = join(',',CIF::Client::_plugins);
 my $simple_hashes = (defined($opts{'H'})) ? $opts{'H'} : 1;
 my $verify_tls = $opts{'T'};
@@ -47,6 +48,7 @@ Usage: perl $0 -q xyz.com
     -H  --simplehashes:     translate the complex json documents to simplified key value pairs, default: $simple_hashes
     -C  --config:           specify cofiguration file, default $c
     -T  --verify_tls:       verify tls hostname, default: $verify_tls
+    -g  --guid:             set the default group id
 
 Queries:
 
@@ -83,6 +85,7 @@ my ($client,$err) = CIF::Client->new({
     nolog       => $nolog,
     simple_hashes => $simple_hashes,
     verify_tls  => $verify_tls,
+    guid        => $guid,
 });
 
 die($err) unless($client);

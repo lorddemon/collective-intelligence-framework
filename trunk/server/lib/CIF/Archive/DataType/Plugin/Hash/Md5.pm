@@ -14,7 +14,7 @@ sub prepare {
     ## TODO -- set this up to accomodate multiple hashes
     return unless(_prepare($hash));
     $info->{'hash'} = $hash;
-    return('hash_md5');
+    return('md5');
 }
 
 sub lookup {

@@ -81,6 +81,7 @@ sub process {
             type            => $_->{'rrtype'},
             severity        => 'low',
             confidence      => 85,
+            guid            => $data->{'guid'},
         });
         warn $err if($err);
         warn $id->uuid() if $::debug;

@@ -18,14 +18,15 @@ sub process {
     require CIF::Archive;
     my $conf = $data->{'confidence'};
     my ($err,$id) = CIF::Archive->insert({
-        severity    => 'null',
-        confidence  => ($conf / 2),
-        address     => $data->{'prefix'},
-        impact      => 'infrastructure whitelist',
-        description => $data->{'address'},
-        restriction => $data->{'restriction'},
+        severity                    => 'null',
+        confidence                  => ($conf / 2),
+        address                     => $data->{'prefix'},
+        impact                      => 'infrastructure whitelist',
+        description                 => $data->{'address'},
+        restriction                 => $data->{'restriction'},
         alternativeid               => $data->{'alternativeid'},
         alternativeid_restriction   => $data->{'alternativeid_restriction'},
+        guid                        => $data->{'guid'},
     });
     warn $err if($err);
     warn $id->uuid() if($::debug);

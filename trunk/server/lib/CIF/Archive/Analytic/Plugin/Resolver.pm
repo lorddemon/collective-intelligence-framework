@@ -47,6 +47,7 @@ sub process {
         $conf = ($conf / 2);
         my ($err,$id) = CIF::Archive->insert({
             impact      => $data->{'impact'},
+            guid        => $data->{'guid'},
             description => $data->{'description'},
             relatedid   => $data->{'uuid'},
             address     => $data->{'address'},
