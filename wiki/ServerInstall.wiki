@@ -3,7 +3,7 @@ Instructions for standing up a CIF instance
 
 = BEFORE YOU BEGIN =
 
-*We're currently ramping up to release "beta3" code; which will change some of the namespaces in your perl directories (and in cpan). Because of this; some doc may be deprecated as we move things around.*
+*We're currently ramping up to release [ServerInstall_Beta3 Beta3] code; which will change some of the namespaces in your perl directories (and in cpan). Because of this; some doc may be deprecated as we move things around.*
 
 = Known Issues =
 
