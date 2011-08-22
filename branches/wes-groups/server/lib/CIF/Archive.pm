@@ -51,8 +51,9 @@ sub data_hash {
 
 sub data_hash_simple {
     my $class = shift;
+    my $data = shift || $class->data();
     foreach my $p ($class->plugins('storage')){
-        if(my $h = $p->data_hash_simple($class->data(),$class->uuid())){
+        if(my $h = $p->data_hash_simple($data,$class->uuid())){
             return($h);
         }
     }

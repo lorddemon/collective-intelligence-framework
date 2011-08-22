@@ -92,13 +92,12 @@ sub feed {
 
     my @snapshots;
     $info->{'key'} = 'address';
-    my $ret = $class->SUPER::feed($info);
+    my $ret = $class->SUPER::_feed($info);
     push(@snapshots,$ret) if($ret);
 
-    my $tbl = $class->table();
     foreach($class->plugins()){
-        my $t = $_->set_table();
-        my $r = $_->SUPER::feed($info);
+        $_->set_table();
+        my $r = $_->SUPER::_feed($info);
         push(@snapshots,$r) if($r);
     }
     return(\@snapshots);
@@ -164,7 +163,7 @@ sub lookup {
         ));
     }
     return(
-        $class->SUPER::lookup(
+        $class->search_lookup(
             $q,
             $q,
             $sev,
@@ -195,14 +194,15 @@ sub isWhitelisted {
 }
 
 __PACKAGE__->set_sql('lookup' => qq{
-    SELECT __TABLE__.id,__TABLE__.uuid 
+    SELECT __TABLE__.id,__TABLE__.uuid, archive.data
     FROM __TABLE__
     LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
+    LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
     WHERE address != '0/0'
     AND (address >>= ? OR address <<= ?)
     AND severity >= ?
     AND confidence >= ?
-    AND restriction <= ?
+    AND __TABLE__.restriction <= ?
     AND apikeys_groups.uuid = ?
     ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
     LIMIT ?

@@ -20,12 +20,14 @@ __PACKAGE__->set_sql('_feed' => qq{
 });
 
 __PACKAGE__->set_sql('feed' => qq{
-    SELECT __TABLE__.id,__TABLE__.uuid FROM __TABLE__
+    SELECT __TABLE__.id,__TABLE__.uuid, archive.data 
+    FROM __TABLE__
     LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
+    LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
     WHERE detecttime >= ?
-    AND confidence >= ?
-    AND severity >= ?
-    AND restriction >= ?
+    AND __TABLE__.confidence >= ?
+    AND __TABLE__.severity >= ?
+    AND __TABLE__.restriction >= ?
     AND apikeys_groups.uuid = ?
     ORDER BY __TABLE__.severity DESC, __TABLE__.confidence DESC, __TABLE__.restriction DESC, __TABLE__.detecttime, __TABLE__.id DESC
     LIMIT ?
@@ -63,7 +65,7 @@ sub set_table {
     return $class->table($t);
 }
 
-sub feed {
+sub _feed {
     my $class = shift;
     my $info = shift;
 
@@ -105,7 +107,6 @@ sub feed {
         );
     }
     if($recs[0]->{'uuid'}){
-        # declassify what we can
         my $hash;
         foreach (@recs){
             ## TODO -- test this
