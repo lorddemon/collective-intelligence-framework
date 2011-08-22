@@ -119,7 +119,7 @@ $ sudo adduser www-data cif
 }}}
  # restart apache2
 == Load Data ==
- # perform the "first run" to prime the database with it's initial intel (should take about 30min).
+ # perform [Tools_cif_crontool cif_crontool's] "first run" to prime the database with it's initial intel (should take about 30min).
 {{{
 $ time /opt/cif/bin/cif_crontool -f -d
 }}}
