@@ -1,5 +1,9 @@
 Revision history for Perl extension CIF::Client.
 
+0.01_06  2011-07-28
+    - minor bugfix to Plugin::Table
+    - added "query" value to feed-> passthrough
+
 0.01_05  2011-07-27
     - minor bugfixes
     - added tls_verify option
