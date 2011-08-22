@@ -162,7 +162,11 @@ sub GET {
             $response->{'status'} = '403';
             return Apache2::Const::HTTP_FORBIDDEN;
         }
-        return Apache2::Const::HTTP_OK unless($ret);
+        unless($ret){
+            $response->{'message'} = 'no records';
+            return Apache2::Const::HTTP_OK;
+        }
+
         my @recs;
         if(ref($ret) ne 'CIF::Archive'){
             @recs = $ret->slice(0,$ret->count());
@@ -188,7 +192,10 @@ sub GET {
         my $severity = $request->{'r'}->param('severity') || $request->{'r'}->dir_config->get('CIFDefaultFeedSeverity') || 'high';
         my $confidence = $request->{'r'}->param('confidence') || $request->{'r'}->dir_config->get('CIFDefaultFeedConfidence') || 85;
         my $ret = CIF::Archive->lookup({ nolog => $nolog, query => $q, source => $apikey, severity => $severity, restriction => $restriction, max => $maxresults, confidence => $confidence });
-        return Apache2::Const::HTTP_OK unless($ret);
+        unless($ret){
+            $response->{'message'} = 'no records';
+            return Apache2::Const::HTTP_OK;
+        }
 
         # we do it with @recs cause of the map_restrictions function
         my @recs = $ret->slice(0,$ret->count());

@@ -1,16 +1,12 @@
 package CIF::Archive::DataType::Plugin::Feed;
 use base 'CIF::Archive::DataType';
 
-require 5.008;
 use strict;
 use warnings;
 
-our $VERSION = '0.01_01';
-$VERSION = eval $VERSION;
-
 __PACKAGE__->table('feed');
-__PACKAGE__->columns(All => qw/id uuid description confidence source hash_sha1 signature impact severity restriction detecttime created data/);
-__PACKAGE__->columns(Essential => qw/id uuid description confidence source hash_sha1 signature impact severity restriction detecttime created data/);
+__PACKAGE__->columns(All => qw/id uuid guid description confidence source hash_sha1 signature impact severity restriction detecttime created data/);
+__PACKAGE__->columns(Essential => qw/id uuid guid description confidence source hash_sha1 signature impact severity restriction detecttime created data/);
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->sequence('feed_id_seq');
 
@@ -40,8 +36,8 @@ __PACKAGE__->set_sql('lookup' => qq{
     FROM __TABLE__
     WHERE impact = ?
     AND severity = ?
-    and confidence >= ?
-    and restriction = ?
+    AND confidence >= ?
+    AND restriction = ?
     ORDER BY confidence asc, detecttime desc, created desc, id DESC LIMIT 1
 });
 
