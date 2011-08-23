@@ -15,7 +15,7 @@ use DateTime;
 __PACKAGE__->set_table();
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid address confidence source guid severity restriction detecttime/);
-__PACKAGE__->columns(Essential => qw/uuid/);
+__PACKAGE__->columns(Essential => qw/uuid address confidence source severity restriction detecttime/);
 __PACKAGE__->sequence('infrastructure_id_seq');
 
 
@@ -218,6 +218,20 @@ __PACKAGE__->set_sql('_lookup' => qq{
     AND restriction <= ?
     AND guid = ?
     ORDER BY detecttime DESC, created DESC, id DESC
+    LIMIT ?
+});
+
+__PACKAGE__->set_sql('feed' => qq{
+    SELECT DISTINCT ON (address) address, confidence, __TABLE__.restriction, archive.uuid, archive.data
+    FROM __TABLE__
+    LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
+    LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
+    WHERE detecttime >= ?
+    AND __TABLE__.confidence >= ?
+    AND __TABLE__.severity >= ?
+    AND __TABLE__.restriction <= ?
+    AND apikeys_groups.uuid = ?
+    ORDER BY address ASC, confidence DESC, restriction ASC, detecttime DESC, __TABLE__.id ASC
     LIMIT ?
 });
 

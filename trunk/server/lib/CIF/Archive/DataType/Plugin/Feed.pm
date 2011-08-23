@@ -32,51 +32,35 @@ sub insert {
 }
 
 __PACKAGE__->set_sql('lookup' => qq{
-   SELECT __TABLE__.id,__TABLE__.uuid FROM __TABLE__
-   LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
-   WHERE impact = ?
-   AND severity >= ?
-   AND confidence >= ?
-   AND restriction <= ?
-   AND apikeys_groups.uuid = ?
-   ORDER BY severity ASC, confidence ASC, restriction ASC, id DESC
-   LIMIT 1
+    SELECT __TABLE__.id, __TABLE__.uuid, archive.data
+    FROM __TABLE__
+    LEFT JOIN archive ON archive.uuid = __TABLE__.uuid
+    LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
+    WHERE
+        impact = ?
+        AND severity = ?
+        AND confidence >= ?
+        AND feed.restriction <= ?
+        AND apikeys_groups.uuid = ?
+    ORDER BY confidence ASC, severity ASC, feed.restriction ASC, id DESC
 });
 
 __PACKAGE__->set_sql('_lookup' => qq{
-    SELECT __ESSENTIAL__
+    SELECT __TABLE__.id,__TABLE__.uuid, feed.restriction, archive.data
     FROM __TABLE__
+    LEFT JOIN archive ON archive.uuid = __TABLE__.uuid
     WHERE impact = ?
     AND severity = ?
-<<<<<<< .working
-    AND confidence >= ?
-    AND restriction = ?
-=======
-<<<<<<< .working
-<<<<<<< .working
     AND confidence >= ?
     AND restriction <= ?
     AND guid = ?
-    ORDER BY confidence asc, detecttime desc, created desc, id DESC
+    ORDER BY confidence DESC, severity ASC, feed.restriction ASC
     LIMIT 1
-=======
-    AND confidence >= ?
-    AND restriction = ?
-=======
-    AND confidence >= ?
-    AND restriction = ?
->>>>>>> .merge-right.r781
->>>>>>> .merge-right.r788
-    ORDER BY confidence asc, detecttime desc, created desc, id DESC LIMIT 1
->>>>>>> .merge-right.r781
 });
 
 sub lookup {
     my $class = shift;
     my $info = shift;
-
-    use Data::Dumper;
-    warn Dumper($info);
 
     if($info->{'guid'}){
         return(
@@ -96,8 +80,7 @@ sub lookup {
             $info->{'confidence'},
             $info->{'restriction'},
             $info->{'apikey'},
-        )
-    );
+   ));
 }
 
 1;
