@@ -92,12 +92,12 @@ sub feed {
 
     my @snapshots;
     $info->{'key'} = 'address';
-    my $ret = $class->SUPER::_feed($info);
+    my $ret = $class->_feed($info);
     push(@snapshots,$ret) if($ret);
 
     foreach($class->plugins()){
         $_->set_table();
-        my $r = $_->SUPER::_feed($info);
+        my $r = $_->_feed($info);
         push(@snapshots,$r) if($r);
     }
     return(\@snapshots);
@@ -226,11 +226,12 @@ __PACKAGE__->set_sql('feed' => qq{
     FROM __TABLE__
     LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
     LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
-    WHERE detecttime >= ?
-    AND __TABLE__.confidence >= ?
-    AND __TABLE__.severity >= ?
-    AND __TABLE__.restriction <= ?
-    AND apikeys_groups.uuid = ?
+    WHERE 
+        detecttime >= ?
+        AND __TABLE__.confidence >= ?
+        AND __TABLE__.severity >= ?
+        AND __TABLE__.restriction <= ?
+        AND apikeys_groups.uuid = ?
     ORDER BY address ASC, confidence DESC, restriction ASC, detecttime DESC, __TABLE__.id ASC
     LIMIT ?
 });

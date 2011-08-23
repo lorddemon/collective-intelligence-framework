@@ -1,12 +1,8 @@
-package CIF::Archive::DataType::Plugin::RIR;
+package CIF::Archive::DataType::Plugin::Rir;
 use base 'CIF::Archive::DataType';
 
-use 5.008008;
 use strict;
 use warnings;
-
-our $VERSION = '0.01_01';
-$VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 use Module::Pluggable require => 1, search_path => [__PACKAGE__];
 
@@ -98,27 +94,30 @@ sub feed {
     my @feeds;
     # this doesn't work quite yet.
     # gets stuck in a recursive loop for some reason on count()
-    return(\@feeds);
 
     $info->{'key'} = 'rir';
-    my $ret = $class->SUPER::feed($info);
+    my $ret = $class->_feed($info);
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){
-        my $t = $_->set_table();
-        my $r = $_->SUPER::feed($info);
+        $_->set_table();
+        my $r = $_->_feed($info);
         push(@feeds,$r) if($r);
     }
     return(\@feeds);
 }
 
 __PACKAGE__->set_sql('feed' => qq{
-    SELECT count(rir),rir,max(detecttime) as detecttime
+    SELECT count(rir),rir
     FROM __TABLE__
-    WHERE detecttime >= ?
-    AND confidence >= ?
-    AND severity >= ?
-    AND restriction <= ?
+    LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
+    LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
+    WHERE
+        detecttime >= ?
+        AND __TABLE__.confidence >= ?
+        AND severity >= ?
+        AND __TABLE__.restriction <= ?
+        AND apikeys_groups.uuid = ?
     GROUP BY rir
     ORDER BY count DESC
     LIMIT ?
