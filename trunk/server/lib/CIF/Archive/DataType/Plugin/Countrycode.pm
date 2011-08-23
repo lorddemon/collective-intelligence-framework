@@ -1,12 +1,8 @@
 package CIF::Archive::DataType::Plugin::Countrycode;
 use base 'CIF::Archive::DataType';
 
-use 5.008008;
 use strict;
 use warnings;
-
-our $VERSION = '0.00_01';
-$VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 use Module::Pluggable require => 1, search_path => [__PACKAGE__];
 
@@ -15,18 +11,6 @@ __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid cc source guid severity confidence restriction detecttime created/);
 __PACKAGE__->columns(Essential => qw/id uuid cc source guid severity confidence restriction detecttime created/);
 __PACKAGE__->sequence('countrycode_id_seq');
-
-__PACKAGE__->set_sql('feed' => qq{
-    SELECT count(cc),cc,max(detecttime) as detecttime
-    FROM __TABLE__
-    WHERE detecttime >= ?
-    AND confidence >= ?
-    AND severity >= ?
-    AND restriction <= ?
-    GROUP BY cc
-    ORDER BY count DESC
-    LIMIT ?
-});
 
 sub prepare {
     my $class = shift;
@@ -77,14 +61,13 @@ sub feed {
     my @feeds;
 
     ## TODO -- same as rir ans asn
-    return(\@feeds);
     $info->{'key'} = 'cc';
-    my $ret = $class->SUPER::feed($info);
+    my $ret = $class->_feed($info);
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){
-        my $t = $_->set_table();
-        my $r = $_->SUPER::feed($info);
+        $_->set_table();
+        my $r = $_->_feed($info);
         push(@feeds,$r) if($r);
     }
     return(\@feeds);
@@ -119,6 +102,22 @@ sub lookup {
         )
     );
 }
+
+__PACKAGE__->set_sql('feed' => qq{
+    SELECT count(cc),cc
+    FROM __TABLE__
+    LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
+    LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
+    WHERE
+        detecttime >= ?
+        AND __TABLE__.confidence >= ?
+        AND severity >= ?
+        AND __TABLE__.restriction <= ?
+        AND apikeys_groups.uuid = ?
+    GROUP BY cc
+    ORDER BY count DESC
+    LIMIT ?
+});
 
 __PACKAGE__->set_sql('_lookup' => qq{
     SELECT __TABLE__.id,__TABLE__.uuid

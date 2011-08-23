@@ -4,7 +4,7 @@ use base 'CIF::Archive::DataType';
 use strict;
 use warnings;
 
-use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/SUPER$/;;
+use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/SUPER$/;
 
 __PACKAGE__->table('asn');
 __PACKAGE__->columns(Primary => 'id');
@@ -99,20 +99,21 @@ sub feed {
     ## TODO -- finish
     #return(\@feeds);
     $info->{'key'} = 'asn';
-    my $ret = $class->SUPER::_feed($info);
-    warn ::Dumper($ret);
+    my $ret = $class->_feed($info);
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){
         $_->set_table();
-        my $r = $_->SUPER::_feed($info);
+        my $r = $_->_feed($info);
         push(@feeds,$r) if($r);
     }
     return(\@feeds);
 }
 
+sub isWhitelisted {}
+
 __PACKAGE__->set_sql('feed' => qq{
-    SELECT DISTINCT on (__TABLE__.asn) __TABLE__.asn, confidence, archive.data
+    SELECT count(asn),asn
     FROM __TABLE__
     LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
     LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
@@ -122,18 +123,20 @@ __PACKAGE__->set_sql('feed' => qq{
         AND severity >= ?
         AND __TABLE__.restriction <= ?
         AND apikeys_groups.uuid = ?
-    ORDER BY __TABLE__.asn ASC, confidence DESC, severity DESC, __TABLE__.restriction ASC
+    GROUP BY asn
+    ORDER BY count DESC
     LIMIT ?
 });
 
 __PACKAGE__->set_sql('_lookup' => qq{
     SELECT id,uuid
     FROM __TABLE__
-    WHERE asn = ?
-    AND SEVERITY = ?
-    AND confidence >= ?
-    AND restriction <= ?
-    AND guid = ?
+    WHERE 
+        asn = ?
+        AND SEVERITY = ?
+        AND confidence >= ?
+        AND restriction <= ?
+        AND guid = ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });
@@ -142,11 +145,12 @@ __PACKAGE__->set_sql('lookup' => qq{
     SELECT __TABLE__.id,__TABLE__.uuid
     FROM __TABLE__
     LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
-    WHERE asn = ?
-    AND severity >= ?
-    AND confidence >= ?
-    AND restriction <= ?
-    AND apikeys_groups.uuid = ?
+    WHERE 
+        asn = ?
+        AND severity >= ?
+        AND confidence >= ?
+        AND restriction <= ?
+        AND apikeys_groups.uuid = ?
     ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
     LIMIT ?
 });
