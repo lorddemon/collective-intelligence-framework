@@ -1,4 +1,4 @@
-package CIF::Archive::DataType::Plugin::ASN;
+package CIF::Archive::DataType::Plugin::Asn;
 use base 'CIF::Archive::DataType';
 
 use strict;
