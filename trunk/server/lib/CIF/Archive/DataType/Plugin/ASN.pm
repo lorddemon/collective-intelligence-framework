@@ -66,7 +66,7 @@ sub lookup {
 
     if($info->{'guid'}){
         return(
-            $class->SUPER::_lookup(
+            $class->search__lookup(
                 $q,
                 $info->{'severity'},
                 $info->{'confidence'},
@@ -77,7 +77,7 @@ sub lookup {
         );
     }
     return(
-        $class->SUPER::lookup(
+        $class->search_lookup(
             $q,
             $info->{'severity'},
             $info->{'confidence'},
@@ -97,28 +97,32 @@ sub feed {
     # this doesn't work quite yet.
     # gets stuck on recursive loop because of count()
     ## TODO -- finish
-    return(\@feeds);
+    #return(\@feeds);
     $info->{'key'} = 'asn';
-    my $ret = $class->SUPER::feed($info);
+    my $ret = $class->SUPER::_feed($info);
+    warn ::Dumper($ret);
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){
-        my $t = $_->set_table();
-        my $r = $_->SUPER::feed($info);
+        $_->set_table();
+        my $r = $_->SUPER::_feed($info);
         push(@feeds,$r) if($r);
     }
     return(\@feeds);
 }
 
 __PACKAGE__->set_sql('feed' => qq{
-    SELECT count(asn),asn,asn_desc,max(detecttime) as detecttime
+    SELECT DISTINCT on (__TABLE__.asn) __TABLE__.asn, confidence, archive.data
     FROM __TABLE__
-    WHERE detecttime >= ?
-    AND confidence >= ?
-    AND severity >= ?
-    AND restriction <= ?
-    GROUP BY asn,asn_desc
-    ORDER BY count DESC
+    LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
+    LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
+    WHERE
+        detecttime >= ?
+        AND __TABLE__.confidence >= ?
+        AND severity >= ?
+        AND __TABLE__.restriction <= ?
+        AND apikeys_groups.uuid = ?
+    ORDER BY __TABLE__.asn ASC, confidence DESC, severity DESC, __TABLE__.restriction ASC
     LIMIT ?
 });
 

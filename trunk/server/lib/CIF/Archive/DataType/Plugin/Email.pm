@@ -58,13 +58,12 @@ sub feed {
 
     my @feeds;
     $info->{'key'} = 'address';
-    my $ret = $class->SUPER::feed($info);
+    my $ret = $class->SUPER::_feed($info);
     push(@feeds,$ret) if($ret);
 
-    my $tbl = $class->table();
     foreach($class->plugins()){
-        my $t = $_->set_table();
-        my $r = $_->SUPER::feed($info);
+        $_->set_table();
+        my $r = $_->SUPER::_feed($info);
         push(@feeds,$r) if($r);
     }
     return(\@feeds);
@@ -125,6 +124,22 @@ __PACKAGE__->set_sql('lookup' => qq{
     ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC 
     LIMIT ?
 });
+
+__PACKAGE__->set_sql('feed' => qq{
+    SELECT DISTINCT on (__TABLE__.address) __TABLE__.address, confidence, __TABLE__.uuid, archive.data
+    FROM __TABLE__
+    LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
+    LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
+    WHERE
+        detecttime >= ?
+        AND __TABLE__.confidence >= ?
+        AND severity >= ?
+        AND __TABLE__.restriction <= ?
+        AND apikeys_groups.uuid = ?
+    ORDER BY __TABLE__.address ASC, __TABLE__.id ASC, confidence DESC, severity DESC, __TABLE__.restriction ASC
+    LIMIT ?
+});
+
 1;
 __END__
 

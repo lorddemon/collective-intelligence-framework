@@ -108,7 +108,7 @@ sub lookup {
         ));
     }
     return(
-        $self->SUPER::lookup(
+        $self->search_lookup(
             $address,
             $sev,
             $conf,
@@ -135,7 +135,7 @@ sub isWhitelisted {
         $d = "'".$d."'";
         push(@hashes,$d);
     }
-    my $sql .= join('OR md5 = ',@hashes);
+    my $sql .= join(' OR md5 = ',@hashes);
     $sql =~ s/^/md5 = /;
 
     $sql .= qq{\nORDER BY detecttime DESC, created DESC, id DESC};
@@ -152,26 +152,29 @@ sub feed {
 
     my @feeds;
     $info->{'key'} = 'address';
-    my $ret = $class->SUPER::feed($info);
+    my $ret = $class->_feed($info);
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){
-        my $t = $_->set_table();
-        my $r = $_->SUPER::feed($info);
+        $_->set_table();
+        my $r = $_->_feed($info);
         push(@feeds,$r) if($r);
     }
     return(\@feeds);
 }
 
 __PACKAGE__->set_sql('feed' => qq{
-    SELECT __ESSENTIAL__ 
+    SELECT DISTINCT on (__TABLE__.uuid) __TABLE__.uuid, address, confidence, archive.data
     FROM __TABLE__
-    WHERE detecttime >= ?
-    AND confidence >= ?
-    AND severity >= ?
-    AND restriction <= ?
-    AND type != 'NS'
-    ORDER BY detecttime DESC, created DESC, id DESC
+    LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
+    LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
+    WHERE
+        detecttime >= ?
+        AND __TABLE__.confidence >= ?
+        AND severity >= ?
+        AND __TABLE__.restriction <= ?
+        AND apikeys_groups.uuid = ?
+    ORDER BY __TABLE__.uuid ASC, __TABLE__.id ASC, confidence DESC, severity DESC, __TABLE__.restriction ASC
     LIMIT ?
 });
 
@@ -180,14 +183,16 @@ __PACKAGE__->set_sql('feed' => qq{
 ## eg: yahoo.com would result with example.yahoo.com results
 
 __PACKAGE__->set_sql('lookup' => qq{
-    SELECT __TABLE__.id,__TABLE__.uuid 
+    SELECT __TABLE__.id,__TABLE__.uuid, archive.data 
     FROM __TABLE__
     LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
-    WHERE md5 = ?
-    AND severity >= ?
-    AND confidence >= ?
-    AND restriction <= ?
-    AND apikeys_groups.uuid = ?
+    LEFT JOIN archive ON archive.uuid = __TABLE__.uuid
+    WHERE 
+        md5 = ?
+        AND severity >= ?
+        AND confidence >= ?
+        AND __TABLE__.restriction <= ?
+        AND apikeys_groups.uuid = ?
     ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
     LIMIT ?
 });
