@@ -64,6 +64,10 @@ $ sudo /etc/init.d/apache2 restart
 }}}
 
 == Configuration ==
+ # log in as the cif user:
+{{{
+$ sudo su - cif
+}}}
  # modify your local path, vi ~/.profile
 {{{
 if [ -d "/opt/cif/bin" ]; then
