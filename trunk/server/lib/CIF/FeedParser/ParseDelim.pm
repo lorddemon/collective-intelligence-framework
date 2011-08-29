@@ -21,7 +21,7 @@ sub parse {
         @lines = @lines[$start..$end];
     }
     foreach(@lines){
-        next if(/^(#|$)/);
+        next if(/^(#|$|<)/);
         my @m = split($split,$_);
         my $h;
         foreach (0 ... $#cols){

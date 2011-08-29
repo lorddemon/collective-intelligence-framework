@@ -32,9 +32,8 @@ sub insert {
 }
 
 __PACKAGE__->set_sql('lookup' => qq{
-    SELECT __TABLE__.id, __TABLE__.uuid, archive.data
+    SELECT __TABLE__.id, __TABLE__.uuid, data
     FROM __TABLE__
-    LEFT JOIN archive ON archive.uuid = __TABLE__.uuid
     LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
     WHERE
         impact = ?
@@ -42,19 +41,19 @@ __PACKAGE__->set_sql('lookup' => qq{
         AND confidence >= ?
         AND feed.restriction <= ?
         AND apikeys_groups.uuid = ?
-    ORDER BY confidence ASC, severity ASC, feed.restriction ASC, id DESC
+    ORDER BY confidence ASC, feed.restriction DESC, id DESC
 });
 
 __PACKAGE__->set_sql('_lookup' => qq{
-    SELECT __TABLE__.id,__TABLE__.uuid, feed.restriction, archive.data
+    SELECT __TABLE__.id,__TABLE__.uuid, feed.restriction, data
     FROM __TABLE__
-    LEFT JOIN archive ON archive.uuid = __TABLE__.uuid
-    WHERE impact = ?
-    AND severity = ?
-    AND confidence >= ?
-    AND restriction <= ?
-    AND guid = ?
-    ORDER BY confidence DESC, severity ASC, feed.restriction ASC
+    WHERE 
+        impact = ?
+        AND severity = ?
+        AND confidence >= ?
+        AND restriction <= ?
+        AND guid = ?
+    ORDER BY confidence ASC, restriction DESC, id DESC
     LIMIT 1
 });
 

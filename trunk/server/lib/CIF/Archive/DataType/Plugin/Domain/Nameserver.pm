@@ -1,6 +1,8 @@
 package CIF::Archive::DataType::Plugin::Domain::Nameserver;
 use base 'CIF::Archive::DataType::Plugin::Domain';
 
+__PACKAGE__->table('domain_nameserver');
+
 sub prepare {
     my $class = shift;
     my $info = shift;

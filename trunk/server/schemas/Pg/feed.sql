@@ -13,6 +13,6 @@ CREATE TABLE feed (
     restriction restriction not null default 'private',
     detecttime timestamp with time zone default NOW(),
     created timestamp with time zone DEFAULT NOW(),
-    data text not null,
+    data text,
     UNIQUE (uuid)
 );

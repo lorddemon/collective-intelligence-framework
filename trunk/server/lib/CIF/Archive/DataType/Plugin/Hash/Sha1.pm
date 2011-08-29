@@ -1,6 +1,8 @@
 package CIF::Archive::DataType::Plugin::Hash::Sha1;
 use base 'CIF::Archive::DataType::Plugin::Hash';
 
+__PACKAGE__->table('hash_sha1');
+
 sub prepare {
     my $class = shift;
     my $info = shift;

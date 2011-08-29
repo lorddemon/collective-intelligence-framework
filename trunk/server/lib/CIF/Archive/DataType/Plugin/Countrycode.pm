@@ -66,7 +66,6 @@ sub feed {
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){
-        $_->set_table();
         my $r = $_->_feed($info);
         push(@feeds,$r) if($r);
     }

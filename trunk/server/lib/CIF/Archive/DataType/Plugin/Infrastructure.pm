@@ -12,7 +12,7 @@ use Regexp::Common qw/net URI/;
 use Regexp::Common::net::CIDR ();
 use DateTime;
 
-__PACKAGE__->set_table();
+__PACKAGE__->table('infrastructure');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid address confidence source guid severity restriction detecttime/);
 __PACKAGE__->columns(Essential => qw/uuid address confidence source severity restriction detecttime/);
@@ -96,7 +96,6 @@ sub feed {
     push(@snapshots,$ret) if($ret);
 
     foreach($class->plugins()){
-        $_->set_table();
         my $r = $_->_feed($info);
         push(@snapshots,$r) if($r);
     }
@@ -175,35 +174,52 @@ sub lookup {
     );
 }
 
+## TODO -- re-write this as a "good" SQL stmt
+## newb.
 sub isWhitelisted {
-    my $self = shift;
+    my $class = shift;
     my $a = shift;
+    my $apikey = shift;
+    return;
+
     return (undef) unless($a);
     return (0,'is private address') if(isPrivateAddress($a));
 
-    my $sql = qq{
-        family(address) = 4 AND masklen(address) < 32 AND '$a' <<= address 
-        ORDER BY detecttime DESC, created DESC, id DESC
-    };
-
-    my $t = $self->table();
-    $self->table('infrastructure_whitelist');
-    my @ret = $self->retrieve_from_sql($sql);
-    $self->table($t);
+    my @ret = $class->search_isWhitelisted(
+        $a,
+        25,
+        $apikey,
+    );
     return @ret;
 }
+
+__PACKAGE__->set_sql('isWhitelisted' => qq{
+    SELECT iw.id, iw.uuid, archive.data
+    FROM infrastructure_whitelist iw
+    LEFT JOIN apikeys_groups on iw.guid = apikeys_groups.guid
+    LEFT JOIN archive ON iw.uuid = archive.uuid
+    WHERE
+        family(address) = 4
+        AND masklen(address) <= 32
+        AND ? <<= address
+        AND confidence >= ?
+        AND apikeys_groups.uuid = ?
+    ORDER BY confidence DESC, iw.id DESC
+    LIMIT 5
+});
 
 __PACKAGE__->set_sql('lookup' => qq{
     SELECT __TABLE__.id,__TABLE__.uuid, archive.data
     FROM __TABLE__
     LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
     LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
-    WHERE address != '0/0'
-    AND (address >>= ? OR address <<= ?)
-    AND severity >= ?
-    AND confidence >= ?
-    AND __TABLE__.restriction <= ?
-    AND apikeys_groups.uuid = ?
+    WHERE 
+        address != '0/0'
+        AND (address >>= ? OR address <<= ?)
+        AND severity >= ?
+        AND confidence >= ?
+        AND __TABLE__.restriction <= ?
+        AND apikeys_groups.uuid = ?
     ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
     LIMIT ?
 });
@@ -211,12 +227,13 @@ __PACKAGE__->set_sql('lookup' => qq{
 __PACKAGE__->set_sql('_lookup' => qq{
     SELECT __ESSENTIAL__ 
     FROM __TABLE__
-    WHERE address != '0/0'
-    AND (address >>= ? OR address <<= ?)
-    AND severity >= ?
-    AND confidence >= ?
-    AND restriction <= ?
-    AND guid = ?
+    WHERE 
+        address != '0/0'
+        AND (address >>= ? OR address <<= ?)
+        AND severity >= ?
+        AND confidence >= ?
+        AND restriction <= ?
+        AND guid = ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });
@@ -227,12 +244,14 @@ __PACKAGE__->set_sql('feed' => qq{
     LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
     LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
     WHERE 
-        detecttime >= ?
+        NOT EXISTS (SELECT uuid FROM domain where __TABLE__.uuid = domain.uuid)
+        AND NOT EXISTS (SELECT uuid FROM infrastructure_whitelist iw WHERE __TABLE__.address <<= iw.address AND iw.confidence >= 25)
+        AND detecttime >= ?
         AND __TABLE__.confidence >= ?
         AND __TABLE__.severity >= ?
         AND __TABLE__.restriction <= ?
         AND apikeys_groups.uuid = ?
-    ORDER BY address ASC, confidence DESC, restriction ASC, detecttime DESC, __TABLE__.id ASC
+    ORDER BY address ASC, confidence DESC, restriction ASC, detecttime DESC, __TABLE__.id DESC 
     LIMIT ?
 });
 

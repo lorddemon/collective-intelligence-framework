@@ -1,7 +1,6 @@
 package CIF::Archive::DataType::Plugin::Analytic;
 use base 'CIF::Archive::DataType';
 
-use 5.008008;
 use strict;
 use warnings;
 
