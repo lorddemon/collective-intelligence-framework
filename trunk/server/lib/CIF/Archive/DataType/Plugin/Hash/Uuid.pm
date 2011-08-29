@@ -1,6 +1,8 @@
 package CIF::Archive::DataType::Plugin::Hash::Uuid;
 use base 'CIF::Archive::DataType::Plugin::Hash';
 
+__PACKAGE__->table('hash_uuid');
+
 sub prepare {
     my $class = shift;
     my $info = shift;

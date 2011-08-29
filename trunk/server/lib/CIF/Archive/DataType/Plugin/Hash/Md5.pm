@@ -1,6 +1,8 @@
 package CIF::Archive::DataType::Plugin::Hash::Md5;
 use base 'CIF::Archive::DataType::Plugin::Hash';
 
+__PACKAGE__->table('hash_md5');
+
 sub prepare {
     my $class = shift;
     my $info = shift;

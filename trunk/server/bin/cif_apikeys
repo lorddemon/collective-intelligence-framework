@@ -45,7 +45,7 @@ if($default_guid){
 }
 
 if($user){
-    die(usage()) unless($opts{'k'} || $opts{'l'} || $opts{'g'});
+    die(usage()) unless($opts{'k'} || $opts{'l'} || $opts{'g'} || $opts{'d'});
 }
 
 sub usage {
@@ -147,15 +147,26 @@ if(exists($opts{'a'})){
 }
 
 if(exists($opts{'d'}) && !$opts{'g'}){
-    die(usage()) unless($opts{'k'} || $opts{'userid'});
-    my @recs = CIF::WebAPI::APIKey->search(uuid => $opts{'k'}, uuid_alias => $user, access => $access);
+    die(usage()) unless($opts{'k'} || $user);
+    my @recs;
+    if($opts{'k'}){
+        @recs = CIF::WebAPI::APIKey->search(uuid => $opts{'k'});
+    } else {
+        @recs = CIF::WebAPI::APIKey->search(uuid_alias => $user);
+    }
     foreach (@recs){
+        print 'deleting: '.$_->uuid()."\n";
         $_->delete();
+
     }
 }
 my @recs;
 if(!$user && $opts{'k'}){
     my @r = CIF::WebAPI::APIKey->search(uuid => $opts{'k'});
+    unless(@r){
+        print 'no keys found'."\n";
+        exit(0);
+    }
     $user = $r[0]->uuid_alias();
 }
 if($user){

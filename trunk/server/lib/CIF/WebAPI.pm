@@ -117,6 +117,7 @@ sub GET {
 
     my $maxresults = $request->{'r'}->param('maxresults') || $request->dir_config->{'CIFFeedResultsDefault'} || 10000;
     my $apikey = $request->{'r'}->param('apikey');
+    my $guid = $request->{'guid'};
 
     # figure out who's calling us
     my @bits    = split(/\:\:/,ref($self));
@@ -150,8 +151,20 @@ sub GET {
     if($q){
         my $severity = $request->{'r'}->param('severity') || 'null';
         my $confidence = $request->{'r'}->param('confidence') || 0;
-        my ($err,$ret) = CIF::Archive->lookup({ nolog => $nolog, query => $q, source => $apikey, severity => $severity, restriction => $restriction, max => $maxresults, confidence => $confidence, group => $group });
+        my ($err,$ret) = CIF::Archive->lookup({ 
+            nolog           => $nolog,
+            query           => $q,
+            source          => $apikey,
+            severity        => $severity,
+            restriction     => $restriction,
+            max             => $maxresults,
+            confidence      => $confidence,
+            apikey          => $apikey,
+            guid            => $guid,
+            default_guid    => $request->{'default_guid'},
+        });
         if($err){
+            warn $err;
             for(lc($err)){
                 if(/invalid input value for enum restriction/){
                     $response->{'message'} = 'invalid restriction';
@@ -170,7 +183,7 @@ sub GET {
         my @recs;
         if(ref($ret) ne 'CIF::Archive'){
             @recs = $ret->slice(0,$ret->count());
-            @recs = map { $_ = $_->uuid->data_hash() } @recs;
+            @recs = map { $_ = JSON::from_json($_->{'data'}) } @recs;
         } else {
             $ret = $ret->data_hash();
             push(@recs,$ret);
@@ -189,9 +202,21 @@ sub GET {
         ## TODO -- clean this up
         $q = lc($type);
         $q = lc($impact).' '.$q if($impact);
+        $q .= ' feed';
         my $severity = $request->{'r'}->param('severity') || $request->{'r'}->dir_config->get('CIFDefaultFeedSeverity') || 'high';
         my $confidence = $request->{'r'}->param('confidence') || $request->{'r'}->dir_config->get('CIFDefaultFeedConfidence') || 85;
-        my $ret = CIF::Archive->lookup({ nolog => $nolog, query => $q, source => $apikey, severity => $severity, restriction => $restriction, max => $maxresults, confidence => $confidence });
+        my $ret = CIF::Archive->lookup({    
+            nolog       => $nolog, 
+            query       => $q, 
+            source      => $apikey, 
+            severity    => $severity, 
+            restriction => $restriction, 
+            max         => $maxresults, 
+            confidence  => $confidence,
+            apikey      => $apikey,
+            guid        => $guid,
+            default_guid    => $request->{'default_guid'},
+        });
         unless($ret){
             $response->{'message'} = 'no records';
             return Apache2::Const::HTTP_OK;
@@ -199,9 +224,8 @@ sub GET {
 
         # we do it with @recs cause of the map_restrictions function
         my @recs = $ret->slice(0,$ret->count());
-        my $uuid = $recs[0]->uuid->uuid();
-        @recs = map { $_ = $_->uuid->data_hash() } @recs;
-        
+        my $uuid = $recs[0]->uuid->id();
+        @recs = map { $_ = JSON::from_json($_->{'data'}) } @recs;
 
         my $old_restriction = $restriction;
         ($restriction,@recs) = $self->map_restrictions($request,$restriction,@recs);

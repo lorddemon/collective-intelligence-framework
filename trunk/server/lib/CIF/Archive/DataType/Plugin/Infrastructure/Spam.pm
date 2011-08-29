@@ -1,6 +1,8 @@
 package CIF::Archive::DataType::Plugin::Infrastructure::Spam;
 use base 'CIF::Archive::DataType::Plugin::Infrastructure';
 
+__PACKAGE__->table('infrastructure_spam');
+
 sub prepare {
     my $class = shift;
     my $info = shift;

@@ -1,7 +1,6 @@
 package CIF::Archive::DataType::Plugin::Hash;
 use base 'CIF::Archive::DataType';
 
-use 5.008008;
 use strict;
 use warnings;
 
@@ -58,13 +57,11 @@ sub feed {
 
     my @feeds;
     $info->{'key'} = 'hash';
-    my $ret = $class->SUPER::feed($info);
+    my $ret = $class->_feed($info);
     push(@feeds,$ret) if($ret);
 
-    my $tbl = $class->table();
     foreach($class->plugins()){
-        my $t = $_->set_table();
-        my $r = $_->SUPER::feed($info);
+        my $r = $_->_feed($info);
         push(@feeds,$r) if($r);
     }
     return(\@feeds);
@@ -105,11 +102,12 @@ sub lookup {
 
 __PACKAGE__->set_sql('_lookup' => qq{
     SELECT id,uuid FROM __TABLE
-    WHERE lower(hash) = lower(?)
-    AND severity >= ?
-    AND confidence >= ?
-    AND restriction <= ?
-    AND guid = ?
+    WHERE 
+        lower(hash) = lower(?)
+        AND severity >= ?
+        AND confidence >= ?
+        AND restriction <= ?
+        AND guid = ?
     ORDER BY detecttime DESC, created DESC, id DESC
     LIMIT ?
 });
@@ -118,12 +116,28 @@ __PACKAGE__->set_sql('lookup' => qq{
     SELECT __TABLE__.id,__TABLE__.uuid
     FROM __TABLE__
     LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
-    WHERE lower(hash) = lower(?)
-    and severity >= ?
-    and confidence >= ?
-    and restriction <= ?
-    and apikeys_groups.uuid = ?
+    WHERE 
+        lower(hash) = lower(?)
+        AND severity >= ?
+        AND confidence >= ?
+        AND restriction <= ?
+        AND apikeys_groups.uuid = ?
     ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
+    LIMIT ?
+});
+
+__PACKAGE__->set_sql('feed' => qq{
+    SELECT DISTINCT on (__TABLE__.hash) __TABLE__.hash, confidence, archive.uuid, archive.data
+    FROM __TABLE__
+    LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
+    LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
+    WHERE
+        detecttime >= ?
+        AND __TABLE__.confidence >= ?
+        AND severity >= ?
+        AND __TABLE__.restriction <= ?
+        AND apikeys_groups.uuid = ?
+    ORDER BY __TABLE__.hash ASC, __TABLE__.id ASC, confidence DESC, severity DESC, __TABLE__.restriction ASC
     LIMIT ?
 });
 

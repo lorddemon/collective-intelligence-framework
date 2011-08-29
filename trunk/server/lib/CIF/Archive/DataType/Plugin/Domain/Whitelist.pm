@@ -1,6 +1,8 @@
 package CIF::Archive::DataType::Plugin::Domain::Whitelist;
 use base 'CIF::Archive::DataType::Plugin::Domain';
 
+__PACKAGE__->table('domain_whitelist');
+
 sub prepare {
     my $class = shift;
     my $info = shift;

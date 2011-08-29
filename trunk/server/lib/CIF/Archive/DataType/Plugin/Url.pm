@@ -27,6 +27,7 @@ sub prepare {
     return unless($info->{'impact'} =~ /url$/);
     return unless($info->{'address'});
     return unless($info->{'address'} =~ /^$RE{'URI'}/);
+    $info->{'address'} = lc($info->{'address'});
     $info->{'md5'} = md5_hex($info->{'address'}) unless($info->{'md5'});
     $info->{'sha1'} = sha1_hex($info->{'address'}) unless($info->{'sha1'});
     return(1);
@@ -74,7 +75,6 @@ sub feed {
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){
-        $_->set_table();
         my $r = $_->SUPER::_feed($info);
         push(@feeds,$r) if($r);
     }

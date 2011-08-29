@@ -1,6 +1,8 @@
 package CIF::Archive::DataType::Plugin::Infrastructure::Network;
 use base 'CIF::Archive::DataType::Plugin::Infrastructure';
 
+__PACKAGE__->table('infrastructure_network');
+
 sub prepare {
     my $class = shift;
     my $info = shift;

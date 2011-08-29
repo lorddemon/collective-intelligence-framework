@@ -35,14 +35,13 @@ use Digest::SHA1 qw/sha1_hex/;
 use MIME::Base64;
 use Config::Simple;
 use Data::Dumper;
+require CIF::Archive;
 use Compress::Zlib;
-use CIF::Archive;
-use CIF::Archive::DataType::Plugin::Feed;
 use CIF::Utils ':all';
 use threads;
 
 my %opts;
-getopts('D:ht:S:c:df:s:r:m:F:C:T:g:',\%opts);
+getopts('K:D:ht:S:c:df:s:r:m:F:C:T:g:',\%opts);
 
 my $severity    = $opts{'s'};
 my $confidence  = $opts{'c'};
@@ -53,11 +52,11 @@ my $config      = $opts{'C'} || $ENV{'HOME'}.'/.cif';
 my $last_feeds  = $opts{'F'} || 5;
 my $mutex       = $opts{'L'} || '/tmp/cif_feeds.lock';
 my $specific    = $opts{'S'};
-my $throttle    = $opts{'T'} || 'low';
-my $guid        = $opts{'g'} || 'everyone';
-my $rolekey     = '1e211736-9b73-405a-9477-73f8c8ea1b63';
-$guid = CIF::Utils::genSourceUUID($guid) unless(CIF::Utils::isUUID($guid));
+my $throttle    = $opts{'T'} || 'medium';
+my $role        = $opts{'K'};
 $opts{'t'} = 1 if($specific);
+$opts{'t'} = 1;
+my $guid;
  
 
 my $cfg = Config::Simple->new($config) || die('missing config file');
@@ -66,6 +65,7 @@ my @plugs = CIF::Archive->plugins('datatype');
 my $sf = $cfg->param(-block  => 'cif_feeds')->{'severity_feeds'};
 my $cf = $cfg->param(-block => 'cif_feeds')->{'confidence_feeds'};
 my $rf = $cfg->param(-block => 'cif_feeds')->{'restriction_feeds'};
+my $RKF = $cfg->param(-block => 'cif_feeds')->{'apikeys'};
 my $disabled_feeds = $cfg->param(-block => 'cif_feeds')->{'disabled_feeds'};
 
 $SIG{'INT'} = 'cleanup';
@@ -98,6 +98,40 @@ unless(defined($ret) && $ret == 0){
 my @severity_feeds;
 my @confidence_feeds;
 my @restriction_feeds;
+my @role_keys;
+
+if($role){
+    push(@role_keys,$role);
+} elsif($RKF){
+    if(ref($RKF) eq 'ARRAY'){
+        push(@role_keys,@{$RKF});
+    } else {
+        push(@role_keys,$RKF);
+    }
+} else {
+    push(@role_keys,'everyone');
+}
+
+
+require CIF::WebAPI::APIKey;
+foreach(@role_keys){
+    my $kk;
+    if(CIF::Utils::isUUID($_)){
+        $kk = CIF::WebAPI::APIKey->retrieve(uuid => $_);
+    } else {
+        my @ary = CIF::WebAPI::APIKey->search(uuid_alias => $_);
+        $kk = $ary[0];
+    }
+    $guid = $kk->default_guid();
+    $role = $kk->uuid();
+    die 'missing default group for: '.$role unless($guid);
+    $_ = {
+        guid    => $guid,
+        apikey  => $role,
+        alias   => $_,
+    };
+}
+
 if($severity){
     push(@severity_feeds,$severity);
 } elsif($sf) {
@@ -215,117 +249,167 @@ if(scalar @{$batches} == 1){
 sub process {
     my $p = shift;
 
-    foreach (@{$p}){
-        generate_feed($_);
-    }
-}    
-
-sub generate_feed {
-    my $plug = shift;
-
-    my $start = time();
-
-    _debug('processing: '.$_);
-
     my $detecttime = DateTime->from_epoch(epoch => (time() - (84600 * $maxdays)));
-    _profile('searching',$start);
-    foreach my $r (@restriction_feeds){
-    foreach my $sev (@severity_feeds){
-        foreach my $conf (@confidence_feeds){
-            my $ret = $_->feed({
-                severity    => $sev,
-                restriction => $r,
-                confidence  => $conf,
-                detecttime  => $detecttime,
-                maxrecords  => 50000,
-                rolekey     => $rolekey,
-            });
-            unless($ret){
-                _debug('no records');
-                next();
-            }
-            my @feeds = @$ret;
-            _profile('mapping',$start);
-            my @types = map { $_->{'feed'}->{'title'} } @feeds;
-            foreach my $f (@feeds){
-                my @recs = @{$f->{'feed'}->{'entry'}};
-                _debug('records: '.@recs);
-                next unless(defined($#recs));
-                my $loc_restriction = $r;
-                if($recs[0] && keys %$restriction_map){
-                    $loc_restriction = $restriction_map->{$r};
-                    foreach my $rec (@recs){
-                        my ($x,$alt_r);
-                        if(exists($rec->{'Incident'}->{'restriction'})){
-                            $x = $rec->{'Incident'}->{'restriction'};
-                        }
-                        if(exists($rec->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'})){
-                            $alt_r = $rec->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'};
-                        }
-                        if($x && exists($restriction_map->{$x})){
-                            $x = $restriction_map->{$x};
-                        }
-                        if($alt_r && exists($restriction_map->{$alt_r})){
-                            $alt_r = $restriction_map->{$alt_r};
-                        }
-                        $rec->{'Incident'}->{'restriction'} = $x if($x);
-                        if($alt_r){
-                            $rec->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'} = $alt_r if($alt_r);
-                        }
-                    }
-                }
-                
-                
-                my $json = to_json(\@recs);
-                my $description = $f->{'feed'}->{'title'}.' '.$sev.' severity '.$conf.'% confidence '.$r.' feed';
-                my $impact = $f->{'feed'}->{'title'}.' feed';
-                my $zcontent = encode_base64(compress($json));
-                my ($err,$id) = CIF::Archive->insert({
-                    source      => 'localhost',
-                    data        => $zcontent,
-                    hash_sha1   => sha1_hex($zcontent),
-                    severity    => $sev,
-                    confidence  => $conf,
-                    description => lc($description),
-                    impact      => lc($impact),
-                    restriction => lc($r),
-                    detecttime  => $dt,
-                    format      => 'text/base64',
-                    guid        => $guid,
-                });
-                cleanup($err) unless($id);
-                print lc($description).': '.$id.' created -- '.$id->uuid()."\n";
-                my @feeds = CIF::Archive::DataType::Plugin::Feed->retrieve_from_sql(qq{
-                    impact = '$impact'
-                    AND severity = '$sev'
-                    AND restriction = '$r'
-                    AND confidence = '$conf'
-                    AND guid = '$guid'
-                    ORDER BY id ASC
-                });
-                if($#feeds >= $last_feeds){
-                    foreach (0 ... $last_feeds-1){
-                        pop(@feeds);
-                    }
-                    foreach (@feeds){
-                        print 'removing feed: '.$_->id().' -- '.$_->uuid->uuid()."\n";
-                        eval {
-                            CIF::Archive->retrieve(uuid => $_->uuid->uuid())->delete();
-                        };
-                        if($@){
-                            warn $@;
-                            remove_lock();
-                            exit(-1);
-                        }
-                    }
+    $detecttime = $detecttime->ymd().'T'.$detecttime->hms().'Z';
+    foreach my $plug (@{$p}){
+        foreach my $restriction (@restriction_feeds){
+            foreach my $severity (@severity_feeds){
+                foreach my $confidence (@confidence_feeds){
+                    foreach my $rk (@role_keys){
+                        build_feed(
+                            restriction => $restriction,
+                            confidence  => $confidence,
+                            apikey      => $rk->{'apikey'},
+                            limit       => 50000, ## FIX ME!
+                            detecttime  => $detecttime,
+                            plugin      => $plug,
+                            severity    => $severity,
+                            guid        => $rk->{'guid'},
+                            alias       => $rk->{'alias'},
+                        );
+                    }       
                 }
             }
         }
     }
+}    
+
+sub build_feed {
+    my %args = @_;
+
+    my $plugin      = $args{'plugin'};
+    my $severity    = $args{'severity'};
+    my $confidence  = $args{'confidence'};
+    my $detecttime  = $args{'detecttime'};
+    my $limit       = $args{'limit'};
+    my $apikey      = $args{'apikey'};
+    my $guid        = $args{'guid'};
+    my $alias       = $args{'alias'};
+    my $restriction = $args{'restriction'};
+
+    my $ret = $plugin->feed({
+        severity    => $severity,
+        restriction => $restriction,
+        confidence  => $confidence,
+        detecttime  => $detecttime,
+        limit       => $limit,
+        apikey      => $apikey,
+        guid        => $guid,
+        alias       => $alias,
+    });
+    unless($ret){
+        _debug('no records');
+        next();
     }
-    ## TODO -- if $id is < than most recent feed (of this type), we need to re-insert this as a new feed (or delete the old feed)
-    _profile('finished',$start);
+    my @feeds = @$ret;
+    foreach my $f (@feeds){
+        my @recs = @{$f->{'feed'}->{'entry'}};
+        _debug('records: '.@recs);
+        next unless(defined($#recs));
+        @recs = map_restrictions($restriction,\@recs);
+        foreach(@recs){
+            next unless($_->{'uuid'});
+            $_->{'Incident'}->{'IncidentID'}->{'content'} = $_->{'uuid'};
+            delete($_->{'uuid'});
+        }
+               
+        my $json = to_json(\@recs);
+        my $description = $f->{'feed'}->{'title'}.' '.$severity.' severity '.$confidence.'% confidence '.$restriction.' feed';
+        if($alias){
+            $description = '['.$alias.'] '.$description;
+        }
+        my $impact = $f->{'feed'}->{'title'}.' feed';
+        my $zcontent = encode_base64(compress($json));
+        require CIF::Archive;
+        my ($err,$id) = CIF::Archive->insert({
+            source      => 'localhost',  ## FIX ME!
+            data        => $zcontent,
+            hash_sha1   => sha1_hex($zcontent),
+            severity    => $severity,
+            confidence  => $confidence,
+            description => lc($description),
+            impact      => lc($impact),
+            restriction => lc($args{'restriction'}),
+            detecttime  => $dt,
+            format      => 'text/base64',
+            guid        => $guid,
+        });
+        cleanup($err) unless($id);
+        print lc($description).': '.$id.' created -- '.$id->uuid()."\n";
+        purge_feed(
+            impact      => $impact,
+            severity    => $severity,
+            confidence  => $confidence,
+            guid        => $guid,
+            restriction => $restriction,
+        );
+    }
 }
+
+sub purge_feed {
+    my %args = @_;
+
+    my $impact      = $args{'impact'};
+    my $severity    = $args{'severity'};
+    my $confidence  = $args{'confidence'};
+    my $restriction = $args{'restriction'};
+    my $guid        = $args{'guid'};
+
+    my @feeds = CIF::Archive::DataType::Plugin::Feed->retrieve_from_sql(qq{
+            impact = '$impact'
+            AND severity = '$severity'
+            AND restriction = '$restriction'
+            AND confidence = '$confidence'
+            AND guid = '$guid'
+            ORDER BY id ASC
+    });
+    if($#feeds >= $last_feeds){
+        foreach (0 ... $last_feeds-1){
+            pop(@feeds);
+        }
+        foreach (@feeds){
+            print 'removing feed: '.$_->id().' -- '.$_->uuid->id()."\n";
+            eval {
+                CIF::Archive->retrieve(uuid => $_->uuid->id())->delete();
+            };
+            if($@){
+                warn $@;
+                remove_lock();
+                exit(-1);
+            }
+        }
+    }
+}
+
+sub map_restrictions {
+    my $r = shift;
+    my $rr = shift;
+    return(@{$rr}) unless(keys %$restriction_map);
+
+    my $loc_restriction = $restriction;
+    $loc_restriction = $restriction_map->{$r};
+    foreach my $rec (@{$rr}){
+        my ($x,$alt_r);
+        if(exists($rec->{'Incident'}->{'restriction'})){
+            $x = $rec->{'Incident'}->{'restriction'};
+        }
+        if(exists($rec->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'})){
+            $alt_r = $rec->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'};
+        }
+        if($x && exists($restriction_map->{$x})){
+            $x = $restriction_map->{$x};
+        }
+        if($alt_r && exists($restriction_map->{$alt_r})){
+            $alt_r = $restriction_map->{$alt_r};
+        }
+        $rec->{'Incident'}->{'restriction'} = $x if($x);
+        if($alt_r){
+            $rec->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'} = $alt_r if($alt_r);
+        }
+    }
+    return(@{$rr});
+}
+
 
 remove_lock();
 exit(0);

@@ -119,6 +119,7 @@ sub lookup {
     );
 }
 
+## TODO -- fix this to work with feed
 sub isWhitelisted {
     my $self = shift;
     my $addr = shift;
@@ -156,20 +157,26 @@ sub feed {
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){
-        $_->set_table();
         my $r = $_->_feed($info);
         push(@feeds,$r) if($r);
     }
     return(\@feeds);
 }
 
+## TODO -- fix this 
 __PACKAGE__->set_sql('feed' => qq{
     SELECT DISTINCT on (__TABLE__.uuid) __TABLE__.uuid, address, confidence, archive.data
     FROM __TABLE__
     LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
     LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
     WHERE
-        detecttime >= ?
+        NOT EXISTS (
+            SELECT uuid FROM domain_whitelist dw
+                WHERE
+                    dw.confidence >= 25
+                    AND dw.md5 = __TABLE__.md5
+        )
+        AND detecttime >= ?
         AND __TABLE__.confidence >= ?
         AND severity >= ?
         AND __TABLE__.restriction <= ?

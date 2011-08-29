@@ -1,6 +1,8 @@
 package CIF::Archive::DataType::Plugin::Infrastructure::Suspicious;
 use base 'CIF::Archive::DataType::Plugin::Infrastructure';
 
+__PACKAGE__->table('infrastructure_suspicious');
+
 sub prepare {
     my $class = shift;
     my $info = shift;
