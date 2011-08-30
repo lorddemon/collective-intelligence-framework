@@ -4,7 +4,7 @@
 
 = Introduction =
 
-This doc will serve as a basic dictionary of profiles uses within the framework.
+See the official [http://tools.ietf.org/html/rfc5070#section-3.10.1 IODEF] Impact class description.
 
 = Details =
 
