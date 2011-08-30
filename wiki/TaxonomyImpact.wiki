@@ -13,33 +13,44 @@ This doc will serve as a basic dictionary of profiles uses within the framework.
  * typically a host used to exploit and/or drop malware to a host for the first time
  * not a botnet C&C
  * typically used in preemptive blocking, alerts may not indicate infection was successful
+ * typically [Severity#Medium medium severity] in nature
 
 === Botnet ===
  * typically a host used to control another host or malicious process
  * matching traffic would usually indicate infection
  * typically used to identify compromised hosts
+ * typically [Severity#High high severity] in nature
 
 === Phishing ===
  * a luring attempt at a victim to exfiltrate some sort of credential
  * a targeted attempt at getting someone to unintentionally cause infection (spear phishing)
+ * typically [Severity#Medium medium severity] in nature
 
 === Fastflux ===
- * 
+ * typically describing a botnet profile
+ * typically [Severity#High high severity] in nature
 
 === Searches ===
- * identify's that someone searched for something of possible significance 
+ * identify's that someone searched for something of possible significance
+ * typically [Severity#Low low severity] in nature
 
 === Whitelist ===
  * denotes that specific entity (usually an address) should be considered harmless in nature
  * denotes that blocking an entity would result in mass collateral damage (eg: yahoo virtually hosted services)
  * confidence should be applied to each entry to help calculate risk associated with whitelist
+  *[Severity#Null Null severity] in nature
 
 == Types ==
 === Infrastructure ===
-* 
+ * describes an object of which is being used as a platform for an attack
+ * usually denotes an ipv4/ipv6 address or prefix
+ * may denote an ASN (bgp)
+ * synonymous with "the bad guys drove down route 66 to get to the bank they robbed", where route 66 is the infrastructure used to launch an attack.
+ * "the bad guys used 1.2.3.4 to control their botnet"
 
 === Domain ===
+ * any 1...n level TLD to describe the use of the domain name system
+ * could include a FQDN, could be a nameserver, could be a .tld itself (eg: .co.cc or just .cc)
 
 === Url ===
-
-
+ * any specific universal locator used an an attack
