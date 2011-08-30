@@ -3,7 +3,7 @@ This page discusses the Severity values for intelligence records
 
 = Introduction =
 
-This document defines a pain scale.
+This document defines a pain scale. These values are defined within the context of the object we're attempting to describe.
 
 = High =
  * denotes that this will cause you pain
