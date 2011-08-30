@@ -1,4 +1,4 @@
-#labels Phase-Deploy,Featured
+#labels Phase-Deploy
 this will show you how to leverage CIF with Google Chrome
 
 = Installation =
