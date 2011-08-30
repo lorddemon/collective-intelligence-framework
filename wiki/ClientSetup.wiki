@@ -28,5 +28,6 @@ timeout = 60
 }}}
 
 = Misc =
+ # ClientExamples
  # CookBook
  # TestQueries
