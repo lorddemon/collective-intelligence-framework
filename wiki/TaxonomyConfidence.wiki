@@ -1,0 +1,32 @@
+#labels Featured,Phase-Support
+#this page describes how we manually determine confidence (for now)
+
+= Introduction =
+
+See the official [http://tools.ietf.org/html/rfc5070#section-3.10.4 IODEF] confidence class.
+
+= Details =
+
+== 0 - 39 ==
+ * typically machine generated / enumerated data
+ * examples include:
+  * auto-enumerated name-servers from domains
+  * infrastructure resolved from domain data
+
+== 41 - 74 ==
+ * typically machine generated data
+ * some feeds might fall in the category if the author is lazy, or trying to cram too much into the feed
+ * examples might include a domains list where the author is simply taking a botnet urls list and posting just the domains as a feed
+
+== 75 - 84 ==
+ * data that has under-gone *some* either machine or human vetting (eg: checked against a whitelist automatically)
+
+== 85 - 94 ==
+ * data that has been vetted by a human or set of known and proven processes
+ * proven to be consistent for at-least a year
+ * data should be highly specific (eg: port/protocols, prefixes should be as narrow as possible)
+
+== 95 - 100 ==
+ * reserved for data that has been humanly vetted
+ * proven to be consistent for more than 2 years
+ * very specific data (eg: ip+port+protocol, or a specific url, or malware hash)
