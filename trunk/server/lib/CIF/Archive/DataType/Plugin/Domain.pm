@@ -42,46 +42,37 @@ sub insert {
     }
 
     my $uuid    = $info->{'uuid'};
+    my $addr = $info->{'address'};
+    my $id;
+    my @a1 = reverse(split(/\./,$addr));
+    my @a2 = @a1;
 
-    my $id = eval { 
-        $self->SUPER::insert({
-            uuid        => $uuid,
-            address     => $info->{'address'},
-            type        => $info->{'type'} || 'A',
-            md5         => $info->{'md5'},
-            sha1        => $info->{'sha1'},
-            source      => $info->{'source'},
-            confidence  => $info->{'confidence'},
-            severity    => $info->{'severity'} || 'null',
-            restriction => $info->{'restriction'} || 'private',
-            detecttime  => $info->{'detecttime'},
-            guid        => $info->{'guid'},
-        }); 
-    };
-    if($@){
-        return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
-        $id = CIF::Archive->retrieve(uuid => $uuid);
-    }
+    foreach (0 ... $#a1-1){
+        my $addr = join('.',reverse(@a2));
+        pop(@a2);
+        my $md5 = md5_hex($addr);
+        my $sha1 = sha1_hex($addr);
 
-    ## TODO -- turn this into a for-loop to ensure the capture of all sub-domains
-    ## eg: test1.test2.yahoo.com -- test2.yahoo.com gets indexed.
-    if($info->{'address'} !~ /^[a-z0-9-]+\.[a-z]{2,5}$/){
-        $info->{'address'} =~ m/([a-z0-9-]+\.[a-z]{2,5})$/;
-        my $addr = $1;
-        eval { $self->SUPER::insert({
-            uuid    => $uuid,
-            address => $addr,
-            type    => $info->{'type'} || 'A',
-            md5     => md5_hex($addr),
-            sha1    => sha1_hex($addr),
-            source  => $info->{'source'},
-            confidence  => $info->{'confidence'},
-            severity    => $info->{'severity'} || 'null',
-            restriction => $info->{'restriction'} || 'private',
-            detecttime  => $info->{'detecttime'},
-            guid        => $info->{'guid'},
-        })};
+        $id = eval { 
+            $self->SUPER::insert({
+                uuid        => $uuid,
+                address     => $addr,
+                type        => $info->{'type'} || 'A',
+                md5         => $md5,
+                sha1        => $sha1,
+                source      => $info->{'source'},
+                confidence  => $info->{'confidence'},
+                severity    => $info->{'severity'} || 'null',
+                restriction => $info->{'restriction'} || 'private',
+                detecttime  => $info->{'detecttime'},
+                guid        => $info->{'guid'},
+            }); 
+        };
+        if($@){
+            return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
+        }
     }
+    $id = CIF::Archive->retrieve(uuid => $uuid);
     $self->table($tbl);
     return($id);    
 }

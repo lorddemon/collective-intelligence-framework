@@ -71,12 +71,12 @@ sub feed {
 
     my @feeds;
     $info->{'key'} = 'address';
-    my $ret = $class->SUPER::_feed($info);
+    my $ret = $class->_feed($info);
     return unless($ret);
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){
-        my $r = $_->SUPER::_feed($info);
+        my $r = $_->_feed($info);
         push(@feeds,$r) if($r);
     }
     return(\@feeds);
