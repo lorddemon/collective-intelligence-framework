@@ -7,6 +7,8 @@ CREATE TABLE infrastructure (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     uuid uuid REFERENCES archive(uuid) ON DELETE CASCADE NOT NULL,
     address INET NOT NULL,
+    portlist varchar(255),
+    protocol int,
     source uuid NOT NULL,
     guid uuid,
     severity severity,
