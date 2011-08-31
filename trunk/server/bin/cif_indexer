@@ -72,9 +72,10 @@ foreach (1 ... $sets+1){
     my $end = $min+$set_limit;
     warn "running set: $_ $min -- $end" if($debug);
     threads->create('run_set',$min,$end)->join();
-    $min = ($min+$end+1);
-    my $completed = (($sets+1)/$_) * 100;
-    warn sprintf('%.3f',$completed).'% completed'; 
+
+    $min = ($end+1);
+    my $completed = ($_/$sets) * 100;
+    warn sprintf('%.3f',$completed).'% completed';
     last if($min >= $max);
 }
 
