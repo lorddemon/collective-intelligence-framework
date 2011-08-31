@@ -41,7 +41,8 @@ my $max         = $opts{'M'};
 my $threads     = $opts{'t'} || 8;
 my $plug        = $opts{'p'} || die('missing plugin to run');
 my $batch_limit = $opts{'b'} || 10000;
-my $autocommit  = $opts{'a'} || 1;
+my $autocommit  = $opts{'a'};
+$autocommit = 1 unless(defined($autocommit));
 
 my $bail = 0;
 $SIG{'INT'} = sub {
