@@ -41,7 +41,8 @@ __PACKAGE__->set_sql('lookup' => qq{
         AND confidence >= ?
         AND feed.restriction <= ?
         AND apikeys_groups.uuid = ?
-    ORDER BY confidence ASC, feed.restriction DESC, id DESC
+    ORDER BY confidence ASC, feed.restriction DESC, default_guid ASC, feed.id DESC
+    LIMIT 1
 });
 
 __PACKAGE__->set_sql('_lookup' => qq{

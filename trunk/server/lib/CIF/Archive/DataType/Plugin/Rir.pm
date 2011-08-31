@@ -97,6 +97,7 @@ sub feed {
 
     $info->{'key'} = 'rir';
     my $ret = $class->_feed($info);
+    return unless($ret);
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){

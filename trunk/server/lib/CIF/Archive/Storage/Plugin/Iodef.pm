@@ -58,6 +58,7 @@ sub convert {
         $dt = $dt->ymd().'T'.$dt->hour().':00:00Z';
     }
     $info->{'detecttime'} = $dt;
+    $detecttime = $dt;
 
     $info->{'format'}   = 'iodef';
 

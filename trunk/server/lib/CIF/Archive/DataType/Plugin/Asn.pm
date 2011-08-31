@@ -100,6 +100,7 @@ sub feed {
     #return(\@feeds);
     $info->{'key'} = 'asn';
     my $ret = $class->_feed($info);
+    return unless($ret);
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){
