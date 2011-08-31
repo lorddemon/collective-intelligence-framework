@@ -6,6 +6,7 @@ sub hash_simple {
 
     my ($rdata,$type);
     my $ad = $hash->{'AdditionalData'};
+    return unless($ad);
     my @array;
     if(ref($ad) eq 'ARRAY'){
         @array = @$ad;
