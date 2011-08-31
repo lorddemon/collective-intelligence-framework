@@ -32,7 +32,7 @@ use Getopt::Std;
 use Data::Dumper;
 
 my %opts;
-getopts('p:t:m:M:s:dhS:',\%opts);
+getopts('a:p:t:m:M:s:dhS:',\%opts);
 
 our $debug      = $opts{'d'};
 my $set_limit   = $opts{'s'} || 150000;
