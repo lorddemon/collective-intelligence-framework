@@ -82,19 +82,15 @@ sub _feed {
     return unless(@recs);
     if($recs[0]->{'data'}){
         my $hash;
+        my @a;
         foreach (@recs){
             ## TODO -- test this
             unless($class->table() =~ /_whitelist/){
-                next if($class->isWhitelisted($_->{$key},$apikey));
+                push(@a,$_) unless($class->isWhitelisted($_->{$key},$apikey));
             }
-            my $kk = $hash->{$_->{$key}};
-            if($kk){
-                next if($_->{'confidence'} <= $kk->{'confidence'});
-            }
-            $hash->{$_->{$key}} = $_;
         }
-        @recs = map { $hash->{$_} } keys(%$hash);
-        my @a;
+        @recs = @a;
+        @a = ();
         foreach(@recs){
             my $hh = JSON::from_json($_->{'data'});
             $hh->{'uuid'} = $_->uuid->id();
