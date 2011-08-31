@@ -238,7 +238,6 @@ if(scalar @{$batches} == 1){
         my @joinable = threads->list(threads::joinable);
         unless($#joinable > -1){
             sleep(1);
-            next();
         }
         foreach(@joinable){
             $_->join();
@@ -299,7 +298,7 @@ sub build_feed {
     });
     unless($ret){
         _debug('no records');
-        next();
+        return();
     }
     my @feeds = @$ret;
     foreach my $f (@feeds){

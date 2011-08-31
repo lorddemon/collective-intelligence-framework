@@ -93,7 +93,8 @@ sub feed {
     my @snapshots;
     $info->{'key'} = 'address';
     my $ret = $class->_feed($info);
-    push(@snapshots,$ret) if($ret);
+    return unless($ret);
+    push(@snapshots,$ret);
 
     foreach($class->plugins()){
         my $r = $_->_feed($info);

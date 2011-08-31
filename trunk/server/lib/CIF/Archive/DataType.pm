@@ -79,6 +79,7 @@ sub _feed {
             $limit
         );
     }
+    return unless(@recs);
     if($recs[0]->{'data'}){
         my $hash;
         foreach (@recs){

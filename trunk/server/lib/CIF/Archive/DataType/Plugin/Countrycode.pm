@@ -63,6 +63,7 @@ sub feed {
     ## TODO -- same as rir ans asn
     $info->{'key'} = 'cc';
     my $ret = $class->_feed($info);
+    return unless($ret);
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){

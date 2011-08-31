@@ -154,6 +154,7 @@ sub feed {
     my @feeds;
     $info->{'key'} = 'address';
     my $ret = $class->_feed($info);
+    return unless($ret);
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){

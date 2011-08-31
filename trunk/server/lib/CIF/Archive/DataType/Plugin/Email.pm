@@ -59,6 +59,7 @@ sub feed {
     my @feeds;
     $info->{'key'} = 'address';
     my $ret = $class->SUPER::_feed($info);
+    return unless($ret);
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){
