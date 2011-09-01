@@ -115,7 +115,6 @@ sub GET {
         }
     }
 
-    my $maxresults = $request->{'r'}->param('maxresults') || $request->dir_config->{'CIFFeedResultsDefault'} || 10000;
     my $apikey = $request->{'r'}->param('apikey');
     my $guid = $request->{'guid'};
 
@@ -151,13 +150,14 @@ sub GET {
     if($q){
         my $severity = $request->{'r'}->param('severity') || 'null';
         my $confidence = $request->{'r'}->param('confidence') || 0;
+        my $limit = $request->{'r'}->param('limit') || $request->{'r'}->dir_config->get('CIFLookupLimitDefault') || 500;
         my ($err,$ret) = CIF::Archive->lookup({ 
             nolog           => $nolog,
             query           => $q,
             source          => $apikey,
             severity        => $severity,
             restriction     => $restriction,
-            max             => $maxresults,
+            limit           => $limit,
             confidence      => $confidence,
             apikey          => $apikey,
             guid            => $guid,
@@ -211,7 +211,6 @@ sub GET {
             source      => $apikey, 
             severity    => $severity, 
             restriction => $restriction, 
-            max         => $maxresults, 
             confidence  => $confidence,
             apikey      => $apikey,
             guid        => $guid,
