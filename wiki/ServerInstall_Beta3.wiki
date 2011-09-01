@@ -7,6 +7,8 @@ this page describes the Beta3 Server Installation
 *THIS PAGE UNDER CONSTRUCTION*
 *WE'RE STILL SQUASHING FINAL RELEASE BUGS, TEST AT OWN RISK*
 
+Most things are stable; you might have to dump your database between releases until we're out of beta.
+
 These scripts do a lot of dns queries. You're gonna wanna install bind and configure it to use forwarders. Maybe something like google public dns to help mask your queries. Then point your resolv.conf to localhost
 
 Once installed, monitor your dns traffic a bit, your server will be looking up some interesting information. Get a good handle on this and work with your security teams to whitelist this server.
