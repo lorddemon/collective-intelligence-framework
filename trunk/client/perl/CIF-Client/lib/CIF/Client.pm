@@ -19,7 +19,7 @@ use URI::Escape;
 
 __PACKAGE__->mk_accessors(qw/apikey config/);
 
-our $VERSION = '0.01_07';
+our $VERSION = '0.01_08';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 # Preloaded methods go here.
@@ -62,6 +62,7 @@ sub new {
 
     $self->{'verify_tls'}       = (defined($args->{'verify_tls'})) ? $args->{'verify_tls'} : $cfg->{'verify_tls'};
     $self->{'guid'}             = $args->{'guid'} || $cfg->{'default_guid'};
+    $self->{'limit'}            = $args->{'limit'} || $cfg->{'limit'};
     
     if($args->{'fields'}){
         @{$self->{'fields'}} = split(/,/,$args->{'fields'}); 
@@ -93,6 +94,7 @@ sub GET  {
     my $nomap = ($args{'nomap'}) ? $args{'nomap'} : $self->{'nomap'};
     my $confidence = ($args{'confidence'}) ? $args{'confidence'} : $self->{'confidence'};
     my $guid = $args{'guid'} || $self->{'guid'};
+    my $limit = $args{'limit'} || $self->{'limit'};
 
     $rest .= '&severity='.$severity if($severity);
     $rest .= '&restriction='.$restriction if($restriction);
@@ -100,6 +102,7 @@ sub GET  {
     $rest .= '&nomap=1' if($nomap);
     $rest .= '&confidence='.$confidence if($confidence);
     $rest .= '&guid='.$guid if($guid);
+    $rest .= '&limit='.$limit if($limit);
 
     $self->SUPER::GET($rest);
     my $content = $self->{'_res'}->{'_content'};

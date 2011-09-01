@@ -7,7 +7,7 @@ use Getopt::Std;
 use CIF::Client;
 
 my %opts;
-getopt('g:hTHL:p:f:q:c:s:r:C:', \%opts);
+getopt('l:g:hTHL:p:f:q:c:s:r:C:', \%opts);
 
 my $query       = $opts{'q'} || shift;
 our $debug       = ($opts{'d'}) ? 1 : 0;
@@ -24,6 +24,7 @@ my $confidence  = $opts{'c'} || 0;
 our $uuid        = $opts{'u'} || 0;
 our $relateduuid = $opts{'R'} || 0;
 my $guid         = $opts{'g'};
+my $limit       = $opts{'l'};
 my $plugs = join(',',CIF::Client::_plugins);
 my $simple_hashes = (defined($opts{'H'})) ? $opts{'H'} : 1;
 my $verify_tls = $opts{'T'};
@@ -49,6 +50,7 @@ Usage: perl $0 -q xyz.com
     -C  --config:           specify cofiguration file, default $c
     -T  --verify_tls:       verify tls hostname, default: $verify_tls
     -g  --guid:             set the default group id
+    -l  --limit:            set the default result limit (queries only), default is set on server, usually around 500.
 
 Queries:
 
@@ -99,6 +101,7 @@ foreach (@q){
         nolog       => $nolog,
         nomap       => $nomap,
         confidence  => $confidence,
+        limit       => $limit,
     );
     die('request failed with code: '.$client->responseCode()."\n\n".$client->responseContent()) unless($client->responseCode == 200);
    

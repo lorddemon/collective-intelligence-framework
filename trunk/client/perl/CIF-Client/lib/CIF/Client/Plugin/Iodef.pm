@@ -25,6 +25,9 @@ sub hash_simple {
 
     my @return;
     foreach my $i (@incidents){
+        unless($i->{'IncidentID'}->{'content'}){
+            $i->{'IncidentID'}->{'content'} = $data->{'uuid'};
+        }
         my $impact = $i->{'Assessment'}->{'Impact'};
         $impact = $i->{'Assessment'}->{'Impact'}->{'content'} if(ref($impact) eq 'HASH');
         my $h = {
