@@ -29,7 +29,7 @@ sub write_out {
         'detecttime',
     ));
     unless($summary){
-        my $t = $a[0];
+        my $t = $a[$#a];
         if(exists($t->{'address'})){
             push(@cols,('address'));
         }
@@ -48,7 +48,9 @@ sub write_out {
         if(exists($t->{'rir'})){
             push(@cols,'rir');
         }
-        if(exists($t->{'md5'})){
+        if(exists($t->{'malware_md5'})){
+            push(@cols,('malware_md5','malware_sha1'));
+        } elsif(exists($t->{'md5'}) && $t->{'impact'} ne 'malware'){
             push(@cols,('md5','sha1'));
         } 
         if(exists($t->{'cc'})){
