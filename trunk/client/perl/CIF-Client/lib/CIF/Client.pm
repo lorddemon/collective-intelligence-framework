@@ -102,7 +102,6 @@ sub GET  {
     $rest .= '&guid='.$guid if($guid);
 
     $self->SUPER::GET($rest);
-    warn 'get done';
     my $content = $self->{'_res'}->{'_content'};
     warn $content if($::debug);
     return unless($content);
@@ -117,12 +116,10 @@ sub GET  {
         $r = from_json($r);
         $hash->{'data'}->{'feed'}->{'entry'} = $r;
     }
-    warn 'hashing simple';
     ## TODO -- finish implementing this into the config
     if($self->{'simple_hashes'}){
         $self->hash_simple($hash);
     }
-    warn 'returning to plugin';
     return($hash->{'data'});
 }       
 
@@ -140,7 +137,6 @@ sub hash_simple {
     @plugs = @a;
     my @return;
     foreach my $p (@plugs){
-        warn $p;
         foreach my $e (@entries){
             if($p->prepare($e)){
                 my @ary = @{$p->hash_simple($e)};
