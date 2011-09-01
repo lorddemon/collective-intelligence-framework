@@ -24,8 +24,6 @@ sub prepare {
     
     my $address = $info->{'address'};
     return(undef) unless($address =~ /^[a-z0-9.-]+\.[a-zA-Z]{2,5}$/);
-    $info->{'md5'} = md5_hex($address);
-    $info->{'sha1'} = sha1_hex($address);
 
     return(1);
 }
@@ -173,7 +171,7 @@ __PACKAGE__->set_sql('feed' => qq{
         AND severity >= ?
         AND __TABLE__.restriction <= ?
         AND apikeys_groups.uuid = ?
-    ORDER BY __TABLE__.uuid ASC, __TABLE__.id ASC, confidence DESC, severity DESC, __TABLE__.restriction ASC
+    ORDER BY __TABLE__.uuid ASC, __TABLE__.id ASC, confidence DESC, severity DESC, __TABLE__.restriction ASC, detecttime DESC, __TABLE__.id DESC
     LIMIT ?
 });
 

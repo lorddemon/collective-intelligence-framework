@@ -254,7 +254,7 @@ __PACKAGE__->set_sql('feed' => qq{
         AND __TABLE__.severity >= ?
         AND __TABLE__.restriction <= ?
         AND apikeys_groups.uuid = ?
-    ORDER BY address,protocol,portlist ASC, confidence DESC, restriction ASC, detecttime DESC, __TABLE__.id DESC 
+    ORDER BY address,protocol,portlist ASC, confidence DESC, severity DESC, restriction ASC, detecttime DESC, __TABLE__.id DESC 
     LIMIT ?
 });
 
