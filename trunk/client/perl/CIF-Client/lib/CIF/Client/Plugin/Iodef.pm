@@ -2,6 +2,7 @@ package CIF::Client::Plugin::Iodef;
 use base 'CIF::Client::Plugin::Parser';
 
 use Module::Pluggable search_path => [__PACKAGE__], require => 1, except => qr/SUPER$/;
+our @plugs = __PACKAGE__->plugins();
 
 sub prepare {
     my $class = shift;
@@ -41,7 +42,7 @@ sub hash_simple {
             purpose                     => $i->{'purpose'},
         };
 
-        foreach my $p ($class->plugins()){
+        foreach my $p (@plugs){
             my $ret = eval { $p->hash_simple($i,$h) };
             warn $@ if($@);
             next unless($ret);
