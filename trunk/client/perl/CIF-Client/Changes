@@ -1,5 +1,8 @@
 Revision history for Perl extension CIF::Client.
 
+0.01_07 2011-09-01
+    - don't call ->plugins() from a loop, speeds things up
+
 0.01_06  2011-07-28
     - added group (guid) support
     - minor bugfix to Plugin::Table
