@@ -8,8 +8,8 @@ use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/S
 
 __PACKAGE__->table('hash');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid hash confidence guid source type severity restriction detecttime created/);
-__PACKAGE__->columns(Essential => qw/id uuid hash confidence guid source type severity restriction detecttime created/);
+__PACKAGE__->columns(All => qw/id uuid hash confidence guid source type severity restriction detecttime created data/);
+__PACKAGE__->columns(Essential => qw/id uuid hash confidence guid source type severity restriction detecttime created data/);
 __PACKAGE__->sequence('hash_id_seq');
 
 sub prepare {
@@ -114,14 +114,15 @@ __PACKAGE__->set_sql('_lookup' => qq{
 });
 
 __PACKAGE__->set_sql('lookup' => qq{
-    SELECT __TABLE__.id,__TABLE__.uuid
+    SELECT __TABLE__.id,__TABLE__.uuid, archive.data
     FROM __TABLE__
+    LEFT JOIN archive ON archive.uuid = __TABLE__.uuid
     LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
     WHERE 
         lower(hash) = lower(?)
         AND severity >= ?
         AND confidence >= ?
-        AND restriction <= ?
+        AND __TABLE__.restriction <= ?
         AND apikeys_groups.uuid = ?
     ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
     LIMIT ?
