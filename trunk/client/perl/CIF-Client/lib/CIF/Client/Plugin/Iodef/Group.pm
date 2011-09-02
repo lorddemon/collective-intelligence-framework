@@ -3,7 +3,6 @@ package CIF::Client::Plugin::Iodef::Group;
 sub hash_simple {
     my $class = shift;
     my $hash = shift;
-    my $config = shift;
 
     my ($rdata,$type);
     my $ad = $hash->{'AdditionalData'};
