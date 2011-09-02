@@ -36,10 +36,14 @@ sub map_restrictions {
         }
         foreach (@feed){
             my $r = lc($_->{'Incident'}->{'restriction'});
-            my $ar = lc($_->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'});
-
             $_->{'Incident'}->{'restriction'} = $m{$r} if(exists($m{$r}));
-            $_->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'} = $m{$ar} if(exists($m{$ar}));
+
+            if(exists($_->{'Incident'}->{'AlternativeID'})){
+                my $ar = lc($_->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'});
+                if($ar){
+                    $_->{'Incident'}->{'AlternativeID'}->{'IncidentID'}->{'restriction'} = $m{$ar} if(exists($m{$ar}));
+                }
+            }
         }
     }
     return ($res,@feed);
@@ -183,7 +187,11 @@ sub GET {
         my @recs;
         if(ref($ret) ne 'CIF::Archive'){
             @recs = $ret->slice(0,$ret->count());
-            @recs = map { $_ = JSON::from_json($_->{'data'}) } @recs;
+            foreach (@recs){
+                my $j = JSON::from_json($_->{'data'});
+                $j->{'uuid'} = $_->uuid->id();
+                $_ = $j;
+            }
         } else {
             $ret = $ret->data_hash();
             push(@recs,$ret);

@@ -228,16 +228,17 @@ __PACKAGE__->set_sql('lookup' => qq{
 });
 
 __PACKAGE__->set_sql('_lookup' => qq{
-    SELECT __ESSENTIAL__ 
+    SELECT __TABLE__.id,__TABLE__.uuid, archive.data
     FROM __TABLE__
+    LEFT JOIN archive ON archive.uuid = __TABLE__.uuid
     WHERE 
         address != '0/0'
         AND (address >>= ? OR address <<= ?)
         AND severity >= ?
         AND confidence >= ?
-        AND restriction <= ?
-        AND guid = ?
-    ORDER BY detecttime DESC, created DESC, id DESC
+        AND __TABLE__.restriction <= ?
+        AND __TABLE__.guid = ?
+    ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
     LIMIT ?
 });
 

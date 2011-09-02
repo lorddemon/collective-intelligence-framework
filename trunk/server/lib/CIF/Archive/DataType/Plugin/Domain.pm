@@ -195,13 +195,16 @@ __PACKAGE__->set_sql('lookup' => qq{
 });
 
 __PACKAGE__->set_sql('_lookup' => qq{
-    SELECT __TABLE__.id,__TABLE__.uuid 
+    SELECT __TABLE__.id,__TABLE__.uuid, archive.data 
     FROM __TABLE__
-    WHERE md5 = ?
-    AND severity >= ?
-    AND confidence >= ?
-    AND restriction <= ?
-    AND guid = ?
+    LEFT JOIN archive ON archive.uuid = __TABLE__.uuid
+    WHERE 
+        md5 = ?
+        AND severity >= ?
+        AND confidence >= ?
+        AND __TABLE__.restriction <= ?
+        AND __TABLE__.guid = ?
+    ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
     LIMIT ?
 });
 
