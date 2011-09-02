@@ -11,6 +11,8 @@ sub write_out {
 
     my $query = $feed->{'query'};
     my $hash = $feed->{'feed'};
+    my $group_map = ($config->{'group_map'}) ? $hash->{'group_map'} : undef;
+
     my $created = $hash->{'created'} || $hash->{'detecttime'};
     my $feedid = $hash->{'id'};
     my @a = @{$hash->{'entry'}};
@@ -24,6 +26,7 @@ sub write_out {
     }
     push(@cols,(
         'restriction',
+        'guid',
         'severity',
         'confidence',
         'detecttime',
@@ -79,6 +82,9 @@ sub write_out {
     my @sorted = sort { $a->{'detecttime'} cmp $b->{'detecttime'} } @a;
     if(my $max = $self->{'max_desc'}){
         map { $_->{'description'} = substr($_->{'description'},0,$max) } @sorted;
+    }
+    if($group_map){
+        map { $_->{'guid'} = $group_map->{$_->{'guid'}} } @sorted;
     }
     foreach my $r (@sorted){
         $table->load([ map { $r->{$_} } @cols]);
