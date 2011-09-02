@@ -46,7 +46,7 @@ sub hash_simple {
         };
 
         foreach my $p (@plugs){
-            my $ret = eval { $p->hash_simple($i,$h,$class) };
+            my $ret = eval { $p->hash_simple($i,$h) };
             warn $@ if($@);
             next unless($ret);
             map { $h->{$_} = $ret->{$_} } keys %$ret;
