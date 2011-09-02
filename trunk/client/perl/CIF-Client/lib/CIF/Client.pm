@@ -63,6 +63,7 @@ sub new {
     $self->{'verify_tls'}       = (defined($args->{'verify_tls'})) ? $args->{'verify_tls'} : $cfg->{'verify_tls'};
     $self->{'guid'}             = $args->{'guid'} || $cfg->{'default_guid'};
     $self->{'limit'}            = $args->{'limit'} || $cfg->{'limit'};
+    $self->{'group_map'}        = (defined($args->{'group_map'})) ? $args->{'group_map'} : $cfg->{'group_map'};
     
     if($args->{'fields'}){
         @{$self->{'fields'}} = split(/,/,$args->{'fields'}); 
