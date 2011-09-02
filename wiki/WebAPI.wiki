@@ -44,11 +44,11 @@ cif=# select id,uuid,restriction,confidence,severity,description from feed order
 = Special Flags =
 == definitions ==
  * *apikey*
- * *severity* (high|medium|low)
+ * *severity* (high|medium|low) -- see [TaxonomySeverity here] for a list of definitions
  * *restriction* (private|need-to-know|public|default)
  * *nolog* (1|0) -- don't log the query
  * *nomap* (0|1) -- don't map permissions by default (if you have this turned on at the server level)
- * *confidence* -- lowest confidence to return
+ * *confidence* -- lowest confidence to return -- see [TaxonomyConfidence here] for a list of definitions
  * *guid* -- run query under the "group permission" specified
  * *limit* -- default server limit for queries is ~ 500, re-set this limit
 
@@ -63,6 +63,9 @@ https://example.com/api/1.2.3.0/24?apikey=1234&limit=200&severity=medium&confide
 }}}
 
 = Feeds =
+
+See [TaxonomyImpact this] for a list of definitions
+
 == Domain ==
  * domain/
  * domain/fastflux
