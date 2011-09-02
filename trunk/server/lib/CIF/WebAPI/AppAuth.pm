@@ -90,7 +90,19 @@ sub authorize {
     return(0) if($guid && !$rec->inGroup($guid));
     return(0) unless($rec->access());
     return(0) unless($rec->access() eq 'all' || $rec->access() eq $stack[0]); # ACL
-    
+
+    # map out the groups
+    my @groups = $req->{'r'}->dir_config->get('CIFGroups');
+    push(@groups,('everyone','root'));
+
+    my %h;
+    foreach (@groups){
+        my $g = CIF::Utils::genSourceUUID($_);
+        next unless($rec->inGroup($g));
+        $h{$g} = $_;
+    }
+    $req->{'group_map'} = \%h;
+
     return(1); # all good
 }
 
