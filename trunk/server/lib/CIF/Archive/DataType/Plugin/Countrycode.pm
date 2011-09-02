@@ -120,26 +120,31 @@ __PACKAGE__->set_sql('feed' => qq{
 });
 
 __PACKAGE__->set_sql('_lookup' => qq{
-    SELECT __TABLE__.id,__TABLE__.uuid
+    SELECT __TABLE__.id,__TABLE__.uuid, archive.data 
     FROM __TABLE__
-    LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
-    WHERE upper(cc) = upper(?)
-    AND severity >= ?
-    AND confidence >= ?
-    AND restriction <= ?
-    AND apikeys_groups.uuid = ?
+    LEFT JOIN archive ON archive.uuid = __TABLE__.uuid
+    WHERE 
+        cc = ?
+        AND severity >= ?
+        AND confidence >= ?
+        AND __TABLE__.restriction <= ?
+        AND __TABLE__.guid = ?
     ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
     LIMIT ?
 });
 
 __PACKAGE__->set_sql('lookup' => qq{
-    SELECT __ESSENTIAL__
+    SELECT __TABLE__.id,__TABLE__.uuid, archive.data 
     FROM __TABLE__
-    WHERE upper(cc) = upper(?)
-    AND severity >= ?
-    AND confidence >= ?
-    AND restriction <= ?
-    ORDER BY detecttime DESC, created DESC, id DESC
+    LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
+    LEFT JOIN archive ON archive.uuid = __TABLE__.uuid
+    WHERE 
+        upper(cc) = upper(?)
+        AND severity >= ?
+        AND confidence >= ?
+        AND __TABLE__.restriction <= ?
+        AND apikeys_groups.uuid = ?
+    ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
     LIMIT ?
 });
 
