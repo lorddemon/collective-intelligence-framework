@@ -1,6 +1,7 @@
 #labels Featured,Phase-Implementation
 Documentation of the Current CIF-WebAPI REST API
 
+<wiki:toc max_depth="3" />
 = Generating API Keys =
 {{{
 $ cif_apikeys -h
@@ -30,7 +31,7 @@ Examples:
 
 = Special Flags =
 == definitions ==
-* *apikey*
+ * *apikey*
  * *severity* (high|medium|low)
  * *restriction* (private|need-to-know|public|default)
  * *nolog* (1|0) -- don't log the query
@@ -49,7 +50,7 @@ https://example.com/api/url/botnet?apikey=1234&restriction=private&severity=high
 https://example.com/api/1.2.3.0/24?apikey=1234&limit=200&severity=medium&confidence=50
 }}}
 
-= Default Feeds =
+= Feeds =
 == Domain ==
  * domain/
  * domain/fastflux
@@ -70,7 +71,7 @@ https://example.com/api/1.2.3.0/24?apikey=1234&limit=200&severity=medium&confide
 == Malware ==
  * malware/
 
-== Malicious urls ==
+== Urls ==
  * url/
  * url/botnet
  * url/malware
@@ -91,7 +92,3 @@ These feeds are *NOT* included in their respective top-level feeds (eg: domain/ 
 ||ipv4||example.com:443/api/192.168.1.1?apikey=xx-xx-xx-xx||
 ||ipv4-net||example.com:443/api/infrastructure/192.168.1.0/24?apikey=xx-xx-xx-xx||
 ||ipv4-net||example.com:443/api/192.168.1.0/24?apikey=xx-xx-xx-xx||
-
-= *SPECIAL NOTES* =
- * malware queries must be either MD5 or SHA1 hashes
- * the WebAPI will automatically determine the type of query
