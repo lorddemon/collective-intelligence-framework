@@ -27,10 +27,27 @@ Examples:
  1. each feed is aggregated, compressed and base64 encoded, then inserted into a database for more efficient delivery
  1. each set of client libraries is designed to detect this encoding and transparently decode/decompress the feeds and return the results to your output without any extra setup
  1. because of this, larger feeds may take longer to decode/decompress on your client, but results in less load against the data-warehouse and the servers
- 1. an example of how feeds are cached and generated as follows:
-  1. high severity (default): */5 min
-  1. medium severity: */15 min
-  1. low severity: */60 min
+
+= Special Flags =
+== definitions ==
+* *apikey*
+ * *severity* (high|medium|low)
+ * *restriction* (private|need-to-know|public|default)
+ * *nolog* (1|0) -- don't log the query
+ * *nomap* (0|1) -- don't map permissions by default (if you have this turned on at the server level)
+ * *confidence* -- lowest confidence to return
+ * *guid* -- run query under the "group permission" specified
+ * *limit* -- default server limit for queries is ~ 500, re-set this limit
+
+== examples ==
+{{{
+https://example.com/api/infrastructure?apikey=1234&severity=medium& confidence =40
+https://example.com/api/domain?apikey=1234&confidence=95
+https://example.com/api/infrastructure/network?apikey=1234&severity=medium&confidence=40&nolog=1
+https://example.com/api/domain/botnet?apikey=1234&severity=medium&confidence=40&guid=1234&restriction=need-to-know
+https://example.com/api/url/botnet?apikey=1234&restriction=private&severity=high&confidence=85
+https://example.com/api/1.2.3.0/24?apikey=1234&limit=200&severity=medium&confidence=50
+}}}
 
 = Default Feeds =
 == Domain ==
@@ -76,6 +93,5 @@ These feeds are *NOT* included in their respective top-level feeds (eg: domain/ 
 ||ipv4-net||example.com:443/api/192.168.1.0/24?apikey=xx-xx-xx-xx||
 
 = *SPECIAL NOTES* =
- * url queries must be MD5 or SHA1 hashes
  * malware queries must be either MD5 or SHA1 hashes
- * the WebAPI will automatically determine the type of query (with the exception of passing an MD5 url hash, you MUST prefix it with url/$HASH). The WebAPI will determine any MD5 or SHA1 hash as a malware query.
+ * the WebAPI will automatically determine the type of query
