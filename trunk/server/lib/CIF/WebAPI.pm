@@ -248,6 +248,7 @@ sub GET {
         $f->{'description'} =~ s/$old_restriction/$restriction/ if($f->{'description'});
         $feed->{'feed'} = $f;
     }
+    $feed->{'feed'}->{'group_map'} = $request->{'group_map'};
     $response->{'data'} = $feed;
 
     return Apache2::Const::HTTP_OK;
