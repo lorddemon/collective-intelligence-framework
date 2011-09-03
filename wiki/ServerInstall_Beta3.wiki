@@ -132,7 +132,7 @@ $ time /opt/cif/bin/cif_crontool -f -d
 }}}
  # after this starts, run your first batch of analytics (the first batch might take a few days)
 {{{
-$ time /opt/cif/bin/cif_analytic -d -t 16 -m 250
+$ time /opt/cif/bin/cif_analytic -d -t 16 -m 1000
 }}}
  # when that's finished, run your first batch of feeds
 {{{
