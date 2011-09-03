@@ -75,3 +75,4 @@ postgres=#\l
  # http://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server
  # http://wiki.postgresql.org/wiki/FAQ
  # http://www.thegeekstuff.com/2009/05/15-advanced-postgresql-commands-with-examples/
+ # http://wiki.postgresql.org/wiki/Disk_Usage
