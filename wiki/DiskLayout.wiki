@@ -1,0 +1,26 @@
+#this page describes the best layout for your system disk and data-warehouse
+
+= Introduction =
+
+Disk layout is important, all the way down to the way you raid out your physical drives. On top of that, you should use LVM where-ever possible in case you run out of space. By default, the best bang for your buck is RAID5, as it will give you a good combination of performance and redundancy.
+
+Where possible, you should:
+
+ # mirror the main OS on it's own set of disks
+ # mirror the main archive table space on it's own set of disks (it will be smaller than all the index tables, which can be rebuilt from the archive
+ # RAID5 or even RAID0 the archive index table space
+ # RAID5 or RAID0 the main database index table space (table indicies)
+
+= Details =
+== Example Layout ==
+{{{
+/dev/mapper/vg00-root  6.5G  2.2G  4.0G  35% /
+tmpfs                 2.0G     0  2.0G   0% /lib/init/rw
+udev                  2.0G   96K  2.0G   1% /dev
+tmpfs                 2.0G     0  2.0G   0% /dev/shm
+/dev/sda1             228M   31M  186M  15% /boot
+/dev/mapper/vg00-home  4.6G  200M  4.2G   5% /home
+/dev/mapper/vg01-archive 156G   22G  127G  15% /var/lib/postgresql
+/dev/mapper/vg02-archive-index 500G   2G  498G  1% /mnt/data/archive_index
+/dev/mapper/vg03-index 100G 1G 99G 1% /mnt/data/index
+}}}
