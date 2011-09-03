@@ -30,10 +30,23 @@ $ diff -u pg_hba.conf.orig pg_hba.conf
 -host    all         all         ::1/128               md5
 +host    all         all         ::1/128               trust
 }}}
- # set error logging in postgres to "log" (key violations generate lots of errors):
+ # set your kernel.shmmax (to about 1/2 - 2/3 the amount of system ram (this is a debian example):
 {{{
-vi /etc/postgresql/8.X/main/postgresql.conf +300 (or so)
-log_min_messages = log
+$ sudo -s
+# echo 4294967296 > /proc/sys/kernel/shmmax
+}}}
+ # modify your sysctl.conf to take effect on reboot:
+{{{
+kernel.shmmax = 4294967296
+}}}
+ # set the following values in postgresql.conf:
+{{{
+work_mem = 512MB
+commit_delay = 30000
+commit_siblings = 5         # range 1-1000
+checkpoint_segments = 15
+effective_cache_size = 4GB    # whatever you set shmmax to
+log_min_messages = log # supress "key violation" errors (there will be lots of them)
 }}}
  # restart postgres
 {{{
@@ -53,5 +66,10 @@ postgres=#\l
  template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres
                                                            : postgres=CTc/postgres
 (3 rows)
-
 }}}
+
+= Performance Tuning =
+ # http://www.revsys.com/writings/postgresql-performance.html
+ # http://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server
+ # http://wiki.postgresql.org/wiki/FAQ
+ # http://www.thegeekstuff.com/2009/05/15-advanced-postgresql-commands-with-examples/
