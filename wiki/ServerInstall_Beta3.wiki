@@ -20,7 +20,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 
  # at-least 4 gig of ram
  # at-least 4 cores
- # at-least 35gig of disk space
+ # at-least 35gig of free (after OS install) disk space
 
 = Prerequisites =
 == Required Services ==
