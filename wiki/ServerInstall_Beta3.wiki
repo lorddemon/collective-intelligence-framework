@@ -31,6 +31,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 == System Deps ==
  # ServerInstall_Beta3_Generic
  # ServerInstall_Beta3_Lenny
+ # ServerInstall_Beta3_Squeeze
  # ServerInstall_Beta3_Ubuntu10
 
 = Install =
