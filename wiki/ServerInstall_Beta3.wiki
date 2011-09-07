@@ -90,7 +90,7 @@ $ cif_apikeys -l
  # configure your ~/.cif for generating feeds
 {{{
 [cif_feeds]
-maxrecords = 1000000
+maxrecords = 10000
 severity_feeds = high,medium
 confidence_feeds = 75,85,95
 max_days = 2
