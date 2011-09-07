@@ -20,7 +20,7 @@ udev                  2.0G   96K  2.0G   1% /dev
 tmpfs                 2.0G     0  2.0G   0% /dev/shm
 /dev/sda1             228M   31M  186M  15% /boot
 /dev/mapper/vg00-home  4.6G  200M  4.2G   5% /home
-/dev/mapper/vg01-archive 156G   22G  127G  15% /var/lib/postgresql
-/dev/mapper/vg02-archive-index 500G   2G  498G  1% /mnt/data/archive_index
-/dev/mapper/vg03-index 100G 1G 99G 1% /mnt/data/index
+/dev/mapper/vg01-archive 530G   1G  529G  15% /mnt/archive
+/dev/mapper/vg02-index 470G   1G  469G  1% /mnt/index
+
 }}}
