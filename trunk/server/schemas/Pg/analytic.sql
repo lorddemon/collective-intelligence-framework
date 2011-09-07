@@ -1,3 +1,4 @@
+set default_tablespace = 'index';
 DROP TABLE IF EXISTS analytic CASCADE;
 CREATE TABLE analytic (
     id bigserial primary key not null,

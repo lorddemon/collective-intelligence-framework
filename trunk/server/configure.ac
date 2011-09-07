@@ -62,6 +62,8 @@ if test "$DB_TYPE" != 'Pg' ; then
     AC_MSG_ERROR([Only Pg is a valid db type])
 fi
 AC_SUBST(DB_TYPE)
+DB_UNIXOWNER=postgres
+AC_SUBST(DB_UNIXOWNER)
 
 dnl DB_HOST
 AC_ARG_WITH(db-host,
@@ -94,17 +96,31 @@ AC_ARG_WITH(db-database,
             DB_DATABASE=cif)
 AC_SUBST(DB_DATABASE)
 
+AC_ARG_WITH(db-index-location,
+        AC_HELP_STRING([--with-db-index-location=/mnt/index/data],
+                    [default index storage location (default: /mnt/index/data)]),
+            DB_INDEX_LOC=$withval,
+            DB_INDEX_LOC=/mnt/index/data)
+AC_SUBST(DB_INDEX_LOC)
+
+AC_ARG_WITH(db-archive-location,
+        AC_HELP_STRING([--with-db-archive-location=/mnt/archive/data],
+                    [default index storage location (default: /mnt/archive/data)]),
+            DB_ARCHIVE_LOC=$withval,
+            DB_ARCHIVE_LOC=/mnt/archive/data)
+AC_SUBST(DB_ARCHIVE_LOC)
+
 dnl enable default plugins
-AC_ARG_ENABLE(p-infrastructure,
-    AC_HELP_STRING( [--enable-p-infrastructure],
-                    [Turns on infrastructure (IPv4) support]),
-    P_INFRA=$enableval,
-    P_INFRA="yes")
-if test "$PINFRA" = yes; then
-    P_INFRA="1"
-else
-    P_INFRA="0"
-fi
-AC_SUBST(P_INFRA)
+#AC_ARG_ENABLE(p-infrastructure,
+#    AC_HELP_STRING( [--enable-p-infrastructure],
+#                    [Turns on infrastructure (IPv4) support]),
+#    P_INFRA=$enableval,
+#    P_INFRA="yes")
+#if test "$PINFRA" = yes; then
+#    P_INFRA="1"
+#else
+#    P_INFRA="0"
+#fi
+#AC_SUBST(P_INFRA)
 
 AC_OUTPUT

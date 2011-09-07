@@ -1,3 +1,4 @@
+SET default_tablespace = 'index';
 DROP TABLE IF EXISTS asn CASCADE;
 CREATE TABLE asn (
     id BIGSERIAL PRIMARY KEY NOT NULL,
@@ -13,3 +14,5 @@ CREATE TABLE asn (
     created timestamp with time zone DEFAULT NOW(),
     unique(uuid,asn)
 );
+
+CREATE INDEX idx_feed_asn ON asn (detecttime,severity,confidence);

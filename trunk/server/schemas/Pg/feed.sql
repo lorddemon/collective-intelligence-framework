@@ -1,3 +1,4 @@
+SET default_tablespace = 'index';
 DROP TABLE IF EXISTS feed CASCADE;
 CREATE TABLE feed (
     id BIGSERIAL PRIMARY KEY NOT NULL,
@@ -16,3 +17,4 @@ CREATE TABLE feed (
     data text,
     UNIQUE (uuid)
 );
+CREATE INDEX idx_feed ON feed (detecttime,severity,confidence);

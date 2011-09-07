@@ -65,17 +65,35 @@ bin-install:
 		$(INSTALL) -m 0750 "bin/$$file" "$(bindir)/$$file" ; \
 	done
 
-dropdb:
-	$(PSQL) -U $(DB_DBA) -h $(DB_HOST) -p $(DB_PORT) -c 'DROP DATABASE $(DB_DATABASE)'
+initdb: createdb archive index
 
-initdb:
+createdb:
 	$(PSQL) -U $(DB_DBA) -h $(DB_HOST) -p $(DB_PORT) -c 'CREATE DATABASE $(DB_DATABASE)'
+
+archive:
+	[ -d $(DB_ARCHIVE_LOC) ] || mkdir -p $(DB_ARCHIVE_LOC) && chown $(DB_UNIXOWNER):$(DB_UNIXOWNER) $(DB_ARCHIVE_LOC) 
+	$(PSQL) -U $(DB_DBA) -h $(DB_HOST) -p $(DB_PORT) -d $(DB_DATABASE) -c "CREATE TABLESPACE archive LOCATION '$(DB_ARCHIVE_LOC)'"
+
+index:
+	[ -d $(DB_INDEX_LOC) ] || mkdir -p $(DB_INDEX_LOC) && chown $(DB_UNIXOWNER):$(DB_UNIXOWNER) $(DB_INDEX_LOC) 
+	$(PSQL) -U $(DB_DBA) -h $(DB_HOST) -p $(DB_PORT) -d $(DB_DATABASE) -c "CREATE TABLESPACE index LOCATION '$(DB_INDEX_LOC)'"
 
 tables:
 	-( cd schemas/$(DB_TYPE) && find -type f -print | grep -v svn | sort ) | while read file ; do \
 	$(PSQL) -U $(DB_DBA) -d $(DB_DATABASE) -h $(DB_HOST) -p $(DB_PORT) < "schemas/$(DB_TYPE)/$$file" ; \
 	done
 	@echo "Tables built"
+
+dropdb: dropdatabase droparchive dropindex          
+
+dropdatabase:
+	$(PSQL) -U $(DB_DBA) -h $(DB_HOST) -p $(DB_PORT) -c 'DROP DATABASE IF EXISTS $(DB_DATABASE)'
+
+droparchive:
+	$(PSQL) -U $(DB_DBA) -h $(DB_HOST) -p $(DB_PORT) -c "DROP TABLESPACE IF EXISTS archive"
+
+dropindex:
+	$(PSQL) -U $(DB_DBA) -h $(DB_HOST) -p $(DB_PORT) -c "DROP TABLESPACE IF EXISTS index"
 
 clean:
 	rm Makefile
