@@ -1,3 +1,4 @@
+SET default_tablespace = 'index';
 DROP TABLE IF EXISTS rir CASCADE;
 CREATE TABLE rir (
     id BIGSERIAL PRIMARY KEY NOT NULL,
@@ -12,3 +13,5 @@ CREATE TABLE rir (
     created timestamp with time zone DEFAULT NOW(),
     unique(uuid,rir)
 );
+
+-- TODO create partitions for each RIR?

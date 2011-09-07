@@ -1,3 +1,4 @@
+SET default_tablespace = 'index';
 DROP TABLE IF EXISTS countrycode CASCADE;
 CREATE TABLE countrycode (
     id BIGSERIAL PRIMARY KEY NOT NULL,
@@ -12,3 +13,5 @@ CREATE TABLE countrycode (
     created timestamp with time zone DEFAULT NOW(),
     unique(uuid,cc)
 );
+
+CREATE INDEX idx_feed_countrycode ON asn (detecttime,severity,confidence);

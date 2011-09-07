@@ -1,3 +1,4 @@
+SET default_tablespace = 'archive';
 DROP TABLE IF EXISTS apikeys_groups;
 DROP TABLE IF EXISTS apikeys;
 CREATE TABLE apikeys (
@@ -20,4 +21,3 @@ CREATE TABLE apikeys_groups (
     created timestamp with time zone default now(),
     unique(uuid,guid)
 );
-create unique index apikeys_groups_defaultguid_key on apikeys_groups (uuid,default_guid);
