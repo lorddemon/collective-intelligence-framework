@@ -136,18 +136,47 @@ sub isWhitelisted {
     return @recs;
 }
 
+sub myfeed {
+    my $class = shift;
+    my $info = shift;
+
+    my @recs;
+    if($info->{'apikey'}){
+        @recs = $class->search_feed(
+            $info->{'detecttime'},
+            $info->{'detecttime'},
+            $info->{'confidence'},
+            $info->{'severity'},
+            $info->{'restriction'},
+            $info->{'apikey'},
+            $info->{'limit'},
+        );
+    } else {
+        @recs = $class->search__feed(
+            $info->{'detecttime'},
+            $info->{'detecttime'},
+            $info->{'confidence'},
+            $info->{'severity'},
+            $info->{'restriction'},
+            $info->{'guid'},
+            $info->{'limit'},
+        );
+    }
+    return unless(@recs);
+    return $class->mapfeed(\@recs);
+}
+
 sub feed {
     my $class = shift;
     my $info = shift;
 
     my @feeds;
-    $info->{'key'} = 'address';
-    my $ret = $class->_feed($info);
+    my $ret = $class->myfeed($info);
     return unless($ret);
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){
-        my $r = $_->_feed($info);
+        my $r = $_->myfeed($info);
         push(@feeds,$r) if($r);
     }
     return(\@feeds);
@@ -161,10 +190,13 @@ __PACKAGE__->set_sql('feed' => qq{
     LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
     WHERE
         NOT EXISTS (
-            SELECT uuid FROM domain_whitelist dw
-                WHERE
-                    dw.confidence >= 25
+            SELECT uuid 
+            FROM domain_whitelist dw
+            WHERE
+                    dw.detecttime >= ?
+                    AND dw.confidence >= 25
                     AND dw.md5 = __TABLE__.md5
+            LIMIT 1
         )
         AND detecttime >= ?
         AND __TABLE__.confidence >= ?
