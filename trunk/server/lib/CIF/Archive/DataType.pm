@@ -38,6 +38,18 @@ sub set_table {
     return($class->table($t));
 }
 
+sub feed_name {
+    my $class = shift;
+    my @bits = split(/::/,lc($class));
+    my $feed_name = '';
+    if($bits[$#bits-1] eq 'plugin'){
+        $feed_name .= $bits[$#bits];
+    } else {
+        $feed_name .= $bits[$#bits].' '.$bits[$#bits-1];
+    }
+    return($feed_name);
+}
+
 sub _feed {
     my $class = shift;
     my $info = shift;
@@ -52,13 +64,6 @@ sub _feed {
     require CIF::Utils;
     $apikey = CIF::Utils::genSourceUUID($apikey) unless(CIF::Utils::isUUID($apikey));
 
-    my @bits = split(/::/,lc($class));
-    my $feed_name = '';
-    if($bits[$#bits-1] eq 'plugin'){
-        $feed_name .= $bits[$#bits];
-    } else {
-        $feed_name .= $bits[$#bits].' '.$bits[$#bits-1];
-    }
     my @recs;
     if($info->{'apikey'}){
         @recs = $class->search_feed(
@@ -80,45 +85,41 @@ sub _feed {
         );
     }
     return unless(@recs);
-    if($recs[0]->{'data'}){
-        my $hash;
-        my @a;
+    my $hash;
+    my @a;
+    unless($class->table() =~ /_whitelist/){
         foreach (@recs){
-            ## TODO -- test this
-            unless($class->table() =~ /_whitelist/){
-                push(@a,$_) unless($class->isWhitelisted($_->{$key},$apikey));
-            }
-        }
-        @recs = @a;
-        @a = ();
-        foreach(@recs){
+            next if($class->isWhitelisted($_->{$key},$apikey));
             my $hh = JSON::from_json($_->{'data'});
             $hh->{'uuid'} = $_->uuid->id();
             push(@a,$hh);
         }
         @recs = @a;
-
-        # sort it out
-        @recs = sort { $a->{'detecttime'} cmp $b->{'detecttime'} } @recs;
-    } else {
-        my @array;
-        foreach (@recs){
-            my @keys = grep(!/^_/,keys %$_);
-            my $h;
-            foreach my $k (@keys){
-                $h->{$k} = $_->{$k};
-           }
-            push(@array,$h);
-        }
-        @recs = @array;
     }
-    my $feed = {
+
+    return({
         feed    => {
-            title   => $feed_name,
-            entry   => \@recs,
+            title   => $class->feed_name(),
+            entry   => \@a,
         }
-    };
-    return($feed);
+    });
+}
+
+sub mapfeed {
+    my $class = shift;
+    my $recs = shift;
+    my @a;
+    foreach(@$recs){
+        my $hh = JSON::from_json($_->{'data'});
+            $hh->{'uuid'} = $_->uuid->id();
+            push(@a,$hh);
+    }
+    return({
+        feed => {
+            title   => $class->feed_name(),
+            entry   => \@a
+        },
+    });
 }
 
 sub isWhitelisted { return; }

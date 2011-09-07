@@ -86,18 +86,47 @@ sub asninfo {
     return ($as,$network,$ccode,$rir,$date,$as_desc);
 }
 
+sub myfeed {
+    my $class = shift;
+    my $info = shift;
+
+    my @recs;
+    if($info->{'apikey'}){
+        @recs = $class->search_feed(
+            $info->{'detecttime'},
+            $info->{'detecttime'},
+            $info->{'confidence'},
+            $info->{'severity'},
+            $info->{'restriction'},
+            $info->{'apikey'},
+            $info->{'limit'},
+        );
+    } else {
+        @recs = $class->search__feed(
+            $info->{'detecttime'},
+            $info->{'detecttime'},
+            $info->{'confidence'},
+            $info->{'severity'},
+            $info->{'restriction'},
+            $info->{'guid'},
+            $info->{'limit'},
+        );
+    }
+    return unless(@recs);
+    return $class->mapfeed(\@recs);
+}
+
 sub feed {
     my $class = shift;
     my $info = shift;
 
     my @snapshots;
-    $info->{'key'} = 'address';
-    my $ret = $class->_feed($info);
+    my $ret = $class->myfeed($info);
     return unless($ret);
     push(@snapshots,$ret);
 
     foreach($class->plugins()){
-        my $r = $_->_feed($info);
+        my $r = $_->myfeed($info);
         push(@snapshots,$r) if($r);
     }
     return(\@snapshots);
@@ -249,7 +278,14 @@ __PACKAGE__->set_sql('feed' => qq{
     LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
     WHERE 
         NOT EXISTS (SELECT uuid FROM domain where __TABLE__.uuid = domain.uuid)
-        AND NOT EXISTS (SELECT uuid FROM infrastructure_whitelist iw WHERE __TABLE__.address <<= iw.address AND iw.confidence >= 25)
+        AND NOT EXISTS (
+            SELECT uuid FROM infrastructure_whitelist iw 
+            WHERE 
+               iw.detecttime >= ?
+               AND iw.confidence >= 25 
+               AND __TABLE__.address <<= iw.address 
+               LIMIT 1
+        ) 
         AND detecttime >= ?
         AND __TABLE__.confidence >= ?
         AND __TABLE__.severity >= ?
