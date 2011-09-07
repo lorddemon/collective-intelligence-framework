@@ -20,7 +20,22 @@ udev                  2.0G   96K  2.0G   1% /dev
 tmpfs                 2.0G     0  2.0G   0% /dev/shm
 /dev/sda1             228M   31M  186M  15% /boot
 /dev/mapper/vg00-home  4.6G  200M  4.2G   5% /home
-/dev/mapper/vg01-archive 530G   1G  529G  15% /mnt/archive
+/dev/mapper/vg01-archive 530G   1G  529G  1% /mnt/archive
 /dev/mapper/vg02-index 470G   1G  469G  1% /mnt/index
-
 }}}
+== Partition Mapping ==
+ 1. your index should grow at a rate of 85-88% of your archive
+ 1. the archive partition should be about 53% of your disk
+ 1. the index logical volume should be about 47% of your disk
+{{{
+$ du -kh /mnt/
+359M	./index/data/17630
+405M	./archive/data/17630
+764M	.
+}}}
+ 1. for 1GB of free space:
+  * 530MB for the archive
+  * 470MB for your index
+ 1. for 1TB of free space:
+  * 530GB for the archive
+  * 470GB for the index
