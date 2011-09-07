@@ -92,7 +92,7 @@ $ cif_apikeys -l
 [cif_feeds]
 maxrecords = 1000000
 severity_feeds = high,medium
-confidence_feeds = 40,85,95
+confidence_feeds = 75,85,95
 max_days = 2
 disabled_feeds = hash
 }}}
