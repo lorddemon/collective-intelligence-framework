@@ -12,16 +12,18 @@ Where possible, you should:
 
 = Details =
 == Partition Mapping ==
- 1. your index should grow at a rate of 80% of your archive
- 1. the archive partition should be about 55% of your disk
- 1. the index logical volume should be about 45% of your disk
+ 1. your index should grow at a rate of 80% - 90% of your archive
+ 1. the archive partition should be about 50-55% of your disk
+ 1. the index logical volume should be about 45-50% of your disk
  1. for 1GB of free space:
   * 550MB for the archive
   * 450MB for your index
  1. for 1TB of free space:
   * 550GB for the archive
   * 450GB for the index
+ 1. you shouldn't use up 100% of your "data drive", leave some slack space incase one of the partitions out-grows the other. For instance, instead of splitting the drive up "550GB / 450GB", split it up "500GB / 400GB", leaving 100GB of free space to re-allocate to either partition.
 == LVM Example ==
+
  1. the /etc/fstab would look like:
 {{{
 /dev/mapper/vg00-archive /mnt/archive       ext3    defaults        0       2
