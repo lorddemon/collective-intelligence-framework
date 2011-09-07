@@ -41,7 +41,7 @@ use CIF::Utils ':all';
 use threads;
 
 my %opts;
-getopts('K:D:ht:S:c:df:s:r:m:F:C:T:g:',\%opts);
+getopts('l:K:D:ht:S:c:df:s:r:m:F:C:T:g:',\%opts);
 
 my $severity    = $opts{'s'};
 my $confidence  = $opts{'c'};
@@ -60,7 +60,7 @@ my $guid;
  
 
 my $cfg = Config::Simple->new($config) || die('missing config file');
-my $maxrecords  = $opts{'m'} || $cfg->param(-block => 'cif_feeds')->{'maxrecords'} || 50000;
+my $limit = $opts{'l'} || $cfg->param(-block => 'cif_feeds')->{'limit'} || 5000;
 my @plugs = CIF::Archive->plugins('datatype');
 my $sf = $cfg->param(-block  => 'cif_feeds')->{'severity_feeds'};
 my $cf = $cfg->param(-block => 'cif_feeds')->{'confidence_feeds'};
@@ -204,7 +204,7 @@ Usage: perl $0 -s medium -c 95
     -s  --severity:     feed severity (low|medium|high), default: $severity
     -c  --confidence:   minimal confidence (0.00 - 100.0), default: $confidence
     -r  --restriction:  feed restriction (default|public|need-to-know|private), default: $restriction
-    -m  --maxrecords:   max feed records, default: $maxrecords
+    -l  --limit:        max feed records, default: $limit
     -D  --maxdays:      max days to go back in feed search, default: $maxdays
     -T  --throttle:     throttle the feed generation (low|medium|high), default: $throttle
     -S  --specific:     generate a specific feed (eg: infrastructure, domain, etc)
@@ -259,7 +259,7 @@ sub process {
                             restriction => $restriction,
                             confidence  => $confidence,
                             apikey      => $rk->{'apikey'},
-                            limit       => 50000, ## FIX ME!
+                            limit       => $limit,
                             detecttime  => $detecttime,
                             plugin      => $plug,
                             severity    => $severity,
@@ -285,6 +285,8 @@ sub build_feed {
     my $guid        = $args{'guid'};
     my $alias       = $args{'alias'};
     my $restriction = $args{'restriction'};
+
+    _debug('generating '.$plugin .' '.$severity.' severity '.$confidence.'% confidence '.$restriction.' feed');
 
     my $ret = $plugin->feed({
         severity    => $severity,
