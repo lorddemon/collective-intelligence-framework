@@ -186,7 +186,7 @@ sub GET {
 
         my @recs;
         if(ref($ret) ne 'CIF::Archive'){
-            @recs = $ret->slice(0,$ret->count());
+            @recs = reverse($ret->slice(0,$ret->count()));
             foreach (@recs){
                 my $j = JSON::from_json($_->{'data'});
                 $j->{'uuid'} = $_->uuid->id();
