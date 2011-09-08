@@ -146,14 +146,15 @@ __PACKAGE__->set_sql('_lookup' => qq{
 });
 
 __PACKAGE__->set_sql('lookup' => qq{
-    SELECT __TABLE__.id,__TABLE__.uuid
+    SELECT __TABLE__.id,__TABLE__.uuid,archive.data
     FROM __TABLE__
     LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
+    LEFT JOIN archive ON archive.uuid = __TABLE__.uuid
     WHERE 
         asn = ?
         AND severity >= ?
         AND confidence >= ?
-        AND restriction <= ?
+        AND __TABLE__.restriction <= ?
         AND apikeys_groups.uuid = ?
     ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
     LIMIT ?
