@@ -14,4 +14,4 @@ CREATE TABLE countrycode (
     unique(uuid,cc)
 );
 
-CREATE INDEX idx_feed_countrycode ON asn (detecttime,severity,confidence);
+CREATE INDEX idx_feed_countrycode ON asn (detecttime DESC, severity DESC, confidence DESC);
