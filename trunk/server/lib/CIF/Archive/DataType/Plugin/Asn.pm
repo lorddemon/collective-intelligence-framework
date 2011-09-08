@@ -20,7 +20,7 @@ sub prepare {
 
     ## TODO -- download list of IANA country codes for use in regex
     ## http://data.iana.org/TLD/tlds-alpha-by-domain.txt
-    if($info->{'address'} =~ /^as([0-9]*\.?[0-9]*)$/){
+    if($info->{'address'} && $info->{'address'} =~ /^as([0-9]*\.?[0-9]*)$/){
         $info->{'asn'} = $1;
     }
     return unless($info->{'asn'});
