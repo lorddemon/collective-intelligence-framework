@@ -79,14 +79,13 @@ sub write_out {
     pop(@header);
     my $table = Text::Table->new(@header);
 
-    my @sorted = sort { $a->{'detecttime'} cmp $b->{'detecttime'} } @a;
     if(my $max = $self->{'max_desc'}){
-        map { $_->{'description'} = substr($_->{'description'},0,$max) } @sorted;
+        map { $_->{'description'} = substr($_->{'description'},0,$max) } @a;
     }
     if($group_map){
-        map { $_->{'guid'} = $group_map->{$_->{'guid'}} } @sorted;
+        map { $_->{'guid'} = $group_map->{$_->{'guid'}} } @a;
     }
-    foreach my $r (@sorted){
+    foreach my $r (@a){
         $table->load([ map { $r->{$_} } @cols]);
     }
     if($created){
