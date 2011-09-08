@@ -8,6 +8,8 @@ sub prepare {
     return(1) if($info->{'asn'});
     return(1) if($info->{'cc'});
     return(1) if($info->{'rir'});
+    return(1) if(isAsn(uc($info->{'address'})));
+
     return(0);
 }
 
@@ -21,6 +23,13 @@ sub convert {
     my $cc      = $info->{'cc'};
     my $rir     = $info->{'rir'};
     my $asn_desc = $info->{'asn_desc'};
+    my $address = uc($info->{'address'});
+
+    if(isAsn($address)){
+        $iodef->add('IncidentEventDataFlowSystemNodeAddress',$address);
+        $iodef->add('IncidentEventDataFlowSystemNodeAddresscategory','asn');
+    }
+
 
     if($prefix){
         $iodef->add('IncidentEventDataFlowSystemAdditionalDatadtype','string');
@@ -45,6 +54,12 @@ sub convert {
         $iodef->add('IncidentEventDataFlowSystemAdditionalData',$rir);
     }
     return $iodef;
+}
+
+sub isAsn {
+    my $a = shift;
+    return unless($a =~ /^AS[0-9]*\.?[0-9]*$/);
+    return(1);
 }
 
 1;
