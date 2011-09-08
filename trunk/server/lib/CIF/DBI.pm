@@ -3,7 +3,7 @@ use base 'Class::DBI';
 
 use Config::Simple;
 
-__PACKAGE__->connection('DBI:Pg:database=cif;host=localhost','postgres','',{ AutoCommit => 1} );
+__PACKAGE__->connection('DBI:Pg:database=cif','postgres','',{ AutoCommit => 1} );
 __PACKAGE__->set_sql('lastval' => qq{ SELECT last_value from archive_id_seq });
 
 # because UUID's are really primary keys too in our schema

@@ -148,7 +148,7 @@ __PACKAGE__->set_sql('_feed' => qq{
         AND severity >= ?
         AND restriction <= ?
         AND guid = ?
-    ORDER BY severity desc, confidence desc, restriction desc, detecttime desc, id desc
+    ORDER BY confidence DESC, severity DESC, restriction ASC, detecttime DESC, id DESC
     LIMIT ?
 });
 

@@ -65,18 +65,46 @@ sub insert {
     return($id);
 }
 
+sub myfeed {
+    my $class = shift;
+    my $info = shift;
+
+    my @recs;
+    if($info->{'apikey'}){
+        @recs = $class->search_feed(
+            $info->{'detecttime'},
+            $info->{'confidence'},
+            $info->{'severity'},
+            $info->{'restriction'},
+            $info->{'apikey'},
+            $info->{'limit'},
+        );
+    } else {
+        @recs = $class->search__feed(
+            $info->{'detecttime'},
+            $info->{'confidence'},
+            $info->{'severity'},
+            $info->{'restriction'},
+            $info->{'guid'},
+            $info->{'limit'},
+        );
+    }
+    return unless(@recs);
+    return $class->mapfeed(\@recs);
+}
+
 sub feed {
     my $class = shift;
     my $info = shift;
 
     my @feeds;
     $info->{'key'} = 'address';
-    my $ret = $class->_feed($info);
+    my $ret = $class->myfeed($info);
     return unless($ret);
     push(@feeds,$ret) if($ret);
 
     foreach($class->plugins()){
-        my $r = $_->_feed($info);
+        my $r = $_->myfeed($info);
         push(@feeds,$r) if($r);
     }
     return(\@feeds);
@@ -93,7 +121,7 @@ __PACKAGE__->set_sql('feed' => qq{
         AND severity >= ?
         AND __TABLE__.restriction <= ?
         AND apikeys_groups.uuid = ?
-    ORDER BY __TABLE__.address ASC, __TABLE__.id ASC, confidence DESC, severity DESC, __TABLE__.restriction ASC
+    ORDER BY __TABLE__.address ASC, __TABLE__.id ASC, confidence DESC, severity DESC, __TABLE__.restriction ASC, detecttime DESC, __TABLE__.id DESC
     LIMIT ?
 });
 
