@@ -15,7 +15,7 @@ __PACKAGE__->sequence('email_id_seq');
 
 sub isEmail {
     my $e = shift;
-    return unless(lc($e) =~ /^[a-z0-9.-]+\@[a-z0-9.-]+\.[a-z0-9.-]{2,5}$/);
+    return unless(lc($e) =~ /^[a-z0-9_.-]+\@[a-z0-9.-]+\.[a-z0-9.-]{2,5}$/);
     return(1);
 }
 
