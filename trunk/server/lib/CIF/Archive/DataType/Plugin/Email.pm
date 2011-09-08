@@ -13,13 +13,19 @@ __PACKAGE__->columns(Essential => qw/id uuid address guid source confidence seve
 __PACKAGE__->columns(All => qw/id uuid address guid source confidence severity restriction detecttime created/);
 __PACKAGE__->sequence('email_id_seq');
 
+sub isEmail {
+    my $e = shift;
+    return unless(lc($e) =~ /^[a-z0-9.-]+\@[a-z0-9.-]+\.[a-z0-9.-]{2,5}$/);
+    return(1);
+}
+
 sub prepare {
     my $class = shift;
     my $info = shift;
    
     my $address = $info->{'address'} || return(undef);
     return if($address =~ /^$RE{'URI'}/);
-    return unless($address =~ /\w+@\w+/);
+    return unless(isEmail($address));
     return(1);
 }
 
@@ -73,7 +79,7 @@ sub lookup {
     my $self = shift;
     my $info = shift;
     my $address = $info->{'query'};
-    return(undef) unless($address =~ /\w+@\w+$/);
+    return unless(isEmail($address));
 
     if($info->{'guid'}){
         return(
@@ -88,7 +94,7 @@ sub lookup {
         );
     }
     return(
-        $self->SUPER::lookup(
+        $self->search_lookup(
             $address,
             $info->{'severity'},
             $info->{'confidence'},

@@ -10,6 +10,10 @@ sub prepare {
     return unless($address);
     return if($address =~ /^$RE{'URI'}/);
     return unless($address =~ /\w+@\w+/);
+    $address = lc($address);
+    $address =~ m/([a-z0-9.-]+\@[a-z0-9.-]+\.[a-z0-9.-]{2,5})/;
+    $info->{'address'} = $1;
+    die $address unless($1);
     return(1);
 }
 
