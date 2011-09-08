@@ -91,7 +91,7 @@ sub process {
             description                 => $code->{'description'},
             severity                    => $code->{'severity'} || 'medium',
             confidence                  => $code->{'confidence'} || 85,
-            restriction                 => 'need-to-know', 
+            restriction                 => $data->{'restriction'}, 
             alternativeid               => 'http://www.spamhaus.org/query/dbl?domain='.$addr,
             alternativeid_restriction   => 'public',
         });
