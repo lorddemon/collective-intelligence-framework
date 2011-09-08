@@ -18,22 +18,22 @@ CREATE TABLE url_botnet () INHERITS (url);
 ALTER TABLE url_botnet ADD PRIMARY KEY (id);
 ALTER TABLE url_botnet ADD UNIQUE(uuid);
 ALTER TABLE url_botnet ADD CONSTRAINT url_botnet_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
-CREATE INDEX idx_feed_url_botnet ON url_botnet (detecttime,severity,confidence);
+CREATE INDEX idx_feed_url_botnet ON url_botnet (detecttime DESC, severity DESC, confidence DESC);
 
 CREATE TABLE url_malware () INHERITS (url);
 ALTER TABLE url_malware ADD PRIMARY KEY (id);
 ALTER TABLE url_malware ADD UNIQUE(uuid);
 ALTER TABLE url_malware ADD CONSTRAINT url_malware_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
-CREATE INDEX idx_feed_url_malware ON url_malware (detecttime,severity,confidence);
+CREATE INDEX idx_feed_url_malware ON url_malware (detecttime DESC, severity DESC, confidence DESC);
 
 CREATE TABLE url_phishing () INHERITS (url);
 ALTER TABLE url_phishing ADD PRIMARY KEY (id);
 ALTER TABLE url_phishing ADD UNIQUE(uuid);
 ALTER TABLE url_phishing ADD CONSTRAINT url_phishing_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
-CREATE INDEX idx_feed_url_phishing ON url_phishing (detecttime,severity,confidence);
+CREATE INDEX idx_feed_url_phishing ON url_phishing (detecttime DESC, severity DESC, confidence DESC);
 
 CREATE TABLE url_search () INHERITS (url);
 ALTER TABLE url_search ADD PRIMARY KEY (id);
 ALTER TABLE url_search ADD UNIQUE(uuid);
 ALTER TABLE url_search ADD CONSTRAINT url_search_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
-CREATE INDEX idx_feed_url_search ON url_search (detecttime,severity,confidence);
+CREATE INDEX idx_feed_url_search ON url_search (detecttime DESC, severity DESC, confidence DESC);

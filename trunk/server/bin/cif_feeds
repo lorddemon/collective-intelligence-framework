@@ -60,7 +60,7 @@ my $guid;
  
 
 my $cfg = Config::Simple->new($config) || die('missing config file');
-my $limit = $opts{'l'} || $cfg->param(-block => 'cif_feeds')->{'limit'} || 5000;
+my $limit = $opts{'l'} || $cfg->param(-block => 'cif_feeds')->{'limit'} || 500000;
 my @plugs = CIF::Archive->plugins('datatype');
 my $sf = $cfg->param(-block  => 'cif_feeds')->{'severity_feeds'};
 my $cf = $cfg->param(-block => 'cif_feeds')->{'confidence_feeds'};

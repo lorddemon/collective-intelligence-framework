@@ -15,4 +15,4 @@ CREATE TABLE asn (
     unique(uuid,asn)
 );
 
-CREATE INDEX idx_feed_asn ON asn (detecttime,severity,confidence);
+CREATE INDEX idx_feed_asn ON asn (detecttime DESC, severity DESC, confidence DESC);
