@@ -25,3 +25,9 @@ ALTER TABLE email_phishing ADD PRIMARY KEY (id);
 ALTER TABLE email_phishing ADD CONSTRAINT email_phishing_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
 ALTER TABLE email_phishing ADD UNIQUE(uuid);
 CREATE INDEX idx_feed_email_phishing ON email_phishing (detecttime,severity,confidence);
+
+CREATE TABLE email_registrant() INHERITS (email);
+ALTER TABLE email_registrant ADD PRIMARY KEY (id);
+ALTER TABLE email_registrant ADD CONSTRAINT email_registrant_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
+ALTER TABLE email_registrant ADD UNIQUE(uuid);
+CREATE INDEX idx_feed_email_registrant ON email_registrant (detecttime,severity,confidence);
