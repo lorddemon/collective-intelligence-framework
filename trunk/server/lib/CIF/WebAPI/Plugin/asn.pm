@@ -15,7 +15,7 @@ sub buildNext {
     my ($self,$frag,$req) = @_;
 
     my $subh;
-    if(uc($frag) =~ /^AS([0-9]*\.?[0-9]*)$/){
+    if(uc($frag) =~ /^(AS[0-9]*\.?[0-9]*)$/){
         $self->{'query'} = $1;
         return $self;
     } else {

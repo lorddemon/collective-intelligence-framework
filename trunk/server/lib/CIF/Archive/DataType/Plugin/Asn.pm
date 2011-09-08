@@ -20,16 +20,18 @@ sub prepare {
 
     ## TODO -- download list of IANA country codes for use in regex
     ## http://data.iana.org/TLD/tlds-alpha-by-domain.txt
+    if($info->{'address'} =~ /^as([0-9]*\.?[0-9]*)$/){
+        $info->{'asn'} = $1;
+    }
     return unless($info->{'asn'});
     return unless($info->{'asn'} =~ /^[0-9]*\.?[0-9]*$/);
+
     return(1);
 }
 
 sub insert {
     my $class = shift;
     my $info = shift;
-
-    return unless($info->{'asn'});
 
     # you could create different buckets for different country codes
     my $tbl = $class->table();
@@ -62,7 +64,8 @@ sub lookup {
     my $class = shift;
     my $info = shift;
     my $q = $info->{'query'};
-    return unless($q =~ /^[0-9]*\.?[0-9]*$/);
+    return unless($q =~ /^AS([0-9]*\.?[0-9]*)$/);
+    $q = $1;
 
     if($info->{'guid'}){
         return(
