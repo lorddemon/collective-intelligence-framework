@@ -71,6 +71,7 @@ postgres=#\l
 }}}
 
 = Performance Tuning =
+ # http://developer.postgresql.org/pgdocs/postgres/kernel-resources.html
  # http://momjian.us/main/writings/pgsql/hw_performance/
  # http://www.revsys.com/writings/postgresql-performance.html
  # http://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server
