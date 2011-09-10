@@ -41,6 +41,12 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 {{{
 $ sudo perl -MCPAN -e 'install LWP::Simple'
 }}}
+ # depending on what cpan mirror you use; Config::Simple 4.59 won't install (even though it's been out since like 2006), you might need to:
+{{{
+$ http://search.cpan.org/CPAN/authors/id/S/SH/SHERZODR/Config-Simple-4.59.tar.gz
+$ tar -zxvf Config-Simple-4.59.tar.gz
+$ cd Config-Simple-4.59 && perl Makefile.PL && sudo make install
+}}}
 
 == Server ==
  # install the PerlClient (we use some functions in it for the server)
