@@ -7,7 +7,8 @@ Disk layout is important, all the way down to the way you raid out your physical
 Where possible, you should:
 
  # mirror the main OS on it's own set of disks
- # mirror the main archive table space on it's own set of disks
+ # mirror the postgresql directory (/var/lib/postgres) on it's own set of disks
+ # mirror or RAID5 main archive table space on it's own set of disks
  # RAID5 or even RAID0 the index table space (it can be rebuilt from the archive if the disks fail, a trade-off for speed)
 
 = Details =
