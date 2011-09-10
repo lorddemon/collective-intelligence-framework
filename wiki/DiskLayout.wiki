@@ -13,6 +13,7 @@ Where possible, you should:
 
 = Details =
 == Partition Mapping ==
+ 1. your database system space should be about 5G
  1. the index partition should grow at about the same rate (maybe more) as your archive partition
  1. starting out; each logical volume (archive/index) should share your free space 50/50.
  1. for 1GB of free space:
