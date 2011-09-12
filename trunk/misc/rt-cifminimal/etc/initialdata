@@ -1,0 +1,184 @@
+my $protocol_pattern = qr{(?#Digits)^[\d.]+$};
+
+@CustomFields = (
+    {
+        Name        => 'Address',
+        Type        => 'FreeformSingle',
+        Queue       => [ 'Incident Reports' ],
+        Disabled    => 0,
+        Description => '_IODEF_IncidentEventDataFlowSystemNodeAddress',
+    },
+    {
+        Name        => 'Restriction',
+        Type        => 'SelectSingle',
+        Queue       => [ 'Incident Reports' ],
+        Disabled    => 0,
+        Description => '_IODEF_Incidentrestriction',
+        Values      => [
+            { Name  => 'private',       SortOrder   => 0 },
+            { Name  => 'need-to-know',  SortOrder   => 1 },
+            { Name  => 'public',        SortOrder   => 2 },
+            { Name  => 'default',       SortOrder   => 3 },
+        ],
+    },
+    {
+        Name        => 'Address category',
+        Type        => 'SelectSingle',
+        Queue       => ['Incident Reports'],
+        Disabled    => 0,
+        Description => '_IODEF_IncidentEventDataFlowSystemNodeAddresscategory',
+        Values      => [
+            { Name  => 'ipv4-addr', SortOrder   => 0,   Category    => 'IP' },
+            { Name  => 'ipv6-addr', SortOrder   => 0,   Category    => 'IP' },
+            { Name  => 'e-mail',    SortOrder   => 10,  Category    => 'other' },
+            { Name  => 'dns',       SortOrder   => 10,  Category    => 'other' },
+            { Name  => 'url',       SortOrder   => 10,  Category    => 'other' },
+        ],
+    },
+    {
+        Name            => 'ASN',
+        Type            => 'FreeformSingle',
+        Queue           => ['Incident Reports'],
+        Disabled        => 0,
+        Description     => '_IODEF_IncidentEventDataFlowSystemAdditionalDataasn',
+    },
+    {
+        Name        => 'Assessment Impact',
+        Type        => 'FreeformSingle',
+        Queue       => ['Incident Reports'],
+        Disabled    => 0,
+        Description => '_IODEF_IncidentAssessmentImpact',
+    },
+    {
+        Name        => 'ReportDescription',
+        Type        => 'FreeformSingle',
+        Queue       => ['Incident Reports'],
+        Disabled    => 0,
+        Description => '_IODEF_IncidentDescription',
+        Values      => [
+            { Name      => 'mebroot', },
+            { Name      => 'tdl', },
+            { Name      => 'spyeye', },
+            { Name      => 'zeus', },
+            { Name      => 'tdss', },
+            { Name      => 'rbn', },
+        },
+    },
+    {
+        Name        => 'Impact severity',
+        Type        => 'FreeformSingle',
+        Queue       => [ 'Incident Reports' ],
+        Disabled    => 0,
+        Description => '_IODEF_IncidentEventDataAssessmentseverity',
+        Values      => [
+            { Name  => 'low',       SortOrder => 0, },
+            { Name  => 'medium',    SortOrder => 1, },
+            { Name  => 'high',      SortOrder => 2, },
+        ],
+    },
+    {
+        Name            => 'Prefix',
+        Type            => 'FreeformSingle',
+        Queue           => ['Incident Reports'],
+        Disabled        => 0,
+        Description     => '_IODEF_IncidentEventDataFlowSystemAdditionalDataprefix',
+    },
+    {
+        Name        => 'DetectTime',
+        Type        => 'FreeformSingle',
+        Queue       => [ 'Incident Reports' ],
+        Disabled    => 0,
+        Description => '_IODEF_IncidentDetectTime',
+    },
+    {
+        Name        => 'Service Portlist',
+        Type        => 'FreeformSingle',
+        Queue       => [ 'Incident Reports' ],
+        Disabled    => 0,
+        Description => '_IODEF_IncidentEventDataFlowSystemServicePortlist',
+    },
+    {
+        Name        => 'Service Protocol',
+        Type        => 'FreeformSingle',
+        Queue       => [ 'Incident Reports' ],
+        Pattern     => "$protocol_pattern",
+        Disabled    => 0,
+        Description => '_IODEF_IncidentEventDataFlowSystemServiceip_protocol',
+    },
+    {
+        Name        => 'System category',
+        Type        => 'FreeformSingle',
+        Queue       => [ 'Incident Reports' ],
+        Disabled    => 0,
+        Description => '_IODEF_IncidentEventDataFlowSystemcategory',
+    },
+
+);
+
+for my $cf (@CustomFields) {
+    push @ACL, (
+        { GroupId => 'DutyTeam',
+          GroupDomain => 'UserDefined',
+          CF => $cf->{Name},
+          Queue => $cf->{Queue},
+          Right => 'SeeCustomField', },
+        { GroupId => 'DutyTeam',
+          GroupDomain => 'UserDefined',
+          CF => $cf->{Name},
+          Queue => $cf->{Queue},
+          Right => 'ModifyCustomField', },
+    );
+}
+
+@ScripActions = (
+	{
+		Name		=> 'CIFMinimal NormalizeDetectTime',
+		Description	=> 'CIFMinimal NormalizeDetectTime',
+		ExecModule	=> 'CIFMinimal_NormalizeDetectTime',
+	},
+	{
+		Name		=> 'CIFMinimal SetOwnerToCreator',
+		Description	=> 'CIFMinimal SetOwnerToCreator',
+		ExecModule	=> 'CIFMinimal_SetOwnerToCreator',
+	},
+	{
+		Name		=> 'CIFMinimal ProcessReport',
+		Description	=> 'CIFMinimal ProcessReport',
+		ExecModule	=> 'CIFMinimal_ProcessReport',
+	},
+);
+
+@ScripConditions = (
+	{
+		Name 		=> 'CIFMinimal DetectTimeChange',
+		Description	=> 'CIFMinimal DetectTimeChange',
+		ExecModule	=> 'CIFMinimal_DetectTimeChange',
+		ApplicableTransTypes	=> 'Any',
+	},
+);
+
+@Scrips = (
+	{
+		Description		=> 'CIFMinimal OnDetectTimeChange NormalizeDetectTime',
+		Queue			=> ['Incident Reports'],
+		ScripCondition	=> 'CIFMinimal DetectTimeChange',
+		ScripAction		=> 'CIFMinimal NormalizeDetectTime',
+		Template		=> 'Blank',
+	},
+	{
+		Description		=> 'zCIFMinimal_OnCreateSetOwnerToCreator',
+		Queue			=> ['Incident Reports'],
+		ScripCondition	=> 'On Create',
+		ScripAction		=> 'CIFMinimal SetOwnerToCreator',
+		Template		=> 'Blank',
+	},
+    {
+        Description 	=> 'zCIFMinimal_OnCreateProcessReport',
+        Queue       	=> ['Incident Reports'],
+        ScripCondition  => 'On Create',
+        ScripAction 	=> 'CIFMinimal ProcessReport',
+        Template    	=> 'Blank',
+    },
+);
+
+1;

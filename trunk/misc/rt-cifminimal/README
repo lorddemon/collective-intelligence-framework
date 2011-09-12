@@ -1,0 +1,12 @@
+INSTALLATION
+
+1. #> perl Makefile.PL
+2. #> make
+3. #> make install
+4. #> vi /opt/rt3/etc/RT_SiteConfig.pm
+
+Set(@Plugins,(qw(RT::FM RT::IR RT::CIFMinimal)));
+
+5. #> patch /opt/rt3/share/html/autohandler etc/autohandler.patch
+6. #> patch /opt/rt3/local/plugins/RT-IR/html/RTIR/Report/BulkReject.html RTIR_BulkReject.html.patch
+7. #> /etc/init.d/httpd reload
