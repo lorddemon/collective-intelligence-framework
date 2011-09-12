@@ -1,0 +1,112 @@
+<form method="post" enctype="multipart/form-data" action="Submission.html">
+<table>
+    <tr>
+    <td>Assessment</td>
+    <td>
+        <select name='assessment'>
+% foreach my $p (@{$assessments}){
+% my $selected = '';
+% if(lc($p) eq lc($d_assessment)){ $selected = " selected='selected'"; }
+            <option value='<%$p%>'<%$selected%>><%$p%></option>
+% }
+        </select>
+    </td>
+    </tr>
+    <tr>
+        <td>Description</td>
+        <td>
+        <input name='description' type='text' size=80 value="<% $description %>" name="Object-RT::Ticket--CustomField-<% $cf %>-Values" id="Object-RT::Ticket--CustomField-<%$cf%>-Values" /><div id
+="Object-RT::Ticket--CustomField-<%$cf%>-Choices" class="autocomplete"></div>
+    <script type="text/javascript">
+    new Ajax.Autocompleter(
+        "Object-RT::Ticket--CustomField-<%$cf%>-Values",
+            "Object-RT::Ticket--CustomField-<%$cf%>-Choices",
+                "<% RT->Config->Get('WebPath')%>/Helpers/Autocomplete/CustomFieldValues",
+                    { tokens: [ '\s' ] }
+                    );
+                    </script>
+        </td>
+        <td><i>any additional high-level keywords will be used to 'tag' the data (eg: "torpig", "zeus", "spyeye", "paypal", etc...)</i></td>
+    </tr>
+    <tr>
+        <td>data</td>
+        <td><input type='text' size=80 name="data" value="<%$data%>"/></td>
+        <td><i>comma delimited for multiple reports (eg: "192.168.1.1,192.168.1.2,example.com,https://www.baddomain.com/bad.aspx")</i></td>
+    </tr>
+    <tr>
+        <td>Portlist</td>
+        <td><input type='text' size=80 name='portlist' value="<%$portlist%>"></td>
+        <td><i>of the form: 21,22,80-89<br>if multiple addresses exist, entire portlist will be tagged with each address</i></td>
+    </tr>
+    <tr>
+        <td>Protocol</td>
+        <td><input type='text' size=80 name='protocol' value="<% $protocol %>"></td>
+        <td><i>eg: tcp/udp/other</i></td>
+    </tr>
+    <tr>
+        <td>AlternativeID</td>
+        <td><input type='hidden' name='alternativeid'><input type='text' size=80></td>
+        <td><i><b>publicly avaiable</b> reference url/id, eg: http://www.spamhaus.org/sbl/sbl.lasso?query=SBL96833</i></td>
+    </tr>
+    <tr>
+        <td>Details</td>
+        <td><& /Elements/MessageBox, Default => $ARGS{'ReferenceDescription'}, Name => 'ReferenceDescription' &></td>
+        <td><i>e.g. full message headers, analysis, etc...</i></td>
+    </tr>
+    <tr>
+        <td>Restriction</td>
+        <td>
+        <select name='restriction'>
+% my $d_restriction = uc($rmap->{'default'});
+% foreach my $restriction (keys %$rmap){
+% $restriction = uc($restriction);
+% next if($restriction eq 'DEFAULT');
+% my $selected = '';
+% if($restriction eq $d_restriction){ $selected = " selected='selected'"; }
+            <option value='<%$rmap->{lc($restriction)}%>'<%$selected%>><%$restriction%></option>
+% }
+        </select>
+        </td>
+        <td>details about the <a href="<%$sharing_policy%>" target=_blank><i>Sharing Policy</i></a></td>
+    </tr>
+    <tr>
+        <td>attachment</td>
+        <td><input name="Attach" type="file" /></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><& /Elements/Submit, Label => loc("Submit")&></td>
+    </tr>
+</table>
+</form>
+
+<%INIT>
+use RT::CustomField;
+my $cf = RT::CustomField->new($session{'CurrentUser'});
+$cf->Load('ReportDescription');
+$cf = $cf->Id();
+
+my $rmap = RT->Config->Get('RestrictionMapping');
+unless($rmap){
+    $rmap = {
+        'default'         => 'private',
+        'need-to-know'    => 'need-to-know',
+        'private'         => 'private',
+        'public'          => 'public',
+    };
+}
+
+my $assessments = RT->Config->Get('Assessments') || ['botnet','malware/exploit','hijacked','phishing','scanner','fastflux','suspicious'];
+my $d_assessment = RT->Config->Get('DefaultAssesment') || 'botnet';
+my $sharing_policy = RT->Config->Get('DefaultSharingPolicy') || 'http://en.wikipedia.org/wiki/Traffic_Light_Protocol';
+
+</%INIT>
+
+<%ARGS>
+$portlist => ''
+$data => '' 
+$description => ''
+$protocol => ''
+@results => ''
+$restriction => ''
+</%ARGS>

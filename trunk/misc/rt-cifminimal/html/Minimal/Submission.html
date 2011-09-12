@@ -1,0 +1,69 @@
+<& Elements/Header, Title => loc("Submission Results") &>
+<& /Elements/ListActions, actions => \@results &>
+<%INIT>
+
+unless($data){
+    RT::Interface::Web::Redirect(RT->Config->Get('WebURL').'Minimal/Front.html');
+}
+
+use Regexp::Common qw/net/;
+require XML::IODEF::Simple;
+
+# just in case someone tries to set it on their own
+# w/o the proper rights
+unless($session{'CurrentUser'}->Privileged()){
+    $confidence => RT->Config->Get('CIFMinimalDefaultConfidence') || 85;
+}
+
+my @datas = split(/,/,$data);
+foreach $data (@datas){
+    $data = lc($data);
+
+    my $report = XML::IODEF::Simple->new({
+        restriction     => $restriction,
+        description     => $description,
+        impact          => $assessment,
+        address         => $data,
+        protocol        => $protocol,
+        portlist        => $portlist,
+        contact         => {
+            name            => $session{'CurrentUser'}->RealName(),
+            email           => $session{'CurrentUser'}->EmailAddress(),
+        },
+        purpose         => $purpose,
+        confidence      => $confidence,
+        alternativeid               => $alternativeid,
+        alternativeid_restriction   => 'public',
+    });
+
+    my $subject = $description;
+    $subject = $assessment.' '.$description if($assessment);
+
+    my $msg = $report->out();
+    $ARGS{'Subject'} = $subject;
+    $ARGS{'Queue'} = 'Incident Reports';
+    my ($ticket,@res) = CreateTicket(Content => $msg, Attachments => $session{'Attachments'}, %ARGS, Status => 'new');
+    $ticket->Comment(Content => $ARGS{'ReferenceDescription'});
+    if($ticket->Status() eq 'rejected'){
+        push(@results,'Ticket contained bad-data (private address?), auto-rejected');
+    } else {
+        push(@results,@res);
+    }
+    push(@results,$msg) if(RT->Config->Get('LogToSyslog') eq 'debug');
+}
+
+</%INIT>
+
+<%ARGS>
+$purpose => RT->Config->Get('CIFMinimal_DefaultPurpose') || 'mitigation'
+$data => undef
+$restriction => undef
+$description => undef
+$protocol => undef
+$portlist => undef
+@results => undef
+$assessment => undef
+$Queue => 'Incident Reports'
+$confidence => RT->Config->Get('CIFMinimal_DefaultConfidence') || 85;
+$alternativeid => undef
+</%ARGS>
