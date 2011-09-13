@@ -39,6 +39,7 @@ my $user = $opts{'u'};
 my $access = $opts{'e'};
 my $groups = $opts{'g'};
 my $default_guid = $opts{'G'};
+my $desc = $opts{'D'};
 
 if($default_guid){
     $default_guid = CIF::Utils::genSourceUUID($default_guid) unless(CIF::Utils::isUUID($default_guid));
@@ -61,6 +62,7 @@ Usage: perl $0 -u joe\@example.com
     -l  --list:     list users
     -g  --groups:   add user to list of groups (eg: everyone,group1,group2)
     -G  --default group: set the default group
+    -D  --desc:     give the key an optional description
 
 Examples:
     \$> perl $0 -u joe\@example.com
@@ -77,6 +79,7 @@ if(exists($opts{'a'})){
     die(usage()) unless($user);
     my $id = CIF::WebAPI::APIKey->genkey(
         uuid_alias  => $user,
+        description => $desc,
         access      => $access,
         write       => $opts{'w'},
         revoked     => $opts{'r'},

@@ -3,7 +3,7 @@ use base 'CIF::DBI';
 
 __PACKAGE__->table('apikeys');
 __PACKAGE__->columns(Primary => 'uuid');
-__PACKAGE__->columns(All => qw/uuid uuid_alias parentid revoked write access created/);
+__PACKAGE__->columns(All => qw/uuid uuid_alias description parentid revoked write access created/);
 __PACKAGE__->sequence('apikeys_id_seq');
 __PACKAGE__->has_many(groups  => 'CIF::WebAPI::APIKeyGroups');
 
@@ -29,6 +29,7 @@ sub genkey {
     my $r = CIF::WebAPI::APIKey->insert({
         uuid        => $uuid,
         uuid_alias  => $args{'uuid_alias'},
+        description => $args{'description'},
         access      => $args{'access'} || 'all',
         parentid    => $args{'parentid'},
         write       => $args{'write'},
