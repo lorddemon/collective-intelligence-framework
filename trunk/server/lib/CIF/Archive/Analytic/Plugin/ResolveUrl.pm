@@ -11,13 +11,13 @@ sub process {
 
     return unless(ref($data) eq 'HASH');
     my $a = $data->{'address'};
-    return unless($a && $a =~ /^$RE{'URI'}{'HTTP'}/);
+    return unless($a && ($a =~ /^$RE{'URI'}{'HTTP'}/ || $a =~ /^$RE{'URI'}{'HTTP'}{-scheme => 'https'}$/));
 
     my $address;
     my $port;
     ## todo -- fix this, it flags on things like trainer.exe
     ## test with malc0de specifically
-    if($a =~ /^(http?\:\/\/)?([A-Za-z0-9-\.]+\.[a-z]{2,5})(:\d+)?\//){
+    if($a =~ /^(https?\:\/\/)?([A-Za-z0-9-\.]+\.[a-z]{2,5})(:\d+)?\//){
         $address = $2;
         $port = $3;
     } elsif($a =~ /^(https?\:\/\/)?($RE{'net'}{'IPv4'})(:\d+)?\//) {
