@@ -1,0 +1,19 @@
+<div id="SimpleSearchForm">
+<form action="Search.html" method="get">
+
+<p><h3>Search for bad-actor data</h3></p>
+<p>By default, the ticket subject will be searched. The string can be any text, including but not limited to, IP address, e-mail address, domain name, URL, or SES ticket id</p>
+<p>By specifying <b>asn:<i>integer</i></b> the ticket ASN field will be searched</p>
+<p>By specifying <b>cidr:<i>network/mask</i></b> the ticket CIDR field will be search; however, a network/mask search of the subject field can also be performed and may yield different results depending on the data supplied in individual tickets.</p>
+<p>Searching the full text of every ticket can take a long time, but if you need to do it, you can search for any word in the full ticket history by <b>fulltext:<i>word</i></b></p>
+<p>To list the most recent records, use <b>%</b></p>
+
+<br />
+<br />
+<div align="center">
+<input name="q" size="60" /><input type="submit" class="button" value="<&|/l&>Search</&>" />
+</div>
+
+</form>
+
+</div>

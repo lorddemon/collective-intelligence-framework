@@ -1,0 +1,63 @@
+%# Copyright (c) 2009 REN-ISAC and The Trustees of Indiana University
+%# 
+%# (Except where explictly superceded by other copyright notices)
+%# 
+%# This work is made available to you under the terms of Version 2 of
+%# the GNU General Public License. A copy of that license should have
+%# been provided with this software, but in any event can be snarfed
+%# from www.gnu.org
+%# 
+%# This work is distributed in the hope that it will be useful, but
+%# WITHOUT ANY WARRANTY; without even the implied warranty of
+%# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+%# General Public License for more details.
+%# 
+%# 
+%# Unless otherwise specified, all modifications, corrections or
+%# extensions to this work which alter its source code become the
+%# property of Best Practical Solutions, LLC when submitted for
+%# inclusion in the work.
+
+<& /Minimal/Elements/Header, 
+    Title => $title,
+    current_tab => "/Minimal/Search.html"
+&>
+
+% $m->comp('Elements/SearchBox');
+
+<%INIT>
+my $title = loc("Search for tickets");
+use RT::Search::Googleish;
+use Regexp::Common qw(RE_net_IPv4);
+
+if ($q) {
+    my $tickets = new RT::Tickets( $session{'CurrentUser'} );
+    if ($q =~ /^#?(\d+)$/) {
+        RT::Interface::Web::Redirect(RT->Config->Get('WebBaseURL')."Minimal/Display.html?id=".$1);
+    }
+    
+    my %args = (
+        Argument   => $q,
+        TicketsObj => $tickets,
+    	Queues => ['Incident Reports'],
+    );
+
+    $m->callback( %ARGS, CallbackName => 'SearchArgs', args => \%args);
+
+    my $search = RT::Search::Googleish->new(%args);
+
+    $m->comp( "/Minimal/Results.html", Query => $search->QueryToSQL() );
+
+    #$m->out("If you didn't find what you were looking for, try our <a href='/Minimal/Tools/Lookup.html?q=$q' target='blank'><b>Federated Search</b></a>");
+
+    $m->comp("Elements/SearchBox");
+
+    $m->comp( "/Elements/Footer" );
+}
+</%INIT>
+
+
+<%ARGS>
+$q => undef
+</%ARGS>
+
