@@ -22,11 +22,15 @@ my ($tab);
 my $tabs = { 
 	A 	=> { title => loc('Home'), 		path => 'Minimal/index.html', },
 	B 	=> { title => loc('New Report'), 	path => 'Minimal/Front.html' },
-	C 	=> { title => loc('Help'),		path => RT->Config->Get('RENISAC_HelpUrl'), },
+    C   => { title => loc('Apikeys'), path => 'Minimal/Apikeys.html' },
 };
 
-if ($session{'CurrentUser'}->HasRight( Right => 'ModifySelf', Object => $RT::System )) {
-        $tabs->{Z} = { title => loc('Preferences'), path => 'Minimal/Prefs.html'};
+if(my $help = RT->Config->Get('CIFMinimal_HelpUrl')){
+    $tabs->{Z} = { title => loc('Help'), path => $help, }
+}
+
+if($session{'CurrentUser'}->HasRight( Right => 'ModifySelf', Object => $RT::System )) {
+        $tabs->{X} = { title => loc('Preferences'), path => 'Minimal/Prefs.html'};
 }
 
 

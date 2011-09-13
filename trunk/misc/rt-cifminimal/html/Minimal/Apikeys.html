@@ -1,0 +1,207 @@
+<& /Minimal/Elements/Header, Title => loc('Apikeys') &>
+<& /Elements/ListActions, actions => \@results &>
+<h1>Key Generation</h1>
+<table>
+    <tr>
+        <td>Groups</td>
+    </tr>
+    <tr>
+        <form method="post">
+        <td>
+            <select name='mygroups' multiple='multiple'>
+% foreach my $grp (@groups){
+                <option value='<%$grp%>'><%$grp%></option>
+% }
+            </select>
+        </td>
+    </tr>
+    <tr><td>Default Group</td></tr>
+    <tr>
+        <td>
+            <select name='default_group'>
+% foreach my $grp (@groups){
+                <option value='<%$grp%>'><%$grp%></option>
+% }
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>Key Description</td>
+    </tr>
+    <tr>
+        <td><input type='text' name='key_description' size=30></td>
+    </tr>
+    <tr>
+        <td>
+            <& /Elements/Submit, Name => 'GenerateKey', Label => loc('Generate Key') &>
+        </td>
+    </tr>
+</table>
+% if(@recs){
+<h1>API Keys</h1>
+<table>
+    <tr>
+        <td>Key</td>
+        <td>Description</td>
+        <td>Guid</td>
+        <td>Default Guid</td>
+        <td>Access</td>
+        <td>Revoked</td>
+        <td>Created</td>
+        <td></td>
+    </tr>
+% }
+% foreach my $r (@recs){
+% if($r->mygroups()){
+% my @groups = split(/,/,$r->mygroups());
+% foreach my $g (@groups){
+% my $isDefaultGuid = ($g eq $r->default_guid()) ? 'true' : '';
+    <tr>
+        <form method="post">
+        <td>
+% if($isDefaultGuid){
+            <input type='hidden' name='uuid' value='<%$r->uuid()%>'><%$r->uuid()%>
+% }
+        </td>
+        <td>
+% if($isDefaultGuid){
+            <%$r->description()%>
+% }
+        </td>
+        <td><input type='hidden' name='uuid_group' value='<%$g%>'><%$group_map{$g}%></td>
+        <td><%$isDefaultGuid%></td>
+        <td><%$r->access()%></td>
+        <td><%$r->revoked() || ''%></td>
+        <td><%$r->created()%></td>
+        <td><& /Elements/Submit, Name => 'SetDefault', Label => loc('Set Default') &></td>
+        <td><& /Elements/Submit, Name => 'AddGroup', Label => loc('Add Group') &></td>
+        <td>
+% if($isDefaultGuid){
+        <& /Elements/Submit, Name => 'ChangeDesc', Label => loc('Change Desc') &>
+% }
+        </td>
+        <td>
+% if($isDefaultGuid){
+        <& /Elements/Submit, Name => 'PurgeKey', Label => loc('Purge Key') &>
+% }
+        </td>
+        </form>
+    </tr>
+% }
+% }
+% }
+    </form>
+</table>
+<%INIT>
+my @results;
+my $UserObj = $session{'CurrentUser'}->UserObj();
+require CIF::WebAPI::APIKey;
+require CIF::Utils;
+use Data::Dumper;
+
+if(my $connection = RT->Config->Get('CIFMinimal_ApikeyDBI')){
+    CIF::WebAPI::APIKey->connection($connection);
+}
+
+my $user = $session{'CurrentUser'}->UserObj();
+my $g = $user->OwnGroups();
+my @groups;
+my %group_map;
+while(my $grp = $g->Next()){
+    my $guid = $grp->FirstCustomFieldValue('CIF Guid');
+    next unless($guid);
+    push(@groups,$guid);
+    $group_map{CIF::Utils::genSourceUUID($guid)} = $guid;
+}
+@groups = sort(@groups);
+
+if($PurgeKey){
+    my $r = CIF::WebAPI::APIKey->retrieve(uuid => $uuid);
+    my $_uuid = $r->uuid();
+    if($r->delete()){
+        push(@results,$_uuid.' deleted');
+    } else {
+        push(@results,'error trying to delete: '.$_uuid);
+    }
+}
+
+if($mygroups){
+    unless(ref($mygroups) eq 'ARRAY'){
+        $mygroups = [$mygroups];
+    }
+}
+
+if($GenerateKey){
+    my $err;
+    my $found;
+    foreach(@$mygroups){
+        if($_ eq $default_group){
+            $found = 1;
+            last;
+        }
+    }
+    unless($found){
+        $err = "default group doesn't match any of the groups you selected"; 
+        push(@results,$err);
+    }
+
+    unless($err){
+        my $id = CIF::WebAPI::APIKey->genkey(
+            uuid_alias      => $user->EmailAddress(),
+            description     => $key_description,
+            groups          => join(',',@$mygroups),
+            default_guid    => $default_group,
+        );
+        push(@results,'key successfully generated');
+    }
+}
+
+if($AddGroup){
+    warn Dumper($mygroups);
+    my $r = CIF::WebAPI::APIKey->retrieve(uuid => $uuid);
+    $r->add_groups(undef,join(',',@$mygroups));
+}
+
+if($SetDefault){
+    my $key = CIF::WebAPI::APIKey->retrieve(uuid => $uuid);
+    foreach ($key->groups()){
+        next unless($_->default_guid());
+        $_->default_guid(undef);
+        $_->update();
+    }
+    foreach ($key->groups()){
+        next unless($_->guid eq $uuid_group);
+        $_->default_guid('true');
+        $_->update();
+    }
+}
+
+if($ChangeDesc){
+    my $key = CIF::WebAPI::APIKey->retrieve(uuid => $uuid);
+    $key->description($key_description);
+    if($key->update){
+        push(@results,"description changed successfuly");
+    } else {
+        push(@results,"error updating description");
+    }
+}
+
+my @recs = CIF::WebAPI::APIKey->search(uuid_alias => $user->EmailAddress()); 
+
+#A hack to make sure that session gets rewritten.
+
+$session{'i'}++;
+</%INIT>
+
+<%ARGS>
+$PurgeKey => undef
+$GenerateKey => undef
+$ChangeDesc => undef
+$uuid => undef
+$mygroups => undef
+$default_group => undef
+$AddGroup => undef
+$SetDefault => undef
+$uuid_group => undef
+$key_description => undef
+</%ARGS>
