@@ -5,6 +5,7 @@ CREATE TABLE apikeys (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     uuid uuid not null,
     uuid_alias text NOT NULL,
+    description text,
     parentid uuid null,
     revoked bool default null,
     access varchar(100) default 'all',
