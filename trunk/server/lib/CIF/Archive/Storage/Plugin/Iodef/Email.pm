@@ -6,10 +6,7 @@ sub prepare {
     my $class   = shift;
     my $info    = shift;
 
-use Data::Dumper;
     my $address = $info->{'address'};
-    return unless($address);
-    return if($address =~ /^$RE{'URI'}/);
     return unless(isEmail($address));
     return(1);
 }
@@ -31,6 +28,8 @@ sub convert {
 sub isEmail {
     my $e = shift;
     return unless($e);
+    return if($address =~ /^$RE{'URI'}$/);
+    return if($address =~ /^$RE{'URI'}{'HTTP'}{-scheme => 'https'}$/);
     return unless(lc($e) =~ /[a-z0-9_.-]+\@[a-z0-9.-]+\.[a-z0-9.-]{2,5}/);
     return(1);
 }
