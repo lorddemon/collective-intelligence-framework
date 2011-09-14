@@ -1,160 +1,41 @@
-<& /Minimal/Elements/Header, Title => loc('Apikeys') &>
+<& Elements/Header, Title => loc('Apikeys') &>
 <& /Elements/ListActions, actions => \@results &>
-<h1>HowTo</h1>
-<table>
-% if(@recs){
-    <ol>
-        <li>To delete a key (along with all it's groups), click "Purge Key"</li>
-        <li>To change the default group of a key+group, select "Set Default"</li>
-        <li>To add a group or selection of groups to a given key, select the groups from "Groups", then click "Add Group" next to the key you wish the groups to be associated</li>
-        <li>To change a key's description, fill in the description box (do NOT select any groups from "Groups" or "Default Group"), then click "Change Desc" next to the key you wish to be updated</li>
-    <ol>
-% } else {
-<ol>
-    <li>Select the groups your key is to be associated with</li>
-    <li>Select the default group you'd like the key to "query as"</li>
-    <li>Give your key a description (eg: my snort IDS)</li>
-    <li>click "Generate Key"</li>
-</ol>
-% }
-</table>
-<h1>Key Generation</h1>
-        <form method="post">
-<table>
-    <tr>
-        <td>Groups</td>
-    </tr>
-    <tr>
-        <td>
-            <select name='mygroups' multiple='multiple'>
-% foreach my $grp (@groups){
-                <option value='<%$grp%>'><%$grp%></option>
-% }
-            </select>
-        </td>
-    </tr>
-    <tr><td>Default Group</td></tr>
-    <tr>
-        <td>
-            <select name='default_group'>
-% foreach my $grp (@groups){
-                <option value='<%$grp%>'><%$grp%></option>
-% }
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td>Key Description</td>
-    </tr>
-    <tr>
-        <td><input type='text' name='key_description' size=30></td>
-    </tr>
-    <tr>
-        <td>Feed Access</td>
-    </td>
-    <tr>
-        <td>
-            <select multiple='multiple'>
-                <option name='all' selected='selected'>all</option>
-                <option name='infrastructure'>infrastructure</option>
-                <option name='infrastructure'>domain</option>
-                <option name='infrastructure'>url</option>
-                <option name='infrastructure'>malware</option>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <& /Elements/Submit, Name => 'GenerateKey', Label => loc('Generate Key') &>
-        </td>
-    </tr>
-</table>
-% if(@recs){
-<h1>API Keys</h1>
-<table>
-    <tr>
-        <td>Key</td>
-        <td>Description</td>
-        <td>Guid</td>
-        <td>Default Guid</td>
-        <td>Access</td>
-        <td>Revoked</td>
-        <td>Created</td>
-        <td></td>
-    </tr>
-% }
-% foreach my $r (@recs){
-% if($r->mygroups()){
-% my @groups = split(/,/,$r->mygroups());
-% foreach my $g (@groups){
-% my $isDefaultGuid = ($g eq $r->default_guid()) ? 'true' : '';
-        <form method="post">
-    <tr>
-        <td>
-% if($isDefaultGuid){
-            <input type='hidden' name='uuid' value='<%$r->uuid()%>'><%$r->uuid()%>
-% }
-        </td>
-        <td>
-% if($isDefaultGuid){
-            <%$r->description() || ''%>
-% }
-        </td>
-        <td><input type='hidden' name='uuid_group' value='<%$g%>'><%$group_map{$g}%></td>
-        <td><%$isDefaultGuid%></td>
-        <td><%$r->access()%></td>
-        <td><%$r->revoked() || ''%></td>
-        <td><%$r->created()%></td>
-        <td><& /Elements/Submit, Name => 'SetDefault', Label => loc('Set Default') &></td>
-        <td><& /Elements/Submit, Name => 'AddGroup', Label => loc('Add Group') &></td>
-        <td>
-% if($isDefaultGuid){
-        <& /Elements/Submit, Name => 'ChangeDesc', Label => loc('Change Desc') &>
-% }
-        </td>
-        <td>
-% if($isDefaultGuid){
-        <& /Elements/Submit, Name => 'PurgeKey', Label => loc('Purge Key') &>
-% }
-        </td>
-    </tr>
-        </form>
-% }
-% }
-% }
-    </form>
-</table>
+<& Elements/ApikeyGeneration, 
+    %ARGS 
+&>
+<& Elements/ApikeyDisplay, 
+    recs    => \@recs,
+    %ARGS 
+&>
+<& Elements/ApikeyDisplayGroups,
+    groups  => \%group_map,
+    %ARGS
+&>
+
 <%INIT>
-my @results;
-my $UserObj = $session{'CurrentUser'}->UserObj();
-require CIF::WebAPI::APIKey;
-require CIF::Utils;
 use Data::Dumper;
-
-## TODO -- not fully implemented in the API yet
-## so you can generate these keys elseware, the api won't yet be
-## able to access them :)
-## http://code.google.com/p/collective-intelligence-framework/issues/detail?id=105
-#if(my %connection = RT->Config->Get('CIFMinimal_ApikeysDBI')){
-#    CIF::WebAPI::APIKey->connection(
-#        $connection{'dbi'},
-#        $connection{'username'},
-#        $connection{'password'},
-#        $connection{'attr'},
-#    );
-#}
-
+require CIF::WebAPI::APIKey;
 my $user = $session{'CurrentUser'}->UserObj();
+
 my $g = $user->OwnGroups();
-my @groups;
 my %group_map;
 while(my $grp = $g->Next()){
     my $guid = $grp->FirstCustomFieldValue('CIF Guid');
+    my $gpriority = $grp->FirstCustomFieldValue('CIFGroupPriority');
     next unless($guid);
-    push(@groups,$guid);
-    $group_map{CIF::Utils::genSourceUUID($guid)} = $guid;
+    $group_map{$gpriority} = $guid;
 }
-@groups = sort(@groups);
+my @sorted = sort { $a <=> $b } keys(%group_map);
+
+if($GenerateKey){
+    my $id = CIF::WebAPI::APIKey->genkey(
+        uuid_alias      => $user->EmailAddress(),
+        description     => $key_description,
+        groups          => join(',',map { $group_map{$_} } @sorted),
+        default_guid    => $group_map{$sorted[0]},
+    );
+    push(@results,'key '.$id->uuid().' successfully generated');
+}
 
 if($PurgeKey){
     my $r = CIF::WebAPI::APIKey->retrieve(uuid => $uuid);
@@ -166,83 +47,16 @@ if($PurgeKey){
     }
 }
 
-if($mygroups){
-    unless(ref($mygroups) eq 'ARRAY'){
-        $mygroups = [$mygroups];
-    }
-}
-
-if($GenerateKey){
-    my $err;
-    my $found;
-    foreach(@$mygroups){
-        if($_ eq $default_group){
-            $found = 1;
-            last;
-        }
-    }
-    unless($found){
-        $err = "default group doesn't match any of the groups you selected"; 
-        push(@results,$err);
-    }
-
-    unless($err){
-        my $id = CIF::WebAPI::APIKey->genkey(
-            uuid_alias      => $user->EmailAddress(),
-            description     => $key_description,
-            groups          => join(',',@$mygroups),
-            default_guid    => $default_group,
-        );
-        push(@results,'key '.$id->uuid().' successfully generated');
-    }
-}
-
-if($AddGroup){
-    my $r = CIF::WebAPI::APIKey->retrieve(uuid => $uuid);
-    $r->add_groups(undef,join(',',@$mygroups));
-}
-
-if($SetDefault){
-    my $key = CIF::WebAPI::APIKey->retrieve(uuid => $uuid);
-    foreach ($key->groups()){
-        next unless($_->default_guid());
-        $_->default_guid(undef);
-        $_->update();
-    }
-    foreach ($key->groups()){
-        next unless($_->guid eq $uuid_group);
-        $_->default_guid('true');
-        $_->update();
-    }
-}
-
-if($ChangeDesc){
-    my $key = CIF::WebAPI::APIKey->retrieve(uuid => $uuid);
-    warn $key_description;
-    $key->description($key_description);
-    if($key->update()){
-        push(@results,"description changed successfuly");
-    } else {
-        push(@results,"error updating description");
-    }
-}
-
-my @recs = CIF::WebAPI::APIKey->search(uuid_alias => $user->EmailAddress()); 
+my @recs = CIF::WebAPI::APIKey->search(uuid_alias => $user->EmailAddress());
 
 #A hack to make sure that session gets rewritten.
-
 $session{'i'}++;
 </%INIT>
 
 <%ARGS>
-$PurgeKey => undef
 $GenerateKey => undef
-$ChangeDesc => undef
+$PurgeKey => undef
 $uuid => undef
-$mygroups => undef
-$default_group => undef
-$AddGroup => undef
-$SetDefault => undef
-$uuid_group => undef
 $key_description => undef
+@results => undef
 </%ARGS>
