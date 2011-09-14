@@ -1,12 +1,30 @@
 <& /Minimal/Elements/Header, Title => loc('Apikeys') &>
 <& /Elements/ListActions, actions => \@results &>
+<h1>HowTo</h1>
+<table>
+% if(@recs){
+    <ol>
+        <li>To delete a key (along with all it's groups), click "Purge Key"</li>
+        <li>To change the default group of a key+group, select "Set Default"</li>
+        <li>To add a group or selection of groups to a given key, select the groups from "Groups", then click "Add Group" next to the key you wish the groups to be associated</li>
+        <li>To change a key's description, fill in the description box (do NOT select any groups from "Groups" or "Default Group"), then click "Change Desc" next to the key you wish to be updated</li>
+    <ol>
+% } else {
+<ol>
+    <li>Select the groups your key is to be associated with</li>
+    <li>Select the default group you'd like the key to "query as"</li>
+    <li>Give your key a description (eg: my snort IDS)</li>
+    <li>click "Generate Key"</li>
+</ol>
+% }
+</table>
 <h1>Key Generation</h1>
+        <form method="post">
 <table>
     <tr>
         <td>Groups</td>
     </tr>
     <tr>
-        <form method="post">
         <td>
             <select name='mygroups' multiple='multiple'>
 % foreach my $grp (@groups){
@@ -30,6 +48,20 @@
     </tr>
     <tr>
         <td><input type='text' name='key_description' size=30></td>
+    </tr>
+    <tr>
+        <td>Feed Access</td>
+    </td>
+    <tr>
+        <td>
+            <select multiple='multiple'>
+                <option name='all' selected='selected'>all</option>
+                <option name='infrastructure'>infrastructure</option>
+                <option name='infrastructure'>domain</option>
+                <option name='infrastructure'>url</option>
+                <option name='infrastructure'>malware</option>
+            </select>
+        </td>
     </tr>
     <tr>
         <td>
@@ -56,8 +88,8 @@
 % my @groups = split(/,/,$r->mygroups());
 % foreach my $g (@groups){
 % my $isDefaultGuid = ($g eq $r->default_guid()) ? 'true' : '';
-    <tr>
         <form method="post">
+    <tr>
         <td>
 % if($isDefaultGuid){
             <input type='hidden' name='uuid' value='<%$r->uuid()%>'><%$r->uuid()%>
@@ -65,7 +97,7 @@
         </td>
         <td>
 % if($isDefaultGuid){
-            <%$r->description()%>
+            <%$r->description() || ''%>
 % }
         </td>
         <td><input type='hidden' name='uuid_group' value='<%$g%>'><%$group_map{$g}%></td>
@@ -85,8 +117,8 @@
         <& /Elements/Submit, Name => 'PurgeKey', Label => loc('Purge Key') &>
 % }
         </td>
-        </form>
     </tr>
+        </form>
 % }
 % }
 % }
@@ -99,9 +131,18 @@ require CIF::WebAPI::APIKey;
 require CIF::Utils;
 use Data::Dumper;
 
-if(my $connection = RT->Config->Get('CIFMinimal_ApikeyDBI')){
-    CIF::WebAPI::APIKey->connection($connection);
-}
+## TODO -- not fully implemented in the API yet
+## so you can generate these keys elseware, the api won't yet be
+## able to access them :)
+## http://code.google.com/p/collective-intelligence-framework/issues/detail?id=105
+#if(my %connection = RT->Config->Get('CIFMinimal_ApikeysDBI')){
+#    CIF::WebAPI::APIKey->connection(
+#        $connection{'dbi'},
+#        $connection{'username'},
+#        $connection{'password'},
+#        $connection{'attr'},
+#    );
+#}
 
 my $user = $session{'CurrentUser'}->UserObj();
 my $g = $user->OwnGroups();
@@ -152,12 +193,11 @@ if($GenerateKey){
             groups          => join(',',@$mygroups),
             default_guid    => $default_group,
         );
-        push(@results,'key successfully generated');
+        push(@results,'key '.$id->uuid().' successfully generated');
     }
 }
 
 if($AddGroup){
-    warn Dumper($mygroups);
     my $r = CIF::WebAPI::APIKey->retrieve(uuid => $uuid);
     $r->add_groups(undef,join(',',@$mygroups));
 }
@@ -178,8 +218,9 @@ if($SetDefault){
 
 if($ChangeDesc){
     my $key = CIF::WebAPI::APIKey->retrieve(uuid => $uuid);
+    warn $key_description;
     $key->description($key_description);
-    if($key->update){
+    if($key->update()){
         push(@results,"description changed successfuly");
     } else {
         push(@results,"error updating description");
