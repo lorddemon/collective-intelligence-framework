@@ -1,0 +1,24 @@
+<h1>Key Generation</h1>
+        <form method="post">
+<table>
+    <tr>
+        <td>Key Description</td>
+    </tr>
+    <tr>
+        <td><input type='text' name='key_description' size=30 value='myapp'/></td>
+    </tr>
+    <tr>
+        <td>
+            <& /Elements/Submit, Name => 'GenerateKey', Label => loc('Generate Key') &>
+        </td>
+    </tr>
+</table>
+
+<%INIT>
+</%INIT>
+
+<%ARGS>
+$GenerateKey => undef
+$key_description => undef
+@results => undef
+</%ARGS>

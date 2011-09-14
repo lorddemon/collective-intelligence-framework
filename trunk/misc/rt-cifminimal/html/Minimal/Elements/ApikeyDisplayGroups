@@ -1,0 +1,34 @@
+% if(@sorted){
+<h1>My Groups</h1>
+<table>
+    <tr>
+        <td><b>Group Name</b></td>
+        <td><b>Group GUID</b></td>
+        <td><b>Default</b></td>
+    </tr>
+% foreach (0 ... $#sorted){
+    <tr>
+        <td><% $groups{$sorted[$_]} %></td>
+        <td><% $guid[$_] %></td>
+        <td>
+% if($_ == 0){
+            true
+% }
+        </td>
+    </tr>
+% }
+</table>
+% }
+
+<%INIT>
+require CIF::Utils;
+
+my @sorted = sort { $a <=> $b } keys(%groups);
+my @guid = map { CIF::Utils::genSourceUUID($groups{$_}) } @sorted;
+my $default = $guid[0];
+
+</%INIT>
+
+<%ARGS>
+%groups => undef
+</%ARGS>
