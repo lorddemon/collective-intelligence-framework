@@ -70,28 +70,28 @@ cif=# select count(*) from archive;
 }}}
 
 === Records per gig ===
-
+{{{
 4,160,688 records / 13 (6.2+6.8) gig = 321,000 (rounded up) per gig.
-
+}}}
 === records per day ===
 
 11:47:23 up 6 days, 13:10,  1 user,  load average: 9.10, 8.26, 9.18
-
+{{{
 4,160,688 records / 6 days = 694,000 (rounded up) recs / day
-
+}}}
 === gigs per day ===
 
 this isn't perfect math, but it's close enough for now:
-
+{{{
 694,000 / 321,000 = 2.17 gigs / day
-
+}}}
 === days per total space avail ===
-
+{{{
 394 gig / 2.17 = 181 days
-
+}}}
 === space required ===
 
 that's on the lower end, because we front loaded the data, that number is a bit skewed right now and will normalize over time. For ~ 2 years of storage we'll need:
 {{{
-385 * 2 / 2.17 = 1.671 TB (rounded up)
+365 * 2 / 2.17 GB = 337 GB (rounded up)
 }}}
