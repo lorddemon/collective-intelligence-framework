@@ -1,12 +1,37 @@
-my $protocol_pattern = qr{(?#Digits)^[\d.]+$};
-
 @CustomFields = (
+    {
+        Name        => 'CIFGroupPriority',
+        Type        => 'FreeformSingle',
+        LookupType  => 'RT::Group',
+        Disabled    => 0,
+        Description => 'Apply Priority to the Constituency/Group (0-100, 0 is the highest priority)',
+    },
     {
         Name        => 'Address',
         Type        => 'FreeformSingle',
         Queue       => [ 'Incident Reports' ],
         Disabled    => 0,
         Description => '_IODEF_IncidentEventDataFlowSystemNodeAddress',
+    },
+    {
+        Name        => 'Hash',
+        Type        => 'FreeformSingle',
+        Queue       => ['Incident Reports' ],
+        Disabled    => 0,
+    },
+    {
+        Name        => 'Purpose',
+        Type        => 'SelectSingle',
+        Queue       => ['Incident Reports'],
+        Disabled    => 0,
+        Description => '_IODEF_Incidentpurpose',
+        Values      => [
+            { Name  => 'traceback',    SortOrder   => 0 },
+            { Name  => 'mitigation',   SortOrder   => 1 },
+            { Name  => 'reporting',    SortOrder   => 2 },
+            { Name  => 'other',        SortOrder   => 3 },
+            { Name  => 'ext-value',    SortOrder   => 4 },
+        ],
     },
     {
         Name        => 'Restriction',
@@ -22,26 +47,24 @@ my $protocol_pattern = qr{(?#Digits)^[\d.]+$};
         ],
     },
     {
-        Name        => 'Address category',
-        Type        => 'SelectSingle',
+        Name        => 'Confidence',
+        Type        => 'FreeformSingle',
         Queue       => ['Incident Reports'],
         Disabled    => 0,
-        Description => '_IODEF_IncidentEventDataFlowSystemNodeAddresscategory',
-        Values      => [
-            { Name  => 'ipv4-addr', SortOrder   => 0,   Category    => 'IP' },
-            { Name  => 'ipv6-addr', SortOrder   => 0,   Category    => 'IP' },
-            { Name  => 'e-mail',    SortOrder   => 10,  Category    => 'other' },
-            { Name  => 'dns',       SortOrder   => 10,  Category    => 'other' },
-            { Name  => 'url',       SortOrder   => 10,  Category    => 'other' },
-        ],
+        Description => '_IODEF_IncidentAssessmentConfidence',
     },
     {
-        Name            => 'ASN',
-        Type            => 'FreeformSingle',
-        Queue           => ['Incident Reports'],
-        Disabled        => 0,
-        Description     => '_IODEF_IncidentEventDataFlowSystemAdditionalDataasn',
-    },
+        Name        => 'Severity',
+        Type        => 'FreeformSingle',
+        Queue       => ['IncidentReports'],
+        Disabled    => 0,
+        Description => '_IODEF_IncidentAssessmentImpactseverity',
+        Values      => [
+            { Name  => 'low',       SortOrder   => 0 },
+            { Name  => 'medium',    SortOrder   => 1 },
+            { Name  => 'high',      SortOrder   => 2 },
+        ],
+    }, 
     {
         Name        => 'Assessment Impact',
         Type        => 'FreeformSingle',
@@ -62,33 +85,7 @@ my $protocol_pattern = qr{(?#Digits)^[\d.]+$};
             { Name      => 'zeus', },
             { Name      => 'tdss', },
             { Name      => 'rbn', },
-        },
-    },
-    {
-        Name        => 'Impact severity',
-        Type        => 'FreeformSingle',
-        Queue       => [ 'Incident Reports' ],
-        Disabled    => 0,
-        Description => '_IODEF_IncidentEventDataAssessmentseverity',
-        Values      => [
-            { Name  => 'low',       SortOrder => 0, },
-            { Name  => 'medium',    SortOrder => 1, },
-            { Name  => 'high',      SortOrder => 2, },
         ],
-    },
-    {
-        Name            => 'Prefix',
-        Type            => 'FreeformSingle',
-        Queue           => ['Incident Reports'],
-        Disabled        => 0,
-        Description     => '_IODEF_IncidentEventDataFlowSystemAdditionalDataprefix',
-    },
-    {
-        Name        => 'DetectTime',
-        Type        => 'FreeformSingle',
-        Queue       => [ 'Incident Reports' ],
-        Disabled    => 0,
-        Description => '_IODEF_IncidentDetectTime',
     },
     {
         Name        => 'Service Portlist',
@@ -101,46 +98,31 @@ my $protocol_pattern = qr{(?#Digits)^[\d.]+$};
         Name        => 'Service Protocol',
         Type        => 'FreeformSingle',
         Queue       => [ 'Incident Reports' ],
-        Pattern     => "$protocol_pattern",
         Disabled    => 0,
         Description => '_IODEF_IncidentEventDataFlowSystemServiceip_protocol',
     },
-    {
-        Name        => 'System category',
-        Type        => 'FreeformSingle',
-        Queue       => [ 'Incident Reports' ],
-        Disabled    => 0,
-        Description => '_IODEF_IncidentEventDataFlowSystemcategory',
-    },
-
 );
 
 for my $cf (@CustomFields) {
     push @ACL, (
-        { GroupId => 'DutyTeam',
-          GroupDomain => 'UserDefined',
-          CF => $cf->{Name},
-          Queue => $cf->{Queue},
-          Right => 'SeeCustomField', },
-        { GroupId => 'DutyTeam',
-          GroupDomain => 'UserDefined',
-          CF => $cf->{Name},
-          Queue => $cf->{Queue},
-          Right => 'ModifyCustomField', },
+        { 
+            GroupId     => 'DutyTeam',
+            GroupDomain => 'UserDefined',
+            CF          => $cf->{Name},
+            Queue       => $cf->{Queue},
+            Right       => 'SeeCustomField', 
+        },
+        { 
+            GroupId     => 'DutyTeam',
+            GroupDomain => 'UserDefined',
+            CF          => $cf->{Name},
+            Queue       => $cf->{Queue},
+            Right       => 'ModifyCustomField', 
+        },
     );
 }
 
 @ScripActions = (
-	{
-		Name		=> 'CIFMinimal NormalizeDetectTime',
-		Description	=> 'CIFMinimal NormalizeDetectTime',
-		ExecModule	=> 'CIFMinimal_NormalizeDetectTime',
-	},
-	{
-		Name		=> 'CIFMinimal SetOwnerToCreator',
-		Description	=> 'CIFMinimal SetOwnerToCreator',
-		ExecModule	=> 'CIFMinimal_SetOwnerToCreator',
-	},
 	{
 		Name		=> 'CIFMinimal ProcessReport',
 		Description	=> 'CIFMinimal ProcessReport',
@@ -148,32 +130,9 @@ for my $cf (@CustomFields) {
 	},
 );
 
-@ScripConditions = (
-	{
-		Name 		=> 'CIFMinimal DetectTimeChange',
-		Description	=> 'CIFMinimal DetectTimeChange',
-		ExecModule	=> 'CIFMinimal_DetectTimeChange',
-		ApplicableTransTypes	=> 'Any',
-	},
-);
-
 @Scrips = (
-	{
-		Description		=> 'CIFMinimal OnDetectTimeChange NormalizeDetectTime',
-		Queue			=> ['Incident Reports'],
-		ScripCondition	=> 'CIFMinimal DetectTimeChange',
-		ScripAction		=> 'CIFMinimal NormalizeDetectTime',
-		Template		=> 'Blank',
-	},
-	{
-		Description		=> 'zCIFMinimal_OnCreateSetOwnerToCreator',
-		Queue			=> ['Incident Reports'],
-		ScripCondition	=> 'On Create',
-		ScripAction		=> 'CIFMinimal SetOwnerToCreator',
-		Template		=> 'Blank',
-	},
     {
-        Description 	=> 'zCIFMinimal_OnCreateProcessReport',
+        Description 	=> 'zzzCIFMinimal_OnCreateProcessReport',
         Queue       	=> ['Incident Reports'],
         ScripCondition  => 'On Create',
         ScripAction 	=> 'CIFMinimal ProcessReport',

@@ -1,7 +1,34 @@
+%# http://forums.digitalpoint.com/showthread.php?t=76985
+%# try to figure this out using OnBlur for the data field
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+function isIp(val) {
+   var filter = /(([1-9][0-9]{0,2})|0)\.(([1-9][0-9]{0,2})|0)\.(([1-9][0-9]{0,2})|0)\.(([1-9][0-9]{0,2})|0)/;
+    if(filter.test(val.value)){
+        return true;
+    }
+    return false;
+}
+function hide(obj) {
+      obj1 = document.getElementById(obj);
+      obj1.style.visibility = 'hidden';
+}
+function show(obj) {
+      obj1 = document.getElementById(obj);
+    alert(obj);
+      obj1.style.visibility = 'visible';
+}
+
+function show_other(optionValue) {
+    if(isIp(optionValue)){show('port');}else{hide('port');}
+}
+// -->
+</SCRIPT>
+
 <form method="post" enctype="multipart/form-data" action="Submission.html">
 <table>
     <tr>
-    <td>Assessment</td>
+    <td><b>Assessment</b></td>
     <td>
         <select name='assessment'>
 % foreach my $p (@{$assessments}){
@@ -13,9 +40,9 @@
     </td>
     </tr>
     <tr>
-        <td>Description</td>
+        <td><b>Tags</b></td>
         <td>
-        <input name='description' type='text' size=80 value="<% $description %>" name="Object-RT::Ticket--CustomField-<% $cf %>-Values" id="Object-RT::Ticket--CustomField-<%$cf%>-Values" /><div id
+        <input title="short one-word descriptions work best" name='description' type='text' size=80 value="<% $description %>" name="Object-RT::Ticket--CustomField-<% $cf %>-Values" id="Object-RT::Ticket--CustomField-<%$cf%>-Values" /><div id
 ="Object-RT::Ticket--CustomField-<%$cf%>-Choices" class="autocomplete"></div>
     <script type="text/javascript">
     new Ajax.Autocompleter(
@@ -25,36 +52,56 @@
                     { tokens: [ '\s' ] }
                     );
                     </script>
+        <br><i>eg: "torpig", "zeus", "spyeye", "paypal", etc...</i>
         </td>
-        <td><i>any additional high-level keywords will be used to 'tag' the data (eg: "torpig", "zeus", "spyeye", "paypal", etc...)</i></td>
     </tr>
     <tr>
-        <td>data</td>
-        <td><input type='text' size=80 name="data" value="<%$data%>"/></td>
-        <td><i>comma delimited for multiple reports (eg: "192.168.1.1,192.168.1.2,example.com,https://www.baddomain.com/bad.aspx")</i></td>
+        <td><b>Data</b></td>
+        <td>
+            <input type='text' size=80 name="data" value="<%$data%>" title="ip's, domains, urls"/>
+            <br><i>eg: "192.168.1.1,https://www.baddomain.com/bad.aspx"</i>
+        </td>
     </tr>
     <tr>
         <td>Portlist</td>
-        <td><input type='text' size=80 name='portlist' value="<%$portlist%>"></td>
-        <td><i>of the form: 21,22,80-89<br>if multiple addresses exist, entire portlist will be tagged with each address</i></td>
+        <td>
+            <input title="the entire list will be tagged against each data entered" type='text' size=80 name='portlist' value="<%$portlist%>">
+            <br><i>eg: 21,22,80-89</i>
+        </td>
     </tr>
     <tr>
         <td>Protocol</td>
-        <td><input type='text' size=80 name='protocol' value="<% $protocol %>"></td>
-        <td><i>eg: tcp/udp/other</i></td>
+        <td>
+            <input type='text' size=80 name='protocol' value="<% $protocol %>">
+            <br><i>eg: tcp/udp/other</i>
+        </td>
     </tr>
     <tr>
         <td>AlternativeID</td>
-        <td><input type='hidden' name='alternativeid'><input type='text' size=80></td>
-        <td><i><b>publicly avaiable</b> reference url/id, eg: http://www.spamhaus.org/sbl/sbl.lasso?query=SBL96833</i></td>
+        <td>
+            <input title="a publicly available reference, leave blank if you don't have one" type='hidden' name='alternativeid'><input type='text' size=80>
+            <br><i>eg: http://www.spamhaus.org/sbl/sbl.lasso?query=SBL96833</i>
+        </td>
     </tr>
     <tr>
-        <td>Details</td>
-        <td><& /Elements/MessageBox, Default => $ARGS{'ReferenceDescription'}, Name => 'ReferenceDescription' &></td>
-        <td><i>e.g. full message headers, analysis, etc...</i></td>
+        <td><b>Details</b></td>
+        <td>
+            <& /Elements/MessageBox, Default => $ARGS{'ReferenceDescription'}, Name => 'ReferenceDescription' &>
+            <br><i>e.g. full message headers, analysis, etc...</i>
+        </td>
     </tr>
     <tr>
-        <td>Restriction</td>
+        <td><b>Group</b></td>
+        <td>
+            <select name='group'>
+% foreach(@sorted){
+% my $selected = ($sorted[0] eq $_) ? " selected='selected'" : '';
+                <option value='<% $_ %>'<% $selected %>><% $_ %></option>
+% }
+            </select>
+        </td>
+    <tr>
+        <td><b>Restriction</b></td>
         <td>
         <select name='restriction'>
 % my $d_restriction = uc($rmap->{'default'});
@@ -66,8 +113,8 @@
             <option value='<%$rmap->{lc($restriction)}%>'<%$selected%>><%$restriction%></option>
 % }
         </select>
-        </td>
-        <td>details about the <a href="<%$sharing_policy%>" target=_blank><i>Sharing Policy</i></a></td>
+        <br>details about the <a href="<%$sharing_policy%>" target=_blank><i>Sharing Policy</i></a>
+    </td>
     </tr>
     <tr>
         <td>attachment</td>
@@ -86,7 +133,7 @@ my $cf = RT::CustomField->new($session{'CurrentUser'});
 $cf->Load('ReportDescription');
 $cf = $cf->Id();
 
-my $rmap = RT->Config->Get('RestrictionMapping');
+my $rmap = RT->Config->Get('CIFMinimal_RestrictionMapping');
 unless($rmap){
     $rmap = {
         'default'         => 'private',
@@ -96,9 +143,22 @@ unless($rmap){
     };
 }
 
-my $assessments = RT->Config->Get('Assessments') || ['botnet','malware/exploit','hijacked','phishing','scanner','fastflux','suspicious'];
-my $d_assessment = RT->Config->Get('DefaultAssesment') || 'botnet';
-my $sharing_policy = RT->Config->Get('DefaultSharingPolicy') || 'http://en.wikipedia.org/wiki/Traffic_Light_Protocol';
+my $assessments = RT->Config->Get('CIFMinimal_Assessments') || ['botnet','malware/exploit','hijacked','phishing','scanner','fastflux','suspicious'];
+my $d_assessment = RT->Config->Get('CIFMinimal_DefaultAssesment') || 'botnet';
+my $sharing_policy = RT->Config->Get('CIFMinimal_DefaultSharingPolicy') || 'http://en.wikipedia.org/wiki/Traffic_Light_Protocol';
+
+my $user = $session{'CurrentUser'}->UserObj();
+my $g = $user->OwnGroups();
+my $groups;
+while(my $grp = $g->Next()){
+    $grp->Name() =~ m/^DutyTeam (\S+)/;
+    next unless($1);
+    my $guid = lc($1);
+    my $priority        = $grp->FirstCustomFieldValue('CIFGroupPriority');
+    $groups->{$guid}    = $priority;
+}
+
+my @sorted = sort { $groups->{$a} <=> $groups->{$b} } keys %$groups;
 
 </%INIT>
 

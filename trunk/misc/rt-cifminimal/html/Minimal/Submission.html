@@ -8,18 +8,26 @@ unless($data){
 
 use Regexp::Common qw/net/;
 require XML::IODEF::Simple;
+require CIF::Utils;
 
 # just in case someone tries to set it on their own
 # w/o the proper rights
 unless($session{'CurrentUser'}->Privileged()){
-    $confidence => RT->Config->Get('CIFMinimalDefaultConfidence') || 85;
+    $confidence = RT->Config->Get('CIFMinimal_DefaultConfidence') || 85;
 }
+
+my $guid = (CIF::Utils::isUUID($group)) ? $group : CIF::Utils::genSourceUUID($group);
+
+my $constituency_cf = RT::IR->CustomFields( 'Constituency', Queue => $Queue );
+my $constituency_field = 'Object-RT::Ticket--CustomField-' . $constituency_cf->id .'-Values';
+$ARGS{$constituency_field} = $group;
 
 my @datas = split(/,/,$data);
 foreach $data (@datas){
     $data = lc($data);
 
     my $report = XML::IODEF::Simple->new({
+        guid            => $guid,
         restriction     => $restriction,
         description     => $description,
         impact          => $assessment,
@@ -40,6 +48,8 @@ foreach $data (@datas){
     $subject = $assessment.' '.$description if($assessment);
 
     my $msg = $report->out();
+
+    
     $ARGS{'Subject'} = $subject;
     $ARGS{'Queue'} = 'Incident Reports';
     my ($ticket,@res) = CreateTicket(Content => $msg, Attachments => $session{'Attachments'}, %ARGS, Status => 'new');
@@ -55,6 +65,7 @@ foreach $data (@datas){
 </%INIT>
 
 <%ARGS>
+$group => undef
 $purpose => RT->Config->Get('CIFMinimal_DefaultPurpose') || 'mitigation'
 $data => undef
 $restriction => undef

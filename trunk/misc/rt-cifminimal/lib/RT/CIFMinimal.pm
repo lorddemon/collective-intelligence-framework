@@ -46,6 +46,7 @@ use warnings;
 use strict;
 
 use Net::Abuse::Utils qw(:all);
+use Regexp::Common qw/net URI/;
 use Net::CIDR;
 
 sub network_info {
@@ -84,6 +85,53 @@ sub IsPrivateAddress {
     my $found =  Net::CIDR::cidrlookup($addr,@list);
     return($found);
 }
+
+sub ReportsByType {
+    my $user = shift;
+
+    my @called = caller();
+    my $type = $called[1];
+    my @t = split(/\//,$type);
+    $type = $t[$#t];
+    my $category = $t[$#t-1];
+
+    my $reports = RT::Tickets->new($user);
+    my $query = "Queue = 'Incident Reports' AND (Status = 'new' OR Status = 'open') AND ('CF.{Assessment Impact}' = '$type')";
+    $reports->FromSQL($query);
+    $reports->OrderByCols({FILED => 'id', ORDER => 'DESC'});
+    my @array;
+
+    my @regex = qr/^$RE{'net'}{'IPv4'}/;
+    for($category){
+        if(/domain/){
+            @regex = qr/^[a-zA-Z.-]+\.[a-zA-Z]{2,5}$/;       
+            last;
+        }
+        if(/url/){
+            @regex = (
+                qr/^$RE{'URI'}/,
+                qr/^$RE{'URI'}{'HTTP'}{-scheme => 'https'}$/,
+            );
+            last;
+        }
+    }
+    while(my $r = $reports->Next()){
+        my $yes = 0;
+        for(my $addr = $r->FirstCustomFieldValue('Address')){
+            foreach my $reg (@regex){
+                if($addr =~ $reg){
+                    $yes = 1;
+                }
+            }
+        }
+        next unless($yes);
+        push(@array,$r->IODEF->to_tree());
+    }
+    return ('') unless($#array > -1);
+    require JSON;
+    return(JSON::to_json(\@array));
+}
+
 {
 my %cache;
 sub GetCustomField {
