@@ -8,7 +8,7 @@
     </tr>
 % foreach (0 ... $#sorted){
     <tr>
-        <td><% $groups{$sorted[$_]} %></td>
+        <td><% $sorted[$_] %></td>
         <td><% $guid[$_] %></td>
         <td>
 % if($_ == 0){
@@ -22,10 +22,8 @@
 
 <%INIT>
 require CIF::Utils;
-
-my @sorted = sort { $a <=> $b } keys(%groups);
-my @guid = map { CIF::Utils::genSourceUUID($groups{$_}) } @sorted;
-my $default = $guid[0];
+my @sorted = sort { $groups{$a} <=> $groups{$b} } keys(%groups);
+my @guid = map { CIF::Utils::genSourceUUID($_) } @sorted;
 
 </%INIT>
 
