@@ -2,7 +2,7 @@
 
 = Introduction =
 
-Disk layout is important, all the way down to the way you raid out your physical drives. On top of that, you should use LVM where-ever possible in case you run out of space. By default, the best bang for your buck is RAID5, as it will give you a good combination of performance and redundancy.
+Disk layout is important, all the way down to the way you raid out your physical drives. On top of that, you should use LVM where-ever possible in case you run out of space. By default, the best bang for your buck is RAID5, as it will give you a good combination of performance and redundancy. The known current growth rate is about 321,000 records per gig (this includes index + archive).
 
 Where possible, you should:
 
