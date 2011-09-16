@@ -93,5 +93,5 @@ this isn't perfect math, but it's close enough for now:
 
 that's on the lower end, because we front loaded the data, that number is a bit skewed right now and will normalize over time. For ~ 2 years of storage we'll need:
 {{{
-365 * 2 / 2.17 GB = 337 GB (rounded up)
+365 * 2 * 2.17 GB = 1600 GB (rounded up)
 }}}
