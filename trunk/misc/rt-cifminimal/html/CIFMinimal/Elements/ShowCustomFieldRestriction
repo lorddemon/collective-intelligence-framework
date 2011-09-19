@@ -1,0 +1,17 @@
+<% $content %>
+<%init>
+my $content = $Object->Content();
+if($content){
+    $content = lc($content);
+    my $rmap = RT->Config->Get('CIFMinimal_RestrictionMapping');
+    foreach(keys %$rmap){
+        if(my $c = $rmap->{$_}){
+            $content = uc($_);
+        }
+    }
+}
+</%init>
+
+<%args>
+$Object
+</%args>
