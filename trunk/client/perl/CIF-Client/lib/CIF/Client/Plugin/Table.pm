@@ -68,8 +68,8 @@ sub write_out {
             'alternativeid',
         ));
    }
-   if($self->{'fields'}){
-        @cols = @{$self->{'fields'}};
+   if($config->{'fields'}){
+        @cols = @{$config->{'fields'}};
     }
     if(my $c = $self->{'config'}->{'display'}){
         @cols = @$c;
