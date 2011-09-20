@@ -15,7 +15,7 @@ my $queue_id = $queue->Id();
 my ($tab);
 my $tabs = { 
 	A 	=> { title => loc('Home'), 		path => 'Minimal/index.html', },
-	B 	=> { title => loc('New Observation'), 	path => 'Minimal/Front.html' },
+	B 	=> { title => loc('New Observation'), 	path => 'Minimal/Observation.html' },
     C   => { title => loc('Apikeys'), path => 'Minimal/Apikeys.html' },
 };
 
