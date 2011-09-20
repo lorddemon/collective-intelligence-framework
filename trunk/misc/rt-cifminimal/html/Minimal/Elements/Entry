@@ -25,8 +25,15 @@ function show_other(optionValue) {
 // -->
 </SCRIPT>
 
-<form method="post" enctype="multipart/form-data" action="Submission.html">
+<h3>Documenting New Observations</h3>
+<ul>
+    <li>Sometimes less is more</li>
+    <li>Don't get stuck on where the data might end up</li>
+    <li>Extra context can always go in the "details" box</li>
+    <li>Let the system handle the rest, we're just documenting observations here</li>
+</ul>
 <table>
+<form method="post" enctype="multipart/form-data" action="Submission.html">
     <tr>
     <td><b>Assessment</b></td>
     <td>
@@ -36,7 +43,8 @@ function show_other(optionValue) {
 % if(lc($p) eq lc($d_assessment)){ $selected = " selected='selected'"; }
             <option value='<%$p%>'<%$selected%>><%$p%></option>
 % }
-        </select>
+        </select><br/>
+        <i>closest that's appropriate, best estimate</i>
     </td>
     </tr>
     <tr>
@@ -52,7 +60,7 @@ function show_other(optionValue) {
                     { tokens: [ '\s' ] }
                     );
                     </script>
-        <br><i>eg: "torpig", "zeus", "spyeye", "paypal", etc...</i>
+        <br><i>eg: "torpig", "zeus", "spyeye", "paypal", etc... <b>1-2, no more than 2</b></i>
         </td>
     </tr>
     <tr>
@@ -113,8 +121,17 @@ function show_other(optionValue) {
             <option value='<%$rmap->{lc($restriction)}%>'<%$selected%>><%$restriction%></option>
 % }
         </select>
-        <br>details about the <a href="<%$sharing_policy%>" target=_blank><i>Sharing Policy</i></a>
+        <i>details about the <a href="<%$sharing_policy%>" target=_blank><i>Sharing Policy</i></a><br/>
     </td>
+    </tr>
+    <tr>
+        <td><b>Permission<br>to share</b></td>
+        <td>
+% foreach (keys %$share_with){
+% my $checked = ($share_with->{$_}->{'checked'}) ? ' checked="checked"' : '';
+            <input type="checkbox" name="sharewith" value="<% $_ %>"<% $checked %>" /><% $share_with->{$_}->{'description'} %><br/>
+% }
+        </td>
     </tr>
     <tr>
         <td>attachment</td>
@@ -158,8 +175,23 @@ while(my $grp = $g->Next()){
     $groups->{$guid}    = $priority;
 }
 
+foreach(keys %$groups){
+    unless(defined($groups->{$_})){
+        $groups->{$_} = 100;
+    }
+}
 my @sorted = sort { $groups->{$a} <=> $groups->{$b} } keys %$groups;
 
+my $share_with = RT->Config->Get('CIFMinimal_ShareWith') || {
+    leo         => {
+        description => 'Anonymized with Trusted Law Enforcement',
+        checked     => 1,
+    },
+    partners    => {
+        description => 'Anonymized with Trusted Mitigation Partners',
+        checked     => 1,
+    }
+};
 </%INIT>
 
 <%ARGS>
