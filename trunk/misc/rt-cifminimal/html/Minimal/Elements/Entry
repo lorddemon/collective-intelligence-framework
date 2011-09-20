@@ -1,37 +1,51 @@
-%# http://forums.digitalpoint.com/showthread.php?t=76985
-%# try to figure this out using OnBlur for the data field
 <SCRIPT LANGUAGE="JavaScript">
 <!--
 function isIp(val) {
    var filter = /(([1-9][0-9]{0,2})|0)\.(([1-9][0-9]{0,2})|0)\.(([1-9][0-9]{0,2})|0)\.(([1-9][0-9]{0,2})|0)/;
     if(filter.test(val.value)){
+        filter = /^https?/;
+        if(filter.test(val.value)){
+            return false;
+        }
         return true;
     }
     return false;
 }
 function hide(obj) {
-      obj1 = document.getElementById(obj);
-      obj1.style.visibility = 'hidden';
+    obj1 = document.getElementById(obj);
+    obj1.style.visibility = 'hidden';
 }
 function show(obj) {
       obj1 = document.getElementById(obj);
-    alert(obj);
       obj1.style.visibility = 'visible';
 }
 
-function show_other(optionValue) {
-    if(isIp(optionValue)){show('port');}else{hide('port');}
+function show_me(optionValue) {
+    if(isIp(optionValue)){
+        show('portlist');
+        show('protocol');
+    } else {
+        hide('portlist');
+        hide('protocol');
+    }
 }
+function hide_me() {
+    hide('portlist');
+    hide('protocol');
+}
+
+window.onload = hide_me;
 // -->
 </SCRIPT>
 
-<h3>Documenting New Observations</h3>
+<h3>Getting Started</h3>
 <ul>
     <li>Sometimes less is more</li>
     <li>Don't get stuck on where the data might end up</li>
     <li>Extra context can always go in the "details" box</li>
     <li>Let the system handle the rest, we're just documenting observations here</li>
 </ul>
+<h3>Document the Observation</h3>
 <table>
 <form method="post" enctype="multipart/form-data" action="Submission.html">
     <tr>
@@ -47,6 +61,14 @@ function show_other(optionValue) {
         <i>closest that's appropriate, best estimate</i>
     </td>
     </tr>
+    <tr>
+        <td><b>Data</b></td>
+        <td>
+            <input onBlur=show_me(this) type='text' size=80 name="data" value="<%$data%>" title="ip's, domains, urls"/>
+            <br><i>eg: "192.168.1.1,https://www.baddomain.com/bad.aspx"</i>
+        </td>
+    </tr>
+
     <tr>
         <td><b>Tags</b></td>
         <td>
@@ -64,40 +86,29 @@ function show_other(optionValue) {
         </td>
     </tr>
     <tr>
-        <td><b>Data</b></td>
-        <td>
-            <input type='text' size=80 name="data" value="<%$data%>" title="ip's, domains, urls"/>
-            <br><i>eg: "192.168.1.1,https://www.baddomain.com/bad.aspx"</i>
-        </td>
-    </tr>
-    <tr>
-        <td>Portlist</td>
-        <td>
-            <input title="the entire list will be tagged against each data entered" type='text' size=80 name='portlist' value="<%$portlist%>">
-            <br><i>eg: 21,22,80-89</i>
-        </td>
-    </tr>
-    <tr>
-        <td>Protocol</td>
-        <td>
-            <input type='text' size=80 name='protocol' value="<% $protocol %>">
-            <br><i>eg: tcp/udp/other</i>
-        </td>
-    </tr>
-    <tr>
-        <td>AlternativeID</td>
-        <td>
-            <input title="a publicly available reference, leave blank if you don't have one" type='hidden' name='alternativeid'><input type='text' size=80>
-            <br><i>eg: http://www.spamhaus.org/sbl/sbl.lasso?query=SBL96833</i>
-        </td>
-    </tr>
-    <tr>
         <td><b>Details</b></td>
         <td>
             <& /Elements/MessageBox, Default => $ARGS{'ReferenceDescription'}, Name => 'ReferenceDescription' &>
             <br><i>e.g. full message headers, analysis, etc...</i>
         </td>
     </tr>
+    <tr id="portlist">
+        <td>Portlist</td>
+        <td>
+            <input title="the entire list will be tagged against each data entered" type='text' size=80 name='portlist' value="<%$portlist%>">
+            <br><i>eg: 21,22,80-89</i>
+        </td>
+    </tr>
+    <tr id="protocol">
+        <td>Protocol</td>
+        <td>
+            <input type='text' size=80 name='protocol' value="<% $protocol %>">
+            <br><i>eg: tcp/udp/other</i>
+        </td>
+    </tr>
+</table>
+<h3>Sharing Information</h3>
+<table>
     <tr>
         <td><b>Group</b></td>
         <td>

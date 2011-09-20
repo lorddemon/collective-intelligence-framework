@@ -1,12 +1,11 @@
-<& Elements/Header, Title => loc("Submission Results") &>
+<& Elements/Header, Title => loc("Results") &>
 <& /Elements/ListActions, actions => \@results &>
 <%INIT>
 
 unless($data){
-    RT::Interface::Web::Redirect(RT->Config->Get('WebURL').'Minimal/Front.html');
+    RT::Interface::Web::Redirect(RT->Config->Get('WebURL').'Minimal/Observation.html');
 }
 
-use Regexp::Common qw/net/;
 require XML::IODEF::Simple;
 require CIF::Utils;
 
