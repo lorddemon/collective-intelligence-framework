@@ -21,6 +21,8 @@ my $constituency_cf = RT::IR->CustomFields( 'Constituency', Queue => $Queue );
 my $constituency_field = 'Object-RT::Ticket--CustomField-' . $constituency_cf->id .'-Values';
 $ARGS{$constituency_field} = $group;
 
+my $real_assessment = $assessment;
+$real_assessment =~ s/\/\S+$//;
 my @datas = split(/,/,$data);
 foreach $data (@datas){
     $data = lc($data);
@@ -29,7 +31,7 @@ foreach $data (@datas){
         guid            => $guid,
         restriction     => $restriction,
         description     => $description,
-        impact          => $assessment,
+        impact          => $real_assessment,
         address         => $data,
         protocol        => $protocol,
         portlist        => $portlist,
