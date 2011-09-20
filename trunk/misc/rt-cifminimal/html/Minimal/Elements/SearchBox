@@ -1,5 +1,5 @@
 <div id="SimpleSearchForm">
-<form action="Search.html" method="get">
+<form action="Search.html" method="post">
 
 <div align="">
 <input name="q" size="60" /><input type="submit" class="button" value="Search" />

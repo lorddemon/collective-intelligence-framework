@@ -1,33 +1,35 @@
 <& /Minimal/Elements/Header, Title => loc('#[_1]: [_2]', $Ticket->id, $Ticket->Subject) &>
 <& /Elements/ListActions, actions => \@results &>
 
-  <table width="100%" class="ticketsummary" >
-      <tr>
+<table width="100%" class="ticketsummary" >
+    <tr>
         <td valign="top" width="50%" class="boxcontainer">
-          <&| /Widgets/TitleBox, title => loc('The Basics'), 
+            <&| /Widgets/TitleBox, title => loc('The Basics'), 
                 title_class=> 'inverse',  
                 color => "#993333" &>
-	  <& /Ticket/Elements/ShowCustomFields, Ticket => $Ticket &>
-          </&>
-</td>
+	        <& /Ticket/Elements/ShowCustomFields, Ticket => $Ticket &>
+            </&>
+        </td>
         <td valign="top" width="50%" class="boxcontainer">
-	<&| /Widgets/TitleBox, title => loc("People"),
+            <&| /Widgets/TitleBox, title => loc("Status"),
                 title_class=> 'inverse',
-                 color => "#663366" &>
-
-          <& /Ticket/Elements/ShowPeople, Ticket => $Ticket &>
-          </&>
-
-          <&| /Widgets/TitleBox, title => loc("Status"),
-                title_class=> 'inverse',
-                 color => "#663366" &>
-          <& /Ticket/Elements/ShowDates, Ticket => $Ticket, UpdatedLink => 0 &>
-	 </&>
-</td>
-</tr>
+                color => "#663366" &>
+            <& Elements/ShowStatus, Ticket => $Ticket, UpdatedLink => 0 &>
+	        </&>
+        </td>
+    </tr>
 </table>
-
-
+<table width="100%" class="ticketsummary" >
+    <tr>
+        <td valign="bottom" width="75%" class="boxcontainer">
+            <&| /Widgets/TitleBox, title => loc("Collective Data"),
+                title_class=> 'inverse',
+                color => "#663366" &>
+% $m->out($cif_data);
+            </&>
+        </td>
+    </tr>
+</table>
 
 %#!!pape: selfservice_find_attachments.patch {{
 <& /Ticket/Elements/ShowHistory, 
@@ -121,6 +123,14 @@ my $Transactions = $Ticket->Transactions;
 
 my $attachments = $m->comp( '/Ticket/Elements/FindAttachments', Ticket => $Ticket );
 $m->callback(CallbackName => 'BeforeDisplay', Ticket => \$Ticket, ARGSRef => \%ARGS);
+
+require RT::CIFMinimal;
+my $cif_data = RT::CIFMinimal::cif_data({
+    user    => $session{'CurrentUser'}->UserObj(),
+    q       => $Ticket->FirstCustomFieldValue('Address'),
+    nolog   => 1,
+    results => \@results,
+});
 
 </%INIT>
 

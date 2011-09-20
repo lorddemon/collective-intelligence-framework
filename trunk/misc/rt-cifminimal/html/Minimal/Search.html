@@ -6,14 +6,12 @@
 
 % $m->comp('Elements/SearchBox');
 % if($text){
-<pre>
-<% $text %>
-</pre>
+% $m->out($text);
 % }
+
 
 <%INIT>
 my $title = loc("Collective Intelligence");
-my $cif_config = RT->Config->Get('CIFMinimal_CIFConfig') || $ENV{'HOME'}.'/.cif';
 $text = undef;
 
 if($q){
@@ -23,10 +21,13 @@ if($q){
         require CIF::Client;
 
         my ($client,$err) = CIF::Client->new({
-            config          => $cif_config,
+            host            => RT->Config->Get('CIFMinimal_APIHostname') || RT->Config->Get('WebBaseURL').'/api',
             simple_hashes   => 1,
-            fields          => 'restriction,source,severity,confidence,address,portlist,protocol,impact,description,detecttime',
+            fields          => $fields,
+            group_map       => 1,
         });
+        warn $err if($err);
+        last if($err);
         require CIF::WebAPI::APIKey;
         my @recs = CIF::WebAPI::APIKey->search(uuid_alias => $session{'CurrentUser'}->UserObj->EmailAddress());
         unless($recs[0] && $recs[0]->uuid()){
@@ -43,14 +44,18 @@ if($q){
             my $feed = $client->GET(
                 query   => $_,
                 limit   => 25,
+                nolog   => $nolog,
             );
-            require CIF::Client::Plugin::Table;
-            my $t = CIF::Client::Plugin::Table->write_out($client,$feed);
+            require CIF::Client::Plugin::Html;
+            $client->{'class'}          = 'collection';
+            $client->{'evenrowclass'}    = 'evenline';
+            $client->{'oddrowclass'}     = 'oddline';
+            my $t = CIF::Client::Plugin::Html->write_out($client,$feed,undef);
             push(@res,$t);
         }
-        $text = join("\n",@res) if($#res > -1);
+        $text = join("\n",@res) if(@res && $#res > -1);
+        $text = '<h3>No Results</h3>' if($text eq '');
     }
-
 }
 </%INIT>
 
@@ -59,5 +64,6 @@ if($q){
 $q => undef
 $text => undef
 @results => undef
+$nolog => undef
+$fields => 'restriction,guid,severity,confidence,address,portlist,protocol,impact,description,detecttime,alternativeid_restriction,alternativeid'
 </%ARGS>
-
