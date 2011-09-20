@@ -55,7 +55,7 @@
     },
     {
         Name        => 'Severity',
-        Type        => 'FreeformSingle',
+        Type        => 'SelectSingle',
         Queue       => ['IncidentReports'],
         Disabled    => 0,
         Description => '_IODEF_IncidentAssessmentImpactseverity',
@@ -101,20 +101,27 @@
         Disabled    => 0,
         Description => '_IODEF_IncidentEventDataFlowSystemServiceip_protocol',
     },
+    {
+        Name        => 'Share With',
+        Type        => 'FreeformMultiple',
+        Queue       => ['Incident Reports'],
+        Disabled    => 0,
+        Description => '_IODEF_IncidentAdditionalDatasharewith',
+    },
 );
 
 for my $cf (@CustomFields) {
     push @ACL, (
         { 
-            GroupId     => 'DutyTeam',
-            GroupDomain => 'UserDefined',
+            GroupId     => 'Everyone',
+            GroupDomain => 'System',
             CF          => $cf->{Name},
             Queue       => $cf->{Queue},
             Right       => 'SeeCustomField', 
         },
         { 
-            GroupId     => 'DutyTeam',
-            GroupDomain => 'UserDefined',
+            GroupId     => 'Everyone',
+            GroupDomain => 'System',
             CF          => $cf->{Name},
             Queue       => $cf->{Queue},
             Right       => 'ModifyCustomField', 

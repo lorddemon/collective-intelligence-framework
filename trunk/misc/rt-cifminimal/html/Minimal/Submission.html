@@ -1,5 +1,10 @@
 <& Elements/Header, Title => loc("Results") &>
 <& /Elements/ListActions, actions => \@results &>
+
+% if($submitted) {
+% my $url = '3;url='.RT->Config->Get('WebURL')."Minimal/Display.html?id=$submitted";
+<meta http-equiv="refresh" content="<% "$url" %>" />
+% }
 <%INIT>
 
 unless($data){
@@ -26,8 +31,7 @@ $real_assessment =~ s/\/\S+$//;
 my @datas = split(/,/,$data);
 foreach $data (@datas){
     $data = lc($data);
-
-    my $report = XML::IODEF::Simple->new({
+    my $hash = {
         guid            => $guid,
         restriction     => $restriction,
         description     => $description,
@@ -35,19 +39,20 @@ foreach $data (@datas){
         address         => $data,
         protocol        => $protocol,
         portlist        => $portlist,
+        source          => $session{'CurrentUser'}->EmailAddress(),
         contact         => {
             name            => $session{'CurrentUser'}->RealName(),
             email           => $session{'CurrentUser'}->EmailAddress(),
         },
         purpose         => $purpose,
         confidence      => $confidence,
-        alternativeid               => $alternativeid,
-        alternativeid_restriction   => 'public',
         sharewith  => $sharewith,
-    });
+    };
+
+    my $report = XML::IODEF::Simple->new($hash);
 
     my $subject = $description;
-    $subject = $assessment.' '.$description if($assessment);
+    $subject = $real_assessment.' '.$description if($assessment);
 
     my $msg = $report->out();
 
@@ -59,9 +64,25 @@ foreach $data (@datas){
     if($ticket->Status() eq 'rejected'){
         push(@results,'Ticket contained bad-data (private address?), auto-rejected');
     } else {
+        $submitted = 1;
         push(@results,@res);
     }
-    push(@results,$msg) if(RT->Config->Get('LogToSyslog') eq 'debug');
+    if($submitted){
+        push(@results,$msg) if(RT->Config->Get('LogToSyslog') eq 'debug');
+        $submitted = $ticket->id();
+        require CIF::Archive;
+        require CIF::FeedParser::ParseJsonIodef;
+        require JSON;
+        my $r = $ticket->IODEF();
+
+        my $ret = CIF::FeedParser::ParseJsonIodef::parse({detection => 'now'},JSON::to_json([$r->to_tree()]));
+        foreach(@$ret){
+            my ($err,$id) = CIF::Archive->insert($_);
+            warn $err if($err);
+            warn $id if($id);
+        }
+        
+    }
 }
 
 </%INIT>
@@ -79,5 +100,5 @@ $portlist => undef
 $assessment => undef
 $Queue => 'Incident Reports'
 $confidence => RT->Config->Get('CIFMinimal_DefaultConfidence') || 85;
-$alternativeid => undef
+$submitted => undef
 </%ARGS>

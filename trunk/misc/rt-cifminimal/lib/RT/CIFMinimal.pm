@@ -49,6 +49,82 @@ use Net::Abuse::Utils qw(:all);
 use Regexp::Common qw/net URI/;
 use Net::CIDR;
 
+sub cif_data {
+    my $args = shift;
+    
+    my $fields  = $args->{'fields'} || 'restriction,guid,severity,confidence,address,portlist,protocol,impact,description,detecttime,alternativeid_restriction,alternativeid';
+    my $user    = $args->{'user'};
+    my $q       = $args->{'q'};
+    my $nolog   = $args->{'nolog'};
+    my @results = $args->{'results'};
+
+    require CIF::Client;
+    my ($client,$err) = CIF::Client->new({
+        host            => RT->Config->Get('CIFMinimal_APIHostname') || RT->Config->Get('WebBaseURL').'/api',
+        simple_hashes   => 1,
+        fields          => $fields,
+        group_map       => 1,
+    });
+    warn $err if($err);
+    last if($err);
+    require CIF::WebAPI::APIKey;
+    my @recs = CIF::WebAPI::APIKey->search(uuid_alias => $user->EmailAddress());
+    unless($recs[0] && $recs[0]->uuid()){
+        # generate apikey
+        require RT::CIFMinimal;
+        my $id = RT::CIFMinimal::generate_apikey({ user => $user, key_description => 'generated automatically for WebUI search' });
+        push(@recs,$id);
+        push(@results,'default WebUI apikey '.$id->uuid().' automatically generated');
+    }
+    $client->{'apikey'} = $recs[0]->uuid();
+    my @res;
+    my @qarray = split(/,/,$q);
+    foreach(@qarray){
+        my $feed = $client->GET(
+            query   => $_,
+            limit   => 25,
+            nolog   => $nolog,
+        );
+        require CIF::Client::Plugin::Html;
+        $client->{'class'}          = 'collection';
+        $client->{'evenrowclass'}    = 'evenline';
+        $client->{'oddrowclass'}     = 'oddline';
+        my $t = CIF::Client::Plugin::Html->write_out($client,$feed,undef);
+        push(@res,$t);
+    }
+    my $text = (@res && $#res > -1) ? join("\n",@res) : '<h3>No Results</h3>';
+    return($text);
+}
+
+sub generate_apikey {
+    my $args        = shift;
+    my $user        = $args->{'user'};
+    my $key_desc    = $args->{'key_description'};
+
+    return unless($user && ref($user) eq 'RT::User');
+
+    require CIF::WebAPI::APIKey;
+    my $g = $user->OwnGroups();
+    my %group_map;
+
+    while(my $grp = $g->Next()){
+        next unless($grp->Name() =~ /^DutyTeam (\S+)/);
+        my $guid = lc($1);
+        my $priority = $grp->FirstCustomFieldValue('CIFGroupPriority');
+        $group_map{$guid} = $priority;
+    }
+    $group_map{'everyone'} = 1000;
+    my @sorted = sort { $group_map{$a} <=> $group_map{$b} } keys(%group_map);
+
+    my $id = CIF::WebAPI::APIKey->genkey(
+        uuid_alias      => $user->EmailAddress() || $user->Name(),
+        description     => $key_desc,
+        groups          => join(',',@sorted),
+        default_guid    => $sorted[0],
+    );
+    return($id); 
+}
+
 sub network_info {
     my $addr = shift;
 
@@ -209,13 +285,18 @@ wrap 'RT::User::Create',
         return unless($val =~ /\d+/);
 
         require RT::Group;
-        my $default = RT->Config->Get('DefaultUserGroup') || return(undef);
+        my $default = RT->Config->Get('CIFMinimal_DefaultUserGroup');
+        return unless($default);
         my $group = RT::Group->new($obj->CurrentUser());
-        $group->LoadUserDefinedGroup($default);
-        my ($ret,$errstr) = $group->_AddMember(InsideTransaction => 1, PrincipalId => $$val);
+        my ($ret,$err) = $group->LoadUserDefinedGroup($default);
         unless($ret){
-            $RT::Logger->crit("Couldn't add user to group: ".$group->Name());
-            $RT::logger->crit($errstr);
+            $RT::Logger->error("Couldn't add user to group: ".$default.': '.$err);
+            return(0);
+        }
+        ($ret,$err) = $group->_AddMember(InsideTransaction => 1, PrincipalId => $$val);
+        unless($ret){
+            $RT::Logger->error("Couldn't add user to group: ".$group->Name());
+            $RT::logger->error($err);
             $RT::Handle->Rollback();
             return(0);
         }

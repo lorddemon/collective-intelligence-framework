@@ -2,7 +2,7 @@
 <SCRIPT LANGUAGE="JavaScript">
 <!--
 function isIp(val) {
-   var filter = /(([1-9][0-9]{0,2})|0)\.(([1-9][0-9]{0,2})|0)\.(([1-9][0-9]{0,2})|0)\.(([1-9][0-9]{0,2})|0)/;
+   var filter = /[a-z0-9.-]+\.[a-z]{2,5}|(([1-9][0-9]{0,2})|0)\.(([1-9][0-9]{0,2})|0)\.(([1-9][0-9]{0,2})|0)\.(([1-9][0-9]{0,2})|0)/;
     if(filter.test(val.value)){
         filter = /^https?/;
         if(filter.test(val.value)){
@@ -92,6 +92,12 @@ window.onload = hide_me;
             <br><i>e.g. full message headers, analysis, etc...</i>
         </td>
     </tr>
+    <tr>
+        <td>attachment</td>
+        <td><input name="Attach" type="file"/>
+            <br><i>any supporting doc, reports, pdf's, binaries, etc... </i>
+        </td>
+    </tr>
     <tr id="portlist">
         <td>Portlist</td>
         <td>
@@ -144,10 +150,6 @@ window.onload = hide_me;
             <input type="checkbox" name="sharewith" value="<% $_ %>"<% $checked %>" /><% $share_with->{$_}->{'description'} %><br/>
 % }
         </td>
-    </tr>
-    <tr>
-        <td>attachment</td>
-        <td><input name="Attach" type="file" /></td>
     </tr>
     <tr>
         <td></td>

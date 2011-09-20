@@ -7,6 +7,6 @@ INSTALLATION
 
 Set(@Plugins,(qw(RT::FM RT::IR RT::CIFMinimal)));
 
-5. #> patch /opt/rt3/share/html/autohandler etc/autohandler.patch
+5. #> patch /opt/rt3/lib/RT/Interface/Web.pm etc/web.pm.patch
 6. #> patch /opt/rt3/local/plugins/RT-IR/html/RTIR/Report/BulkReject.html RTIR_BulkReject.html.patch
 7. #> /etc/init.d/httpd reload
