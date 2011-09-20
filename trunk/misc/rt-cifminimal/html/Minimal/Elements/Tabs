@@ -12,16 +12,10 @@ my $queue = RT::Queue->new($session{'CurrentUser'});
 $queue->Load('Incident Reports');
 my $queue_id = $queue->Id();
 
-if ($Title) {
-$Title = loc("REN-ISAC") . " / " . $Title;
-} else {
-$Title = loc("REN-ISAC");
-
-}
 my ($tab);
 my $tabs = { 
 	A 	=> { title => loc('Home'), 		path => 'Minimal/index.html', },
-	B 	=> { title => loc('New Report'), 	path => 'Minimal/Front.html' },
+	B 	=> { title => loc('New Observation'), 	path => 'Minimal/Front.html' },
     C   => { title => loc('Apikeys'), path => 'Minimal/Apikeys.html' },
 };
 
