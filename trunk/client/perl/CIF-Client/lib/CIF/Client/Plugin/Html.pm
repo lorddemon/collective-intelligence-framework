@@ -1,7 +1,7 @@
-package CIF::Client::Plugin::Table;
+package CIF::Client::Plugin::Html;
 use base 'CIF::Client::Plugin::Output';
 
-use Text::Table;
+use HTML::Table;
 
 sub write_out {
     my $self = shift;
@@ -76,9 +76,12 @@ sub write_out {
         @cols = @$c;
     }
 
-    my @header = map { $_, { is_sep => 1, title => '|' } } @cols;
-    pop(@header);
-    my $table = Text::Table->new(@header);
+    my $table = HTML::Table->new(
+        -head           => \@cols,
+        -class          => $config->{'class'} || '',
+        -evenrowclass   => $config->{'evenrowclass'} || '',
+        -oddrowclass    => $config->{'oddrowclass'} || '',
+    );
 
     if(my $max = $self->{'max_desc'}){
         map { $_->{'description'} = substr($_->{'description'},0,$max) } @a;
@@ -88,25 +91,10 @@ sub write_out {
     }
     @a = reverse(@a) if($reverse);
     foreach my $r (@a){
-        $table->load([ map { $r->{$_} } @cols]);
+        my @row = map { $r->{$_} } @cols;
+        $table->addRow(@row);
     }
-    if($created){
-        $table = "Feed Created: ".$created."\n\n".$table;
-    }
-    if(my $r = $hash->{'restriction'}){
-        $table = "Feed Restriction: ".$r."\n".$table;
-    }
-    if(my $s = $hash->{'severity'}){
-        $table = 'Feed Severity: '.$s."\n".$table;
-    }
-    if($feedid){
-        $table = 'Feed Id: '.$feedid."\n".$table;
-    }
-    if($config->{'description'}){
-        $table = 'Description: '.$config->{'description'}."\n".$table;
-    }
-    $table = "Query: ".$query."\n".$table;
-    return "\n".$table;
+    return $table->getTable();
 }
 
 1;
