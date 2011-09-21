@@ -32,4 +32,23 @@ Set(%CIFMinimal_ShareWith,
     }
 );
 
+# this allows you to wrap the RT::User::Create function
+# this example we use:
+# http://www.openfusion.com.au/labs/mod_auth_tkt/
+# which places "tokens" (eg: groups) in $ENV:
+#  $VAR59 = 'REMOTE_USER';
+#  $VAR60 = 'wes@example.com';
+#  $VAR61 = 'REMOTE_USER_TOKENS';
+#  $VAR62 = 'group1,group2,group3';
+
+Set(%CIFMinimal_UserGroupMapping,
+    EnvVar  => 'REMOTE_USER_TOKENS',
+    Pattern => qr/,/,
+    Mapping => {
+        mygroup1    => 'DutyTeam group1.example.com',
+        mygroup2    => 'DutyTeam group2.example.com',
+        mygroup3    => 'DutyTeam group3.example.com',
+    },
+);
+
 1;

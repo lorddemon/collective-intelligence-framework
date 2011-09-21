@@ -209,15 +209,15 @@ sub ReportsByType {
 }
 
 {
-my %cache;
-sub GetCustomField {
-    my $field = shift or return;
-    return $cache{ $field } if exists $cache{ $field };
+    my %cache;
+    sub GetCustomField {
+        my $field = shift or return;
+        return $cache{ $field } if exists $cache{ $field };
 
-    my $cf = RT::CustomField->new( $RT::SystemUser );
-    $cf->Load( $field );
-    return $cache{ $field } = $cf;
-}
+        my $cf = RT::CustomField->new( $RT::SystemUser );
+        $cf->Load( $field );
+        return $cache{ $field } = $cf;
+    }
 }
 
 use Hook::LexWrap;
@@ -284,23 +284,46 @@ wrap 'RT::User::Create',
         my $val = ref $_[-1]? \$_[-1][0]: \$_[-1];
         return unless($val =~ /\d+/);
 
-        require RT::Group;
-        my $default = RT->Config->Get('CIFMinimal_DefaultUserGroup');
-        return unless($default);
-        my $group = RT::Group->new($obj->CurrentUser());
-        my ($ret,$err) = $group->LoadUserDefinedGroup($default);
-        unless($ret){
-            $RT::Logger->error("Couldn't add user to group: ".$default.': '.$err);
-            return(0);
+        if(my %map = RT->Config->Get('CIFMinimal_UserGroupMapping')){
+            my $x = $ENV{$map{'EnvVar'}};
+            my @tags = split($map{'Pattern'},$x);
+            my $group_map = $map{'Mapping'};
+            foreach(keys %$group_map){
+                foreach my $g (@tags){
+                    if($g eq $_){
+                        require RT::Group;
+                        my $y = RT::Group->new($RT::SystemUser);
+                        my ($ret,$err) = $y->LoadUserDefinedGroup($group_map->{$_});
+                        RT::Logger->debug("adding user to group: $g");  
+                        ($ret,$err) = $y->AddMember($$val);
+                        unless($ret){
+                            $RT::Logger->error("Couldn't add user to group: ".$y->Name());
+                            $RT::logger->error($err);
+                            $RT::Handle->Rollback();
+                            return(0);
+                        }
+                    }
+                }
+            }
+        } elsif (my $default = RT->Config->Get('CIFMinimal_DefaultUserGroup')){
+            require RT::Group;
+            my $default = RT->Config->Get('CIFMinimal_DefaultUserGroup');
+            return unless($default);
+            my $group = RT::Group->new($obj->CurrentUser());
+            my ($ret,$err) = $group->LoadUserDefinedGroup($default);
+            unless($ret){
+                $RT::Logger->error("Couldn't add user to group: ".$default.': '.$err);
+                return(0);
+            }
+            ($ret,$err) = $group->_AddMember(InsideTransaction => 1, PrincipalId => $$val);
+            unless($ret){
+                $RT::Logger->error("Couldn't add user to group: ".$group->Name());
+                $RT::logger->error($err);
+                $RT::Handle->Rollback();
+                return(0);
+            }
         }
-        ($ret,$err) = $group->_AddMember(InsideTransaction => 1, PrincipalId => $$val);
-        unless($ret){
-            $RT::Logger->error("Couldn't add user to group: ".$group->Name());
-            $RT::logger->error($err);
-            $RT::Handle->Rollback();
-            return(0);
-        }
-    };
+    }
 }
 1;
 
