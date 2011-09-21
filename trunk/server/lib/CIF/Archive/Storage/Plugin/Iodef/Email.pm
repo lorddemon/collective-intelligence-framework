@@ -28,8 +28,8 @@ sub convert {
 sub isEmail {
     my $e = shift;
     return unless($e);
-    return if($address =~ /^$RE{'URI'}$/);
-    return if($address =~ /^$RE{'URI'}{'HTTP'}{-scheme => 'https'}$/);
+    return if($e =~ /^$RE{'URI'}$/);
+    return if($e =~ /^$RE{'URI'}{'HTTP'}{-scheme => 'https'}$/);
     return unless(lc($e) =~ /[a-z0-9_.-]+\@[a-z0-9.-]+\.[a-z0-9.-]{2,5}/);
     return(1);
 }

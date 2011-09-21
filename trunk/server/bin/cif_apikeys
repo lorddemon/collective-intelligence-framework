@@ -178,13 +178,13 @@ if($user){
     @recs = CIF::WebAPI::APIKey->retrieve_all();
 }
 if($#recs > -1){
-    my $t = Text::Table->new('userid','key','guid','default_guid','access','write','revoked','created');
+    my $t = Text::Table->new('userid','key','description','guid','default_guid','access','write','revoked','created');
     foreach (@recs){
         my $groups = $_->mygroups();
         my @groups = split(/,/,$groups);
         foreach my $g (@groups){
             my $isDefaultGuid = ($g eq $_->default_guid()) ? 'true' : '';
-            $t->load([$_->uuid_alias(),$_->uuid(),$g,$isDefaultGuid,$_->access(),$_->write(),$_->revoked(),$_->created()]);
+            $t->load([$_->uuid_alias(),$_->uuid(),$_->description(),$g,$isDefaultGuid,$_->access(),$_->write(),$_->revoked(),$_->created()]);
         }
     }
     print $t;

@@ -51,6 +51,14 @@ sub get_feed {
 sub _get_feed {
     my $f = shift;
     return unless($f->{'feed'});
+
+    foreach my $key (keys %$f){
+        foreach my $key2 (keys %$f){
+            if($f->{$key} =~ /<$key2>/){
+                $f->{$key} =~ s/<$key2>/$f->{$key2}/g;
+            }
+        }
+    }
     my @pulls = __PACKAGE__->plugins();
     @pulls = grep(/::Pull::/,@pulls);
     foreach(@pulls){
@@ -84,11 +92,14 @@ sub parse {
                 require CIF::FeedParser::ParseXml;
                 $return = CIF::FeedParser::ParseXml::parse($f,$content);
             }
-        } elsif($content =~ /^?\[{/){
+        } elsif($content =~ /^\[?{/){
             # possible json content or CIF
             if($content =~ /^{"status"\:/){
                 require CIF::FeedParser::ParseCIF;
                 $return = CIF::FeedParser::ParseCIF::parse($f,$content);
+            } elsif($content =~ /urn:ietf:params:xmls:schema:iodef-1.0/) {
+                require CIF::FeedParser::ParseJsonIodef;
+                $return = CIF::FeedParser::ParseJsonIodef::parse($f,$content);
             } else {
                 require CIF::FeedParser::ParseJson;
                 $return = CIF::FeedParser::ParseJson::parse($f,$content);
