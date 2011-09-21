@@ -174,7 +174,7 @@ unless($rmap){
     };
 }
 
-my $assessments = RT->Config->Get('CIFMinimal_Assessments') || ['botnet/C2','malware/exploit','scanner/bruteforcer','hijacked','phishing','fastflux','suspicious'];
+my $assessments = RT->Config->Get('CIFMinimal_Assessments') || ['botnet/C2','malware/exploit','scanner/bruteforcer','hijacked','phishing','fastflux','suspicious','whitelist'];
 my $d_assessment = RT->Config->Get('CIFMinimal_DefaultAssesment') || 'botnet';
 my $sharing_policy = RT->Config->Get('CIFMinimal_DefaultSharingPolicy') || 'http://en.wikipedia.org/wiki/Traffic_Light_Protocol';
 
