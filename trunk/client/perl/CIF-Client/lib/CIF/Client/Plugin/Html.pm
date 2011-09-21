@@ -91,6 +91,12 @@ sub write_out {
     }
     @a = reverse(@a) if($reverse);
     foreach my $r (@a){
+        foreach(@cols){
+            if($_ eq 'alternativeid' && $r->{$_} && lc($r->{$_}) =~ /[a-z0-9.-]+\.[a-z]{2,5}/){
+                my $addr = ($r->{$_} =~ /^http/) ? $r->{$_} : 'http://'.$r->{$_};
+                $r->{$_} = "<a target='_blank' href='$addr'>$addr</a>";
+            }
+        }
         my @row = map { $r->{$_} } @cols;
         $table->addRow(@row);
     }
