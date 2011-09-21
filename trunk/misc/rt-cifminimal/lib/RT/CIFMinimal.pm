@@ -1,47 +1,8 @@
-# COPYRIGHT:
-# 
-# Copyright 2009 REN-ISAC and The Trustees of Indiana University
-# 
-# LICENSE:
-# 
-# This work is made available to you under the terms of Version 2 of
-# the GNU General Public License. A copy of that license should have
-# been provided with this software, but in any event can be snarfed
-# from www.gnu.org.
-# 
-# This work is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301 or visit their web page on the internet at
-# http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.
-# 
-# 
-# CONTRIBUTION SUBMISSION POLICY:
-# 
-# (The following paragraph is not intended to limit the rights granted
-# to you to modify and distribute this software under the terms of
-# the GNU General Public License and is only of importance to you if
-# you choose to contribute your changes and enhancements to the
-# community by submitting them to Best Practical Solutions, LLC.)
-# 
-# By intentionally submitting any modifications, corrections or
-# derivatives to this work, or any other work intended for use with
-# Request Tracker, to Best Practical Solutions, LLC, you confirm that
-# you are the copyright holder for those contributions and you grant
-# Best Practical Solutions,  LLC a nonexclusive, worldwide, irrevocable,
-# royalty-free, perpetual, license to use, copy, create derivative
-# works based on those contributions, and sublicense and distribute
-# those contributions and any derivatives thereof.
-
 package RT::CIFMinimal;
 
-our $VERSION = '0.01_01';
+our $VERSION = '0.00_01';
 
+use 5.008008;
 use warnings;
 use strict;
 
@@ -172,35 +133,12 @@ sub ReportsByType {
     my $category = $t[$#t-1];
 
     my $reports = RT::Tickets->new($user);
-    my $query = "Queue = 'Incident Reports' AND (Status = 'new' OR Status = 'open') AND ('CF.{Assessment Impact}' = '$type')";
+    my $query = "Queue = 'Incident Reports' AND (Status = 'new' OR Status = 'open')";
     $reports->FromSQL($query);
     $reports->OrderByCols({FILED => 'id', ORDER => 'DESC'});
     my @array;
 
-    my @regex = qr/^$RE{'net'}{'IPv4'}/;
-    for($category){
-        if(/domain/){
-            @regex = qr/^[a-zA-Z.-]+\.[a-zA-Z]{2,5}$/;       
-            last;
-        }
-        if(/url/){
-            @regex = (
-                qr/^$RE{'URI'}/,
-                qr/^$RE{'URI'}{'HTTP'}{-scheme => 'https'}$/,
-            );
-            last;
-        }
-    }
     while(my $r = $reports->Next()){
-        my $yes = 0;
-        for(my $addr = $r->FirstCustomFieldValue('Address')){
-            foreach my $reg (@regex){
-                if($addr =~ $reg){
-                    $yes = 1;
-                }
-            }
-        }
-        next unless($yes);
         push(@array,$r->IODEF->to_tree());
     }
     return ('') unless($#array > -1);
@@ -327,3 +265,33 @@ wrap 'RT::User::Create',
 }
 1;
 
+__END__
+=head1 NAME
+
+RT::CIFMinimal - Perl extension for RT+IR integration with CIF
+
+=head1 DESCRIPTION
+
+This module wraps a work-flow friendly UI around CIF using the basic components found in RT.
+
+=head1 SEE ALSO
+
+  http://code.google.com/p/collective-intelligence-framework
+  XML::IODEF
+  XML::IODEF::Simple
+
+=head1 AUTHOR
+
+Wes Young, E<lt>wes@barely3am.comE<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2011 REN-ISAC and The Trustees of Indiana University
+Copyright (C) 2011 by Wes Young
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.10.0 or,
+at your option, any later version of Perl 5 you may have available.
+
+
+=cut
