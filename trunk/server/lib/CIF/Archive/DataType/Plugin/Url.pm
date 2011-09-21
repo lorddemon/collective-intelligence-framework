@@ -23,13 +23,18 @@ sub lookup { return; }
 sub prepare {
     my $class = shift;
     my $info = shift;
-    return unless($info->{'impact'});
-    return unless($info->{'impact'} =~ /url$/);
-    return unless($info->{'address'});
-    return unless($info->{'address'} =~ /^$RE{'URI'}/);
+
+    return unless(isUrl($info->{'address'}));
     $info->{'address'} = lc($info->{'address'});
     $info->{'md5'} = md5_hex($info->{'address'}) unless($info->{'md5'});
     $info->{'sha1'} = sha1_hex($info->{'address'}) unless($info->{'sha1'});
+    return(1);
+}
+
+sub isUrl {
+    my $address = shift;
+    return unless($address);
+    return unless($address =~ /^$RE{'URI'}$/ || $address =~ /^$RE{'URI'}{'HTTP'}{-scheme => 'https'}$/);
     return(1);
 }
 

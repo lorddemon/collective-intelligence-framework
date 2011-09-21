@@ -192,8 +192,6 @@ sub lookup {
 
     unless($info->{'nolog'}){
         my $source = genSourceUUID($info->{'source'} || 'unknown');
-        my $dt = DateTime->from_epoch(epoch => time());
-        $dt = $dt->ymd().'T'.$dt->hour().':00:00Z';
         my $q = lc($info->{'query'});
         my ($uuid,$md5,$sha1,$addr);
         for($q){
@@ -217,7 +215,6 @@ sub lookup {
             source      => $source,
             impact      => 'search',
             description => 'search '.$info->{'query'},
-            detecttime  => $dt,
             md5         => $md5,
             sha1        => $sha1,
             uuid        => $uuid,

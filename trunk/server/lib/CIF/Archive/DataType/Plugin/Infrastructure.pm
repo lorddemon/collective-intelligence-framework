@@ -240,6 +240,21 @@ __PACKAGE__->set_sql('isWhitelisted' => qq{
     LIMIT 5
 });
 
+__PACKAGE__->set_sql('lookup_byseverity' => qq{
+    SELECT __TABLE__.id,__TABLE__.uuid, archive.data
+    FROM __TABLE__
+    LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
+    LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
+    WHERE 
+        address != '0/0'
+        AND (address >>= ? OR address <<= ?)
+        AND severity >= ?
+        AND confidence >= ?
+        AND __TABLE__.restriction <= ?
+        AND apikeys_groups.uuid = ?
+    ORDER BY severity DESC, confidence DESC, detecttime DESC, __TABLE__.id DESC
+    LIMIT ?
+});
 __PACKAGE__->set_sql('lookup' => qq{
     SELECT __TABLE__.id,__TABLE__.uuid, archive.data
     FROM __TABLE__
@@ -255,6 +270,8 @@ __PACKAGE__->set_sql('lookup' => qq{
     ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
     LIMIT ?
 });
+
+
 
 __PACKAGE__->set_sql('_lookup' => qq{
     SELECT __TABLE__.id,__TABLE__.uuid, archive.data

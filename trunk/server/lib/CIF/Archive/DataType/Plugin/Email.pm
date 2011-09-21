@@ -15,6 +15,8 @@ __PACKAGE__->sequence('email_id_seq');
 
 sub isEmail {
     my $e = shift;
+    return unless($e);
+    return if($e =~ /^$RE{'URI'}/ || $e =~ /^$RE{'URI'}{'HTTP'}{-scheme => 'https'}$/);
     return unless(lc($e) =~ /^[a-z0-9_.-]+\@[a-z0-9.-]+\.[a-z0-9.-]{2,5}$/);
     return(1);
 }
@@ -23,9 +25,7 @@ sub prepare {
     my $class = shift;
     my $info = shift;
    
-    my $address = $info->{'address'} || return(undef);
-    return if($address =~ /^$RE{'URI'}/);
-    return unless(isEmail($address));
+    return unless(isEmail($info->{'address'}));
     return(1);
 }
 

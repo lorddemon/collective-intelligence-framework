@@ -1,10 +1,6 @@
 package CIF::Archive::Storage::Plugin::Iodef;
 use base 'CIF::Archive::Storage';
 
-our $VERSION = '0.01_02';
-$VERSION = eval $VERSION;
-
-require 5.008;
 use strict;
 use warnings;
 
@@ -18,10 +14,10 @@ sub prepare {
     foreach($class->plugins()){
         if($_->prepare($info)){
             my $dt = $info->{'detecttime'};
-            # default it to the hour
+            # default it to the day 
             unless($dt){
                 $dt = DateTime->from_epoch(epoch => time());
-                $dt = $dt->ymd().'T'.$dt->hour().':00:00Z';
+                $dt = $dt->ymd().'T'.'00:00:00Z';
             }
             $info->{'detecttime'} = $dt;
             $info->{'format'}   = 'iodef';
