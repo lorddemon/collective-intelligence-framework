@@ -40,10 +40,16 @@ sub new {
     my $class = shift;
     my $args = shift;
 
-    my $cfg = Config::Simple->new($args->{'config'}) || return(undef,'missing config file');
-    $cfg = $cfg->param(-block => 'client');
+    return(undef,'missing config file') unless($args->{'config'} || $args->{'host'});
 
-    my $apikey = $args->{'apikey'} || $cfg->{'apikey'} || return(undef,'missing apikey');
+    my $cfg;
+    
+    if($args->{'config'}){
+        $cfg = Config::Simple->new($args->{'config'}) || return(undef,'missing config file');
+        $cfg = $cfg->param(-block => 'client');
+    }
+
+    my $apikey = $args->{'apikey'} || $cfg->{'apikey'};
     unless($args->{'host'}){
         $args->{'host'} = $cfg->{'host'} || return(undef,'missing host');
     }
