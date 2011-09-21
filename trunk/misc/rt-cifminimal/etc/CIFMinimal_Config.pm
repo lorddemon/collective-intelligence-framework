@@ -51,4 +51,12 @@ Set(%CIFMinimal_UserGroupMapping,
     },
 );
 
+Set(%CIFMinimal_StaleMap,
+    'ipv4-addr' => 30,
+    'ipv4-net'  => 180,
+    'url'       => 180,
+    'domain'    => 730,
+    'hash'      => 730
+);
+
 1;
