@@ -5,7 +5,6 @@ use Data::Dumper;
 sub parse {
     my $f = shift;
     my $content = shift;
-    warn $content;
 
     require JSON;
     my $ret = JSON::from_json($content);
