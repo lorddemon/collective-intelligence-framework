@@ -9,6 +9,8 @@ use Regexp::Common qw/net/;
 sub process {
     my $self = shift;
     my $data = shift;
+    my $config = shift;
+    my $archive = shift;
 
     return unless(ref($data) eq 'HASH');
     my $addr = $data->{'rdata'};
@@ -20,7 +22,7 @@ sub process {
     my $impact = $data->{'impact'};
     $impact =~ s/domain/infrastructure/;
 
-    my ($err,$id) = CIF::Archive->insert({
+    my ($err,$id) = $archive->insert({
          description    => $data->{'description'},
          impact         => $impact,
          severity       => $data->{'severity'},
@@ -29,6 +31,7 @@ sub process {
          protocol       => $data->{'protocol'},
          address        => $addr,
          guid           => $data->{'guid'},
+         relatedid      => $data->{'uuid'},
          restriction    => $data->{'restriction'},
          alternativeid  => $data->{'alternativeid'},
          alternativeid_restriction  => $data->{'alternativeid_restriction'},

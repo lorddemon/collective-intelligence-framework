@@ -74,6 +74,8 @@ my $codes = {
 sub process {
     my $self = shift;
     my $data = shift;
+    my $config = shift;
+    my $archive = shift;
 
     return unless(ref($data) eq 'HASH');
     my $addr = $data->{'address'};
@@ -94,7 +96,6 @@ sub process {
     return unless(@rdata);
     my ($sev,$conf);
 
-    require CIF::Archive;
     foreach(@rdata){
         next unless($_->{'type'} eq 'A');
         unless($_->{'address'}){
@@ -104,7 +105,7 @@ sub process {
 
         # see http://www.spamhaus.org/faq/answers.lasso?section=Spamhaus%20PBL#183
         return if($_->{'address'} =~ /\.(10|11)$/);
-        my ($err,$id) = CIF::Archive->insert({
+        my ($err,$id) = $archive->insert({
             relatedid                   => $data->{'uuid'},
             guid                        => $data->{'guid'},
             address                     => $data->{'address'},
@@ -119,7 +120,7 @@ sub process {
             protocol                    => $code->{'protocol'} || 6,
         });
         if(lc($code->{'description'}) =~ /^direct ube sources/){
-            CIF::Archive->insert({
+            $archive->insert({
                 guid                        => $data->{'guid'},
                 relatedid                   => $data->{'uuid'},
                 address                     => $data->{'address'},

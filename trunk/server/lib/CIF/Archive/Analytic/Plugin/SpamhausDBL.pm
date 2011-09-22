@@ -51,6 +51,8 @@ foreach(20 ... 39){
 sub process {
     my $self = shift;
     my $data = shift;
+    my $config = shift;
+    my $archive = shift;
 
     return unless(ref($data) eq 'HASH');
     my $addr = $data->{'address'};
@@ -68,8 +70,7 @@ sub process {
     my $pkt = $r->send($lookup);
     my @rdata = $pkt->answer();
     return unless(@rdata);
-
-    require CIF::Archive;
+    
     foreach(@rdata){
         next unless($_->{'type'} eq 'A');
         my $code = $codes->{$_->{'address'}};
@@ -83,7 +84,7 @@ sub process {
         }
         return if($code->{'description'} =~ /BANNED/);
 
-        my ($err,$id) = CIF::Archive->insert({
+        my ($err,$id) = $archive->insert({
             guid                        => $data->{'guid'},
             relatedid                   => $data->{'uuid'},
             address                     => $data->{'address'},

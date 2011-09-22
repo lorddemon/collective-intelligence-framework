@@ -197,6 +197,9 @@ sub _process {
     my $recs = shift;
 
     require CIF::Archive;
+    my $archive = CIF::Archive->new();
+    $archive->db_Main->{'AutoCommit'} = 0;
+
     require CIF::Archive::Analytic;
     my @plugs = CIF::Archive::Analytic->plugins();
     if($disabled){
@@ -224,8 +227,10 @@ sub _process {
     warn 'detecttime: '.@{$recs}[0]->{'detecttime'} if($debug);
     foreach(@$recs){
         foreach my $p (@plugs){
-            my $r = eval { $p->process($_,$config) };
+            my $r = eval { $p->process($_,$config,$archive) };
             log_error($@) if($@);
         }
     }
+    warn 'committing....' if($debug);
+    $archive->dbi_commit();
 }

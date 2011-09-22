@@ -8,6 +8,8 @@ use Net::Abuse::Utils qw(:all);
 sub process {
     my $self = shift;
     my $data = shift;
+    my $config = shift;
+    my $archive = shift;
 
     return unless(ref($data) eq 'HASH');
     return unless($data->{'impact'});
@@ -41,7 +43,7 @@ sub process {
     }
     foreach(@rdata){
         my ($as,$network,$ccode,$rir,$date,$as_desc) = asninfo($_->{'address'});
-        my ($err,$id) = CIF::Archive->insert({
+        my ($err,$id) = $archive->insert({
             impact      => $impact,
             description => $data->{'description'},
             relatedid   => $data->{'uuid'},
