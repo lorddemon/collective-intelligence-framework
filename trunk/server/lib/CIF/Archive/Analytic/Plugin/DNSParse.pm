@@ -23,6 +23,10 @@ sub process {
     my $self = shift;
     my $data = shift;
     my $config = shift;
+    my $archive = shift;
+
+    ## TODO -- too unstable for production
+    return;
     $config = $config->param(-block => 'dnsparse');
     return unless($config->{'site'});
     return unless(ref($data) eq 'HASH');
@@ -68,11 +72,10 @@ sub process {
     my $max = $config->{'max'} || 50;
     $max = $#rdata if($max > $#rdata);
 
-    require CIF::Archive;
     foreach(0 ... $max){
         $_ = $rdata[$_];
         $_->{'rrtype'} = $codes->{$_->{'rrtype'}};
-        my ($err,$id) = CIF::Archive->insert({
+        my ($err,$id) = $archive->insert({
             impact          => 'passive dns',
             description     => $_->{'query'},
             address         => $_->{'query'},
@@ -82,6 +85,7 @@ sub process {
             severity        => 'low',
             confidence      => 85,
             guid            => $data->{'guid'},
+            relatedid       => $data->{'uuid'},
         });
         warn $err if($err);
         warn $id->uuid() if $::debug;

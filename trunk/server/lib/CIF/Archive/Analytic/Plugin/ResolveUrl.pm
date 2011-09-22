@@ -8,6 +8,8 @@ use Regexp::Common qw/URI/;
 sub process {
     my $self = shift;
     my $data = shift;
+    my $config = shift;
+    my $archive = shift;
 
     return unless(ref($data) eq 'HASH');
     my $a = $data->{'address'};
@@ -33,8 +35,7 @@ sub process {
     my $conf = $data->{'confidence'};
     $conf = ($conf / 2);
     my $impact = $data->{'impact'};
-    require CIF::Archive;
-    my $bucket = CIF::Archive->new();
+    my $bucket = $archive->new();
     my ($err,$id) = $bucket->insert({
         relatedid                   => $data->{'uuid'},
         guid                        => $data->{'guid'},

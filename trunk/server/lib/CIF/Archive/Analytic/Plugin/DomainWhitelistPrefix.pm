@@ -6,6 +6,8 @@ use warnings;
 sub process {
     my $class = shift;
     my $data = shift;
+    my $config = shift;
+    my $archive = shift;
 
     return unless(ref($data) eq 'HASH');
     return unless($data->{'impact'});
@@ -15,9 +17,8 @@ sub process {
     # 95 conf / 2 == 47.5
     return unless($data->{'confidence'} >= 47.5);
 
-    require CIF::Archive;
     my $conf = $data->{'confidence'};
-    my ($err,$id) = CIF::Archive->insert({
+    my ($err,$id) = $archive->insert({
         severity                    => 'null',
         confidence                  => ($conf / 2),
         address                     => $data->{'prefix'},
@@ -27,6 +28,7 @@ sub process {
         alternativeid               => $data->{'alternativeid'},
         alternativeid_restriction   => $data->{'alternativeid_restriction'},
         guid                        => $data->{'guid'},
+        relatedid                   => $data->{'uuid'},
     });
     warn $err if($err);
     warn $id->uuid() if($::debug);

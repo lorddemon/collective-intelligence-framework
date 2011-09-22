@@ -9,6 +9,8 @@ use DateTime::Format::DateParse;
 sub process {
     my $self = shift;
     my $data = shift;
+    my $config = shift;
+    my $archive = shift;
 
     return unless(ref($data) eq 'HASH');
     return unless($data->{'impact'});
@@ -45,7 +47,7 @@ sub process {
         my $conf = $data->{'confidence'};
         #$conf = ($conf/2) unless($_->{'type'} =~ /^(A|CNAME|PTR)$/);
         $conf = ($conf / 2);
-        my ($err,$id) = CIF::Archive->insert({
+        my ($err,$id) = $archive->insert({
             impact      => $data->{'impact'},
             guid        => $data->{'guid'},
             description => $data->{'description'},
