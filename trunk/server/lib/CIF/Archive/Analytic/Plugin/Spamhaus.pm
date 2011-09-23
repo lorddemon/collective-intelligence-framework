@@ -136,7 +136,7 @@ sub process {
             });
         }
         warn $err if($err);
-        warn $id->uuid() if($::debug);
+        warn $id->{'uuid'} if($::debug && $id);
     }
 }
 

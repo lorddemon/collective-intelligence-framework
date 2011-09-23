@@ -162,6 +162,7 @@ sub _sort_detecttime {
 ## TODO _- clean this up
 sub _insert {
     my $f = shift;
+    my $archive = shift;
     my $a = $f->{'address'} || $f->{'md5'} || $f->{'sha1'} || $f->{'malware_md5'} || $f->{'malware_sha1'};
     # protect against feeds that suck and put things like "-" in there
     # you know how the hell you are! >:0
@@ -174,7 +175,7 @@ sub _insert {
     # snag this before it goes through the insert
     # and gets converted to a uuid
     my $source = $f->{'source'};
-    my ($err,$id) = CIF::Archive->insert($f);
+    my ($err,$id) = $archive->insert($f);
     ## TODO -- setup a mailer that returns this in cif_feed_parser
     warn($err) unless($id);
     
@@ -187,11 +188,12 @@ sub _insert {
 sub insert {
     my $config = shift;
     my $recs = shift;
-
+    
     require CIF::Archive;
+    my $archive = CIF::Archive->new();
     if($config->{'database'}){
         local $^W = 0;
-        eval { CIF::Archive->connection(@{$config->{'database'}}) };
+        eval { $archive->connection(@{$config->{'database'}}) };
         ## TODO -- do a better catching of this
         if($@){
             die($@);
@@ -209,7 +211,7 @@ sub insert {
                 }
             }
         }
-        _insert($_);
+        _insert($_,$archive);
     }
     return(0);
 }
@@ -244,19 +246,23 @@ sub process {
         # TODO -- round robin the split?
         $batches = split_batches($threads,\@rr);
     }
-    return insert($config,$recs) unless(scalar @{$batches} > 1);
 
-    foreach(@{$batches}){
-        my $t = threads->create($fctn,$config,$_);
-    }
-    while(threads->list()){
-        my @joinable = threads->list(threads::joinable);
-        unless($#joinable > -1){
-            sleep(1);
-            next();
+    if(scalar @{$batches} == 1){
+        insert($config,$recs);
+    } else {
+        foreach(@{$batches}){
+            my $t = threads->create($fctn,$config,$_);
         }
-        foreach(@joinable){
-            $_->join();
+
+        while(threads->list()){
+            my @joinable = threads->list(threads::joinable);
+            unless($#joinable > -1){
+                sleep(1);
+                next();
+            }
+            foreach(@joinable){
+                $_->join();
+            }
         }
     }
 }

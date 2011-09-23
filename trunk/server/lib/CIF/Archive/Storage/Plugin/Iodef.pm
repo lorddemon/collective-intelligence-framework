@@ -6,12 +6,13 @@ use warnings;
 
 require XML::IODEF;
 use Module::Pluggable search_path => [__PACKAGE__], require => 1;
+my @plugins = __PACKAGE__->plugins();
 
 sub prepare {
     my $class = shift;
     my $info = shift;
 
-    foreach($class->plugins()){
+    foreach(@plugins){
         if($_->prepare($info)){
             my $dt = $info->{'detecttime'};
             # default it to the day 

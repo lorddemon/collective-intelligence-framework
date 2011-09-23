@@ -97,7 +97,7 @@ sub process {
             alternativeid_restriction   => 'public',
         });
         warn $err if($err);
-        warn $id->uuid() if($::debug);
+        warn $id->{'uuid'} if($::debug && $id);
     }
 }
 

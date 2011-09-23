@@ -15,6 +15,8 @@ __PACKAGE__->columns(All => qw/id uuid address md5 sha1 type confidence source g
 __PACKAGE__->columns(Essential => qw/id uuid address md5 sha1 type confidence source guid severity restriction detecttime created/);
 __PACKAGE__->sequence('domain_id_seq');
 
+my @plugins = __PACKAGE__->plugins();
+
 sub prepare {
     my $class = shift;
     my $info = shift;
@@ -32,16 +34,14 @@ sub insert {
     my $self = shift;
     my $info = shift;
 
-    my $tbl = $self->table();
-    foreach($self->plugins()){
-        if(my $t = $_->prepare($info)){
-            $self->table($tbl.'_'.$t);
+    my $t = $self->table();
+    foreach(@plugins){
+        if($_->prepare($info)){
+            $self->table($_->table());
         }
     }
-
     my $uuid    = $info->{'uuid'};
     my $addr = $info->{'address'};
-    my $id;
     my @a1 = reverse(split(/\./,$addr));
     my @a2 = @a1;
 
@@ -51,7 +51,7 @@ sub insert {
         my $md5 = md5_hex($addr);
         my $sha1 = sha1_hex($addr);
 
-        $id = eval { 
+        my $id = eval { 
             $self->SUPER::insert({
                 uuid        => $uuid,
                 address     => $addr,
@@ -70,9 +70,7 @@ sub insert {
             return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
         }
     }
-    $id = CIF::Archive->retrieve(uuid => $uuid);
-    $self->table($tbl);
-    return($id);    
+    $self->table($t);
 }
 
 sub lookup {

@@ -50,10 +50,9 @@ sub process {
         protocol                    => 6,
         source                      => $data->{'source'},
         restriction                 => $data->{'restriction'},
-        detecttime                  => $data->{'detecttime'},
     });
     warn $err if($err);
-    warn $id->uuid() if($::debug);
+    warn $id->{'uuid'} if($::debug && $id);
 }
 
 1;

@@ -55,7 +55,7 @@ sub process {
             restriction => $data->{'restriction'},
             alternativeid   => $data->{'alternativeid'},
             alternativeid_restriction   => $data->{'alternativeid_restriction'},
-            detecttime  => $data->{'detecttime'},
+            #detecttime  => $data->{'detecttime'},
             confidence  => $conf,
             asn         => $as,
             asn_desc    => $as_desc,
@@ -65,7 +65,7 @@ sub process {
             guid        => $data->{'guid'},
         });
         warn $err if($err);
-        warn $id->uuid() if $::debug;
+        warn $id->{'uuid'} if($::debug && $id);
     }
 }
 

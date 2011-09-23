@@ -36,9 +36,10 @@ sub process {
          alternativeid  => $data->{'alternativeid'},
          alternativeid_restriction  => $data->{'alternativeid_restriction'},
      });
-     warn $err if($err);
-     warn $id->uuid() if($::debug);
+    warn $err if($err);
+    warn $id->{'uuid'} if($::debug && $id);
  }
+
 
 # Preloaded methods go here.
 
