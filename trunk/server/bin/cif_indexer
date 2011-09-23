@@ -113,7 +113,7 @@ sub process {
     my $x = 1;
     my $total = scalar(@$b);
     foreach(@$b){
-        $_ = CIF::Archive->retrieve(id => $_);
+        $_ = CIF::Archive->retrieve($_);
         next unless($_);
         my @recs = @{$_->data_hash_simple()};
         foreach my $r (@recs){
