@@ -31,7 +31,7 @@ sub process {
         relatedid                   => $data->{'uuid'},
     });
     warn $err if($err);
-    warn $id->uuid() if($::debug);
+    warn $id->{'uuid'} if($::debug && $id);
 }
 
 1;

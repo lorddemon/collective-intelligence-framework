@@ -12,6 +12,8 @@ __PACKAGE__->columns(All => qw/id uuid cc source guid severity confidence restri
 __PACKAGE__->columns(Essential => qw/id uuid cc source guid severity confidence restriction detecttime created/);
 __PACKAGE__->sequence('countrycode_id_seq');
 
+my @plugins = __PACKAGE__->plugins() || __PACKAGE__;
+
 sub prepare {
     my $class = shift;
     my $info = shift;
@@ -31,9 +33,9 @@ sub insert {
 
     # you could create different buckets for different country codes
     my $tbl = $class->table();
-    foreach($class->plugins()){
+    foreach(@plugins){
         if(my $t = $_->prepare($info)){
-            $class->table($tbl.'_'.$t);
+            $class->table($_->table());
         }
     }
 
@@ -49,7 +51,6 @@ sub insert {
     }) };
     if($@){
         return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
-        $id = CIF::Archive->retrieve(uuid => $info->{'uuid'});
     }
     $class->table($tbl);
     return($id);
@@ -66,7 +67,7 @@ sub feed {
     return unless($ret);
     push(@feeds,$ret) if($ret);
 
-    foreach($class->plugins()){
+    foreach(@plugins){
         my $r = $_->_feed($info);
         push(@feeds,$r) if($r);
     }

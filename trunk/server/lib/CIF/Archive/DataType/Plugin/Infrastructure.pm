@@ -18,6 +18,8 @@ __PACKAGE__->columns(All => qw/id uuid address portlist protocol confidence sour
 __PACKAGE__->columns(Essential => qw/uuid address portlist protocol confidence source severity restriction detecttime/);
 __PACKAGE__->sequence('infrastructure_id_seq');
 
+my @plugins = __PACKAGE__->plugins();
+
 
 ## TODO -- Net::Patricia
 ## TODO -- IPv6
@@ -125,7 +127,7 @@ sub feed {
     return unless($ret);
     push(@snapshots,$ret);
 
-    foreach($class->plugins()){
+    foreach(@plugins){
         my $r = $_->myfeed($info);
         push(@snapshots,$r) if($r);
     }
@@ -140,13 +142,10 @@ sub insert {
     ## this will auto-index rdata from a domain insert
     my $address = $info->{'rdata'} || $info->{'address'};
     
-    #my ($ret,$err) = $self->check_params($tests,$info);
-    #return($ret,$err) unless($ret);
-
     my $tbl = $self->table();
-    foreach($self->plugins()){
-        if(my $t = $_->prepare($info)){
-            $self->table($tbl.'_'.$t);
+    foreach(@plugins){
+        if($_->prepare($info)){
+            $self->table($_->table());
         }
     }
 
@@ -168,10 +167,8 @@ sub insert {
     };
     if($@){
         return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
-        $id = CIF::Archive->retrieve(uuid => $uuid);
     }
     $self->table($tbl);
-    return($id);
 }
 
 sub lookup {

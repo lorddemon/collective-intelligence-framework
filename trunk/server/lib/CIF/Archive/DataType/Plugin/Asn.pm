@@ -12,6 +12,8 @@ __PACKAGE__->columns(All => qw/id uuid asn asn_desc source guid confidence sever
 __PACKAGE__->columns(Essential => qw/id uuid asn asn_desc source guid confidence severity restriction detecttime created/);
 __PACKAGE__->sequence('asn_id_seq');
 
+my @plugins = __PACKAGE__->plugins();
+
 # Preloaded methods go here.
 
 sub prepare {
@@ -33,11 +35,10 @@ sub insert {
     my $class = shift;
     my $info = shift;
 
-    # you could create different buckets for different country codes
-    my $tbl = $class->table();
-    foreach($class->plugins()){
-        if(my $t = $_->prepare($info)){
-            $class->table($tbl.'_'.$t);
+    my $table = $class->table();
+    foreach(@plugins){
+        if($_->prepare($info)){
+            $class->table($_->table());
         }
     }
 
@@ -54,10 +55,8 @@ sub insert {
     }) };
     if($@){
         return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
-        $id = CIF::Archive->retrieve(uuid => $info->{'uuid'});
     }
-    $class->table($tbl);
-    return($id);
+    $class->table($table);
 }
 
 sub lookup {
@@ -106,7 +105,7 @@ sub feed {
     return unless($ret);
     push(@feeds,$ret) if($ret);
 
-    foreach($class->plugins()){
+    foreach(@plugins){
         my $r = $_->_feed($info);
         push(@feeds,$r) if($r);
     }

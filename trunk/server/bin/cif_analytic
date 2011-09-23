@@ -35,7 +35,7 @@ use threads::shared;
 require CIF::Client;
 
 my %opts;
-getopts('z:m:b:hdT:c:D:t:a:G:', \%opts);
+getopts('M:z:m:b:hdT:c:D:t:a:G:', \%opts);
 our $debug = $opts{'d'};
 
 my $config = $opts{'c'} || $ENV{'HOME'}.'/.cif';
@@ -56,6 +56,8 @@ die usage() if($opts{'h'});
 
 $SIG{'INT'} = \&cleanup;
 $SIG{__DIE__} = \&cleanup;
+$SIG{'INT'} = $SIG{'KILL'};
+$mutex = 0;
 
 # work-around SIGALRM issue
 # http://www.nntp.perl.org/group/perl.ithreads/2003/10/msg762.html
@@ -114,10 +116,12 @@ if(-e $mutex){
     print 'already running, mutex found: '.$mutex."\n" if($debug);
     exit(-1);
 }
-my $ret = system('touch '.$mutex);
-unless(defined($ret) && $ret == 0){
-    log_error($!);
-    die;
+if($mutex && $mutex ne ''){
+    my $ret = system('touch '.$mutex);
+    unless(defined($ret) && $ret == 0){
+        log_error($!);
+        die;
+    }
 }
 
 sub usage {
@@ -134,6 +138,9 @@ Usage: perl $0 -c ~/.cif -d -T medium -m 500
                         the analytics process should back-off (or slowdown), default: $max_backoff
 EOF
 }
+
+require CIF::Archive::Analytic;
+my @plugs = CIF::Archive::Analytic->plugins();
 
 my $backoff = 1;
 do {
@@ -200,8 +207,6 @@ sub _process {
     my $archive = CIF::Archive->new();
     $archive->db_Main->{'AutoCommit'} = 0;
 
-    require CIF::Archive::Analytic;
-    my @plugs = CIF::Archive::Analytic->plugins();
     if($disabled){
         if(ref($disabled) eq 'ARRAY'){
             foreach my $d (@$disabled){

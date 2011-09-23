@@ -13,6 +13,8 @@ __PACKAGE__->columns(Essential => qw/id uuid address guid source confidence seve
 __PACKAGE__->columns(All => qw/id uuid address guid source confidence severity restriction detecttime created/);
 __PACKAGE__->sequence('email_id_seq');
 
+my @plugins = __PACKAGE__->plugins();
+
 sub isEmail {
     my $e = shift;
     return unless($e);
@@ -33,10 +35,10 @@ sub insert {
     my $self = shift;
     my $info = shift;
 
-    my $tbl = $self->table();
-    foreach($self->plugins()){
-        if(my $t = $_->prepare($info)){
-            $self->table($tbl.'_'.$t);
+    my $t = $self->table();
+    foreach(@plugins){
+        if($_->prepare($info)){
+            $self->table($_->table());
         }
     }
     
@@ -51,11 +53,9 @@ sub insert {
         guid            => $info->{'guid'},
     }) };
     if($@){
-        die unless($@ =~ /duplicate key value violates unique constraint/);
-        $id = CIF::Archive->retrieve(uuid => $info->{'uuid'});
+        return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
     }
-    $self->table($tbl);
-    return($id);
+    $self->table($t);
 }
 
 sub feed {
@@ -68,7 +68,7 @@ sub feed {
     return unless($ret);
     push(@feeds,$ret) if($ret);
 
-    foreach($class->plugins()){
+    foreach(@plugins){
         my $r = $_->SUPER::_feed($info);
         push(@feeds,$r) if($r);
     }

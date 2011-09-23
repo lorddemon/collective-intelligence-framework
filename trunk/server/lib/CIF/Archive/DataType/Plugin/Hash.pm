@@ -12,11 +12,13 @@ __PACKAGE__->columns(All => qw/id uuid hash confidence guid source type severity
 __PACKAGE__->columns(Essential => qw/id uuid hash confidence guid source type severity restriction detecttime created data/);
 __PACKAGE__->sequence('hash_id_seq');
 
+my @plugins = __PACKAGE__->plugins();
+
 sub prepare {
     my $class = shift;
     my $info = shift;
 
-    foreach my $p ($class->plugins()){
+    foreach my $p (@plugins){
         return(1) if($p->prepare($info));
     }
     return(undef);
@@ -25,30 +27,27 @@ sub prepare {
 sub insert {
     my $class = shift;
     my $info = shift;
-
-    my $tbl = $class->table();
-    my $id;
-    foreach($class->plugins()){
-        if(my $t = $_->prepare($info)){
-            $class->table($tbl.'_'.$t);
-            $id = eval { $class->SUPER::insert({
-                uuid        => $info->{'uuid'},
-                hash        => $info->{'hash'},
-                source      => $info->{'source'},
-                confidence  => $info->{'confidence'},
-                severity    => $info->{'severity'} || 'null',
-                restriction => $info->{'restriction'} || 'private',
-                detecttime  => $info->{'detecttime'},
-                guid        => $info->{'guid'},
-            }) };
-            if($@){
-                return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
-                $id = CIF::Archive->retrieve(uuid => $info->{'uuid'});
-            }
+    
+    my $t = $class->table();
+    foreach(@plugins){
+        if($_->prepare($info)){
+            $class->table($_->table());
         }
     }
-    $class->table($tbl);
-    return($id);
+    my $id = eval { $class->SUPER::insert({
+        uuid        => $info->{'uuid'},
+        hash        => $info->{'hash'},
+        source      => $info->{'source'},
+        confidence  => $info->{'confidence'},
+        severity    => $info->{'severity'} || 'null',
+        restriction => $info->{'restriction'} || 'private',
+        detecttime  => $info->{'detecttime'},
+        guid        => $info->{'guid'},
+    }) };
+    if($@){
+        return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
+    }
+    $class->table($t);
 }
 
 sub feed {
@@ -61,7 +60,7 @@ sub feed {
     return unless($ret);
     push(@feeds,$ret) if($ret);
 
-    foreach($class->plugins()){
+    foreach(@plugins){
         my $r = $_->_feed($info);
         push(@feeds,$r) if($r);
     }
@@ -72,7 +71,7 @@ sub lookup {
     my $class = shift;
     my $info = shift;
     my $q = $info->{'query'};
-    foreach($class->plugins()){
+    foreach(@plugins){
         if(my $r = $_->lookup($q)){
             if($info->{'guid'}){
                 return(

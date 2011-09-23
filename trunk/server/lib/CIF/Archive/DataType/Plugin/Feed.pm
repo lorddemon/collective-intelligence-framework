@@ -26,7 +26,6 @@ sub insert {
     my $id = eval { $self->SUPER::insert($info) };
     if($@){
         return(undef,$@) unless($@ =~ /unique/);
-        $id = CIF::Archive->retrieve(uuid => $uuid);
     }
     return($id);
 }

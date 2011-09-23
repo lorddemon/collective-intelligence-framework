@@ -10,7 +10,9 @@ __PACKAGE__->table('rir');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid rir guid source confidence severity restriction detecttime created/);
 __PACKAGE__->columns(Essential => qw/id uuid rir guid source confidence severity restriction detecttime created/);
-__PACKAGE__->sequence('asn_id_seq');
+__PACKAGE__->sequence('rir_id_seq');
+
+my @plugins = __PACKAGE__->plugins();
 
 # Preloaded methods go here.
 
@@ -27,14 +29,14 @@ sub insert {
     my $class = shift;
     my $info = shift;
 
-    my $tbl = $class->table();
-    foreach($class->plugins()){
-        if(my $t = $_->prepare($info)){
-            $class->table($tbl.'_'.$t);
+    my $t = $class->table();
+    foreach(@plugins){
+        if($_->prepare($info)){
+            $class->table($_->table());
         }
     }
 
-    my $id = eval { $class->SUPER::insert({
+    my $id = $class->SUPER::insert({
         uuid        => $info->{'uuid'},
         rir         => $info->{'rir'},
         source      => $info->{'source'},
@@ -43,13 +45,8 @@ sub insert {
         restriction => $info->{'restriction'} || 'private',
         detecttime  => $info->{'detecttime'},
         guid        => $info->{'guid'},
-    }) };
-    if($@){
-        return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
-        $id = CIF::Archive->retrieve(uuid => $info->{'uuid'});
-    }
-    $class->table($tbl);
-    return($id);
+    });
+    $class->table($t);
 }
 
 sub lookup {
@@ -100,7 +97,7 @@ sub feed {
     return unless($ret);
     push(@feeds,$ret) if($ret);
 
-    foreach($class->plugins()){
+    foreach(@plugins){
         my $r = $_->_feed($info);
         push(@feeds,$r) if($r);
     }

@@ -17,6 +17,8 @@ __PACKAGE__->columns(All => qw/id uuid guid source address confidence severity r
 __PACKAGE__->columns(Essential => qw/id uuid guid source address confidence severity restriction detecttime created/);
 __PACKAGE__->sequence('url_id_seq');
 
+my @plugins = __PACKAGE__->plugins();
+
 ## sub lookup {} is via Plugin::Hash
 sub lookup { return; }
 
@@ -45,10 +47,10 @@ sub insert {
     my $uuid    = $info->{'uuid'};
     my $address = $info->{'address'};
 
-    my $tbl = $self->table();
-    foreach($self->plugins()){
-        if(my $t = $_->prepare($info)){
-            $self->table($tbl.'_'.$t);
+    my $t = $self->table();
+    foreach(@plugins){
+        if($_->prepare($info)){
+            $self->table($t);
         }
     }
 
@@ -63,11 +65,9 @@ sub insert {
         guid            => $info->{'guid'},
     }) };
     if($@){
-        die unless($@ =~ /duplicate key value violates unique constraint/);
-        $id = CIF::Archive->retrieve(uuid => $uuid);
+        return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
     }
-    $self->table($tbl);
-    return($id);
+    $self->table($t);
 }
 
 sub myfeed {
@@ -108,7 +108,7 @@ sub feed {
     return unless($ret);
     push(@feeds,$ret) if($ret);
 
-    foreach($class->plugins()){
+    foreach(@plugins){
         my $r = $_->myfeed($info);
         push(@feeds,$r) if($r);
     }

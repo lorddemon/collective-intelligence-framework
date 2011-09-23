@@ -12,11 +12,17 @@ use Data::Dumper;
 use Config::Simple;
 use CIF::Utils ':all';
 
+require CIF::Archive::Storage;
+require CIF::Archive::DataType;
+
 __PACKAGE__->table('archive');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(All => qw/id uuid source guid format description data restriction created/);
 __PACKAGE__->columns(Essential => qw/id uuid format description source restriction data created/);
 __PACKAGE__->sequence('archive_id_seq');
+
+my @storage_plugs = CIF::Archive::Storage->plugins();
+my @datatype_plugs = CIF::Archive::DataType->plugins();
 
 sub plugins {
     my $class = shift;
@@ -25,13 +31,11 @@ sub plugins {
     my @plugs;
     for(lc($type)){
         if(/^storage$/){
-            require CIF::Archive::Storage;
-            return CIF::Archive::Storage->plugins();
+            return @storage_plugs;
             last;
         }
         if(/^datatype$/){
-            require CIF::Archive::DataType;
-            return CIF::Archive::DataType->plugins();
+            return @datatype_plugs;
             last;
         }
     }
@@ -105,9 +109,16 @@ sub insert {
     $info->{'uuid'} = genMessageUUID($source,$msg);
     $info->{'data'} = $msg;
 
-    local $@;
+    ## TODO -- test this
+    ## http://archives.postgresql.org/pgsql-performance/2008-12/msg00225.php
+    ## write out to a tmp table; them merge the non dups via query?
+    my $r = $self->retrieve(uuid => $info->{'uuid'});
+    return (undef,$r) if($r);
+
     my $id = eval {
-        local $SIG{__DIE__};
+        # this needs to be here
+        # if we manipulate __DIE__ in the global space it creates
+        # all sorts of problems for catching duplicate key violations
         $self->SUPER::insert({
             uuid        => $info->{'uuid'},
             format      => $info->{'format'},
@@ -119,29 +130,41 @@ sub insert {
         });
     };
     if($@){
-        return($@,undef) unless($@ =~ /duplicate key value violates unique constraint/);
-        $id = eval { $self->retrieve(uuid => $info->{'uuid'}) };
+        $self->dbi_rollback() unless($self->db_Main->{'AutoCommit'});
+        return($@,undef);
     }
-    $info->{'uuid'} = $id->uuid();
+
     delete($info->{'format'});
     # now do the plugin insert
     foreach my $p (@dt_plugs){
         my ($did,$err) = eval {
-            local $SIG{__DIE__};
-            $p->insert($info);
+            #local $SIG{__DIE__};
+            ## TODO -- same here, see above, this is prolly too slow
+            my $pid = $p->retrieve(uuid => $id->uuid());
+            unless($pid){
+                $pid = $p->insert($info);
+            }
         };
-        if($@ && $@ !~ /duplicate key value violates/){
-            $id->delete();
+        if($@){
+            if($self->db_Main->{'AutoCommit'}){
+                $id->delete();
+            } else {
+                $self->dbi_rollback();
+            }
             return($@,undef);
-        }
-        if($err){
-            warn $err;
-            $id->delete();
-            return($err,undef);
         }
     }
     return(undef,$id);
 }
+
+#__PACKAGE__->set_sql(MakeNewObj => qq{ 
+#    BEGIN
+#        INSERT INTO __TABLE__ (%s) VALUES (%s)
+#        RETURN
+#    EXCEPTION WHEN unique_violation THEN
+#         -- do nothing
+#    END;
+#});
 
 __PACKAGE__->set_sql('lookup' => qq{
     SELECT __TABLE__.id,__TABLE__.uuid
