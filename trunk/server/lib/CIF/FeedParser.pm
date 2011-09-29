@@ -200,6 +200,7 @@ sub insert {
         }
         local $^W = 1;
     }
+    #$archive->db_Main->{'AutoCommit'} = 0;
 
     foreach (@$recs){
         foreach my $key (keys %$_){
@@ -213,6 +214,7 @@ sub insert {
         }
         _insert($_,$archive);
     }
+    $archive->dbi_commit() unless($archive->db_Main->{'AutoCommit'});
     return(0);
 }
 
