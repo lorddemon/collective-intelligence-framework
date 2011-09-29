@@ -118,6 +118,7 @@ sub process {
         my @recs = @{$_->data_hash_simple()};
         foreach my $r (@recs){
             next unless($plug->prepare($r));
+            next if($plug->retrieve(uuid => $r->{'uuid'}));
             my $id = $plug->insert($r);
         }
         my $done = (($x++/$total) * 100);

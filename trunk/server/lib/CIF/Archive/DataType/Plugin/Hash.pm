@@ -32,20 +32,22 @@ sub insert {
     foreach(@plugins){
         if($_->prepare($info)){
             $class->table($_->table());
+        
+        my $id = eval { $class->SUPER::insert({
+            uuid        => $info->{'uuid'},
+            hash        => $info->{'hash'},
+            source      => $info->{'source'},
+            confidence  => $info->{'confidence'},
+            severity    => $info->{'severity'} || 'null',
+            restriction => $info->{'restriction'} || 'private',
+            detecttime  => $info->{'detecttime'},
+            guid        => $info->{'guid'},
+        }) };
+    
+        if($@){
+                return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
+            }
         }
-    }
-    my $id = eval { $class->SUPER::insert({
-        uuid        => $info->{'uuid'},
-        hash        => $info->{'hash'},
-        source      => $info->{'source'},
-        confidence  => $info->{'confidence'},
-        severity    => $info->{'severity'} || 'null',
-        restriction => $info->{'restriction'} || 'private',
-        detecttime  => $info->{'detecttime'},
-        guid        => $info->{'guid'},
-    }) };
-    if($@){
-        return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);
     }
     $class->table($t);
 }

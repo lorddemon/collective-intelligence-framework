@@ -3,7 +3,6 @@ package CIF::WebAPI::Writer::table;
 use JSON;
 use MIME::Base64;
 use Compress::Zlib;
-require CIF::Client;
 
 =head1 NAME
 
@@ -55,8 +54,7 @@ sub asBytes{
     if(1 || $args{'conf'}->{'simple'}){
         CIF::Client->hash_simple($hash);
     }
- 
-    my $t = CIF::Client::Plugin::Table->write_out(undef,$hash->{'data'},undef);
+    my $t = CIF::Client::Plugin::Table->write_out({group_map => 1},$hash->{'data'},undef);
     return($t);
 }
 
