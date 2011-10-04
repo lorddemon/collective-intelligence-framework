@@ -11,8 +11,8 @@ timeout = 60
 }}}
 
 = Details =
-
- # First, we create a new instance of [http://search.cpan.org/~saxjazman/CIF-Client/lib/CIF/Client.pm CIF::Client]
+ # First, ensure you've installed the PerlClient
+ # We create a new instance of [http://search.cpan.org/~saxjazman/CIF-Client/lib/CIF/Client.pm CIF::Client]
 {{{
 my ($client,$err) = CIF::Client->new({ 
     config      => '/home/wes/.cif',
