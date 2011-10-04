@@ -15,6 +15,12 @@ This API uses a simple UUID for it's authorization. This key is passed to the ap
 The CIF WebAPI follows a RESTful API design,  meaning that you use standard HTTP methods to retrieve and manipulate resources. For example, to get the profile of a user, you might send an HTTP request like:
 {{{
 GET https://cif.example.com:443/api/example.com?apikey=xxxxx
+
+GET https://cif.example.com:443/api/example.com?apikey=xxxxx&severity=high
+
+GET https://cif.example.com:443/api/example.com?apikey=xxxxx&severity=high&confidence=50
+
+GET https://cif.example.com:443/api/example.com?apikey=xxxxx&nolog=1
 }}}
 == Common Parameters ==
 || Parameter Name || Value || Description ||
