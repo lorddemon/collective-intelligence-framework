@@ -42,6 +42,9 @@ sub prepare {
     my $address = $info->{'rdata'} || $info->{'address'};
     return unless($address);
 
+    # protect against hostnames with addresses in them
+    return if($address =~ /^[a-zA-Z0-9.-]+\.[a-z]{2,6}$/);
+
     # be sure to guard against things like 1.1.1.1/exe.exe
     # when we move to ipv6, be sure to for() this and anchor them down
     # the DataType::Plugin::Url can confuse it if you don't
@@ -176,6 +179,7 @@ sub lookup {
     my $info = shift;
     my $q = $info->{'query'};
     return(undef) unless($q && $q =~ /^$RE{'net'}{'IPv4'}/);
+    return if($q =~ /^[a-zA-Z0-9.-]+\.[a-z]{2,6}$/);
     my $sev = $info->{'severity'};
     my $conf = $info->{'confidence'};
     my $restriction = $info->{'restriction'};

@@ -9,6 +9,7 @@ sub prepare {
     my $frag = shift;
 
     return unless($frag =~ /^($RE{'net'}{'IPv4'})/);
+    return if($frag =~ /[a-zA-Z0-9.-]+\.[a-z]{2,6}$/);
     return(1);
 }
 
