@@ -23,6 +23,8 @@ GET https://cif.example.com:443/api/example.com?apikey=xxxxx
 || confidence || 0-100 || filter by confidence ||
 || restriction || [need-to-know|private] || filter by restriction ||
 || guid || <uuid> || filter by group uuid ||
+|| nomap || <boolean> || don't map restriction to your local restriction map ||
+|| nolog || <boolean> || don't log the query ||
 
 = Data Formats =
 Resources in the CIF WebAPI are represented using JSON+IODEF embedded in a sort of JSON+ATOM data formats. For example, retrieving a malicious domain address may result in a response like:
