@@ -25,5 +25,73 @@ GET https://cif.example.com:443/api/example.com?apikey=xxxxx
 || guid || <uuid> || filter by group uuid ||
 
 = Data Formats =
-Resources in the CIF WebAPI are represented using JSON+IODEF data formats. For example, retrieving a botnet infrastructure ipv4 address may result in a response like:
+Resources in the CIF WebAPI are represented using JSON+IODEF embedded in a sort of JSON+ATOM data formats. For example, retrieving a malicious domain address may result in a response like:
+{{{
+{
+  "status": 200,
+  "data": {
+    "feed": {
+      "source": "c2a2473aa6adcaf5fd68cb2a02a6d3a1510e7b10",
+      "group_map": {
+        "8c864306-d21a-37b1-8705-746a786719bf": "everyone",
+       },
+       "entry": [
+         {
+           "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+           "version": "1.0",
+	   "Incident": {
+    	     "Assessment": {
+	       "Impact": {
+		  "content": "search",
+		  "severity": "low"
+	       },
+	       "Confidence": {
+	         "content": "50",
+                 "rating": "numeric"
+               }
+             },
+             "purpose": "mitigation",
+	     "EventData": {
+	       "Flow": {
+		  "System": {
+		    "Node": {
+		      "Address": {
+		        "content": "example.com",
+			"category": "ext-value",
+			"ext-category": "domain"
+		      }
+		    },
+		   "AdditionalData": {
+		     "dtype": "string",
+		     "content": "A",
+		     "meaning": "type"
+		   }
+		 }
+	       }
+	     },
+	     "IncidentID": {
+	       "name": "ce61a4b0-2116-39a7-9a28-3592c192bb90"
+	     },
+	     "DetectTime": "2011-10-04T00:00:00Z",
+             "restriction": "private",
+             "Description": "search example.com",
+             "AdditionalData": {
+               "dtype": "string",
+               "content": "0f3421e5-c4d7-323c-af8c-eb32c12f08c5",
+               "meaning": "guid"
+             }
+           },
+           "xsi:schemaLocation": "urn:ietf:params:xmls:schema:iodef-1.0",
+           "uuid": "6efcfaa6-80ad-547c-a914-0c0ea54dcdbb"
+         }
+       ],
+       "detecttime": "2011-10-04T20:20:45Z",
+       "description": "search example.com",
+       "restriction": "private"
+     }
+  },
+  "message": ""
+}
+}}}
+The "feed" structure embeds the IODEF objects as entries.
 == Common Parameters ==
