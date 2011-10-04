@@ -27,7 +27,8 @@ sub process {
     $r->tcp_timeout(2);
     my $pkt = $r->send($addr);
     my $ns;
-    unless($data->{'impact'} =~ /whitelist/){
+    # protect against whitelists and CDN's
+    unless($data->{'impact'} =~ /whitelist/ || $data->{'impact'} =~ /nameserver/){
         $ns = $r->send($addr,'NS');
         # work-around for things like co.cc, co.uk, etc..
         ## TODO -- clean this up with official TLD lists
@@ -47,6 +48,7 @@ sub process {
         my $conf = $data->{'confidence'};
         #$conf = ($conf/2) unless($_->{'type'} =~ /^(A|CNAME|PTR)$/);
         $conf = ($conf / 2);
+        next if($conf < 1);
         my ($err,$id) = $archive->insert({
             impact      => $data->{'impact'},
             guid        => $data->{'guid'},
