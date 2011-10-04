@@ -1,0 +1,116 @@
+#summary an example of how to use the CIF::Client perl library
+
+= Introduction =
+
+Before you begin, you'll need to setup your ~/.cif config as follows:
+{{{
+[client]
+host = https://www.example.com:443/api
+apikey = xxxxxxx
+timeout = 60
+}}}
+
+= Details =
+
+ # First, we create a new instance of [http://search.cpan.org/~saxjazman/CIF-Client/lib/CIF/Client.pm CIF::Client]
+{{{
+my ($client,$err) = CIF::Client->new({ 
+    config      => '/home/wes/.cif',
+});
+}}}
+ # This set's up a new instance of REST::Client (a simple libwww wrapper). 
+ # Now we query the API:
+{{{
+my $feed = $client->GET(
+        query       => $_,
+);
+die('request failed with code: '.$client->responseCode()."\n\n".$client->responseContent()) unless($client->responseCode == 200);
+}}}
+ #The server will return a hash reference that mostly resembles an [http://tools.ietf.org/html/rfc4287 ATOM] structure, where the result records from the query are embedded in the "entry" object:
+{{{
+my @recs = @{$feed->{'feed'}->{'entry'}};
+}}}
+ # To print out the records we simply:
+{{{
+foreach (@recs){
+  print $_->{'address'}."\n";
+}
+}}}
+
+= Examples =
+ # How the [http://code.google.com/p/collective-intelligence-framework/source/browse/trunk/client/perl/CIF-Client/script/cif CLI] works
+{{{
+my ($client,$err) = CIF::Client->new({ 
+    config      => $c,
+    fields      => $fields,
+    nolog       => $nolog,
+    verify_tls  => $verify_tls,
+    guid        => $guid,
+});
+
+die($err) unless($client);
+
+my @q = split(/\,/,$query);
+foreach (@q){
+    my $feed = $client->GET(
+        query       => $_,
+        severity    => $severity,
+        restriction => $restriction,
+        nolog       => $nolog,
+        nomap       => $nomap,
+        confidence  => $confidence,
+        limit       => $limit,
+    );
+    die('request failed with code: '.$client->responseCode()."\n\n".$client->responseContent()) unless($client->responseCode == 200);
+   
+    my $plug = 'CIF::Client::Plugin::'.ucfirst($plugin);
+    eval "require $plug";
+    die($@) if($@);
+    $feed->{'query'} = $_;
+    print $plug->write_out($client,$feed,$summary) if($feed->{'feed'});
+}
+}}}
+ # Getting data within [http://code.google.com/p/collective-intelligence-framework/source/browse/trunk/misc/rt-cifminimal/lib/RT/CIFMinimal.pm#13 RT]
+ # Another [http://code.google.com/p/collective-intelligence-framework/source/browse/trunk/misc/rt-cifminimal/html/Minimal/Display.html RT Example]
+ # [http://code.google.com/p/collective-intelligence-framework/source/browse/trunk/client/perl/CIF-Client/lib/CIF/Client/Plugin/Snort.pm Example Snort Output Plugin]
+{{{
+sub write_out {
+    my $self = shift;
+    my $config = shift;
+    my $feed = shift;
+    my @array = @{$feed->{'feed'}->{'entry'}};
+    return '' unless(exists($array[0]->{'address'}));
+    my $sid = ($config->{'snortsid'}) ? $config->{'snortsid'} : 1;
+    my $rules = '';
+    foreach (@array){
+        next unless($_->{'address'});
+        if(exists($_->{'rdata'})){
+            $_->{'portlist'} = 53;
+        }
+        my $portlist = ($_->{'portlist'}) ? $_->{'portlist'} : 'any';
+
+        my $priority = 1;
+        for(lc($_->{'severity'})){
+            $priority = 5 if(/medium/);
+            $priority = 9 if(/high/);
+        }
+
+        my $r = Snort::Rule->new(
+            -action => 'alert',
+            -proto  => 'ip',
+            -src    => 'any',
+            -sport  => 'any',
+            -dst    => $_->{'address'},
+            -dport  => $portlist,
+            -dir    => '->',
+        );
+        $r->opts('msg',$_->{'restriction'}.' - '.$_->{'impact'}.' '.$_->{'description'});
+        $r->opts('threshold','type limit,track by_src,count 1,seconds 3600');
+        $r->opts('sid',$sid++);
+        $r->opts('reference',$_->{'alternativeid'}) if($_->{'alternativeid'});
+        $r->opts('priority',$priority);
+        $rules .= $r->string()."\n";
+    }
+    return $rules;
+}
+}}}
