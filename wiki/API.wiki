@@ -1,0 +1,29 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Add your content here.
+
+= Authorization =
+
+This API uses a simple UUID for it's authorization. This key is passed to the api using the following parameter:
+{{{
+&apikey=xxxx
+}}}
+
+= API Calls =
+The CIF WebAPI follows a RESTful API design,  meaning that you use standard HTTP methods to retrieve and manipulate resources. For example, to get the profile of a user, you might send an HTTP request like:
+{{{
+GET https://cif.example.com:443/api/example.com?apikey=xxxxx
+}}}
+== Common Parameters ==
+|| Parameter Name || Value || Description ||
+|| apikey || <uuid> || specify your apikey ||
+|| severity || <low|medium|high> || filter by severity ||
+|| confidence || 0-100 || filter by confidence ||
+|| restriction || [need-to-know|private] || filter by restriction ||
+|| guid || <uuid> || filter by group uuid ||
+
+= Data Formats =
+Resources in the CIF WebAPI are represented using JSON+IODEF data formats. For example, retrieving a botnet infrastructure ipv4 address may result in a response like:
+== Common Parameters ==
