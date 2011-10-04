@@ -21,7 +21,28 @@ GET https://cif.example.com:443/api/example.com?apikey=xxxxx&severity=high
 GET https://cif.example.com:443/api/example.com?apikey=xxxxx&severity=high&confidence=50
 
 GET https://cif.example.com:443/api/example.com?apikey=xxxxx&nolog=1
+
+GET https://cif.example.com:443/api/infrastructure?apikey=xxxxx
+
+GET https://cif.example.com:443/api/domain/botnet?apikey=xxxxx
+
+GET https://cif.example.com:443/api/1.1.1.1?apikey=xxxxx
+
+GET https://cif.example.com:443/api/1.1.1.0/24?apikey=xxxxx
 }}}
+== Common DataTypes ==
+|| Name || Description ||
+|| infrastructure || ||
+|| infrastructure/botnet || ||
+|| infrastructure/malware || ||
+|| domain || || 
+|| domain/botnet || || 
+|| domain/malware || || 
+|| url || || 
+|| url/botnet || || 
+|| url/malware || || 
+|| hash || ||
+
 == Common Parameters ==
 || Parameter Name || Value || Description ||
 || apikey || <uuid> || specify your apikey ||
