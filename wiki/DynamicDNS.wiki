@@ -1,4 +1,4 @@
-#quick and dirty list of dynamic dns providers
+#summary quick and dirty list of dynamic dns providers
 
 {{{
 http://en.wikipedia.org/wiki/Dynamic_DNS
