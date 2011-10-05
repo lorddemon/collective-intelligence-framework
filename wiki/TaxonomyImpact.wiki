@@ -1,5 +1,6 @@
+#summary impact descriptions
 #labels Featured,Phase-Support
-#a dictionary of how we're using the Assessment Impact class
+
 <wiki:toc max_depth="3" />
 
 = Introduction =
