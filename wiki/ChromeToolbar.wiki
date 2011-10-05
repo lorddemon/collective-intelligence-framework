@@ -1,5 +1,5 @@
+#summary how to leverage CIF with Google Chrome
 #labels Phase-Deploy
-this will show you how to leverage CIF with Google Chrome
 
 = Installation =
  1. install the [https://chrome.google.com/webstore/detail/mknehpjhljpfaghmicofickbkdagooni SearchBox] extension
