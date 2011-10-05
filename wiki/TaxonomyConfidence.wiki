@@ -1,5 +1,5 @@
 #summary confidence descriptions
-#labels Featured,Phase-Support
+#labels Phase-Support
 
 = Introduction =
 
