@@ -1,4 +1,4 @@
-#howto install the perl client
+#summary howto install the perl client
  
  1. make sure your "ssl-dev" packages are installed, this could be:
   1. libssl-dev (debian)
