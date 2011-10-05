@@ -50,6 +50,7 @@ $ http://search.cpan.org/CPAN/authors/id/S/SH/SHERZODR/Config-Simple-4.59.tar.gz
 $ tar -zxvf Config-Simple-4.59.tar.gz
 $ cd Config-Simple-4.59 && perl Makefile.PL && sudo make install
 }}}
+ * we're using postgres as an embedded db, these current configs assume your postgres instance is locked down from the outside world. if someone gets shell, they've already got your data.
 
 == Server ==
  # install the PerlClient (we use some functions in it for the server)
