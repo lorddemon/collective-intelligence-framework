@@ -26,6 +26,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 = Prerequisites =
 == Required Services ==
  # Join the [http://groups.google.com/group/ci-framework mailing list] -- we like to archive the Q and A there. When you ask questions directly, I will usually Cc my responses.
+ # DiskLayout
  # PostgresInstall
  # BindSetup
 
@@ -37,6 +38,10 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 
 = Install =
 == Known Issues ==
+ # *IF YOU'RE USING A PREVIOUS VERSION OF CIF (aka: beta2), you'll need to drop your database, including any apikeys you've generated. We've added unix style "group" support to both the data-warehouse as well as the apikeys*
+{{{
+$ psql -U postgres -c 'DROP DATABASE cif'
+}}}
  # libwww6 was released mid-stream on us; which drastically changes the way libwww works (LWP, etc). Before you begin, make sure you update your libwww-perl instance to v6 until we fix this in the Makefile.am:
 {{{
 $ sudo perl -MCPAN -e 'install LWP::Simple'
@@ -56,7 +61,7 @@ $ sudo useradd -U -m cif
 }}}
  # install the core server interface
 {{{
-$ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01_20110729_163359.tar.gz
+$ wget PUSHING CODE PLZ HOLD
 $ tar -zxvf cif-0.01_20110729_163359.tar.gz
 $ cd cif-0.01_20110729_163359
 $ ./configure
@@ -87,7 +92,7 @@ fi
 }}}
  # generate your initial apikey to be used with your [ClientSetup client]
 {{{
-$ cif_apikeys -u myuser@mydomain.com -a
+$ cif_apikeys -u myuser@mydomain.com -a -g everyone -G everyone
 }}}
  # to list all of your apikeys:
 {{{
@@ -116,16 +121,12 @@ disabled_feeds = hash
     PerlSetVar Apache2RESTAppAuth 'CIF::WebAPI::AppAuth'
 
     # feed defaults
-    PerlSetVar CIFFeedResultsDefault 10000
+    PerlSetVar CIFLookupLimitDefault 500
     PerlSetVar CIFDefaultFeedSeverity "high"
 
     # extra outputs
     PerlAddVar Apache2RESTWriterRegistry 'table'
     PerlAddVar Apache2RESTWriterRegistry 'CIF::WebAPI::Writer::table'
-
-    # restriction mapping
-#    PerlAddVar CIFRestrictionMap 'private'
-#    PerlAddVar CIFRestrictionMap 'RESTRICTED'
 </Location>
 }}}
  # add your "www-data" user (whoever apache is set to run under) to the group "cif" (/etc/group):
@@ -138,11 +139,11 @@ $ sudo adduser www-data cif
 {{{
 $ time /opt/cif/bin/cif_crontool -f -d
 }}}
- # after this starts, run your first batch of analytics (the first batch might take a few days)
+ # after this starts, run your first batch of analytics (the first batch might take a few hours up through a few days depending on how much data you have, as long as you keep seeing uuid's fly across the screen.. you're good). If you have more cores/ram, you can increase -t/-m respectively. Sending cif_analytic a "KILL -INT" (CTRL+C) will spin down the process when it's finished the current batch so you can adjust accordingly. It'll pick back up where it left off.
 {{{
 $ time /opt/cif/bin/cif_analytic -d -t 16 -m 1000
 }}}
- # when that's finished, run your first batch of feeds
+ # when that's finished, run your first batch of feeds (could take anywhere from 20min to 2 hours depending on system, data load, etc)
 {{{
 $ time /opt/cif/bin/cif_feeds -d
 }}}
