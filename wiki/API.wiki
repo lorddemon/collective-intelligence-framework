@@ -1,4 +1,5 @@
 #introduction to the CIF API
+<wiki:toc max_depth="3" />
 
 = Introduction =
 
@@ -30,6 +31,7 @@ GET https://cif.example.com:443/api/1.1.1.1?apikey=xxxxx
 
 GET https://cif.example.com:443/api/1.1.1.0/24?apikey=xxxxx
 }}}
+
 == Common DataTypes ==
 || Name || Description ||
 || infrastructure || ||
