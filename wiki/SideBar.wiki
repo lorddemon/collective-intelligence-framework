@@ -5,6 +5,7 @@
   * [ClientSetupDebianLenny Debian Lenny]
   * [ClientSetupDebianSqueeze Debian Squeeze]
   * [ClientSetupRedhat5 Redhat]
+  * [ClientSetupFreeBSD FreeBSD]
  * [ServerInstall_Beta3 Server]
  * [API]
   * PerlExample
