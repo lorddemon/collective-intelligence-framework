@@ -1,5 +1,5 @@
+#summary confidence descriptions
 #labels Featured,Phase-Support
-#this page describes how we manually determine confidence (for now)
 
 = Introduction =
 
