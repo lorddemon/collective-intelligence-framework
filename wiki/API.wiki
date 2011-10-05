@@ -1,6 +1,6 @@
 #introduction to the CIF API
-<wiki:toc max_depth="4" />
 <g:plusone size="medium"></g:plusone>
+<wiki:toc max_depth="4" />
 = Introduction =
 
 The CIF WebAPI is the programming interface to CIF. You can use this API to integrate CIF based data into your day to day applications (RT, ArcSight, NFSen, Placid, etc...)
