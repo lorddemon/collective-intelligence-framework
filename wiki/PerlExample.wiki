@@ -22,22 +22,79 @@ my ($client,$err) = CIF::Client->new({
  # Now we query the API:
 {{{
 my $feed = $client->GET(
-        query       => $_,
+        query       => $q,
 );
 die('request failed with code: '.$client->responseCode()."\n\n".$client->responseContent()) unless($client->responseCode == 200);
 }}}
- #The server will return a hash reference that mostly resembles an [http://tools.ietf.org/html/rfc4287 ATOM] structure, where the result records from the query are embedded in the "entry" object:
+ # The server will return a hash reference that mostly resembles an [http://tools.ietf.org/html/rfc4287 ATOM] structure which looks like (using Data::Dumper):
+{{{
+$VAR1 = {
+          'status' => 200,
+          'data' => {
+                      'feed' => {
+                                  'source' => '19ecedcc4b9189f8c2b3bc2d1ad6f5d49c181d1d',
+                                  'entry' => [
+                                               {
+                                                 'protocol' => undef,
+                                                 'source' => '9658c1e0-81c2-31e6-b39c-0e2fe55ae1df',
+                                                 'purpose' => 'mitigation',
+                                                 'uuid' => '5a407066-378f-5454-81b5-83540c68989c',
+                                                 'portlist' => undef,
+                                                 'alternativeid' => undef,
+                                                 'detecttime' => '2011-10-05T00:00:00Z',
+                                                 'address' => 'example.com',
+                                                 'guid' => '0146a333-cfa7-3464-b890-0e37b96a741d',
+                                                 'alternativeid_restriction' => undef,
+                                                 'severity' => 'low',
+                                                 'rdata' => undef,
+                                                 'description' => 'search example.com',
+                                                 'relatedid' => undef,
+                                                 'type' => 'A',
+                                                 'confidence' => '50',
+                                                 'restriction' => 'private',
+                                                 'impact' => 'search'
+                                               }
+                                             ],
+                                  'group_map' => {
+                                                   '8c864306-d21a-37b1-8705-746a786719bf' => 'everyone',
+                                                 },
+                                  'detecttime' => '2011-10-05T09:52:29Z',
+                                  'restriction' => 'private',
+                                  'description' => 'search example.com'
+                                }
+                    },
+          'message' => ''
+        };
+}}}
+ # The result records from the query are embedded in the "entry" object. 
 {{{
 my @recs = @{$feed->{'feed'}->{'entry'}};
 }}}
- # To print out the records we simply:
-{{{
-foreach (@recs){
-  print $_->{'address'}."\n";
-}
-}}}
+ # Note that the client does some magic to convert the IODEF formated objects into simple key-pair values. To leverage the more complex format (used in describing complex infrastructure) see the AdvancedAPI.
 
 = Examples =
+ # Rendering a text based table:
+{{{
+my ($client,$err) = CIF::Client->new({ 
+    config      => '/home/wes/.cif',
+});
+my $feed = $client->GET(
+        query       => $_,
+);
+die('request failed with code: '.$client->responseCode()."\n\n".$client->responseContent()) unless($client->responseCode == 200);
+
+my @recs = @{$feed->{'feed'}->{'entry'}};
+
+require CIF::Client::Plugin::Table;
+my $text = CIF::Client::Plugin::Table->write_out($client,$feed);
+print $text;
+}}}
+ # Rendering an HTML based table:
+{{{
+require CIF::Client::Plugin::Html;
+my $html = CIF::Client::Plugin::Html->write_out($client,$feed);
+print $html;
+}}}
  # How the [http://code.google.com/p/collective-intelligence-framework/source/browse/trunk/client/perl/CIF-Client/script/cif CLI] works
 {{{
 my ($client,$err) = CIF::Client->new({ 
@@ -74,6 +131,11 @@ foreach (@q){
  # Another [http://code.google.com/p/collective-intelligence-framework/source/browse/trunk/misc/rt-cifminimal/html/Minimal/Display.html RT Example]
  # [http://code.google.com/p/collective-intelligence-framework/source/browse/trunk/client/perl/CIF-Client/lib/CIF/Client/Plugin/Snort.pm Example Snort Output Plugin]
 {{{
+package CIF::Client::Plugin::Snort;
+use base 'CIF::Client::Plugin::Output';
+
+use Snort::Rule;
+
 sub write_out {
     my $self = shift;
     my $config = shift;
@@ -113,4 +175,5 @@ sub write_out {
     }
     return $rules;
 }
+1;
 }}}
