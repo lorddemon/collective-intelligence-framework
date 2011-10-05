@@ -1,4 +1,4 @@
-#a list of useful technology videos
+#summary a list of useful technology videos
 
  # [http://www.youtube.com/watch?v=_7-hBbClrKU Parsing with CIF]
  # [http://www.youtube.com/watch?v=THfs1e5-MQc Data normalization and warehousing]
