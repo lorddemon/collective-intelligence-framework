@@ -1,5 +1,5 @@
 #summary initial setup of your client
-#labels Phase-Implementation,Featured,Phase-Deploy,Client
+#labels Phase-Implementation,Phase-Deploy,Client
 
 <wiki:toc max_depth="3" />
 
