@@ -1,4 +1,4 @@
-#introduction to the CIF API
+#summary introduction to the API
 
 <g:plusone size="medium"></g:plusone>
 <wiki:toc max_depth="4" />
