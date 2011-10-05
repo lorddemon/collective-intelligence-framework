@@ -1,4 +1,4 @@
-#this page describes the best layout for your system disk and data-warehouse
+#summary the best layout for your system disk and data-warehouse
 
 = Introduction =
 
