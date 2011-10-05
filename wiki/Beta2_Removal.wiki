@@ -1,5 +1,5 @@
+#summary this guide shows how to remove 'beta2' code from your host
 #labels Phase-Deploy
-this guide shows how to remove 'beta2' code from your host
 
 = Introduction =
 
@@ -13,25 +13,8 @@ $ sudo /etc/init.d/apache2 stop
 }}}
  * Rename the old database
 {{{
-$ psql -U postgres -d postgres -c 'ALTER DATABASE cif RENAME TO cif_beta2'
+$ psql -U postgres -d postgres -c 'DROP DATABASE cif'
 }}}
- * Drop the index tables (this won't kill off any raw data stored in the message tables)
-{{{
-#!/bin/bash
-
-TABLES='url infrastructure feed email domain malware'
-
-echo "Dropping Index Tables"
-for TABLE in $TABLES; do
-    echo "DROPPING Table $TABLE"
-    psql -U postgres -d cif_beta2 -c "DROP TABLE IF EXISTS $TABLE CASCADE"
-done
-}}}
- * if you don't have a ton of space allocated for the new database and the old database to run in parallel (this might take a while)
-{{{
-psql -U postgres -d cif_beta2 -c "VACUUM FULL"
-}}}
-= Exporting your old data =
 
 = Removal of Perl Modules =
 
@@ -41,7 +24,7 @@ $ sudo updatedb
 $ locate Message.pm
 }}}
 
-  it should be somewhere under /usr/local/share/perl/5.X.X/CIF
+it should be somewhere under /usr/local/share/perl/5.X.X/CIF
 
 {{{
 $ locate Message.pm | grep CIF
@@ -53,7 +36,6 @@ $ locate Message.pm | grep CIF
 {{{
 $ sudo -s
 # cd /usr/local/share/perl/5.10.0/
-# tar -cf /tmp/CIF-beta2.tar CIF
 # rm -R -f CIF
 # rm /usr/local/lib/perl/5.10.0/auto/CIF -R -f
 # rm /usr/local/lib/perl/5.10.0/auto/CIF -R -f
@@ -64,21 +46,12 @@ $ sudo -s
 {{{
 # updatedb && locate CIF | grep -v home
 }}}
-
-* be sure to copy your old apache config file to a safe place
-* move your old feed scripts to a safe place
-{{{
-# tar -cf /tmp/feeds-beta2.tar /opt/cif-feeds-public
-# rm /opt/cif-feeds-public -R -f
-}}}
-
 * remove old bin scripts
 {{{
 # cd /usr/local/bin
 # ls -all | grep cif
 # rm -f `ls | grep cif`
 }}}
-
 * if you have any other scripts laying around, remove those as well (back them up if needed)
 {{{
 # locate cif | grep bin
