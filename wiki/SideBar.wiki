@@ -1,11 +1,14 @@
- * [API]
-  * PerlExample
-  * PythonExample
- * [ServerInstall_Beta3 Server]
+ * Toolbars
+  * [FirefoxToolbar Firefox]
+  * [ChromeToolbar Chrome]
  * [ClientSetup Client]
   * [ClientSetupDebianLenny Debian Lenny]
   * [ClientSetupDebianSqueeze Debian Squeeze]
   * [ClientSetupRedhat5 Redhat]
+ * [ServerInstall_Beta3 Server]
+ * [API]
+  * PerlExample
+  * PythonExample
  * [CookBook]
   * [CookBookNFSen NFSen]
  * Taxonomy
