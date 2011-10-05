@@ -1,4 +1,4 @@
-# this page to show example configs for configuring bind
+#summary example configs for configuring bind
 
 = Introduction =
 
