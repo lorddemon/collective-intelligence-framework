@@ -1,4 +1,9 @@
+#summary a recipe book of goodies
 #labels Phase-Implementation,Client,Phase-Deploy
+#sidebar TableOfContents
+* [Articles HOWTO articles]
+    * [ArticlesXSS Web security]
+
 = Tips and Tricks =
  # aliases are fun.. vi ~/.profile (or .bashrc):
 {{{
