@@ -41,7 +41,7 @@ use CIF::Utils ':all';
 use threads;
 
 my %opts;
-getopts('l:K:D:ht:S:c:df:s:r:m:F:C:T:g:',\%opts);
+getopts('L:l:K:D:ht:S:c:df:s:r:m:F:C:T:g:',\%opts);
 
 my $severity    = $opts{'s'};
 my $confidence  = $opts{'c'};
@@ -210,8 +210,8 @@ Usage: perl $0 -s medium -c 95
     -S  --specific:     generate a specific feed (eg: infrastructure, domain, etc)
     -C  --config:       specify an alternate config location, default $config
     -d  --debug
-    -M  --mutex:        specify a different lockfile location, default: $mutex
-    -L  --lastfeeds:    specify how many feeds to keep in the archive, default: $last_feeds
+    -L  --mutex:        specify a different lockfile location, default: $mutex
+    -F  --lastfeeds:    specify how many feeds to keep in the archive, default: $last_feeds
 
 Examples:
 
