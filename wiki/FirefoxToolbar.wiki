@@ -1,3 +1,5 @@
+#summary how to leverage CIF within FF
+
 = BEFORE YOU INSTALL =
 
 be sure to have FF clear-cache on exit; there will be sensitive data stored as a result of this plugin, if you don't want it laying around, *CLEAR YOUR CACHE*
