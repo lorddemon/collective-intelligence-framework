@@ -1,4 +1,4 @@
-#howto install the python client library
+# howto install the python client library
 
  1. make sure setup tools is installed
  1. easy_install [http://pypi.python.org/pypi?:action=pkg_edit&name=cif cif]
