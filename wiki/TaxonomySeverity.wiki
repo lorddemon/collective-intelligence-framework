@@ -1,5 +1,5 @@
+#summary severity descriptions
 #labels Phase-Support,Featured
-This page discusses the Severity values for intelligence records
 
 = Introduction =
 
