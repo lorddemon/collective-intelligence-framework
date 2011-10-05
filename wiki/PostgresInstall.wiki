@@ -1,4 +1,4 @@
-starting from scratch; postgresql
+#summary guide to configuring postgres
 
 = Introduction =
 
