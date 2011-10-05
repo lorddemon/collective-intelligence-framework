@@ -1,5 +1,5 @@
 #summary an incomplete listing of example data sources used within CIF
-#labels Featured,Phase-Support
+#labels Phase-Support
 
 = Public Partners (tools, exchange formats, etc) =
   * [http://www.antiphishing.org/iodefFormat.html Anti Phishing Working Group (APWG)]
