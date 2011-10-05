@@ -7,3 +7,8 @@
   * [ClientSetupDebianSqueeze Debian Squeeze]
   * [ClientSetupRedhat5 Redhat]
  * [CookBook]
+  * [CookBookNFSen NFSen]
+ * Taxonomy
+  * [TaxonomySeverity Severity Definitions]
+  * [TaxonomyConfidence Confidence Definitions]
+  * [TaxonomyImpact Impact Definitions]
