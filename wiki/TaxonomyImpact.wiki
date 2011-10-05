@@ -32,10 +32,10 @@ See the official [http://tools.ietf.org/html/rfc5070#section-3.10.1 IODEF] Impac
  * typically [Severity#High high severity] in nature
 
 === Scanner ===
- * a host being used to scan or bruteforce (ssh, rdp, telnet, etc...)
+ * typically infrastructure being used to scan or bruteforce (ssh, rdp, telnet, etc...)
 
 === Spam ===
- * host being used to facilitate the sending of spam
+ * typically infrastructure being used to facilitate the sending of spam
 
 === Searches ===
  * identify's that someone searched for something of possible significance
