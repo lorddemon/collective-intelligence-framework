@@ -1,5 +1,5 @@
+#summary the Beta3 Server Installation
 #labels Phase-Implementation,Phase-Deploy,Featured
-this page describes the Beta3 Server Installation
 
 <wiki:toc max_depth="3" />
 
@@ -99,7 +99,7 @@ $ cif_apikeys -l
 [cif_feeds]
 maxrecords = 10000
 severity_feeds = high,medium
-confidence_feeds = 75,85,95
+confidence_feeds = 95,85
 max_days = 2
 disabled_feeds = hash
 }}}
