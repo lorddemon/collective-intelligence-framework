@@ -1,6 +1,6 @@
 #introduction to the CIF API
-<wiki:toc max_depth="3" />
-
+<wiki:toc max_depth="4" />
+<g:plusone size="medium"></g:plusone>
 = Introduction =
 
 The CIF WebAPI is the programming interface to CIF. You can use this API to integrate CIF based data into your day to day applications (RT, ArcSight, NFSen, Placid, etc...)
@@ -27,33 +27,67 @@ GET https://cif.example.com:443/api/infrastructure?apikey=xxxxx
 
 GET https://cif.example.com:443/api/domain/botnet?apikey=xxxxx
 
-GET https://cif.example.com:443/api/1.1.1.1?apikey=xxxxx
 
-GET https://cif.example.com:443/api/1.1.1.0/24?apikey=xxxxx
 }}}
-
-== Common DataTypes ==
-|| Name || Description ||
-|| infrastructure || ||
-|| infrastructure/botnet || ||
-|| infrastructure/malware || ||
-|| domain || || 
-|| domain/botnet || || 
-|| domain/malware || || 
-|| url || || 
-|| url/botnet || || 
-|| url/malware || || 
-|| hash || ||
-
 == Common Parameters ==
 || Parameter Name || Value || Description ||
 || apikey || <uuid> || specify your apikey ||
-|| severity || <low|medium|high> || filter by severity ||
-|| confidence || 0-100 || filter by confidence ||
-|| restriction || [need-to-know|private] || filter by restriction ||
+|| severity || <enum> || filter by severity, *low,medium,high* ||
+|| confidence || <real> || filter by confidence, *0-100* ||
+|| restriction || <enum> || filter by restriction, *public,need-to-know,private* ||
 || guid || <uuid> || filter by group uuid ||
 || nomap || <boolean> || don't map restriction to your local restriction map ||
 || nolog || <boolean> || don't log the query ||
+
+== Common Datatypes ==
+=== Infrastructure ===
+==== Description ====
+Commonly used to describe ipv4 and ipv6 based addresses.
+==== Examples ====
+{{{
+GET https://cif.example.com:443/api/1.1.1.1?apikey=xxxxx
+GET https://cif.example.com:443/api/1.1.1.0/24?apikey=xxxxx
+GET https://cif.example.com:443/api/infrastructure/botnet?apikey=xxxxx
+GET https://cif.example.com:443/api/infrastructure/malware?apikey=xxxxx&confidence=40
+GET https://cif.example.com:443/api/infrastructure/phishing?apikey=xxxxx&severity=medium
+}}}
+=== Domain ===
+==== Description ====
+Commonly used to describe FQDN based addresses.
+==== Examples ====
+{{{
+GET https://cif.example.com:443/api/example.com?apikey=xxxxx
+GET https://cif.example.com:443/api/test.example.com?apikey=xxxxx
+GET https://cif.example.com:443/api/domain/botnet?apikey=xxxxx
+GET https://cif.example.com:443/api/domain/malware?apikey=xxxxx&confidence=40
+GET https://cif.example.com:443/api/domain/phishing?apikey=xxxxx&severity=medium
+}}}
+=== Url ===
+==== Description ====
+Commonly used to describe URI based addresses. To query the api though, your code must:
+ # escape unsafe chars (this is what the data-warehouse does on it's end before normalizing a URI)
+ # lower-case the address
+ # take the SHA1 hex of the address
+ # query the api using that SHA1-based hash (hex)
+{{{
+use Digest::SHA1 qw/sha1_hex/;
+use URI::Escape;
+my $q = $args{'query'};
+if(lc($q) =~ /^http(s)?:\/\//){
+    ## escape unsafe chars, that's what the data-warehouse does
+    ## TODO -- doc this
+    $q = uri_escape($q,'\x00-\x1f\x7f-\xff');
+    $q = lc($q);
+    $q = sha1_hex($q);
+}
+}}}
+==== Examples ====
+{{{
+GET https://cif.example.com:443/api/98fea5ad2da764a57e3493a78b1dd60061d61e08?apikey=xxxxx
+GET https://cif.example.com:443/api/url/botnet?apikey=xxxxx
+GET https://cif.example.com:443/api/url/malware?apikey=xxxxx&confidence=40
+GET https://cif.example.com:443/api/url/phishing?apikey=xxxxx&severity=medium
+}}}
 
 = Data Formats =
 Resources in the CIF WebAPI are represented using JSON+IODEF embedded in a sort of JSON+ATOM data formats. For example, retrieving a malicious domain address may result in a response like:
