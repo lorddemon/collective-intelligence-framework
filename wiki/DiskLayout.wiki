@@ -23,6 +23,7 @@ Where possible, you should:
   * 500GB for the archive
   * 500GB for the index
  1. you shouldn't use up 100% of your "data drive", leave some slack space incase one of the partitions out-grows the other. For instance, instead of splitting the drive up "500GB / 500GB", split it up "450GB / 450GB", leaving 100GB of free space to re-allocate to either partition as the growth continues
+
 == LVM Example ==
 
  1. the /etc/fstab would look like:
