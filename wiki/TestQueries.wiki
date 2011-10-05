@@ -1,4 +1,4 @@
-#sample queries
+# sample queries
 
 {{{
 queries to try:
