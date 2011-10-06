@@ -17,3 +17,6 @@
   * [TaxonomySeverity Severity Definitions]
   * [TaxonomyConfidence Confidence Definitions]
   * [TaxonomyImpact Impact Definitions]
+ * Help
+  * [FAQ]
+  * [http://groups.google.com/group/ci-framework Discussion Group]
