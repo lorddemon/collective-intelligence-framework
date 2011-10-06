@@ -8,6 +8,7 @@
   * [ClientSetupFreeBSD FreeBSD]
  * [ServerInstall_Beta3 Server]
   * [GroupSupport Group Support]
+  * [RTCIFMinimal RT Plugin]
  * [API]
   * PerlExample
   * PythonExample
