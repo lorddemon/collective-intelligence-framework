@@ -114,7 +114,7 @@ maxrecords = 10000
 severity_feeds = high,medium
 confidence_feeds = 95,85
 max_days = 2
-disabled_feeds = hash
+disabled_feeds = hash,rir,asn,countrycode,malware
 }}}
  # install the apache2 config
   # [Beta3Apache2Debian Debian Based]
@@ -149,7 +149,7 @@ $ time /opt/cif/bin/cif_crontool -f -d
 }}}
  # after this starts, run your first batch of analytics (the first batch might take a few hours up through a few days depending on how much data you have, as long as you keep seeing uuid's fly across the screen.. you're good). If you have more cores/ram, you can increase -t/-m respectively. Sending cif_analytic a "KILL -INT" (CTRL+C) will spin down the process when it's finished the current batch so you can adjust accordingly. It'll pick back up where it left off.
 {{{
-$ time /opt/cif/bin/cif_analytic -d -t 16 -m 1000
+$ time /opt/cif/bin/cif_analytic -d -t 16 -m 1500
 }}}
  # when that's finished, run your first batch of feeds (could take anywhere from 20min to 2 hours depending on system, data load, etc)
 {{{
@@ -169,7 +169,7 @@ PATH=/bin:/usr/local/bin:/opt/cif/bin
 30     00      * * * /opt/cif/bin/cif_crontool -p daily -T low &> /dev/null
 
 # update the feeds
-00,15,30,45     *       * * * /opt/cif/bin/cif_feeds &> /dev/null
+45     *       * * * /opt/cif/bin/cif_feeds &> /dev/null
 }}}
  # or if you want to setup logging (as an example)
 {{{
@@ -184,5 +184,5 @@ PATH=/bin:/usr/local/bin:/opt/cif/bin
 30     00      * * * /opt/cif/bin/cif_crontool -p daily -T low >> /home/cif/crontool_daily.log 2>&1
 
 # update the feeds
-00,15,30,45     *       * * * /opt/cif/bin/cif_feeds >> /home/cif/feeds.log 2>&1
+45     *       * * * /opt/cif/bin/cif_feeds >> /home/cif/feeds.log 2>&1
 }}}
