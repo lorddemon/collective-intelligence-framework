@@ -1,0 +1,9 @@
+#summary how to setup CIFMinimal
+
+= Introduction =
+
+This add-on provides a simple yet effective WebUI to the CIF WebAPI
+
+= Details =
+ # download and install the [http://collective-intelligence-framework.googlecode.com/files/RT-CIFMinimal-0.00_01.tar.gz plugin]
+ # follow the directions in the README
