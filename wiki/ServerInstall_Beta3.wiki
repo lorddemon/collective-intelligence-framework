@@ -50,9 +50,14 @@ $ http://search.cpan.org/CPAN/authors/id/S/SH/SHERZODR/Config-Simple-4.59.tar.gz
 $ tar -zxvf Config-Simple-4.59.tar.gz
 $ cd Config-Simple-4.59 && perl Makefile.PL && sudo make install
 }}}
- * we're using postgres as an embedded db, these current configs assume your postgres instance is locked down from the outside world. if someone gets shell, they've already got your data.
+ # we're using postgres as an embedded db, these current configs assume your postgres instance is locked down from the outside world. if someone gets shell, they've already got your data.
 
 == Server ==
+ # create the index / archive table spaces if you haven't via DiskLayout already (it's OK if you don't want to use LVM, these directories can exist on your root volume if you choose, but performance will increase if these are spread out across many disks):
+{{{
+$ sudo mkdir /mnt/archive
+$ sudo mkdir /mnt/index
+}}}
  # install the PerlClient (we use some functions in it for the server)
  # create your "cif" user/group (the configure script will default to this user "cif")
 {{{
