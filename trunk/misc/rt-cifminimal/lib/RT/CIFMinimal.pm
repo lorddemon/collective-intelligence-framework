@@ -46,6 +46,11 @@ sub cif_data {
             limit   => 25,
             nolog   => $nolog,
         );
+        @recs = @{$feed->{'feed'}->{'entry'}};
+        if($#recs > -1){
+            @recs = sort { $b->{'confidence'} cmp $a->{'confidence'} } @recs;
+            $feed->{'feed'}->{'entry'} = \@recs;
+        }
         require CIF::Client::Plugin::Html;
         $client->{'class'}          = 'collection';
         $client->{'evenrowclass'}    = 'evenline';
@@ -60,7 +65,7 @@ sub cif_data {
 sub generate_apikey {
     my $args        = shift;
     my $user        = $args->{'user'};
-    my $key_desc    = $args->{'key_description'};
+    my $key_desc    = $args->{'description'};
 
     return unless($user && ref($user) eq 'RT::User');
 

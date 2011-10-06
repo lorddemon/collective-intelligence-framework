@@ -14,7 +14,7 @@ Set(%CIFMinimal_RestrictionMapping,
        #white          => 'public',
 );
 
-#Set(@CIFMinimal_Assessments, 'botnet/C2','malware/exploit','scanner/bruteforcer','hijacked','phishing','fastflux','suspicious');
+#Set(@CIFMinimal_Assessments, 'botnet/C2','malware/exploit','scanner/bruteforcer','hijacked','phishing','fastflux','suspicious','whitelist');
 Set($CIFMinimal_DefaultAssessment,'botnet/C2');
 Set($CIFMinimal_DefaultSharingPolicy,'http://en.wikipedia.org/wiki/Traffic_Light_Protocol');
 Set($CIFMinimal_DefaultConfidence, 85);
@@ -51,12 +51,18 @@ Set(%CIFMinimal_UserGroupMapping,
     },
 );
 
+# this is set in days
+# how long we should generally keep each type
+# on our radar
+# repeat offenders should find their way back in
+
 Set(%CIFMinimal_StaleMap,
     'ipv4-addr' => 30,
     'ipv4-net'  => 180,
     'url'       => 180,
     'domain'    => 730,
-    'hash'      => 730
+    'hash'      => 730,
+    'whitelist' => 1095,
 );
 
 1;

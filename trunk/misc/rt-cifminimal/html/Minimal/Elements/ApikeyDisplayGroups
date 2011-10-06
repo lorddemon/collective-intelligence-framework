@@ -1,29 +1,23 @@
 % if(@sorted){
 <h1>My Groups</h1>
-<table>
-    <tr>
-        <td><b>Group Name</b></td>
-        <td><b>Group GUID</b></td>
-        <td><b>Default</b></td>
-    </tr>
-% foreach (0 ... $#sorted){
-    <tr>
-        <td><% $sorted[$_] %></td>
-        <td><% $guid[$_] %></td>
-        <td>
-% if($_ == 0){
-            true
-% }
-        </td>
-    </tr>
-% }
-</table>
+% $m->out($table);
 % }
 
 <%INIT>
 require CIF::Utils;
+require HTML::Table;
+my $table = HTML::Table->new(
+    -head           => ['Group Name','Default','GUID'],
+    -class          => 'collection',
+    -evenrowclass   => 'evenline',
+    -oddrowclass    => 'oddline',
+);
 my @sorted = sort { $groups{$a} <=> $groups{$b} } keys(%groups);
 my @guid = map { CIF::Utils::genSourceUUID($_) } @sorted;
+foreach (0 ... $#sorted){
+    my $isDefault = ($_ == 0) ? 'true' : '';
+    $table->addRow($sorted[$_],$isDefault,$guid[$_]);
+}
 
 </%INIT>
 

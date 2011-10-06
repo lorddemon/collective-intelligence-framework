@@ -40,12 +40,20 @@ if($q){
         $client->{'apikey'} = $recs[0]->uuid();
         my @res;
         my @qarray = split(/,/,$q);
+        @recs = undef;
         foreach(@qarray){
             my $feed = $client->GET(
                 query   => $_,
                 limit   => 25,
                 nolog   => $nolog,
             );
+            if($feed){
+                @recs = @{$feed->{'feed'}->{'entry'}};
+                if($#recs > -1){
+                    @recs = sort { $b->{'confidence'} cmp $a->{'confidence'} } @recs;
+                    $feed->{'feed'}->{'entry'} = \@recs;
+                }
+            }
             require CIF::Client::Plugin::Html;
             $client->{'class'}          = 'collection';
             $client->{'evenrowclass'}    = 'evenline';
@@ -65,5 +73,5 @@ $q => undef
 $text => undef
 @results => undef
 $nolog => undef
-$fields => 'restriction,guid,severity,confidence,address,portlist,protocol,impact,description,detecttime,alternativeid_restriction,alternativeid'
+$fields => undef
 </%ARGS>
