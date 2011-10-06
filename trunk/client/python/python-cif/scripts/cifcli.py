@@ -18,6 +18,7 @@ if __name__ == '__main__':
     parser.add_argument("-C","--config",default=os.path.expanduser("~/.cif"))
     parser.add_argument("-n","--nolog",action="store_true",default=False,help="do not log the query on the server")
     parser.add_argument("-S","--simple",default=True,help="convert complex json documents to simple documents")
+    parser.add_argument("-g","--guid",help="default group id (guid)")
     args = parser.parse_args()
     #print args
 
@@ -29,12 +30,12 @@ if __name__ == '__main__':
         print "python cifcli.py -q 1.2.3.4 -n\n"
         os._exit(-1)        
 
-    rclient = cif.ClientINI(path=args.config,fields=args.fields,nolog=args.nolog,simple=args.simple)
+    rclient = cif.ClientINI(path=args.config,fields=args.fields,nolog=args.nolog,simple=args.simple,guid=args.guid)
 
     for query in args.query:
         # this returns a dict
         # need to translate it to an object with "plugin" type properties
-        feed = rclient.GET(query,args.severity,args.restriction,args.nolog,args.confidence,args.simple)
+        feed = rclient.GET(query,args.severity,args.restriction,args.nolog,args.confidence,args.simple,args.guid)
         if rclient.responseCode != 200:
             print 'request failed with code: ' + str(rclient.responseCode)
             os._exit(-1)
