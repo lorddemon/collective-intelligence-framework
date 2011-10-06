@@ -20,28 +20,39 @@ if __name__ == '__main__':
     parser.add_argument("-S","--simple",default=True,help="convert complex json documents to simple documents")
     parser.add_argument("-g","--guid",help="default group id (guid)")
     parser.add_argument("-T","--no_verify_tls",default=False,action="store_true")
+#    parser.add_argument("-P","--post",help="post a csv seperated observation to the api")
     args = parser.parse_args()
     #print args
 
-    if not args.query:
-        parser.print_help()
-        print "\n"
-        print "example: python cifcli.py -q infrastructure/botnet -f restriction address asn cidr\n"
-        print "example, without the query being logged:\n"
-        print "python cifcli.py -q 1.2.3.4 -n\n"
-        os._exit(-1)        
+    if args.post:
+#        data = args.post.split(',')
+#        for d in data:
+#            
+#        pp.pprint(data)
+#        import simplejson as json
+#        pp.pprint(json.dumps(data))
+#        rclient = cif.ClientINI(path=args.config,fields=args.fields,no_verify_tls=args.no_verify_tls)
 
-    rclient = cif.ClientINI(path=args.config,fields=args.fields,no_verify_tls=args.no_verify_tls)
+    else:
+        if not args.query:
+            parser.print_help()
+            print "\n"
+            print "example: python cifcli.py -q infrastructure/botnet -f restriction address asn cidr\n"
+            print "example, without the query being logged:\n"
+            print "python cifcli.py -q 1.2.3.4 -n\n"
+            os._exit(-1)        
 
-    for query in args.query:
-        # this returns a dict
-        # need to translate it to an object with "plugin" type properties
-        feed = rclient.GET(query,args.severity,args.restriction,args.nolog,args.confidence,args.simple,args.guid)
-        if rclient.responseCode != 200:
-            print 'request failed with code: ' + str(rclient.responseCode)
-            os._exit(-1)
+        rclient = cif.ClientINI(path=args.config,fields=args.fields,no_verify_tls=args.no_verify_tls)
 
-        if feed:
-            print "Query: " + query
-            text = rclient.table(feed)
-            print text
+        for query in args.query:
+            # this returns a dict
+            # need to translate it to an object with "plugin" type properties
+            feed = rclient.GET(query,args.severity,args.restriction,args.nolog,args.confidence,args.simple,args.guid)
+            if rclient.responseCode != 200:
+                print 'request failed with code: ' + str(rclient.responseCode)
+                os._exit(-1)
+
+            if feed:
+                print "Query: " + query
+                text = rclient.table(feed)
+                print text

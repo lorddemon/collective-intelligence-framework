@@ -7,6 +7,7 @@ import hashlib
 import zlib
 import pprint
 import httplib2
+import urllib2
 pp = pprint.PrettyPrinter(indent=4)
 
 class Client(object):
@@ -27,6 +28,15 @@ class Client(object):
         self._fields = fields
 
     fields = property(_get_fields, _set_fields)
+
+    def POST(self,data):
+        assert isinstance(data,dict)
+
+        url = self.host + '?apikey=' + self.apikey
+        jtext = json.dumps(data)
+        #resp,ret = httplib2.Http(disable_ssl_certificate_validation=self.no_verify_tls).request(url,jtext)
+        req = urllib2.urlopen(url,jtext)
+        print req.read(100)
     
     def GET(self,q,severity=None,restriction=None,nolog=None,confidence=None,simple=False,guid=None):
         s = self.host + '/' + q
