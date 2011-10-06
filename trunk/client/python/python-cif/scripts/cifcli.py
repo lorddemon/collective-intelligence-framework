@@ -19,6 +19,7 @@ if __name__ == '__main__':
     parser.add_argument("-n","--nolog",action="store_true",default=False,help="do not log the query on the server")
     parser.add_argument("-S","--simple",default=True,help="convert complex json documents to simple documents")
     parser.add_argument("-g","--guid",help="default group id (guid)")
+    parser.add_argument("-T","--no_verify_tls",default=False,action="store_true")
     args = parser.parse_args()
     #print args
 
@@ -30,7 +31,7 @@ if __name__ == '__main__':
         print "python cifcli.py -q 1.2.3.4 -n\n"
         os._exit(-1)        
 
-    rclient = cif.ClientINI(path=args.config,fields=args.fields,nolog=args.nolog,simple=args.simple,guid=args.guid)
+    rclient = cif.ClientINI(path=args.config,fields=args.fields,no_verify_tls=args.no_verify_tls)
 
     for query in args.query:
         # this returns a dict
