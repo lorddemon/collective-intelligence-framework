@@ -15,14 +15,11 @@ Where possible, you should:
 == Partition Mapping ==
  1. your database system space should be about 5G
  1. the index partition should grow at about the same rate (maybe more) as your archive partition
- 1. starting out; each logical volume (archive/index) should share your free space 50/50.
- 1. for 1GB of free space:
-  * 500MB for the archive
-  * 500MB for your index
+ 1. starting out; each logical volume (archive/index) should share your free space 40/60.
  1. for 1TB of free space:
-  * 500GB for the archive
-  * 500GB for the index
- 1. you shouldn't use up 100% of your "data drive", leave some slack space incase one of the partitions out-grows the other. For instance, instead of splitting the drive up "500GB / 500GB", split it up "450GB / 450GB", leaving 100GB of free space to re-allocate to either partition as the growth continues
+  * 400GB for the archive
+  * 600GB for the index
+ 1. you shouldn't use up 100% of your "data drive", leave some slack space incase one of the partitions out-grows the other. For instance, instead of splitting the drive up "400GB / 600GB", split it up "350GB / 550GB", leaving 100GB of free space to re-allocate to either partition as the growth continues
 
 == LVM Example ==
 
@@ -53,8 +50,8 @@ tmpfs                 2.0G     0  2.0G   0% /dev/shm
 /dev/sda1             228M   31M  186M  15% /boot
 /dev/mapper/vg00-home  4.6G  200M  4.2G   5% /home
 
-/dev/mapper/vg01-archive 450G   1G  449G  1% /mnt/archive
-/dev/mapper/vg02-index 450G   1G  449G  1% /mnt/index
+/dev/mapper/vg01-archive 350G   1G  349G  1% /mnt/archive
+/dev/mapper/vg02-index 550G   1G  549G  1% /mnt/index
 }}}
 == Growth Rate Example ==
 {{{
