@@ -56,7 +56,7 @@
     {
         Name        => 'Severity',
         Type        => 'SelectSingle',
-        Queue       => ['IncidentReports'],
+        Queue       => ['Incident Reports'],
         Disabled    => 0,
         Description => '_IODEF_IncidentAssessmentImpactseverity',
         Values      => [
@@ -113,17 +113,15 @@
 for my $cf (@CustomFields) {
     push @ACL, (
         { 
-            GroupId     => 'Everyone',
-            GroupDomain => 'System',
+            GroupType   => 'Everyone',
+            GroupDomain => 'SystemInternal',
             CF          => $cf->{Name},
-            Queue       => $cf->{Queue},
             Right       => 'SeeCustomField', 
         },
         { 
-            GroupId     => 'Everyone',
-            GroupDomain => 'System',
+            GroupType     => 'Everyone',
+            GroupDomain => 'SystemInternal',
             CF          => $cf->{Name},
-            Queue       => $cf->{Queue},
             Right       => 'ModifyCustomField', 
         },
     );

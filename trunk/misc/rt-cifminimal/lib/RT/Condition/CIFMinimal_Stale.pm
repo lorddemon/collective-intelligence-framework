@@ -35,8 +35,12 @@ sub IsApplicable {
 
     $arg = $map->{$arg} || return;
     my $addr = $tkt->FirstCustomFieldValue('Address') || $tkt->FirstCustomFieldAddress('Hash');
+    my $impact = $tkt->FirstCustomFieldValue('Assessment Impact');
     return(1) unless($addr);
-    return(0) unless($addr && $addr =~ $regex);
+    return(0) unless(($addr && $addr =~ $regex) || lc($impact) =~ /whitelist/);
+    if(lc($impact) =~ /whitelist/){
+        $arg = $map->{'whitelist'};
+    }
 
     $arg = (time() - ($arg * 86400));
 

@@ -24,6 +24,7 @@ requires('JSON'                         => '2.07');
 requires('XML::IODEF::Simple'           => '0.00');
 requires('CIF::Client'                  => '0.01');
 requires('Net::CIDR'                    => '0.11');
+requires('HTML::Table'                  => '2.08');
 auto_install();
 
 tests("t/*.t t/*/*.t");
