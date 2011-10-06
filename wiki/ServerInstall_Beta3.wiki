@@ -57,6 +57,10 @@ $ cd Config-Simple-4.59 && perl Makefile.PL && sudo make install
 {{{
 $ sudo mkdir /mnt/archive
 $ sudo mkdir /mnt/index
+$ sudo chown postgres:postgres /mnt/index
+$ sudo chown postgres:postgres /mnt/archive
+$ sudo chmod 770 /mnt/index
+$ sudo chmod 770 /mnt/archive
 }}}
  # install the PerlClient (we use some functions in it for the server)
  # create your "cif" user/group (the configure script will default to this user "cif")
