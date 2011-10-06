@@ -1,4 +1,3 @@
-from restclient import GET
 import simplejson as json
 from texttable import Texttable
 import os
@@ -11,17 +10,13 @@ import httplib2
 pp = pprint.PrettyPrinter(indent=4)
 
 class Client(object):
-    def __init__(self, host, apikey, fields=None, severity=None, restriction=None, nolog=None, confidence=None, simple=False, **args):
+    def __init__(self, host, apikey, fields=None, no_verify_tls=False, **args):
         self.host = host
         self.apikey = apikey
 
         self._fields = fields
         """ override order: passed args, config file args """
-        self.severity = severity
-        self.restriction = restriction
-        self.nolog = nolog
-        self.confidence = confidence
-        self.simple = simple
+        self.no_verify_tls = no_verify_tls
 
     def _get_fields(self):
         return self._fields
@@ -30,34 +25,37 @@ class Client(object):
         if fields:
             assert isinstance(fields, list)
         self._fields = fields
+
     fields = property(_get_fields, _set_fields)
     
-    def GET(self,q,severity=None,restriction=None,nolog=None,confidence=None,simple=False):
+    def GET(self,q,severity=None,restriction=None,nolog=None,confidence=None,simple=False,guid=None):
         s = self.host + '/' + q
         
         params={'apikey':self.apikey}
 
         if restriction:
             params['restriction'] = restriction
-        elif self.restriction:
-            params['restriction'] = self.restriction
 
         if severity:
-            params['severity'] = severity
-        elif self.severity:
             params['severity'] = self.severity
 
         if confidence:
             params['confidence'] = confidence
-        elif self.confidence:
-            params['confidence'] = self.confidence
 
         if nolog:
             params['nolog'] = 1
-        elif self.nolog:
-            params['nolog'] = 1
 
-        ret = GET(s, params)
+        if guid:
+            params['guid'] = guid
+
+        queryString = ''
+        for p in params:
+            if "?" not in queryString:
+                queryString += "?" + p + '=' + params[p]
+            else:
+                queryString += '&' + p + '=' + params[p]
+
+        resp,ret = httplib2.Http(disable_ssl_certificate_validation=self.no_verify_tls).request(s+queryString)
         ret = json.loads(ret)
 
         """ we're mirroring the perl client lib here """
@@ -101,6 +99,20 @@ class Client(object):
             ret['source'] = incident['IncidentID']['name']
             ret['description'] = incident['Description']
             ret['confidence'] = incident['Assessment']['Confidence']['content']
+
+            if 'AdditionalData' in incident:
+                data = incident['AdditionalData']
+                dlist = []
+                if(isinstance(data,dict)):
+                    dlist.extend([data])
+                else:
+                    dlist = data
+                
+                for d in dlist:
+                    if 'meaning' in d:
+                        meaning = d['meaning']
+                        if meaning in ('guid'):
+                            ret[meaning] = d['content']
 
             if 'AdditionalData' in incident['EventData']:
                 data = incident['EventData']['AdditionalData']
@@ -162,6 +174,7 @@ class Client(object):
         restriction = j.get('restriction')
         entries = j['entry']
         severity = j.get('severity')
+        group_map = j.get('group_map')
         
         t = Texttable(max_width=0)
         t.set_deco(Texttable.VLINES)
@@ -169,7 +182,7 @@ class Client(object):
         if self.fields:
             cols = self.fields
         else:
-            cols = ['restriction','severity','confidence','detecttime']
+            cols = ['restriction','guid','severity','confidence','detecttime']
 
             if entries[0].has_key('address'):
                 cols.extend(['address','protocol','portlist'])
@@ -185,6 +198,8 @@ class Client(object):
             for col in cols:
                 if col in item and isinstance(item[col],unicode):
                     item[col] = item[col].encode('utf-8')
+                if col is 'guid':
+                    item[col] = group_map[item[col]]
                     
             t.add_row([item[col] or '' for col in cols])
             
@@ -205,7 +220,7 @@ class Client(object):
         return table
 
 class ClientINI(Client):
-    def __init__(self, path=None, fields=None, severity=None, restriction=None, nolog=None, confidence=None, simple=False):
+    def __init__(self, path=None, fields=None, no_verify_tls=False):
         if not path:
             path = os.path.expanduser("~/.cif")
         c = ConfigParser.ConfigParser()
@@ -215,5 +230,7 @@ class ClientINI(Client):
         vars = dict(c.items("client"))
         if fields:
             vars['fields'] = fields
+
+        vars['no_verify_tls'] = no_verify_tls
 
         Client.__init__(self, **vars)
