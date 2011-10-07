@@ -241,7 +241,7 @@ class ClientINI(Client):
             vars['fields'] = fields
 
         # don't ask, this needs to be re-factored. get off my ass.
-        if vars['verify_tls'] == '0':
+        if vars['verify_tls'] and vars['verify_tls'] == '0':
             no_verify_tls = True
 
         vars['no_verify_tls'] = no_verify_tls
