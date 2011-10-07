@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='cif',
-    version='0.01_04',
+    version='0.01_05',
     description="a sample python client for accessing the CIF interface",
     author = 'Wes Young',
     author_email = 'ci-framework@googlegroups.com',
