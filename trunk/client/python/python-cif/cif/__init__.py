@@ -34,9 +34,8 @@ class Client(object):
 
         url = self.host + '?apikey=' + self.apikey
         jtext = json.dumps(data)
-        #resp,ret = httplib2.Http(disable_ssl_certificate_validation=self.no_verify_tls).request(url,jtext)
         req = urllib2.urlopen(url,jtext)
-        print req.read(100)
+        return req
     
     def GET(self,q,severity=None,restriction=None,nolog=None,confidence=None,simple=False,guid=None):
         s = self.host + '/' + q
@@ -236,10 +235,14 @@ class ClientINI(Client):
         c = ConfigParser.ConfigParser()
         c.read([path])
         if not c.has_section('client'):
-            raise Exception("Unable to read ~/.cif config file")
+            raise Exception("Unable to read " + path + " config file")
         vars = dict(c.items("client"))
         if fields:
             vars['fields'] = fields
+
+        # don't ask, this needs to be re-factored. get off my ass.
+        if vars['verify_tls'] == '0':
+            no_verify_tls = True
 
         vars['no_verify_tls'] = no_verify_tls
 
