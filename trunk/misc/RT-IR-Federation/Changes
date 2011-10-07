@@ -1,0 +1,9 @@
+Changes
+
+2009-06-02 - v0.01_2
+	- Split from RT-SES
+	- Added Minor PGP key management functionality
+		- Users can upload and purge their public keys from the web ui
+
+2009-04-05 - v0.01_1
+	- Initial Release
