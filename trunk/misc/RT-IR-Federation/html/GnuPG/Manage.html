@@ -1,0 +1,89 @@
+%# Copyright 2009 REN-ISAC and The Trustees of Indiana University 
+%# 
+%# (Except where explictly superceded by other copyright notices)
+%# 
+%# This work is made available to you under the terms of Version 2 of
+%# the GNU General Public License. A copy of that license should have
+%# been provided with this software, but in any event can be snarfed
+%# from www.gnu.org
+%# 
+%# This work is distributed in the hope that it will be useful, but
+%# WITHOUT ANY WARRANTY; without even the implied warranty of
+%# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+%# General Public License for more details.
+%# 
+%# 
+%# Unless otherwise specified, all modifications, corrections or
+%# extensions to this work which alter its source code become the
+%# property of Best Practical Solutions, LLC when submitted for
+%# inclusion in the work.
+
+<& /Elements/Header, Title=>loc("Key Management") &>
+<& /User/Elements/Tabs, 
+    current_tab => 'GnuPG/Manage.html', 
+    Title=>loc("Key Management") &>
+
+<& /Elements/ListActions, actions => \@results &>
+
+<form action="<%RT->Config->Get('WebPath')%>/GnuPG/Manage.html" method="post">
+
+<table>
+<tr>
+<td>
+% require RT::Crypt::GnuPG;
+% my %res = RT::Crypt::GnuPG::GetKeyInfo( $UserObj->EmailAddress(), 'Public' );
+% if($res{'exit_code'} || !keys %{ $res{'info'} } ){
+<&|/Widgets/TitleBox, title => loc( 'Upload Key' ) &>
+<textarea cols="80" rows="25" name="UploadKey" wrap="soft"></textarea>
+<& /Elements/Submit, Name => 'Upload', Label => loc('Upload Key') &>
+</&>
+% } else {
+<&|/Widgets/TitleBox, title => loc( 'Purge Key' ) &>
+<&|/l&><b>Key</b></&>: <& /Elements/GnuPG/SelectKeyForEncryption, EmailAddress => $UserObj->EmailAddress &>
+<& /Elements/Submit, Name => 'PurgeKey', Label => loc('Purge Key') &>
+</&>
+% }
+
+</td>
+</tr>
+</table>
+</form>
+
+<%init>
+
+my @results;
+my $UserObj = $session{'CurrentUser'}->UserObj;
+
+if($PurgeKey){
+    require RT::IR::Federation;
+    RT::IR::Federation::PurgeKey($PreferredKey);
+    push(@results, 'Key '.$PreferredKey.' Purged');
+}
+
+if($UploadKey){
+    unless($UploadKey =~ /^\-\-\-\-\-BEGIN PGP PUBLIC KEY BLOCK\-\-\-\-\-/ && $UploadKey =~ /\-\-\-\-\-END PGP PUBLIC KEY BLOCK\-\-\-\-\-/){
+        push(@results,'Public Keys Only!');
+    } else {
+        my $g = GnuPG::Interface->new();
+        my ($input,$output) = (IO::Handle->new(), IO::Handle->new());
+        my $handles = GnuPG::Handles->new(stdin => $input, stdout => $output);
+
+        my $pid = $g->import_keys(handles => $handles);
+        
+        print $input $UploadKey;
+        close($input);
+        push(@results, loc('Key successfully Uploaded')."\n$UploadKey");
+    }
+}
+
+</%init>
+
+<%args>
+$Update             => 0,
+$GenKey             => 0,
+$UploadKey          => undef,
+$Key                => undef,
+$Comment            => undef,
+$PreferredKey       => undef,
+$PurgeKey           => undef,
+</%args>
