@@ -1,0 +1,11 @@
+--- /opt/rt3/local/plugins/RT-IR/html/RTIR/Report/BulkReject.html.orig  2011-10-18 19:18:16.000000000 +0000
++++ /opt/rt3/local/plugins/RT-IR/html/RTIR/Report/BulkReject.html   2011-10-18 19:20:24.000000000 +0000
+@@ -93,7 +93,7 @@
+         $id = $t->id;
+ 
+         # If we don't own the thing we're linking to, change the owner
+-        if (   $t->Owner != $session{'CurrentUser'}->id
++        if (!$session{'CurrentUser'}->HasRight(Right => 'SuperUser', Object => $RT::System) || $t->Owner != $session{'CurrentUser'}->id
+             && $t->Owner != $RT::Nobody->id )
+         {
+             push @tempresults, [ 
