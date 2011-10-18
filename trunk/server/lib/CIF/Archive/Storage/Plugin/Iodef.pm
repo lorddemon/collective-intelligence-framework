@@ -47,6 +47,7 @@ sub convert {
     my $portlist                    = $info->{'portlist'};
     my $purpose                     = $info->{'purpose'} || 'mitigation';
     my $guid                        = $info->{'guid'};
+    my $sharewith                   = $info->{'sharewith'};
 
     my $dt = $info->{'detecttime'};
     # default it to the hour
