@@ -60,9 +60,9 @@ class Client(object):
         queryString = ''
         for p in params:
             if "?" not in queryString:
-                queryString += "?" + p + '=' + params[p]
+                queryString += "?" + str(p) + '=' + params[p]
             else:
-                queryString += '&' + p + '=' + params[p]
+                queryString += '&' + str(p) + '=' + params[p]
 
         resp,ret = httplib2.Http(disable_ssl_certificate_validation=self.no_verify_tls).request(s+queryString)
         ret = json.loads(ret)
@@ -90,6 +90,9 @@ class Client(object):
                     x = self.make_simple(incident['Incident'])
                     dlist.extend([x])
                 else:
+                    if(type(incident) != 'list'):
+                        return feed
+
                     for i in incident:
                         x = self.make_simple(i['Incident'])
                         dlist.extend(x)
@@ -184,6 +187,9 @@ class Client(object):
         entries = j['entry']
         severity = j.get('severity')
         group_map = j.get('group_map')
+
+        if not entries[0]:
+            return 'no results'
         
         t = Texttable(max_width=0)
         t.set_deco(Texttable.VLINES)
@@ -208,7 +214,10 @@ class Client(object):
                 if col in item and isinstance(item[col],unicode):
                     item[col] = item[col].encode('utf-8')
                 if col is 'guid':
-                    item[col] = group_map[item[col]]
+                    if item.get(col):
+                        item[col] = group_map[item[col]]
+                    else:
+                        item[col] = ''
                     
             t.add_row([item[col] or '' for col in cols])
             
@@ -241,7 +250,11 @@ class ClientINI(Client):
             vars['fields'] = fields
 
         # don't ask, this needs to be re-factored. get off my ass.
-        if vars['verify_tls'] and vars['verify_tls'] == '0':
+        verify_tls = 0
+        if vars.get('verify_tls'):
+            verify_tls = vars['verify_tls']
+
+        if verify_tls == "0":
             no_verify_tls = True
 
         vars['no_verify_tls'] = no_verify_tls
