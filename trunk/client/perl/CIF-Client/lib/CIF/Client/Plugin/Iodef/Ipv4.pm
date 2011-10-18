@@ -20,13 +20,8 @@ sub hash_simple {
     }
     return unless($address && $address =~ /^$RE{'net'}{'IPv4'}/);
 
-    my $portlist = $hash->{'EventData'}->{'Flow'}->{'System'}->{'Service'}->{'Portlist'};
-    my $protocol = $hash->{'EventData'}->{'Flow'}->{'System'}->{'Service'}->{'ip_protocol'};
-
     return({
         address     => $address,
-        portlist    => $portlist,
-        protocol    => $protocol,
     });
 }
 1;
