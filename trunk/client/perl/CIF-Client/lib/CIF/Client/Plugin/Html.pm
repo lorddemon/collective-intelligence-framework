@@ -43,9 +43,9 @@ sub write_out {
         if(exists($t->{'portlist'})){
             push(@cols,'portlist');
         }
-        if(exists($t->{'rdata'})) {
-            push(@cols,('rdata','type'));
-        } 
+        if($t->{'address'} && $t->{'address'} =~ /^[a-z0-9.-]+\.[a-z]{2,5}$/){
+            push(@cols,'rdata','type');
+        }
         if(exists($t->{'asn'})) {
             push(@cols,'asn','prefix');
         } 
