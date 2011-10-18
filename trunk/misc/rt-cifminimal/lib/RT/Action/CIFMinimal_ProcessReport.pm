@@ -26,13 +26,6 @@ sub Commit {
 
     my $cf = RT::CustomField->new($self->CurrentUser());
     
-    my $classification = $tkt->FirstCustomFieldValue('Assessment Impact');
-    my $subject = $tkt->Subject();
-    if($subject !~ $classification){
-        $subject = $classification.' '.$subject;
-        $self->TicketObj->SetSubject($subject);
-    }
- 
     if($addr){
         if($addr =~ /^$RE{'net'}{'IPv4'}$/){
             my $autoreject = RT->Config->Get('CIFMinimal_RejectPrivateAddress') || 1;
