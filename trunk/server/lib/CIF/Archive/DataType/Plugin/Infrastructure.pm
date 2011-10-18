@@ -272,8 +272,6 @@ __PACKAGE__->set_sql('lookup' => qq{
     LIMIT ?
 });
 
-
-
 __PACKAGE__->set_sql('_lookup' => qq{
     SELECT __TABLE__.id,__TABLE__.uuid, archive.data
     FROM __TABLE__

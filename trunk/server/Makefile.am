@@ -95,6 +95,9 @@ droparchive:
 dropindex:
 	$(PSQL) -U $(DB_DBA) -h $(DB_HOST) -p $(DB_PORT) -c "DROP TABLESPACE IF EXISTS index"
 
+backup:
+	$(PGDUMP) -U $(DB_DBA) -h $(DB_HOST) -p $(DB_PORT) -v -a -f /tmp/cif_apikeys.sql -t apikeys -t apikeys_groups $(DB_DATABASE)
+
 clean:
 	rm Makefile
 	rm config.log

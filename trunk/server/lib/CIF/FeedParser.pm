@@ -1,11 +1,7 @@
 package CIF::FeedParser;
 
-use 5.008008;
 use strict;
 use warnings;
-
-our $VERSION = '0.01_01';
-$VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 use CIF::Utils ':all';
 use Regexp::Common qw/net URI/;
@@ -162,7 +158,7 @@ sub _sort_detecttime {
 ## TODO _- clean this up
 sub _insert {
     my $f = shift;
-    my $archive = shift;
+    my $dbh = shift;
     my $a = $f->{'address'} || $f->{'md5'} || $f->{'sha1'} || $f->{'malware_md5'} || $f->{'malware_sha1'};
     # protect against feeds that suck and put things like "-" in there
     # you know how the hell you are! >:0
@@ -175,7 +171,7 @@ sub _insert {
     # snag this before it goes through the insert
     # and gets converted to a uuid
     my $source = $f->{'source'};
-    my ($err,$id) = $archive->insert($f);
+    my ($err,$id) = $dbh->insert($f);
     ## TODO -- setup a mailer that returns this in cif_feed_parser
     warn($err) unless($id);
     
@@ -189,8 +185,12 @@ sub insert {
     my $config = shift;
     my $recs = shift;
     
+    ## TODO FIX
+    ## when we're using something than localhost, AutoCommit connection pooling doesn't work well
+    ## need to make this cleaner with the CIF::Archive and CIF::Archive::Plugin interfaces
+
     require CIF::Archive;
-    my $archive = CIF::Archive->new();
+    my $archive = 'CIF::Archive';
     if($config->{'database'}){
         local $^W = 0;
         eval { $archive->connection(@{$config->{'database'}}) };
@@ -200,6 +200,9 @@ sub insert {
         }
         local $^W = 1;
     }
+    ## TODO -- fix
+    ## too many transaction deadlocks to use this
+    ## will fix in later release.
     #$archive->db_Main->{'AutoCommit'} = 0;
 
     foreach (@$recs){
@@ -214,6 +217,7 @@ sub insert {
         }
         _insert($_,$archive);
     }
+
     $archive->dbi_commit() unless($archive->db_Main->{'AutoCommit'});
     return(0);
 }

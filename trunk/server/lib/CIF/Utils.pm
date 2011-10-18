@@ -22,9 +22,6 @@ our %EXPORT_TAGS = ( 'all' => [ qw(isUUID genMessageUUID genUUID genSourceUUID t
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw//;
 
-our $VERSION = '0.01_01';
-$VERSION = eval $VERSION;  # see L<perlmodstyle>
-
 =head1 NAME
 
 CIF::Utils - Perl extension for misc 'helper' CIF like functions

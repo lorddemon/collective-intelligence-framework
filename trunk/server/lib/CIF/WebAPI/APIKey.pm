@@ -38,6 +38,7 @@ sub genkey {
     if($args{'groups'}){
         $r->add_groups($args{'default_guid'},$args{'groups'});
     }
+    CIF::WebAPI::APIKey->dbi_commit() unless(CIF::WebAPI::APIKey->db_Main->{'AutoCommit'});
     return($r);
 }
 

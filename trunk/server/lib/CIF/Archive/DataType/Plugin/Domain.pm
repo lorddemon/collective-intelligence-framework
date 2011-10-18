@@ -44,6 +44,7 @@ sub insert {
     my $addr = $info->{'address'};
     my @a1 = reverse(split(/\./,$addr));
     my @a2 = @a1;
+    my $id;
 
     foreach (0 ... $#a1-1){
         my $addr = join('.',reverse(@a2));
@@ -51,7 +52,7 @@ sub insert {
         my $md5 = md5_hex($addr);
         my $sha1 = sha1_hex($addr);
 
-        my $id = eval { 
+        $id = eval { 
             $self->SUPER::insert({
                 uuid        => $uuid,
                 address     => $addr,
@@ -71,6 +72,7 @@ sub insert {
         }
     }
     $self->table($t);
+    return $id;
 }
 
 sub lookup {
