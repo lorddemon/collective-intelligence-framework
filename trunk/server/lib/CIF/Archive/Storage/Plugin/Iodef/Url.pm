@@ -9,10 +9,10 @@ sub prepare {
     my $class   = shift;
     my $info    = shift;
 
-    return unless(isUrl($info->{'address'}));
     my $address = $info->{'address'};
     $address = lc($address);
     my $safe = uri_escape($address,'\x00-\x1f\x7f-\xff');
+    return unless(isUrl($info->{'address'}));
     $address = $safe;
     $info->{'address'} = $safe;
     $info->{'md5'} = md5_hex($safe) unless($info->{'md5'});
@@ -23,7 +23,7 @@ sub prepare {
 sub isUrl {
     my $address = shift;
     return unless($address);
-    return unless($address =~ /^$RE{'URI'}$/ || $address =~ /^$RE{'URI'}{'HTTP'}{-scheme => 'https'}$/);
+    return unless($address =~ /^$RE{'URI'}/ || $address =~ /^$RE{'URI'}{'HTTP'}{-scheme => 'https'}/);
     return(1);
 }
 
