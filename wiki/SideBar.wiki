@@ -7,6 +7,7 @@
   * [ClientSetupRedhat5 Redhat]
   * [ClientSetupFreeBSD FreeBSD]
  * [ServerInstall_Beta3 Server]
+  * [ServerBackup Backup]
   * [GroupSupport Group Support]
   * [RTCIFMinimal RT Plugin]
  * [API]
