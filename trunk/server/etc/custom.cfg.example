@@ -9,6 +9,5 @@ fields_map = 'address,description,alternativeid'
 detection = daily
 severity = 'medium'
 confidence = 85
-period = hourly
 restriction = 'need-to-know'
 alternativeid_restriction = 'public'

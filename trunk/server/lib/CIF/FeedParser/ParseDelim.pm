@@ -6,8 +6,8 @@ use warnings;
 sub parse {
     my $f = shift;
     my $content = shift;
-    
     my $split = shift;
+
     my @lines = split(/\n/,$content);
     my @cols = split(',',$f->{'values'});
     my @array;

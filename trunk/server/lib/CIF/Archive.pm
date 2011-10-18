@@ -5,9 +5,6 @@ require 5.008;
 use strict;
 use warnings;
 
-our $VERSION = '0.01_02';
-$VERSION = eval $VERSION;  # see L<perlmodstyle>
-
 use Data::Dumper;
 use Config::Simple;
 use CIF::Utils ':all';

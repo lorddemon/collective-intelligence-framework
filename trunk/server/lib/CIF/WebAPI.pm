@@ -17,12 +17,11 @@ sub isAuth {
     my ($self,$meth,$req) = @_;
     return(1) if($meth eq 'GET');
     my $key = lc($req->param('apikey'));
-    my $rec = CIF::WebAPI::APIKey->retrieve(apikey => $key);
+    my $rec = CIF::WebAPI::APIKey->retrieve(uuid => $key);
     return(0) unless($rec && $rec->write());
-    my $src = $rec->userid();
-    $src = CIF::Archive::genSourceUUID($src);
+    my $src = CIF::Archive::genSourceUUID($key);
     $self->{'source'} = $src;
-    return(1);
+    return(1) if($meth eq 'POST');
 }
 
 sub map_restrictions {
@@ -87,8 +86,8 @@ sub POST {
             return Apache2::Const::FORBIDDEN;
         }
     }
-    require CIF::Archive;
 
+    require CIF::Archive;
     my @ids;
     foreach (@recs){
         my ($err,$id) = CIF::Archive->insert($_);
@@ -102,6 +101,7 @@ sub POST {
         push(@ids,$id->uuid());
     }
     
+    CIF::Archive->dbi_commit() unless(CIF::Archive->db_Main->{'AutoCommit'});
     $resp->{'data'} = \@ids;
     return Apache2::Const::HTTP_CREATED;
 }

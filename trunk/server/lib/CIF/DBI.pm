@@ -6,7 +6,10 @@ use warnings;
 
 use Config::Simple;
 
-__PACKAGE__->connection('DBI:Pg:database=cif','postgres','',{ AutoCommit => 1} );
+## TODO FIX
+## when we're using something than localhost, AutoCommit connection pooling doesn't work well
+## need to make this cleaner with the CIF::Archive and CIF::Archive::Plugin interfaces
+__PACKAGE__->connection('DBI:Pg:database=cif;host=localhost','postgres','',{ AutoCommit => 1});
 __PACKAGE__->set_sql('lastval' => qq{ SELECT last_value from archive_id_seq });
 
 # because UUID's are really primary keys too in our schema
