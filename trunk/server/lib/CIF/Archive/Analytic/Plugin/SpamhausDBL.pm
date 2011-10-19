@@ -7,13 +7,13 @@ my $codes = {
     '127.0.1.2' => {
         impact      => 'suspicious domain',
         description => 'spammed domain',
-        severity    => 'low',
+        severity    => 'medium',
         confidence  => 95,
     },
     '127.0.1.3' => {
         impact      => 'suspicious domain',
         description => 'spammed redirector domain',
-        severity    => 'low',
+        severity    => 'medium',
         confidence  => 95,
     },
     '127.0.1.255'   => {
@@ -25,7 +25,7 @@ foreach(4 ... 19){
     $codes->{'127.0.1.'.$_} = {
         impact  => 'suspicious domain',
         description => 'spammed domain',
-        severity    => 'low',
+        severity    => 'medium',
         confidence  => 95,
     };
 }
