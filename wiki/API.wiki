@@ -67,6 +67,7 @@ GET https://cif.example.com:443/api/domain/phishing?apikey=xxxxx&severity=medium
 Commonly used to describe URI based addresses. To query the api though, your code must:
  # escape unsafe chars (this is what the data-warehouse does on it's end before normalizing a URI)
  # lower-case the address
+ # strip off any trailing forward slashes (s/\/$//g)
  # take the SHA1 hex of the address
  # query the api using that SHA1-based hash (hex)
 {{{
