@@ -30,6 +30,8 @@ my $real_assessment = $assessment;
 $real_assessment =~ s/\/\S+$//;
 my @datas = split(/,/,$data);
 foreach $data (@datas){
+    $data =~ s/[ \t]+$//g;
+    $data =~ s/^[ \t]+//g;
     $data = lc($data);
     my $hash = {
         guid            => $guid,
@@ -46,16 +48,14 @@ foreach $data (@datas){
         },
         purpose         => $purpose,
         confidence      => $confidence,
-        sharewith  => $sharewith,
+        sharewith       => $sharewith,
     };
-
     my $report = XML::IODEF::Simple->new($hash);
 
-    my $subject = $description;
-    $subject = $real_assessment.' '.$description if($assessment);
+    $description = $report->get('IncidentDescription');
+    my $subject = $report->get('IncidentAssessmentImpact').' '.$description;
 
     my $msg = $report->out();
-
     
     $ARGS{'Subject'} = $subject;
     $ARGS{'Queue'} = 'Incident Reports';
@@ -75,8 +75,9 @@ foreach $data (@datas){
         require JSON;
         my $r = $ticket->IODEF();
 
-        my $ret = CIF::FeedParser::ParseJsonIodef::parse({detection => 'now'},JSON::to_json([$r->to_tree()]));
+        my $ret = CIF::FeedParser::ParseJsonIodef::parse(undef,JSON::to_json([$r->to_tree()]));
         foreach(@$ret){
+            $_->{'detcttime'} = $ticket->CreatedAsString();
             my ($err,$id) = CIF::Archive->insert($_);
             warn $err if($err);
             warn $id if($id);
