@@ -28,7 +28,7 @@ sub prepare {
 
     return unless(isUrl($info->{'address'}));
     $info->{'address'} = lc($info->{'address'});
-    $info->{'address'} =~ s/\/$//;
+    $info->{'address'} =~ s/\/$//g;
     $info->{'md5'} = md5_hex($info->{'address'}) unless($info->{'md5'});
     $info->{'sha1'} = sha1_hex($info->{'address'}) unless($info->{'sha1'});
     return(1);

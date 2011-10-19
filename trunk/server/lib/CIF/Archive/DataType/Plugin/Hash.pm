@@ -107,7 +107,7 @@ __PACKAGE__->set_sql('_lookup' => qq{
     FROM __TABLE__
     LEFT JOIN archive ON archive.uuid = __TABLE__.uuid
     WHERE 
-        lower(address) = lower(?)
+        lower(hash) = lower(?)
         AND severity >= ?
         AND confidence >= ?
         AND __TABLE__.restriction <= ?
