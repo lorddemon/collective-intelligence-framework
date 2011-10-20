@@ -16,7 +16,6 @@
  * [API]
   * PerlExample
   * PythonExample
- 
  * Taxonomy
   * [TaxonomySeverity Severity Definitions]
   * [TaxonomyConfidence Confidence Definitions]
