@@ -21,6 +21,5 @@ When performing a query, your apikey is hashed (sha1-uuid) and the basics of you
 host = https://example.com:443/api
 apikey = xx-xx-xx-xx-xx
 timeout = 60
-#severity = medium
 #verify_tls = 0
 }}}
