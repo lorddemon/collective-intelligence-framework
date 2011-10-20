@@ -1,5 +1,5 @@
 #summary the basics about datasets and feeds
-<wiki:toc max_depth="4" />
+<wiki:toc max_depth="3" />
 
 = Introduction =
 
@@ -11,11 +11,9 @@ This describes the various dynamically generated data-sets within the framework.
  * and more...
 
 = Details =
-
-== Infrastructure ==
-=== Botnet ===
-==== Description ====
-Typically a "high severity" data-set, meaning, if combined with a high-confidence observation, it's very likely you'll need to take action.
+== Botnet ==
+The [TaxonomyImpact#Botnet Botnet] assessment is typically a [TaxonomySeverity#Medium medium severity] feed depicting things that indicate a compromise.
+=== Infrastructure ===
 ==== Examples ====
 ===== API =====
 {{{
@@ -28,12 +26,41 @@ GET https://cif.example.com:443/api/infrastructure/botnet?confidence=40
 {{{
 $ cif -q infrastructure/botnet -c 95
 $ cif -q infrastructure/botnet -c 85
+$ cif -q infrastructure/botnet -c 40
+}}}
+=== Domains ===
+==== Examples ====
+===== API =====
+{{{
+GET https://cif.example.com:443/api/domain/botnet?confidence=95
+GET https://cif.example.com:443/api/domain/botnet?confidence=85
+GET https://cif.example.com:443/api/domain/botnet?confidence=40
 }}}
 
-=== Malware / Exploit ===
-==== Description ====
-Typically a "medium severity" data-set, meaning, if combined with a high-confidence observation, it's a good candidate for blocking to mitigate infection.
+===== CLI =====
+{{{
+$ cif -q domain/botnet -c 95
+$ cif -q domain/botnet -c 85
+$ cif -q domain/botnet -c 40
+}}}
+=== Urls ===
+==== Examples ====
+===== API =====
+{{{
+GET https://cif.example.com:443/api/url/botnet?confidence=95
+GET https://cif.example.com:443/api/url/botnet?confidence=85
+GET https://cif.example.com:443/api/url/botnet?confidence=40
+}}}
 
+===== CLI =====
+{{{
+$ cif -q url/botnet -c 95
+$ cif -q url/botnet -c 85
+$ cif -q url/botnet -c 40
+}}}
+== Malware / Exploit ==
+The [TaxonomyImpact#Malware malware] assessment is typically a [TaxonomySeverity#Medium medium severity] feed depicting things you should not allow your internal hosts to communicate with.
+=== Infrastructure ===
 ==== Examples ====
 ===== API =====
 {{{
@@ -46,16 +73,35 @@ GET https://cif.example.com:443/api/infrastructure/malware?confidence=40&severit
 {{{
 $ cif -q infrastructure/malware -c 95 -s medium
 $ cif -q infrastructure/malware -c 85 -s medium
+$ cif -q infrastructure/malware -c 40 -s medium
+}}}
+=== Domains ===
+==== Examples ====
+===== API =====
+{{{
+GET https://cif.example.com:443/api/domain/malware?confidence=95&severity=medium
+GET https://cif.example.com:443/api/domain/malware?confidence=85&severity=medium
+GET https://cif.example.com:443/api/domain/malware?confidence=40&severity=medium
 }}}
 
-=== Phishing ===
+===== CLI =====
+{{{
+$ cif -q domain/malware -c 95 -s medium
+$ cif -q domain/malware -c 85 -s medium
+$ cif -q domain/malware -c 40 -s medium
+}}}
+=== Urls ===
+==== Examples ====
+===== API =====
+{{{
+GET https://cif.example.com:443/api/url/malware?confidence=95&severity=medium
+GET https://cif.example.com:443/api/url/malware?confidence=85&severity=medium
+GET https://cif.example.com:443/api/url/malware?confidence=40&severity=medium
+}}}
 
-== Domains ==
-=== Botnet ===
-=== Malware ===
-=== Phishing ===
-
-== Urls ==
-=== Botnet ===
-=== Malware ===
-=== Phishing ===
+===== CLI =====
+{{{
+$ cif -q url/malware -c 95 -s medium
+$ cif -q url/malware -c 85 -s medium
+$ cif -q url/malware -c 40 -s medium
+}}}
