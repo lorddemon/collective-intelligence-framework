@@ -18,13 +18,6 @@ GET https://cif.example.com:443/api/domain/nameserver?confidence=40&severity=med
 $ cif -q domain/nameserver -c 95 -s medium
 $ cif -q domain/nameserver -c 85 -s medium
 $ cif -q domain/nameserver -c 40 -s medium
-}}}
-= Operational Examples =
- * generating a zone file:
-{{{
 $ cif -q domain/nameserver -c 95 -s medium -p bindzone
-}}}
- * generating a snort rules data-set:
-{{{
 $ cif -q domain/nameserver -c 95 -s medium -p snort
 }}}
