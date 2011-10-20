@@ -59,7 +59,7 @@ $ cif -q url/botnet -c 85
 $ cif -q url/botnet -c 40
 }}}
 == Malware / Exploit ==
-The [TaxonomyImpact#Malware malware] assessment is typically a [TaxonomySeverity#Medium medium severity] feed depicting things you should not allow your internal hosts to communicate with.
+The [TaxonomyImpact#Malware_/_Exploit malware] assessment is typically a [TaxonomySeverity#Medium medium severity] feed depicting things you should not allow your internal hosts to communicate with.
 === Infrastructure ===
 ==== Examples ====
 ===== API =====
@@ -104,4 +104,51 @@ GET https://cif.example.com:443/api/url/malware?confidence=40&severity=medium
 $ cif -q url/malware -c 95 -s medium
 $ cif -q url/malware -c 85 -s medium
 $ cif -q url/malware -c 40 -s medium
+}}}
+== Phishing ==
+The [TaxonomyImpact#Phishing phishing] assessment is typically a [TaxonomySeverity#Medium medium severity] feed depicting things that indicate a compromise.
+=== Infrastructure ===
+==== Examples ====
+===== API =====
+{{{
+GET https://cif.example.com:443/api/infrastructure/phishing?confidence=95&severity=medium
+GET https://cif.example.com:443/api/infrastructure/phishing?confidence=85&severity=medium
+GET https://cif.example.com:443/api/infrastructure/phishing?confidence=40&severity=medium
+}}}
+
+===== CLI =====
+{{{
+$ cif -q infrastructure/phishing -c 95 -s medium
+$ cif -q infrastructure/phishing -c 85 -s medium
+$ cif -q infrastructure/phishing -c 40 -s medium
+}}}
+=== Domains ===
+==== Examples ====
+===== API =====
+{{{
+GET https://cif.example.com:443/api/domain/phishing?confidence=95&severity=medium
+GET https://cif.example.com:443/api/domain/phishing?confidence=85&severity=medium
+GET https://cif.example.com:443/api/domain/phishing?confidence=40&severity=medium
+}}}
+
+===== CLI =====
+{{{
+$ cif -q domain/phishing -c 95 -s medium
+$ cif -q domain/phishing -c 85 -s medium
+$ cif -q domain/phishing -c 40 -s medium
+}}}
+=== Urls ===
+==== Examples ====
+===== API =====
+{{{
+GET https://cif.example.com:443/api/url/phishing?confidence=95&severity=medium
+GET https://cif.example.com:443/api/url/phishing?confidence=85&severity=medium
+GET https://cif.example.com:443/api/url/phishing?confidence=40&severity=medium
+}}}
+
+===== CLI =====
+{{{
+$ cif -q url/phishing -c 95 -s medium
+$ cif -q url/phishing -c 85 -s medium
+$ cif -q url/phishing -c 40 -s medium
 }}}
