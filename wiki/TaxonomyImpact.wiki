@@ -27,6 +27,10 @@ See the official [http://tools.ietf.org/html/rfc5070#section-3.10.1 IODEF] Impac
  * a targeted attempt at getting someone to unintentionally cause infection (spear phishing)
  * typically [TaxonomySeverity#Medium medium severity] in nature
 
+=== Networks ===
+ * typically a rogue, hijacked, bullet-proof or known criminal network
+ * typically [TaxonomySeverity#Medium medium severity] in nature
+
 === Fastflux ===
  * typically describing a botnet profile
  * typically [TaxonomySeverity#High high severity] in nature
