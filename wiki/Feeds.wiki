@@ -43,7 +43,7 @@ GET https://cif.example.com:443/api/domain/botnet
 $ cif -q domain/botnet
 $ cif -q domain/botnet -p bindzone
 }}}
-== Domain ==
+== Url ==
 === API ===
 {{{
 GET https://cif.example.com:443/api/url/botnet
