@@ -16,7 +16,7 @@ Before you begin, make sure you review the [Taxonomy] page. This will help with 
 The simplest feed to get started with is the [FeedsBotnet#Infrastructure botnet Infrastructure] feed. Typically botnet infrastructure is tagged with a severity of [TaxonomySeverity#High high], meaning, if you combine this with a [TaxonomyConfidence#85_-_94 high confidence] (85-100) observation, it's likely that you're dealing with a compromised host.
 
 = Getting the Feed =
-By default, servers will deliver feeds with a severity of "high" and a confidence of "95" respectively by default. These paramaters can be [API#Common_Parameters over-written] at the command-line or via the [API].
+By default, servers will deliver feeds with a severity of "high" and a confidence of "95" respectively by default. These paramaters can be over-written at the command-line (typically with the -s and -c flags) or via the [API#Common_Parameters].
 
 Because of this, *the botnet infrastructure (high severity, high confidence) feed will remain relatively small or even empty* until users enter fairly confidence data either via manual submission, or a known, high-quality data-set is added to the system. This is by design, novice users of the system should use these feeds as starter-feeds to get a feel for the system with-out having to deal with too many false-positives.
 
