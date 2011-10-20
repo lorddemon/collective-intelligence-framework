@@ -1,3 +1,7 @@
+ * Taxonomy
+  * [TaxonomySeverity Severity Definitions]
+  * [TaxonomyConfidence Confidence Definitions]
+  * [TaxonomyImpact Impact Definitions]
  * [ClientSetup Client]
   * OS Clients
    * [ClientSetupDebianLenny Debian Lenny]
@@ -9,17 +13,13 @@
    * [ChromeToolbar Chrome]
   * [CookBook]
    * [CookBookNFSen NFSen]
+ * [API]
+  * PerlExample
+  * PythonExample
  * [ServerInstall_Beta3 Server]
   * [ServerBackup Backup]
   * [GroupSupport Group Support]
   * [RTCIFMinimal RT Plugin]
- * [API]
-  * PerlExample
-  * PythonExample
- * Taxonomy
-  * [TaxonomySeverity Severity Definitions]
-  * [TaxonomyConfidence Confidence Definitions]
-  * [TaxonomyImpact Impact Definitions]
  * Help
   * [FAQ]
   * [http://groups.google.com/group/ci-framework Discussion Group]
