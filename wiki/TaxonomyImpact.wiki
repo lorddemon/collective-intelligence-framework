@@ -8,49 +8,47 @@
 See the official [http://tools.ietf.org/html/rfc5070#section-3.10.1 IODEF] Impact class description.
 
 = Details =
-
-== Assessments ==
-=== Botnet ===
+== Botnet ==
  * typically a host used to control another host or malicious process
  * matching traffic would usually indicate infection
  * typically used to identify compromised hosts
  * typically [TaxonomySeverity#High high severity] in nature
 
-=== Malware / Exploit ===
+== Malware / Exploit ==
  * typically a host used to exploit and/or drop malware to a host for the first time
  * not a botnet C&C
  * typically used in preemptive blocking, alerts may not indicate infection was successful
  * typically [TaxonomySeverity#Medium medium severity] in nature
 
-=== Phishing ===
+== Phishing ==
  * a luring attempt at a victim to exfiltrate some sort of credential
  * a targeted attempt at getting someone to unintentionally cause infection (spear phishing)
  * typically [TaxonomySeverity#Medium medium severity] in nature
 
-=== Networks ===
+== Networks ==
  * typically a rogue, hijacked, bullet-proof or known criminal network
  * typically [TaxonomySeverity#Medium medium severity] in nature
 
-=== Nameserver ===
+== Nameserver ==
  * typically a rogue or criminally negligent name-server
  * typically [TaxonomySeverity#Medium medium severity] in nature
  * depicts a name-server where blocking direct access to the server should mitigate future compromises
 
-=== Fastflux ===
+== Fastflux ==
  * typically describing a botnet profile
  * typically [TaxonomySeverity#High high severity] in nature
 
-=== Scanner ===
+== Scanner ==
  * typically infrastructure being used to scan or brute-force (ssh, rdp, telnet, etc...)
 
-=== Spam ===
+== Spam ==
  * typically infrastructure being used to facilitate the sending of spam
 
-=== Searches ===
+== Searches ==
  * identify's that someone searched for something of possible significance
  * typically [TaxonomySeverity#Low low severity] in nature
 
-=== Whitelist ===
+== Whitelist ==
  * denotes that specific entity (usually an address) should be considered harmless in nature
  * denotes that blocking an entity would result in mass collateral damage (eg: yahoo virtually hosted services)
  * confidence should be applied to each entry to help calculate risk associated with whitelist
