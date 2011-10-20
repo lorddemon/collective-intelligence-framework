@@ -1,0 +1,44 @@
+#summary the basics about datasets and feeds
+<wiki:toc max_depth="3" />
+
+= Introduction =
+
+This describes the various dynamically generated data-sets within the framework. These data-sets can be used as:
+
+ * IDS rules
+ * name-server zones
+ * firewall rules
+ * and more...
+
+= Details =
+
+== Infrastructure ==
+=== Botnet ===
+==== Description ====
+Typically a "high severity" data-set, meaning, if combined with a high-confidence observation, it's very likely you'll need to take action.
+
+==== Example ====
+ * API example
+{{{
+GET https://cif.example.com:443/api/infrastructure/botnet?confidence=95
+GET https://cif.example.com:443/api/infrastructure/botnet?confidence=85
+GET https://cif.example.com:443/api/infrastructure/botnet?confidence=40
+}}}
+ * CLI example
+{{{
+$ cif -q infrastructure/botnet -c 95
+$ cif -q infrastructure/botnet  -c 85
+}}}
+
+=== Malware ===
+=== Phishing ===
+
+== Domains ==
+=== Botnet ===
+=== Malware ===
+=== Phishing ===
+
+== Urls ==
+=== Botnet ===
+=== Malware ===
+=== Phishing ===
