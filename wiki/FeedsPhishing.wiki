@@ -5,7 +5,7 @@
 The [TaxonomyImpact#Phishing phishing] assessment is typically a [TaxonomySeverity#Medium medium severity] feed depicting things that probably have no business being seen on your network. Communications with these addresses will probably lead to a credential type theft when combined with a [TaxonomyConfidence#85_-_94 high] confidence observation.
 
 Typical examples might include items from: 
- * the [http://www.phishtank.com/] list ([TaxonomyConfidence#41_-_74 medium] confidence)
+ * the [http://www.phishtank.com] list ([TaxonomyConfidence#41_-_74 medium] confidence)
 
 = Details =
 == Infrastructure ==
