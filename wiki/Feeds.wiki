@@ -1,0 +1,11 @@
+#summary the basics about datasets and feeds
+<wiki:toc max_depth="3" />
+
+= Introduction =
+
+This describes the various dynamically generated data-sets within the framework. These data-sets can be used as:
+
+ * IDS rules
+ * name-server zones
+ * firewall rules
+ * and more...
