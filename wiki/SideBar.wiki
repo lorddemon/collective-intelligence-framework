@@ -11,7 +11,7 @@
   * Toolbars
    * [FirefoxToolbar Firefox]
    * [ChromeToolbar Chrome]
-  * [Feeds Feeds and data-sets]
+  * [Feeds]
    * [FeedsBotnet]
    * [FeedsMalware]
    * [FeedsPhishing]
