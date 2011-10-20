@@ -53,3 +53,19 @@ $ cif -q url/phishing -c 95 -s medium
 $ cif -q url/phishing -c 85 -s medium
 $ cif -q url/phishing -c 40 -s medium
 }}}
+== Email ==
+Typically reply-to type drop boxes used in phishing attempts.
+
+=== API ===
+{{{
+GET https://cif.example.com:443/api/email/phishing?confidence=95&severity=medium
+GET https://cif.example.com:443/api/email/phishing?confidence=85&severity=medium
+GET https://cif.example.com:443/api/email/phishing?confidence=40&severity=medium
+}}}
+
+=== CLI ===
+{{{
+$ cif -q email/phishing -c 95 -s medium
+$ cif -q email/phishing -c 85 -s medium
+$ cif -q email/phishing -c 40 -s medium
+}}}
