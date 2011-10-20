@@ -1,0 +1,55 @@
+#summary phishing feeds page
+<wiki:toc max_depth="2" />
+
+= Introduction =
+The [TaxonomyImpact#Phishing phishing] assessment is typically a [TaxonomySeverity#Medium medium severity] feed depicting things that probably have no business being seen on your network. Communications with these addresses will probably lead to a credential type theft when combined with a [TaxonomyConfidence#85_-_94 high] confidence observation.
+
+Typical examples might include items from: 
+ * the [http://www.phishtank.com/] list ([TaxonomyConfidence#41_-_74 medium] confidence)
+
+= Details =
+== Infrastructure ==
+Typically addresses that have been enumerated from phishing domains. Confidence tends to be lower than that of a phishing domain and/or url.
+
+=== API ===
+{{{
+GET https://cif.example.com:443/api/infrastructure/phishing?confidence=95&severity=medium
+GET https://cif.example.com:443/api/infrastructure/phishing?confidence=85&severity=medium
+GET https://cif.example.com:443/api/infrastructure/phishing?confidence=40&severity=medium
+}}}
+
+=== CLI ===
+{{{
+$ cif -q infrastructure/phishing -c 95 -s medium
+$ cif -q infrastructure/phishing -c 85 -s medium
+$ cif -q infrastructure/phishing -c 40 -s medium
+}}}
+== Domains ==
+Typically addresses that have been enumerated from a phishing url. Confidence tends to be lower than that of a more specific phishing url.
+=== API ===
+{{{
+GET https://cif.example.com:443/api/domain/phishing?confidence=95&severity=medium
+GET https://cif.example.com:443/api/domain/phishing?confidence=85&severity=medium
+GET https://cif.example.com:443/api/domain/phishing?confidence=40&severity=medium
+}}}
+
+=== CLI ===
+{{{
+$ cif -q domain/phishing -c 95 -s medium
+$ cif -q domain/phishing -c 85 -s medium
+$ cif -q domain/phishing -c 40 -s medium
+}}}
+== Urls ==
+=== API ===
+{{{
+GET https://cif.example.com:443/api/url/phishing?confidence=95&severity=medium
+GET https://cif.example.com:443/api/url/phishing?confidence=85&severity=medium
+GET https://cif.example.com:443/api/url/phishing?confidence=40&severity=medium
+}}}
+
+=== CLI ===
+{{{
+$ cif -q url/phishing -c 95 -s medium
+$ cif -q url/phishing -c 85 -s medium
+$ cif -q url/phishing -c 40 -s medium
+}}}
