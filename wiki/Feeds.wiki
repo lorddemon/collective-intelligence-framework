@@ -1,5 +1,4 @@
 #summary the basics about datasets and feeds
-<wiki:toc max_depth="3" />
 
 = Introduction =
 
@@ -9,3 +8,9 @@ This describes the various dynamically generated data-sets within the framework.
  * name-server zones
  * firewall rules
  * and more...
+
+= Getting Started =
+
+Before you begin, make sure you review the [Taxonomy] page. This will help with measuring your risk tolerance and which feed combinations you should use.
+
+The simplest feed to get started with is the [FeedsBotnet#Infrastructure Botnet Infrastructure] feed. Typically botnet infrastructure is tagged with a severity of "high", meaning, if you combine this with a "high confidence" observation, it's likely that you're dealing with a concreate infection.
