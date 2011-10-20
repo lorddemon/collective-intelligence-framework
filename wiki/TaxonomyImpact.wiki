@@ -9,7 +9,7 @@ See the official [http://tools.ietf.org/html/rfc5070#section-3.10.1 IODEF] Impac
 
 = Details =
 
-== Profiles ==
+== Assessments ==
 === Malware / Exploit ===
  * typically a host used to exploit and/or drop malware to a host for the first time
  * not a botnet C&C
