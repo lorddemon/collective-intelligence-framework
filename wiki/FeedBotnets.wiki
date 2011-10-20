@@ -2,7 +2,7 @@
 <wiki:toc max_depth="3" />
 
 = Introduction =
-The [TaxonomyImpact#Botnet botnet] assessment is typically a [TaxonomySeverity#Medium medium severity] feed depicting things that would indicate a compromise.
+The [TaxonomyImpact#Botnet botnet] assessment is typically a [TaxonomySeverity#High high severity] feed depicting things that would indicate a compromise.
 
 = Details =
 == Infrastructure ==
