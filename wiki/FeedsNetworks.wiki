@@ -22,3 +22,12 @@ $ cif -q infrastructure/network -c 95 -s medium
 $ cif -q infrastructure/network -c 85 -s medium
 $ cif -q infrastructure/network -c 40 -s medium
 }}}
+= Operational Examples =
+ * generating a snort rules data-set:
+{{{
+$ cif -q infrastructure/network -c 95 -s medium -p snort
+}}}
+ * generating an iptables data-set:
+{{{
+$ cif -q infrastructure/network -c 95 -s medium -p iptables
+}}}
