@@ -31,6 +31,11 @@ See the official [http://tools.ietf.org/html/rfc5070#section-3.10.1 IODEF] Impac
  * typically a rogue, hijacked, bullet-proof or known criminal network
  * typically [TaxonomySeverity#Medium medium severity] in nature
 
+=== Nameserver ===
+ * typically a rogue or criminally negligent name-server
+ * typically [TaxonomySeverity#Medium medium severity] in nature
+ * depicts a name-server where blocking direct access to the server should mitigate future compromises
+
 === Fastflux ===
  * typically describing a botnet profile
  * typically [TaxonomySeverity#High high severity] in nature
