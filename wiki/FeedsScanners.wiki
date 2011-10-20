@@ -1,0 +1,27 @@
+#summary scanner feeds page
+<wiki:toc max_depth="2" />
+
+= Introduction =
+The [TaxonomyImpact#Scanner scanner] assessment is typically a [TaxonomySeverity#Medium medium severity] feed depicting known malicious scanners brute-forcing the internet (ssh, portscanners, etc).
+
+Typical examples might include items from: 
+ * the [http://sshbl.org] list ([TaxonomyConfidence#41_-_74 medium] confidence)
+ * the [http://dragonresearchgroup.org/insight/sshpwauth.txt DRG SSH] list ([TaxonomyConfidence#41_-_74 medium] confidence)
+
+= Details =
+== Infrastructure ==
+=== API ===
+{{{
+GET https://cif.example.com:443/api/infrastructure/scanner?confidence=95&severity=medium
+GET https://cif.example.com:443/api/infrastructure/scanner?confidence=85&severity=medium
+GET https://cif.example.com:443/api/infrastructure/scanner?confidence=40&severity=medium
+}}}
+
+=== CLI ===
+{{{
+$ cif -q infrastructure/scanner -c 95 -s medium
+$ cif -q infrastructure/scanner -c 85 -s medium
+$ cif -q infrastructure/scanner -c 40 -s medium
+$ cif -q infrastructure/scanner -c 95 -s medium -p iptables
+$ cif -q infrastructure/scanner -c 95 -s medium -p snort
+}}}
