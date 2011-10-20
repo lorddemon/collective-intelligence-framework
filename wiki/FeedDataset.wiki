@@ -30,7 +30,24 @@ $ cif -q infrastructure/botnet -c 95
 $ cif -q infrastructure/botnet -c 85
 }}}
 
-=== Malware ===
+=== Malware / Exploit ===
+==== Description ====
+Typically a "medium severity" data-set, meaning, if combined with a high-confidence observation, it's a good candidate for blocking to mitigate infection.
+
+==== Examples ====
+===== API =====
+{{{
+GET https://cif.example.com:443/api/infrastructure/malware?confidence=95&severity=medium
+GET https://cif.example.com:443/api/infrastructure/malware?confidence=85&severity=medium
+GET https://cif.example.com:443/api/infrastructure/malware?confidence=40&severity=medium
+}}}
+
+===== CLI =====
+{{{
+$ cif -q infrastructure/malware -c 95 -s medium
+$ cif -q infrastructure/malware -c 85 -s medium
+}}}
+
 === Phishing ===
 
 == Domains ==
