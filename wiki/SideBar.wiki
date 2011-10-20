@@ -1,11 +1,14 @@
- * Toolbars
-  * [FirefoxToolbar Firefox]
-  * [ChromeToolbar Chrome]
  * [ClientSetup Client]
-  * [ClientSetupDebianLenny Debian Lenny]
-  * [ClientSetupDebianSqueeze Debian Squeeze]
-  * [ClientSetupRedhat5 Redhat]
-  * [ClientSetupFreeBSD FreeBSD]
+  * OS Clients
+   * [ClientSetupDebianLenny Debian Lenny]
+   * [ClientSetupDebianSqueeze Debian Squeeze]
+   * [ClientSetupRedhat5 Redhat]
+   * [ClientSetupFreeBSD FreeBSD]
+  * Toolbars
+   * [FirefoxToolbar Firefox]
+   * [ChromeToolbar Chrome]
+  * [CookBook]
+   * [CookBookNFSen NFSen]
  * [ServerInstall_Beta3 Server]
   * [ServerBackup Backup]
   * [GroupSupport Group Support]
@@ -13,8 +16,7 @@
  * [API]
   * PerlExample
   * PythonExample
- * [CookBook]
-  * [CookBookNFSen NFSen]
+ 
  * Taxonomy
   * [TaxonomySeverity Severity Definitions]
   * [TaxonomyConfidence Confidence Definitions]
