@@ -1,5 +1,5 @@
 #summary botnets feed page
-<wiki:toc max_depth="3" />
+<wiki:toc max_depth="2" />
 
 = Introduction =
 The [TaxonomyImpact#Botnet botnet] assessment is typically a [TaxonomySeverity#High high severity] feed depicting things that would indicate a compromise.
