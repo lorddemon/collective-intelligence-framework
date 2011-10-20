@@ -26,8 +26,3 @@ timeout = 60
 #severity = medium
 #verify_tls = 0
 }}}
-
-= Misc =
- # ClientExamples
- # CookBook
- # TestQueries
