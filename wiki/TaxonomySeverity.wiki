@@ -8,7 +8,7 @@ This document defines a pain scale. These values are defined within the context 
 = High =
  * that this will cause you pain
  * this could be causing someone else pain (and you're participating), which could cause you pain later
- * examples include botnet infrastructure, DOS attacks, malware samples
+ * examples include botnet infrastructure, DOS attacks, malware samples (the binaries)
  
 = Medium =
  * this might cause you pain
