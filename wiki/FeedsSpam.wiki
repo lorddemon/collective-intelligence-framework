@@ -1,0 +1,23 @@
+#summary spammer feeds page
+<wiki:toc max_depth="2" />
+
+= Introduction =
+The [TaxonomyImpact#Spam spam] assessment is typically a [TaxonomySeverity#Medium medium severity] feed depicting known malicious spam infrastructure.
+
+= Details =
+== Infrastructure ==
+=== API ===
+{{{
+GET https://cif.example.com:443/api/infrastructure/spam?confidence=95&severity=medium
+GET https://cif.example.com:443/api/infrastructure/spam?confidence=85&severity=medium
+GET https://cif.example.com:443/api/infrastructure/spam?confidence=40&severity=medium
+}}}
+
+=== CLI ===
+{{{
+$ cif -q infrastructure/spam -c 95 -s medium
+$ cif -q infrastructure/spam -c 85 -s medium
+$ cif -q infrastructure/spam -c 40 -s medium
+$ cif -q infrastructure/spam -c 95 -s medium -p iptables
+$ cif -q infrastructure/spam -c 95 -s medium -p snort
+}}}
