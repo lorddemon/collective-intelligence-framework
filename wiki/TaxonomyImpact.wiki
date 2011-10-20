@@ -55,18 +55,3 @@ See the official [http://tools.ietf.org/html/rfc5070#section-3.10.1 IODEF] Impac
  * denotes that blocking an entity would result in mass collateral damage (eg: yahoo virtually hosted services)
  * confidence should be applied to each entry to help calculate risk associated with whitelist
   *[TaxonomySeverity#Null Null severity] in nature
-
-== Types ==
-=== Infrastructure ===
- * describes an object of which is being used as a platform for an attack
- * usually denotes an ipv4/ipv6 address or prefix
- * may denote an ASN (bgp)
- * synonymous with "the bad guys drove down route 66 to get to the bank they robbed", where route 66 is the infrastructure used to launch an attack.
- * "the bad guys used 1.2.3.4 to control their botnet"
-
-=== Domain ===
- * any 1...n level TLD to describe the use of the domain name system
- * could include a FQDN, could be a name-server, could be a .tld itself (eg: .co.cc or just .cc)
-
-=== Url ===
- * any specific universal locator used an an attack
