@@ -18,6 +18,8 @@ GET https://cif.example.com:443/api/infrastructure/botnet?confidence=40
 $ cif -q infrastructure/botnet -c 95
 $ cif -q infrastructure/botnet -c 85
 $ cif -q infrastructure/botnet -c 40
+$ cif -q infrastructure/botnet -c 95 -p snort
+$ cif -q infrastructure/botnet -c 95 -p iptables
 }}}
 == Domains ==
 === API ===
@@ -32,6 +34,8 @@ GET https://cif.example.com:443/api/domain/botnet?confidence=40
 $ cif -q domain/botnet -c 95
 $ cif -q domain/botnet -c 85
 $ cif -q domain/botnet -c 40
+$ cif -q domain/botnet -c 95 -p bindzone
+$ cif -q domain/botnet -c 95 -p snort
 }}}
 == Urls ==
 === API ===
@@ -46,4 +50,5 @@ GET https://cif.example.com:443/api/url/botnet?confidence=40
 $ cif -q url/botnet -c 95
 $ cif -q url/botnet -c 85
 $ cif -q url/botnet -c 40
+$ cif -q url/botnet -c 95 -p snort
 }}}
