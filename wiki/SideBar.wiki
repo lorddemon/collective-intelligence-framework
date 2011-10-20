@@ -1,7 +1,7 @@
  * Taxonomy
+  * [TaxonomyImpact Impact Definitions]
   * [TaxonomySeverity Severity Definitions]
   * [TaxonomyConfidence Confidence Definitions]
-  * [TaxonomyImpact Impact Definitions]
  * [ClientSetup Client]
   * OS Clients
    * [ClientSetupDebianLenny Debian Lenny]
