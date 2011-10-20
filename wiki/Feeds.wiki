@@ -1,5 +1,5 @@
 #summary the basics about datasets and feeds
-
+<wiki:toc max_depth="2" />
 = Introduction =
 
 This describes the various dynamically generated data-sets within the framework. These data-sets can be used as:
@@ -21,14 +21,36 @@ By default, most servers with set the default severity and default confidence of
 Because of this, the botnet infrastructure (high severity, high confidence) feed will remain relatively small (or empty) until users enter fairly confidence data either via manual submission, or a known, high-quality data-set is added to the system. This is by design, novice users of the system should use these feeds as starter-feeds to get a feel for the system with-out having to deal with too many false-positives.
 
 Advanced users, who understand their organizations risk tolerance can dig into the more advanced botnet feeds [FeedsBotnet page] or even the [API] to override these default values.
-
-== API ==
+== Infrastructure ==
+=== API ===
 {{{
 GET https://cif.example.com:443/api/infrastructure/botnet
 GET https://cif.example.com:443/api/infrastructure/botnet
 }}}
-== CLI ==
+=== CLI ===
 {{{
 $ cif -q infrastructure/botnet
 $ cif -q infrastructure/botnet -p snort
+}}}
+== Domain ==
+=== API ===
+{{{
+GET https://cif.example.com:443/api/domain/botnet
+GET https://cif.example.com:443/api/domain/botnet
+}}}
+=== CLI ===
+{{{
+$ cif -q domain/botnet
+$ cif -q domain/botnet -p bindzone
+}}}
+== Domain ==
+=== API ===
+{{{
+GET https://cif.example.com:443/api/url/botnet
+GET https://cif.example.com:443/api/url/botnet
+}}}
+=== Url ===
+{{{
+$ cif -q url/botnet
+$ cif -q url/botnet -p raw
 }}}
