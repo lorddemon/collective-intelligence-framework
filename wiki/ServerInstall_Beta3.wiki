@@ -69,9 +69,9 @@ $ sudo useradd -U -m cif
 }}}
  # install the core server interface
 {{{
-$ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01-b20111006_101135.tar.gz
-$ tar -zxvf cif-0.01-b20111006_101135.tar.gz
-$ cd cif-0.01-b20111006_101135
+$ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01-b20111024_122748.tar.gz
+$ tar -zxvf cif-0.01-b20111024_122748.tar.gz
+$ cd cif-0.01-b20111024_122748
 $ ./configure
 $ make testdeps
 $ make fixdeps
