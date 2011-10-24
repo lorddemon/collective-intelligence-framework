@@ -2,10 +2,9 @@
 <%init>
 my $content = $Object->Content();
 if($content){
-    $content = lc($content);
     my $rmap = RT->Config->Get('CIFMinimal_RestrictionMapping');
     foreach(keys %$rmap){
-        if(my $c = $rmap->{$_}){
+        if(lc($content) eq lc($rmap->{$_})){
             $content = uc($_);
         }
     }
