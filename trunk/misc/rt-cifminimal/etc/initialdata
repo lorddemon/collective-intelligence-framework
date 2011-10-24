@@ -14,10 +14,18 @@
         Description => '_IODEF_IncidentEventDataFlowSystemNodeAddress',
     },
     {
-        Name        => 'Hash',
+        Name        => 'BGP Prefix',
         Type        => 'FreeformSingle',
-        Queue       => ['Incident Reports' ],
+        Queue       => [ 'Incident Reports' ],
         Disabled    => 0,
+        Description => '',
+    },
+    {
+        Name        => 'ASN',
+        Type        => 'FreeformSingle',
+        Queue       => [ 'Incident Reports' ],
+        Disabled    => 0,
+        Description => '',
     },
     {
         Name        => 'Purpose',
@@ -133,6 +141,16 @@ for my $cf (@CustomFields) {
 		Description	=> 'CIFMinimal ProcessReport',
 		ExecModule	=> 'CIFMinimal_ProcessReport',
 	},
+    {
+        Name        => 'CIFMinimal RejectReport',
+        Description => 'CIFMinimal RejectReport',
+        ExecModule  => 'CIFMinimal_RejectReport',
+    },
+    {
+        Name        => 'CIFMinimal ReopenReport',
+        Description => 'CIFMinimal ReopenReport',
+        ExecModule  => 'CIFMinimal_ReopenReport',
+    },
 );
 
 @Scrips = (
@@ -142,6 +160,20 @@ for my $cf (@CustomFields) {
         ScripCondition  => 'On Create',
         ScripAction 	=> 'CIFMinimal ProcessReport',
         Template    	=> 'Blank',
+    },
+    {
+        Description     => 'OnReopen CIFMinimal ReopenReport',
+        Queue           => ['Incident Reports'],
+        ScripCondition  => 'On Reopen',
+        ScripAction     => 'CIFMinimal ReopenReport',
+        Template        => 'Blank',
+    },
+    {
+        Description     => 'OnReject CIFMinimal RejectReport',
+        Queue           => ['Incident Reports'],
+        ScripCondition  => 'On Reject',
+        ScripAction     => 'CIFMinimal RejectReport',
+        Template        => 'Blank',
     },
 );
 

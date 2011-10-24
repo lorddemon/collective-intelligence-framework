@@ -46,17 +46,19 @@ sub cif_data {
             limit   => 25,
             nolog   => $nolog,
         );
-        @recs = @{$feed->{'feed'}->{'entry'}};
-        if($#recs > -1){
-            @recs = sort { $b->{'confidence'} cmp $a->{'confidence'} } @recs;
-            $feed->{'feed'}->{'entry'} = \@recs;
+        if($feed){
+            @recs = @{$feed->{'feed'}->{'entry'}};
+            if($#recs > -1){
+                @recs = sort { $b->{'confidence'} cmp $a->{'confidence'} } @recs;
+                $feed->{'feed'}->{'entry'} = \@recs;
+            }
+            require CIF::Client::Plugin::Html;
+            $client->{'class'}          = 'collection';
+            $client->{'evenrowclass'}    = 'evenline';
+            $client->{'oddrowclass'}     = 'oddline';
+            my $t = CIF::Client::Plugin::Html->write_out($client,$feed,undef);
+            push(@res,$t);
         }
-        require CIF::Client::Plugin::Html;
-        $client->{'class'}          = 'collection';
-        $client->{'evenrowclass'}    = 'evenline';
-        $client->{'oddrowclass'}     = 'oddline';
-        my $t = CIF::Client::Plugin::Html->write_out($client,$feed,undef);
-        push(@res,$t);
     }
     my $text = (@res && $#res > -1) ? join("\n",@res) : '<h3>No Results</h3>';
     return($text);
@@ -67,33 +69,36 @@ sub generate_apikey {
     my $user        = $args->{'user'};
     my $key_desc    = $args->{'description'};
 
-    return unless($user && ref($user) eq 'RT::User');
+    return unless($user);
 
     require CIF::WebAPI::APIKey;
-    my $g = $user->OwnGroups();
-    my %group_map;
+    if(ref($user) eq 'RT::User'){
+        my $g = $user->OwnGroups();
+        my %group_map;
 
-    while(my $grp = $g->Next()){
-        next unless($grp->Name() =~ /^DutyTeam (\S+)/);
-        my $guid = lc($1);
-        my $priority = $grp->FirstCustomFieldValue('CIFGroupPriority');
-        $group_map{$guid} = $priority;
+        while(my $grp = $g->Next()){
+            next unless($grp->Name() =~ /^DutyTeam (\S+)/);
+            my $guid = lc($1);
+            my $priority = $grp->FirstCustomFieldValue('CIFGroupPriority');
+            $group_map{$guid} = $priority;
+        }
+        $group_map{'everyone'} = 1000;
+        my @sorted = sort { $group_map{$a} <=> $group_map{$b} } keys(%group_map);
+
+        my $id = CIF::WebAPI::APIKey->genkey(
+            uuid_alias      => $user->EmailAddress() || $user->Name(),
+            description     => $key_desc,
+            groups          => join(',',@sorted),
+            default_guid    => $sorted[0],
+        );
+        return($id); 
     }
-    $group_map{'everyone'} = 1000;
-    my @sorted = sort { $group_map{$a} <=> $group_map{$b} } keys(%group_map);
-
-    my $id = CIF::WebAPI::APIKey->genkey(
-        uuid_alias      => $user->EmailAddress() || $user->Name(),
-        description     => $key_desc,
-        groups          => join(',',@sorted),
-        default_guid    => $sorted[0],
-    );
-    return($id); 
 }
 
 sub network_info {
     my $addr = shift;
 
+    return if(IsPrivateAddress($addr));
     my ($as,$network,$ccode,$rir,$date) = get_asn_info($addr);
     my $as_desc = '';
     if($as){
