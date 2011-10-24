@@ -1,8 +1,6 @@
 package RT::Action::CIFMinimal_ReopenReport;
 use base 'RT::Action::Generic';
 
-use lib '/opt/cif/lib';
-
 require CIF::FeedParser::ParseJsonIodef;
 require CIF::Archive;
 require JSON;

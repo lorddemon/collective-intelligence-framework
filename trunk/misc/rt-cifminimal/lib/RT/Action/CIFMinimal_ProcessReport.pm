@@ -38,6 +38,10 @@ sub Commit {
                 if($network_info->{'description'}) { $network_info->{'asn'} = $network_info->{'asn'}.' '.$network_info->{'description'}; }
                 my $msg = $network_info->{'asn'}.' | '.$network_info->{'cidr'}.' | '.$network_info->{'cc'}.' | '.$network_info->{'rir'}.' | '.$network_info->{'modified'};
                 $tkt->Comment(Content => $msg);
+                $tkt->AddCustomFieldValue(Field => 'ASN', Value => $network_info->{'asn'});
+                $tkt->AddCustomFieldValue(Field => 'BGP Prefix', Value => $network_info->{'cidr'});
+                my $text = `whois -h whois.arin.net "n $addr"`;
+                $tkt->Comment(Content => $text);
             }
         }
     }
