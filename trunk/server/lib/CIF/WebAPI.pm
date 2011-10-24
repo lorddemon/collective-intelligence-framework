@@ -212,7 +212,7 @@ sub GET {
         $q = lc($impact).' '.$q if($impact);
         $q .= ' feed';
         my $severity = $request->{'r'}->param('severity') || $request->{'r'}->dir_config->get('CIFDefaultFeedSeverity') || 'high';
-        my $confidence = $request->{'r'}->param('confidence') || $request->{'r'}->dir_config->get('CIFDefaultFeedConfidence') || 85;
+        my $confidence = $request->{'r'}->param('confidence') || $request->{'r'}->dir_config->get('CIFDefaultFeedConfidence') || 95;
         my $ret = CIF::Archive->lookup({    
             nolog       => $nolog, 
             query       => $q, 
