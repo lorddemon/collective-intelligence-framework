@@ -76,7 +76,7 @@ $ sudo make install
 }}}
  # if this is a first-time install:
 {{{
-$ make initdb
+$ sudo make initdb
 $ make tables
 }}}
  # if you're upgrading a previous install you'll need to restart apache2
