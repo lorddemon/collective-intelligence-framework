@@ -4,9 +4,6 @@
 <wiki:toc max_depth="3" />
 
 = Preamble =
-*THIS PAGE UNDER CONSTRUCTION*
-*WE'RE STILL SQUASHING FINAL RELEASE BUGS, TEST AT OWN RISK*
-
 Most things are stable; you might have to dump your database between releases until we're out of beta.
 
 These scripts do a lot of dns queries. You're gonna wanna install bind and configure it to use forwarders. Maybe something like google public dns to help mask your queries. Then point your resolv.conf to localhost
