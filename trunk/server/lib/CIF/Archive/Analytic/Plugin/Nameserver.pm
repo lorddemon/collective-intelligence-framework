@@ -39,7 +39,8 @@ sub process {
     # because nameservers are "a degree" away from the original infrastructure
     my $sev = $data->{'severity'} || 'null';
     unless($sev eq 'null'){
-        $sev = ($sev eq 'high') ? 'medium' : 'low';
+        #$sev = ($sev eq 'high') ? 'medium' : 'low';
+        $sev = 'medium'; 
     }
     foreach(@rdata){
         my ($as,$network,$ccode,$rir,$date,$as_desc) = asninfo($_->{'address'});
