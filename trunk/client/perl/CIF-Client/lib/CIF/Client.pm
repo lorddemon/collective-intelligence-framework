@@ -19,7 +19,7 @@ use URI::Escape;
 
 __PACKAGE__->mk_accessors(qw/apikey config/);
 
-our $VERSION = '0.01_09';
+our $VERSION = '0.01_10';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 # Preloaded methods go here.
@@ -88,6 +88,7 @@ sub GET  {
 
     my $q = $args{'query'};
     if(lc($q) =~ /^http(s)?:\/\//){
+        $q =~ s/\/$//g;
         ## escape unsafe chars, that's what the data-warehouse does
         ## TODO -- doc this
         $q = uri_escape($q,'\x00-\x1f\x7f-\xff');
