@@ -3,6 +3,7 @@ use inc::Module::Install;
 name        'CIF-Client';
 all_from    'lib/CIF/Client.pm';
 
+requires    'Module::Install'   => '1.00';
 requires    'REST::Client'      => '164';
 requires    'Text::Table'       => '1.114';
 requires    'HTML::Table'       => '2.08';
@@ -16,6 +17,7 @@ requires    'Digest::SHA1'      => '2.11';
 requires    'Module::Pluggable'             => '3.6';
 requires    'Regexp::Common::net'           => '2.108';
 requires    'Regexp::Common::net::CIDR'     => '0.02';
+requires    'LWP::Protocol::https'          => undef;
 
 install_script 'cif';
 
