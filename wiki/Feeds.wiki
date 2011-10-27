@@ -20,7 +20,7 @@ By default, servers will deliver feeds with a severity of "high" and a confidenc
 
 Because of this, *the botnet infrastructure (high severity, high confidence) feed will remain relatively small or even empty* until users enter fairly confidence data either via manual submission, or a known, high-quality data-set is added to the system. This is by design, novice users of the system should use these feeds as starter-feeds to get a feel for the system with-out having to deal with too many false-positives.
 
-Advanced users, who understand their organizations risk tolerance can dig into the more advanced botnet feeds [FeedsBotnet page] or even the [API#Common_Parameters API]] to override these default values.
+Advanced users, who understand their organizations risk tolerance can dig into the more advanced botnet feeds [FeedsBotnet page] or even the [API#Common_Parameters API] to override these default values.
 
 == Infrastructure ==
 === API ===
