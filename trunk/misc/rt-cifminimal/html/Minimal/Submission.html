@@ -20,7 +20,8 @@ unless($session{'CurrentUser'}->Privileged()){
     $confidence = RT->Config->Get('CIFMinimal_DefaultConfidence') || 85;
 }
 
-my $guid = (CIF::Utils::isUUID($group)) ? $group : CIF::Utils::genSourceUUID($group);
+#my $guid = (CIF::Utils::isUUID($group)) ? $group : CIF::Utils::genSourceUUID($group);
+my $guid = $group;
 
 my $constituency_cf = RT::IR->CustomFields( 'Constituency', Queue => $Queue );
 my $constituency_field = 'Object-RT::Ticket--CustomField-' . $constituency_cf->id .'-Values';
