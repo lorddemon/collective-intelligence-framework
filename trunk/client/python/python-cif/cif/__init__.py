@@ -6,6 +6,7 @@ from base64 import b64decode
 import hashlib
 import zlib
 import pprint
+import socks
 import httplib2
 import urllib2
 pp = pprint.PrettyPrinter(indent=4)
@@ -18,6 +19,22 @@ class Client(object):
         self._fields = fields
         """ override order: passed args, config file args """
         self.no_verify_tls = no_verify_tls
+        if args.get('proxy_host'):
+            self.proxy_host = args['proxy_host']
+        else:
+            self.proxy_host = None
+
+        if args.get('proxy_port'):
+            self.proxy_port = args['proxy_port']
+        else: 
+            self.proxy_host = None
+
+        if args.get('proxy_type'):
+            self.proxy_type = 'PROXY_TYPE_' + args['proxy_type']
+        else:
+            self.proxy_type = PROXY_TYPE_SOCKS5
+
+        self.proxy_type = getattr(socks,self.proxy_type)
 
     def _get_fields(self):
         return self._fields
@@ -64,7 +81,13 @@ class Client(object):
             else:
                 queryString += '&' + str(p) + '=' + params[p]
 
-        resp,ret = httplib2.Http(disable_ssl_certificate_validation=self.no_verify_tls).request(s+queryString)
+        p = None
+        if self.proxy_host:
+            proxy_type = self.proxy_type
+            proxyport = int(self.proxy_port)
+            p = httplib2.ProxyInfo(proxy_type=proxy_type, proxy_host=self.proxy_host, proxy_port = proxyport)
+
+        resp,ret = httplib2.Http(proxy_info = p,disable_ssl_certificate_validation=self.no_verify_tls).request(s+queryString)
         ret = json.loads(ret)
 
         """ we're mirroring the perl client lib here """
