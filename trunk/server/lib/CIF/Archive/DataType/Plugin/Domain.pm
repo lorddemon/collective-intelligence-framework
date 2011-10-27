@@ -25,8 +25,14 @@ sub prepare {
     $info->{'address'} = lc($info->{'address'});
     
     my $address = $info->{'address'};
-    return(undef) unless($address =~ /^[a-z0-9.-]+\.[a-zA-Z]{2,5}$/);
+    return unless(isDomain($address));
+    return(1);
+}
 
+sub isDomain {
+    my $d = shift || return;
+    $d = lc($d);
+    return unless($d =~ /^[a-z0-9.\-_]+\.[a-z]{2,6}$/);
     return(1);
 }
 
@@ -80,7 +86,7 @@ sub lookup {
     my $info = shift;
     my $address = $info->{'query'};
 
-    return(undef) unless($address && lc($address) =~ /^[a-z0-9.-]+\.[a-z]{2,5}$/);
+    return unless(isDomain($address));
     $address = md5_hex($address);
     my $sev = $info->{'severity'};
     my $conf = $info->{'confidence'};
