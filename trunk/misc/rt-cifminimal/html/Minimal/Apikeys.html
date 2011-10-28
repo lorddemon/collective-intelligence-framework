@@ -30,13 +30,30 @@ $group_map{'everyone'} = 1000;
 my @sorted = sort { $group_map{$a} <=> $group_map{$b} } keys(%group_map);
 
 if($GenerateKey){
-    require RT::CIFMinimal;
-    my $id = RT::CIFMinimal::generate_apikey({
-        user            => $user,
-        description     => $key_description,
-        default_guid    => $default_group,
-    });
-    push(@results,'key '.$id->uuid().' successfully generated');
+    my $found = 0;
+    if(ref($add_groups) eq 'ARRAY'){
+        foreach(@$add_groups){
+            $found = 1 if($_ eq $default_group);
+        }
+    } else {
+        $found = 1 if($add_groups eq $default_group);
+    }
+    unless($found){
+        push(@results,'default group must be in your Groups selection');
+    } else {
+        require RT::CIFMinimal;
+        my $id = RT::CIFMinimal::generate_apikey({
+            user            => $user,
+            description     => $key_description,
+            default_guid    => $default_group,
+            groups          => $add_groups,
+        });
+        if($id){
+            push(@results,'key '.$id->uuid().' successfully generated');
+        } else {
+            push(@results,'key generation failed');
+        }
+    }
 }
 
 if($PurgeKey){
@@ -63,4 +80,5 @@ $uuid => undef
 $key_description => undef
 @results => undef
 $default_group => undef
+$add_groups => undef
 </%ARGS>

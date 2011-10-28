@@ -6,6 +6,16 @@
         <td><input type='text' name='key_description' size=30 value='myapp'/></td>
     </tr>
     <tr>
+        <td>Key Groups</td>
+        <td align="right">
+            <select name="add_groups" multiple="multiple">
+% foreach(@sorted){
+                <option value='<% $_ %>' selected="selected"><% $_ %></option>
+% }
+
+            </select>
+        </td>
+    <tr>
         <td>Default Group</td>
         <td align="right">
             <select name="default_group">

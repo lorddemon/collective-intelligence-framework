@@ -9,7 +9,6 @@ use Regexp::Common qw(net);
 use Regexp::Common::net::CIDR;
 
 sub Prepare { return(1); }
-my %rmap = RT->Config->Get('CIFMinimal_RestrictionMapping');
 
 sub Commit {
     my $self = shift;
