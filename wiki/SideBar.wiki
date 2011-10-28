@@ -20,6 +20,7 @@
   * [FeedsScanners]
   * [FeedsSpam]
  * [CookBook]
+  * [MalwareDomains]
   * [CookBookNFSen NFSen]
  * [API]
   * PerlExample
