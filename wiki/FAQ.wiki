@@ -1,0 +1,6 @@
+#summary FAQ
+<wiki:toc max_depth="3" />
+
+=Is there a client for OS X?=
+
+The PerlClient and PythonClient work well on OS X. The PythonClient can take a little bit of work to get installed (cython throws some errors from time to time), but if you're just looking for a simple CLI, test out the PerlClient.
