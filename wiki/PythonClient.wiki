@@ -10,9 +10,9 @@ $> cifcli.py -q example.com
 $> cifcli.py -q 192.168.1.1
 $> cifcli.py -q c09bdd5529fa4111758a7e8de0d615a6
 $> cifcli.py -q url/246c9fa16cdc19411ace5cb43c301d2c
-$> cifcli.py -q malware -s low
+$> cifcli.py -q malware -s medium -c 40
 $> cifcli.py -q infrastructure
-$> cifcli.py -q infrastructure/network -p snort
-$> cifcli.py -q domain -p bindzone
-$> cifcli.py -q url -w low | grep -v private
+$> cifcli.py -q infrastructure/network
+$> cifcli.py -q domain
+$> cifcli.py -q url -s low | grep -v private
 }}}
