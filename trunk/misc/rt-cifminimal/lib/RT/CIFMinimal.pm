@@ -18,6 +18,7 @@ sub cif_data {
     my $q       = $args->{'q'};
     my $nolog   = $args->{'nolog'};
     my @results = $args->{'results'};
+    return unless($q);
 
     require CIF::Client;
     my ($client,$err) = CIF::Client->new({
@@ -68,6 +69,10 @@ sub generate_apikey {
     my $args        = shift;
     my $user        = $args->{'user'};
     my $key_desc    = $args->{'description'};
+    my $default_guid    = $args->{'default_guid'};
+    my $add_groups      = $args->{'groups'};
+
+    my @a_groups = (ref($add_groups) eq 'ARRAY') ? @$add_groups : $add_groups;
 
     return unless($user);
 
@@ -84,12 +89,23 @@ sub generate_apikey {
         }
         $group_map{'everyone'} = 1000;
         my @sorted = sort { $group_map{$a} <=> $group_map{$b} } keys(%group_map);
-
+        if($default_guid){
+            $default_guid = $sorted[0] unless(exists($group_map{$default_guid}));
+        } else {
+            $default_guid = $sorted[0];
+        }
+        unless($#a_groups > -1){
+            @a_groups = @sorted;
+        } else {
+            foreach (@a_groups){
+                return unless(exists($group_map{$_}));
+            }
+        }
         my $id = CIF::WebAPI::APIKey->genkey(
             uuid_alias      => $user->EmailAddress() || $user->Name(),
             description     => $key_desc,
-            groups          => join(',',@sorted),
-            default_guid    => $sorted[0],
+            default_guid    => $default_guid,
+            groups          => join(',',@a_groups),
         );
         return($id); 
     }
