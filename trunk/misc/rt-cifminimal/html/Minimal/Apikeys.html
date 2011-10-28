@@ -1,10 +1,12 @@
 <& Elements/Header, Title => loc('Apikeys') &>
 <& /Elements/ListActions, actions => \@results &>
 <& Elements/ApikeyGeneration, 
+    groups  => \%group_map,
     %ARGS 
 &>
 <& Elements/ApikeyDisplay, 
     recs    => \@recs,
+    groups  => \%group_map,
     %ARGS 
 &>
 <& Elements/ApikeyDisplayGroups,
@@ -30,8 +32,9 @@ my @sorted = sort { $group_map{$a} <=> $group_map{$b} } keys(%group_map);
 if($GenerateKey){
     require RT::CIFMinimal;
     my $id = RT::CIFMinimal::generate_apikey({
-        user    => $user,
-        description => $key_description,
+        user            => $user,
+        description     => $key_description,
+        default_guid    => $default_group,
     });
     push(@results,'key '.$id->uuid().' successfully generated');
 }
@@ -47,6 +50,7 @@ if($PurgeKey){
 }
 
 my @recs = CIF::WebAPI::APIKey->search(uuid_alias => $user->EmailAddress());
+use Data::Dumper;
 
 #A hack to make sure that session gets rewritten.
 $session{'i'}++;
@@ -58,4 +62,5 @@ $PurgeKey => undef
 $uuid => undef
 $key_description => undef
 @results => undef
+$default_group => undef
 </%ARGS>
