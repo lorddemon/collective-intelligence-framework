@@ -31,8 +31,9 @@ class Client(object):
 
         if args.get('proxy_type'):
             self.proxy_type = 'PROXY_TYPE_' + args['proxy_type']
+            self.proxy_type = self.proxy_type.upper()
         else:
-            self.proxy_type = PROXY_TYPE_SOCKS5
+            self.proxy_type = 'PROXY_TYPE_SOCKS5'
 
         self.proxy_type = getattr(socks,self.proxy_type)
 
@@ -63,7 +64,7 @@ class Client(object):
             params['restriction'] = restriction
 
         if severity:
-            params['severity'] = self.severity
+            params['severity'] = severity
 
         if confidence:
             params['confidence'] = confidence
