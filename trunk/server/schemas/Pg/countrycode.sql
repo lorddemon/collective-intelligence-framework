@@ -13,5 +13,3 @@ CREATE TABLE countrycode (
     created timestamp with time zone DEFAULT NOW(),
     unique(uuid,cc)
 );
-
-CREATE INDEX idx_feed_countrycode ON asn (detecttime DESC, severity DESC, confidence DESC);
