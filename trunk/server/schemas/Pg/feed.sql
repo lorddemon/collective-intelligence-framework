@@ -17,4 +17,4 @@ CREATE TABLE feed (
     data text,
     UNIQUE (uuid)
 );
-CREATE INDEX idx_feed ON feed (detecttime DESC, severity DESC, confidence DESC);
+CREATE INDEX idx_feed ON feed (detecttime DESC, severity DESC, confidence DESC, restriction DESC);
