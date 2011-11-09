@@ -7,8 +7,8 @@
 {{{
 $> sudo perl -MCPAN -e 'install Module::Install LWP::Protocol::https REST::Client, Text::Table, HTML::Table, JSON, Module::Pluggable, Config::Simple, Snort::Rule, Class::Accessor, Digest::MD5, Digest::SHA1, Regexp::Common::net, Regexp::Common::net::CIDR'
 $> wget http://cpan.develooper.com/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.01_10.tar.gz
-$> tar -zxvf CIF-Client-0.01_09.tar.gz
-$> cd CIF-Client-0.01_09
+$> tar -zxvf CIF-Client-0.01_10.tar.gz
+$> cd CIF-Client-0.01_10
 $> perl Makefile.PL && make && sudo make install
 }}}
  1. setup your [ClientSetup#Global_Configuration_File configuration file]
