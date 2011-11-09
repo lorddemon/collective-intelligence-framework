@@ -1,4 +1,9 @@
 #summary howto install the perl client
+
+= Known Issues =
+ 1. if you have some issues installing REST::Client, please try this [http://search.cpan.org/CPAN/authors/id/M/MC/MCRAWFOR/REST-Client-171.tar.gz version] until it's able to be resolved.
+
+= Installation =
  
  1. make sure your "ssl-dev" packages are installed, this could be:
   1. libssl-dev (debian)
