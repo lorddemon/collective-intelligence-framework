@@ -1,0 +1,7 @@
+#summary page that shows our partners / contributions
+
+= Introduction =
+
+Here you'll find a list of organizations and people that have helped sustain this project.
+
+= Details =
