@@ -2,6 +2,16 @@
 
 = Introduction =
 
-Here you'll find a list of organizations and people that have helped sustain this project.
+Here you'll find a list of organizations and people have / are contributing to this project to make it what it is today.
 
 = Details =
+
+ * [www.ren-isac.net/ses REN-ISAC]
+ * [www.indiana.edu Indiana University]
+ * [www.internet2.edu Internet2]
+ * [www.nsf.gov National Science Foundation]
+ * [www.apwg.org APWG]
+
+[http://collective-intelligence-framework.googlecode.com/files/ren-isac_logo.png]
+[http://collective-intelligence-framework.googlecode.com/files/nsf1.jpg]
+[http://collective-intelligence-framework.googlecode.com/files/apwgindexbanner.gif]
