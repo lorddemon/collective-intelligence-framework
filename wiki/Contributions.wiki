@@ -15,7 +15,7 @@ Here you'll find a list of organizations and people have / are contributing to t
 == Operational Partners ==
  * [http://www.apwg.org APWG]
 
-<table border="0" cellspacing="20" valign="center">
+<table border="0" cellspacing="25" valign="center">
 <tbody>
 <tr>
 <td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/ren-isac_logo.png" width="200"/></td>
