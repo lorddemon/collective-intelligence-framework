@@ -6,7 +6,8 @@
 = Installation =
  
  1. make sure your "ssl-dev" packages are installed, this could be:
-  1. libssl-dev (debian)
+  * libssl-dev (debian)
+  * openssl-devel (RHEL/CentOS)
  1. make sure "make" and "automake" are installed (developer tools on OS X)
  1. install the client library
 {{{
