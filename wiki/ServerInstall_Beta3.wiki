@@ -36,7 +36,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  # ServerInstall_Beta3_Lenny
  # ServerInstall_Beta3_Squeeze
  # ServerInstall_Beta3_Ubuntu10
- # ServerInstall_Beta3_CentOS6
+ # [ServerInstall_Beta3_CentOS6]
 
 = Install =
 == Known Issues ==
