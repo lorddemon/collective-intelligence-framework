@@ -11,7 +11,7 @@
  1. make sure "make" and "automake" are installed (developer tools on OS X)
  1. install the client library
 {{{
-$> sudo perl -MCPAN -e 'install Crypt::SSLeay, Module::Install, LWP::Protocol::https, REST::Client, Text::Table, HTML::Table, JSON, Module::Pluggable, Config::Simple, Snort::Rule, Class::Accessor, Digest::MD5, Digest::SHA1, Regexp::Common::net, Regexp::Common::net::CIDR'
+$> sudo perl -MCPAN -e 'install Crypt::SSLeay, Module::Install, LWP::Protocol::https, HTTP::Server::Simple, REST::Client, Text::Table, HTML::Table, JSON, Module::Pluggable, Config::Simple, Snort::Rule, Class::Accessor, Digest::MD5, Digest::SHA1, Regexp::Common::net, Regexp::Common::net::CIDR'
 $> wget http://cpan.develooper.com/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.01_10.tar.gz
 $> tar -zxvf CIF-Client-0.01_10.tar.gz
 $> cd CIF-Client-0.01_10
