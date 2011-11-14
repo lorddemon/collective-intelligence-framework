@@ -4,11 +4,14 @@
 <wiki:toc max_depth="3" />
 
 = Preamble =
-Most things are stable; you might have to dump your database between releases until we're out of beta.
+ * Most things are stable; you might have to dump your database between releases until we're out of beta.
 
-These scripts do a lot of dns queries. You're gonna wanna install bind and configure it to use forwarders. Maybe something like google public dns to help mask your queries. Then point your resolv.conf to localhost
+ * These scripts do a lot of dns queries. You're gonna wanna install bind and configure it to use forwarders. Maybe something like google public dns to help mask your queries. Then point your resolv.conf to localhost
 
-Once installed, monitor your dns traffic a bit, your server will be looking up some interesting information. Get a good handle on this and work with your security teams to whitelist this server.
+ * Once installed, monitor your dns traffic a bit, your server will be looking up some interesting information. Get a good handle on this and work with your security teams to whitelist this server.
+
+= Before you Begin =
+This framework was developed against debian (lenny, squeeze and ubuntu > 10.10 or so). This has *NOT* been tested against any other distro's yet (RHEL, BSD, etc). Purely due to lack of cycles. Look here for new doc to pop up when that's complete.
 
 = System Requirements =
 These requirements will handle everything on the same box pretty well with the default open source data-sets. The more (bigger) data-sets you add, the more ram / disk space you'll need. The more cores you add, the more threads that can "batch out" the feed parsers (thus, resulting in faster data consumption).
