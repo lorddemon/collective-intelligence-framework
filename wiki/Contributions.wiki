@@ -15,20 +15,21 @@ Here you'll find a list of organizations and people have / are contributing to t
 == Operational Partners ==
  * [http://www.apwg.org APWG]
 
-== Logo Fest ==
-[http://collective-intelligence-framework.googlecode.com/files/ren-isac_logo.png]
-[http://collective-intelligence-framework.googlecode.com/files/nsf1.jpg]
-[http://collective-intelligence-framework.googlecode.com/files/apwgindexbanner.gif]
-
-
-|| <img src="http://collective-intelligence-framework.googlecode.com/files/ren-isac_logo.png" width="200"> || <img src="http://collective-intelligence-framework.googlecode.com/files/nsf1.jpg" width="100"> || <img src="http://collective-intelligence-framework.googlecode.com/files/apwgindexbanner.gif" width="200"> ||
-
-
-
-<table cellspacing="40">
+<table border="0" cellspacing="20" valign="center">
+<tbody>
 <tr>
-<td><img src="http://collective-intelligence-framework.googlecode.com/files/ren-isac_logo.png" width="200"></td>
-<td><img src="http://collective-intelligence-framework.googlecode.com/files/nsf1.jpg" width="100"></td>
-<td><img src="http://collective-intelligence-framework.googlecode.com/files/apwgindexbanner.gif" width="250"></td>
+<td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/ren-isac_logo.png" width="200"/></td>
+<td align="center"> </td>
+<td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/nsf1.jpg" width="100"/></td>
+<td align="center"> </td>
+<td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/apwgindexbanner.gif" width="250"/></td>
 </tr>
+<tr>
+<td align="center" colspan="2"><img src="http://www.internet2.edu/styleguide/downloads/internet2_logo_colorpos_gif.gif" width="100"/></td>
+<td align="center"> </td>
+<td align="center" colspan="2"><img src="http://blippitt.com/wp-content/uploads/2010/02/iu-logo.png" width="50"/></td>
+
+
+</tr>
+</tbody>
 </table>
