@@ -1,0 +1,16 @@
+#summary centos 6 install doc
+
+= Introduction =
+
+CentOS 6 Server Install
+
+= Details =
+
+ # install server deps
+{{{
+$ sudo yum install rng-tools postgresql-server httpd httpd-devel mod_ssl gcc make expat expat-devel mod_perl mod_perl-devel perl-Digest-SHA1 libxml2 libxml2-devel perl-XML-LibXML uuid-perl perl-DBD-Pg bind perl-XML-RSS perl-JSON rsync perl-Unicode-String perl-Config-Simple perl-Module-Pluggable perl-MIME-Lite 
+}}}
+ # install the remaining CPAN modules
+{{{
+$ sudo perl -MCPAN -e 'install Class::DBI, NET::CIDR, Module::Install, Apache2::Request , Regexp::Common, File::Type, Text::CSV, HTML::Table
+}}}
