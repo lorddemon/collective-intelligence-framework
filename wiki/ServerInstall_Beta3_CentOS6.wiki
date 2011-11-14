@@ -12,5 +12,5 @@ $ sudo yum install rng-tools postgresql-server httpd httpd-devel mod_ssl gcc mak
 }}}
  # install the remaining CPAN modules
 {{{
-$ sudo perl -MCPAN -e 'install Class::DBI, NET::CIDR, Module::Install, Apache2::Request , Regexp::Common, File::Type, Text::CSV, HTML::Table
+$ sudo perl -MCPAN -e 'install Class::DBI, NET::CIDR, Module::Install, Apache2::Request, Regexp::Common, File::Type, Text::CSV, HTML::Table
 }}}
