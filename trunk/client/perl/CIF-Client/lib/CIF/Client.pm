@@ -19,7 +19,7 @@ use URI::Escape;
 
 __PACKAGE__->mk_accessors(qw/apikey config/);
 
-our $VERSION = '0.01_10';
+our $VERSION = '0.01_11';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 # Preloaded methods go here.

@@ -1,5 +1,9 @@
 Revision history for Perl extension CIF::Client.
 
+0.01_11 2011-11-15
+    - work-around for REST::Client install bug
+    - doc fix
+
 0.01_10 2011-10-25
     - bugfixes
     - Makefile.PL fixes
