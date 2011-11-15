@@ -1,5 +1,9 @@
 Revision history for Perl extension CIF::Client.
 
+0.01_10 2011-10-25
+    - bugfixes
+    - Makefile.PL fixes
+
 0.01_08 2011-09-28
     - added html output plugin
     - other performance fixes
