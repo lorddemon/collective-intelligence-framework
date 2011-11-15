@@ -10,7 +10,7 @@ Where possible, you should:
  # mirror the postgresql directory (/var/lib/postgres) on it's own set of disks
  # mirror or RAID5 main archive table space on it's own set of disks
  # RAID5 or even RAID0 the index table space (it can be rebuilt from the archive if the disks fail, a trade-off for speed)
- # the WAL logs (pg_xlog) should be on it's own set of disks
+ # the WAL logs (pg_xlog) should be on it's own set of disks due to the constant sequential writes (raid 1 at the least)
 
 = Details =
 == Partition Mapping ==
