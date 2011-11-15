@@ -12,9 +12,9 @@
  1. install the client library
 {{{
 $> sudo perl -MCPAN -e 'install Crypt::SSLeay, Module::Install, LWP::Protocol::https, HTTP::Server::Simple, REST::Client, Text::Table, HTML::Table, JSON, Module::Pluggable, Config::Simple, Snort::Rule, Class::Accessor, Digest::MD5, Digest::SHA1, Regexp::Common::net, Regexp::Common::net::CIDR'
-$> wget http://cpan.develooper.com/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.01_10.tar.gz
-$> tar -zxvf CIF-Client-0.01_10.tar.gz
-$> cd CIF-Client-0.01_10
+$> wget http://cpan.develooper.com/authors/id/S/SA/SAXJAZMAN/cif/CIF-Client-0.01_11.tar.gz
+$> tar -zxvf CIF-Client-0.01_11.tar.gz
+$> cd CIF-Client-0.01_11
 $> perl Makefile.PL && make && sudo make install
 }}}
  1. setup your [ClientSetup#Global_Configuration_File configuration file]
