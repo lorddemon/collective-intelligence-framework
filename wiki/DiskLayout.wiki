@@ -10,6 +10,7 @@ Where possible, you should:
  # mirror the postgresql directory (/var/lib/postgres) on it's own set of disks
  # mirror or RAID5 main archive table space on it's own set of disks
  # RAID5 or even RAID0 the index table space (it can be rebuilt from the archive if the disks fail, a trade-off for speed)
+ # the WAL logs (pg_xlog) should be on it's own set of disks
 
 = Details =
 == Partition Mapping ==
@@ -25,8 +26,9 @@ Where possible, you should:
 
  1. the /etc/fstab would look like:
 {{{
-/dev/mapper/vg00-archive /mnt/archive       ext3    defaults,noatime        0       2
-/dev/mapper/vg00-index   /mnt/index         ext3    defaults,noatime        0       2
+/dev/mapper/vg00-archive /mnt/archive      ext3    defaults,noatime         0       2
+/dev/mapper/vg00-index   /mnt/index         ext3    defaults,noatime         0       2
+/dev/mapper/vg00-xlog    /mnt/pg_xlog      ext3    defaults,noatime         0       2
 }}}
  1. after you've created your system via lvm, assuming your "data volume" is on vg00:
 {{{
@@ -40,6 +42,16 @@ $ sudo mount /mnt/archive
 $ sudo mount /mnt/index
 $ sudo chown postgres:postgres /mnt/archive /mnt/index
 $ sudo chmod 750 /mnt/archive /mnt/index
+}}}
+ # setup the pg_xlog partition
+{{{
+$ sudo lvcreate -n xlog -L 250M vg00
+$ sudo mkdir /mnt/pg_xlog
+$ sudo mke2fs -j /dev/mapper/vg00-xlog
+$ sudo mount /mnt/pg_xlog
+$ sudo chown postgres:postgres pg_xlog
+$ sudo chmod 700 pg_xlog
+$ sudo ln -sf /mnt/pg_xlog /var/lib/postgresql/8.4/main/pg_xlog
 }}}
 == Example Layout ==
 {{{
