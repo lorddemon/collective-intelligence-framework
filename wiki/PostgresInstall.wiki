@@ -71,6 +71,7 @@ postgres=#\l
 }}}
 
 = Performance Tuning =
+ # http://www.amazon.com/PostgreSQL-High-Performance-Gregory-Smith/dp/184951030X/ref=sr_1_1?ie=UTF8&qid=1321356392&sr=8-1
  # http://developer.postgresql.org/pgdocs/postgres/kernel-resources.html
  # http://momjian.us/main/writings/pgsql/hw_performance/
  # http://www.revsys.com/writings/postgresql-performance.html
