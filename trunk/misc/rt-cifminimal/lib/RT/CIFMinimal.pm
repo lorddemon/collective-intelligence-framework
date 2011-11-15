@@ -35,8 +35,14 @@ sub cif_data {
         # generate apikey
         require RT::CIFMinimal;
         my $id = RT::CIFMinimal::generate_apikey({ user => $user, key_description => 'generated automatically for WebUI search' });
-        push(@recs,$id);
-        push(@results,'default WebUI apikey '.$id->uuid().' automatically generated');
+        unless($id){
+            push(@results, 'unable to automatically generate an apikey, please contact your administrator');
+            $RT::Logger->error('unable to generate an apikey for: '.$user->EmailAddress());
+            return;
+        } else {
+            push(@recs,$id);
+            push(@results,'default WebUI apikey '.$id->uuid().' automatically generated');
+        }
     }
     $client->{'apikey'} = $recs[0]->uuid();
     my @res;
@@ -94,7 +100,8 @@ sub generate_apikey {
         } else {
             $default_guid = $sorted[0];
         }
-        unless($#a_groups > -1){
+        ## TODO -- fix this
+        unless($a_groups[0]){
             @a_groups = @sorted;
         } else {
             foreach (@a_groups){
