@@ -74,11 +74,21 @@ echo kernel.shmall = $shmall
  # run the script
 {{{
 $ sudo ./shmsetup.sh >> /etc/sysctl.conf
+}}}
+ # control virtual memory overcommit and swappiness
+{{{
+$ sudo echo vm.overcommit_memory = 2 >> /etc/sysctl.conf
+$ sudo echo vm.swappiness = 0 >> /etc/sysctl.conf
+}}}
+ # reload the kernel settings
+{{{
 $ sudo sysctp -p
 }}}
- # check your blockdev setting:
+ # *EXPERIMENTAL* check your blockdev setting in rc.local:
 {{{
-$ sudo blockdev --getra /dev/
+/sbin/blockdev --setra 4096 /dev/mapper/ses--qa1-archive
+/sbin/blockdev --setra 4096 /dev/mapper/ses--qa1-index
+/sbin/blockdev --setra 4096 /dev/mapper/ses--qa1-dbsystem
 }}}
 
 
