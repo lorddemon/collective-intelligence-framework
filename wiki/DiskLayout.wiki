@@ -45,7 +45,7 @@ $ sudo chmod 750 /mnt/archive /mnt/index
 }}}
  # setup the pg_xlog partition
 {{{
-$ sudo lvcreate -n xlog -L 250M vg00
+$ sudo lvcreate -n xlog -L 2G vg00
 $ sudo mkdir /mnt/pg_xlog
 $ sudo mke2fs -j /dev/mapper/vg00-xlog
 $ sudo mount /mnt/pg_xlog
