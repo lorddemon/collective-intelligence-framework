@@ -88,6 +88,10 @@ sub write_out {
     }
     @a = reverse(@a) if($reverse);
     foreach my $r (@a){
+        if($r->{'address'} && $config->{'compress_address'} && length($r->{'address'}) > 32){
+            $r->{'address'} = substr($r->{'address'},0,31);
+            $r->{'address'} .= '...';
+        }
         $table->load([ map { $r->{$_} } @cols]);
     }
     if($created){
