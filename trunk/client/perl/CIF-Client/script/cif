@@ -7,7 +7,7 @@ use Getopt::Std;
 use CIF::Client;
 
 my %opts;
-getopt('G:l:g:hTHL:p:f:q:c:s:r:C:', \%opts);
+getopt('G:l:g:hTHL:p:f:q:c:s:r:C:z', \%opts);
 
 my $query       = $opts{'q'} || shift;
 our $debug       = ($opts{'d'}) ? 1 : 0;
@@ -29,6 +29,7 @@ my $group_map   = (defined($opts{'G'})) ? $opts{'G'} : 1;
 my $plugs = join(',',CIF::Client::_plugins);
 my $simple_hashes = (defined($opts{'H'})) ? $opts{'H'} : 1;
 my $verify_tls = $opts{'T'};
+my $compress_address = (defined($opts{'z'})) ? $opts{'z'} : 1;
 
 die(usage()) unless($query || $opts{'h'});
 
@@ -53,6 +54,7 @@ Usage: perl $0 -q xyz.com
     -g  --guid:             filter by a specific group id (guid), ex: group1.example.com
     -G  --groupmap:         turn group mapping (guid to 'group name') on/off, default: $group_map
     -l  --limit:            set the default result limit (queries only), default is set on server, usually around 500.
+    -z                      compact address field to 32 chars, applies only to defalt table output, default: 1 (0 turns it off)
 
 Queries:
 
@@ -91,6 +93,7 @@ my ($client,$err) = CIF::Client->new({
     verify_tls  => $verify_tls,
     guid        => $guid,
     group_map   => $group_map,
+    compress_address    => $compress_address,
 });
 
 die($err) unless($client);
