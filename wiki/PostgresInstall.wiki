@@ -75,7 +75,7 @@ echo kernel.shmall = $shmall
 {{{
 $ sudo ./shmsetup.sh >> /etc/sysctl.conf
 }}}
- # control virtual memory overcommit and swappiness
+ # control virtual memory overcommit and swappiness *ONLY IF THIS IS A DEDICATED DATABASE SERVER AND APACHE IS SOMEWHERE ELSE!* o/w, skip this part.
 {{{
 $ sudo echo vm.overcommit_memory = 2 >> /etc/sysctl.conf
 $ sudo echo vm.swappiness = 0 >> /etc/sysctl.conf
