@@ -27,9 +27,10 @@ Where possible, you should:
 
  1. the /etc/fstab would look like:
 {{{
-/dev/mapper/vg00-archive /mnt/archive      ext3    defaults,noatime         0       2
-/dev/mapper/vg00-index   /mnt/index         ext3    defaults,noatime         0       2
-/dev/mapper/vg00-xlog    /mnt/pg_xlog      ext3    defaults,noatime         0       2
+/dev/mapper/vg00-dbsystem        /var/lib/postgresql   ext3    defaults,noatime         0       2
+/dev/mapper/vg00-archive            /mnt/archive            ext3    defaults,noatime         0       2
+/dev/mapper/vg00-index              /mnt/index               ext3    defaults,noatime         0       2
+/dev/mapper/vg00-xlog                /mnt/pg_xlog           ext3    defaults,noatime         0       2
 }}}
  1. after you've created your system via lvm, assuming your "data volume" is on vg00:
 {{{
