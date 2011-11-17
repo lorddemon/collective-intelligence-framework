@@ -19,9 +19,9 @@ These requirements will handle everything on the same box pretty well with the d
 These specs will handle around 10k feeds at once with minimal impact on memory usage. Past that you'll need to start doubling your specs. Virtual machine technology is great for prototyping your implementation and will give you a good baseline of what you'll need for production.
 
  # an x86-64bit platform
- # at-least 4 gig of ram
+ # at-least 8GB ram
  # at-least 4 cores
- # at-least 35gig of free (after OS install) disk space
+ # at-least 100GB of free (after OS install) disk space, which will last you about 6-9 months.
 
 = Prerequisites =
 == Required Services ==
