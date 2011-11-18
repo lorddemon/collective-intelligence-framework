@@ -40,6 +40,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 
 = Install =
 == Known Issues ==
+ # If you've modified anything other than /opt/cif/etc/custom.cfg in /opt/cif/etc, *BACK UP YOUR etc/cif* directory. This install will overwrite all the main .cfg files
  # *IF YOU'RE USING A PREVIOUS VERSION OF CIF (aka: beta2), you'll need to drop your database, including any apikeys you've generated. We've added unix style "group" support to both the data-warehouse as well as the apikeys. Follow the Beta2_Removal guide*
  # libwww6 was released mid-stream on us; which drastically changes the way libwww works (LWP, etc). Before you begin, make sure you update your libwww-perl instance to v6 until we fix this in the Makefile.am:
 {{{
@@ -68,6 +69,7 @@ $ sudo chmod 770 /mnt/archive
 {{{
 $ sudo useradd -U -m cif
 }}}
+ # if you're upgrading, make sure you've backed up /opt/cif/etc appropriately (if you've modified anything inside it)
  # install the core server interface
 {{{
 $ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01-b20111024_140745.tar.gz
