@@ -238,11 +238,12 @@ sub GET {
         ($restriction,@recs) = $self->map_restrictions($request,$restriction,@recs);
 
         my $f;
-        $f->{'id'} = $uuid;
-        $f->{'entry'} = [$recs[0]->{'data'}];
+        $f->{'id'}          = $uuid;
+        $f->{'entry'}       = [$recs[0]->{'data'}];
         $f->{'restriction'} = $restriction;
         $f->{'description'} = $recs[0]->{'description'};
-        $f->{'detecttime'} = $recs[0]->{'detecttime'};
+        $f->{'detecttime'}  = $recs[0]->{'detecttime'};
+        $f->{'guid'}        = $recs[0]->{'guid'};
 
         # don't laugh. it was hard to write this.
         $f->{'description'} =~ s/$old_restriction/$restriction/ if($f->{'description'});

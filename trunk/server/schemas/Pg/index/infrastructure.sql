@@ -49,3 +49,8 @@ DROP INDEX IF EXISTS idx_feed_infrastructure_passivedns;
 DROP INDEX IF EXISTS idx_query_infrastructure_passivedns;
 CREATE INDEX idx_feed_infrastructure_passivedns ON infrastructure_passivedns (detecttime DESC, severity DESC, confidence DESC, restriction DESC);
 CREATE INDEX idx_query_infrastructure_passivedns ON infrastructure_passivedns (address, detecttime DESC, severity DESC, confidence DESC, restriction DESC);
+
+DROP INDEX IF EXISTS idx_feed_infrastructure_warez;
+DROP INDEX IF EXISTS idx_query_infrastructure_warez;
+CREATE INDEX idx_feed_infrastructure_warez ON infrastructure_warez (detecttime DESC, severity DESC, confidence DESC, restriction DESC);
+CREATE INDEX idx_query_infrastructure_warez ON infrastructure_warez (address, detecttime DESC, severity DESC, confidence DESC, restriction DESC);

@@ -51,7 +51,7 @@ sub insert {
     my $t = $self->table();
     foreach(@plugins){
         if($_->prepare($info)){
-            $self->table($t);
+            $self->table($_->table());
         }
     }
 
@@ -79,8 +79,8 @@ sub myfeed {
     if($info->{'apikey'}){
         @recs = $class->search_feed(
             $info->{'detecttime'},
-            $info->{'confidence'},
             $info->{'severity'},
+            $info->{'confidence'},
             $info->{'restriction'},
             $info->{'apikey'},
             $info->{'limit'},
@@ -123,8 +123,8 @@ __PACKAGE__->set_sql('feed' => qq{
     LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
     WHERE
         detecttime >= ?
+        AND __TABLE__.severity >= ?
         AND __TABLE__.confidence >= ?
-        AND severity >= ?
         AND __TABLE__.restriction <= ?
         AND apikeys_groups.uuid = ?
     ORDER BY __TABLE__.address ASC, __TABLE__.id ASC, confidence DESC, severity DESC, __TABLE__.restriction ASC, detecttime DESC, __TABLE__.id DESC

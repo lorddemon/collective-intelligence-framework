@@ -1,4 +1,4 @@
-EXTRA_DIST = lib etc sbin bin schemas example_api.conf
+EXTRA_DIST = lib etc sbin bin schemas schemas example_api.conf
 
 all: default
 
@@ -65,7 +65,7 @@ bin-install:
 		$(INSTALL) -m 0750 "bin/$$file" "$(bindir)/$$file" ; \
 	done
 
-initdb: createdb archive index
+initdb: createdb archive index tableindex
 
 createdb:
 	$(PSQL) -U $(DB_DBA) -h $(DB_HOST) -p $(DB_PORT) -c 'CREATE DATABASE $(DB_DATABASE)'
@@ -83,6 +83,12 @@ tables:
 	$(PSQL) -U $(DB_DBA) -d $(DB_DATABASE) -h $(DB_HOST) -p $(DB_PORT) < "schemas/$(DB_TYPE)/$$file" ; \
 	done
 	@echo "Tables built"
+
+tableindex:
+	-( cd schemas/$(DB_TYPE)/index && find -type f -print | grep -v svn | sort ) | while read file ; do \
+	$(PSQL) -U $(DB_DBA) -d $(DB_DATABASE) -h $(DB_HOST) -p $(DB_PORT) < "schemas/$(DB_TYPE)/index/$$file" ; \
+	done
+	@echo "Table Indicies built"
 
 dropdb: dropdatabase droparchive dropindex          
 
