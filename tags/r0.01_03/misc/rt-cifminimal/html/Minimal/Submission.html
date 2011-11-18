@@ -1,0 +1,106 @@
+<& Elements/Header, Title => loc("Results") &>
+<& /Elements/ListActions, actions => \@results &>
+
+% if($submitted) {
+% my $url = '3;url='.RT->Config->Get('WebURL')."Minimal/Display.html?id=$submitted";
+<meta http-equiv="refresh" content="<% "$url" %>" />
+% }
+<%INIT>
+
+unless($data){
+    RT::Interface::Web::Redirect(RT->Config->Get('WebURL').'Minimal/Observation.html');
+}
+
+require XML::IODEF::Simple;
+require CIF::Utils;
+
+# just in case someone tries to set it on their own
+# w/o the proper rights
+unless($session{'CurrentUser'}->Privileged()){
+    $confidence = RT->Config->Get('CIFMinimal_DefaultConfidence') || 85;
+}
+
+#my $guid = (CIF::Utils::isUUID($group)) ? $group : CIF::Utils::genSourceUUID($group);
+my $guid = $group;
+
+my $constituency_cf = RT::IR->CustomFields( 'Constituency', Queue => $Queue );
+my $constituency_field = 'Object-RT::Ticket--CustomField-' . $constituency_cf->id .'-Values';
+$ARGS{$constituency_field} = $group;
+
+my $real_assessment = $assessment;
+$real_assessment =~ s/\/\S+$//;
+my @datas = split(/,/,$data);
+foreach $data (@datas){
+    $data =~ s/[ \t]+$//g;
+    $data =~ s/^[ \t]+//g;
+    $data = lc($data);
+    my $hash = {
+        guid            => $guid,
+        restriction     => $restriction,
+        description     => $description,
+        impact          => $real_assessment,
+        address         => $data,
+        protocol        => $protocol,
+        portlist        => $portlist,
+        source          => $session{'CurrentUser'}->EmailAddress(),
+        contact         => {
+            name            => $session{'CurrentUser'}->RealName(),
+            email           => $session{'CurrentUser'}->EmailAddress(),
+        },
+        purpose         => $purpose,
+        confidence      => $confidence,
+        sharewith       => $sharewith,
+    };
+    my $report = XML::IODEF::Simple->new($hash);
+
+    $description = $report->get('IncidentDescription');
+    my $subject = $report->get('IncidentAssessmentImpact').' '.$description;
+
+    my $msg = $report->out();
+    
+    $ARGS{'Subject'} = $subject;
+    $ARGS{'Queue'} = 'Incident Reports';
+    my ($ticket,@res) = CreateTicket(Content => $msg, Attachments => $session{'Attachments'}, %ARGS, Status => 'new');
+    $ticket->Comment(Content => $ARGS{'ReferenceDescription'});
+    if($ticket->Status() eq 'rejected'){
+        push(@results,'Ticket contained bad-data (private address?), auto-rejected');
+    } else {
+        $submitted = 1;
+        push(@results,@res);
+    }
+    if($submitted){
+        push(@results,$msg) if(RT->Config->Get('LogToSyslog') eq 'debug');
+        $submitted = $ticket->id();
+        require CIF::Archive;
+        require CIF::FeedParser::ParseJsonIodef;
+        require JSON;
+        my $r = $ticket->IODEF();
+
+        my $ret = CIF::FeedParser::ParseJsonIodef::parse(undef,JSON::to_json([$r->to_tree()]));
+        foreach(@$ret){
+            $_->{'detcttime'} = $ticket->CreatedAsString();
+            my ($err,$id) = CIF::Archive->insert($_);
+            warn $err if($err);
+            warn $id if($id);
+        }
+        
+    }
+}
+
+</%INIT>
+
+<%ARGS>
+$sharewith => undef
+$group => undef
+$purpose => RT->Config->Get('CIFMinimal_DefaultPurpose') || 'mitigation'
+$data => undef
+$restriction => undef
+$description => undef
+$protocol => undef
+$portlist => undef
+@results => undef
+$assessment => undef
+$Queue => 'Incident Reports'
+$confidence => RT->Config->Get('CIFMinimal_DefaultConfidence') || 85;
+$submitted => undef
+</%ARGS>

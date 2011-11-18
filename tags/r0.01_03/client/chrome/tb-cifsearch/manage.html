@@ -1,0 +1,126 @@
+<html>
+<head>
+<style>
+      html {
+		margin:0px;
+		padding:0px;
+	  }
+	  body {
+	    margin:0px;
+	    padding:0px;
+		//background-color:#ff0000;
+	  }
+	  #header {
+	    font-size:14px;
+		color:#3b3e58;
+		font-family:arial;
+		text-align:left;
+		margin-top:14px;
+		margin-bottom:5px;
+	  }
+	  #list {
+	    width:100%;
+	    float:left;
+	    border:1px solid #d2d2d2;
+	  }
+
+	  .title {
+	    float:left;
+		font-size:12px;
+		font-family:arial;
+		color:#000000;
+		margin-left:5px;
+	  }
+
+	  #form {
+	    float:left;
+	    padding-top:7px;
+	  }
+	  #form font{
+	     float:left;
+		 clear:both;
+		 font-size:12px;
+		 font-family:arial;
+		 color:#000000;
+		 width:47px;
+		 margin-top:7px;
+		 margin-left:3px;
+	  }
+	  #form input[type=text]{
+	     float:left;
+		 width:250px;
+		 height:20px;
+		 margin-top:4px;
+		 margin-bottom:4px;
+		 font-size:11px;
+		 font-family:arial;
+		 color:#37383e;
+	  }
+	  #form .desc {
+	     float:left;
+		 width:163px;
+		 font-size:11px;
+		 font-family:arial;
+		 color:#50535c;
+		 margin-top:2px;
+		 margin-left:5px;
+	  }
+	  #btn {
+	     float:right;
+		 margin-top:3px;
+		 margin-left:4px;
+		 width:60px;
+		 cursor:pointer;
+	  }
+</style>
+
+<script type="text/javascript">
+
+    function loadSettings() {
+        var host = localStorage['host'];
+        var apikey = localStorage['apikey'];
+        if(host == undefined){
+            host = 'https://example.com/api';
+        }
+        if(apikey == undefined){
+            apikey = 'xx-xx-xx-xx-xx';
+        }
+        var e = document.getElementById('host');
+        e.value = host;
+        e = document.getElementById('apikey');
+        e.value = apikey;
+    }
+    
+    function saveSettings() {
+        var host = document.getElementById("host");
+        var apikey = document.getElementById("apikey");
+        
+        localStorage['host'] = host.value;
+        localStorage['apikey'] = apikey.value;
+    }
+    
+    function eraseOptions() {
+        localStorage.removeItem("host");
+        localStorage.removeItem("apikey");
+        location.reload();
+    }
+  
+</script>
+</head>
+<body onload="loadSettings()">
+  <center>
+  <div id="main" style="width:300px;height:143px">
+      <div id="header">
+	    Settings:
+	  </div>
+      <div id="form">
+	     <font>host:</font>
+		 <input id="host" type="text"/>
+	     <font>apikey:</font>
+		 <input id="apikey" type="text"/>
+		 <input id="btn" type="button" value="Save" xdisabled="true" onclick="saveSettings()"/>
+         <input id="btn2" type="button" onclick="eraseOptions()" value="Restore Defaults"/>
+	  </div>
+  </div>
+</body>
+</html>
