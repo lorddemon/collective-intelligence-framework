@@ -1,0 +1,4 @@
+<!ENTITY prefwindow.title "CIF-Search preferences">
+<!ENTITY pane1.title "CIF-Search preferences">
+<!ENTITY stringhostpref.label "hostname">
+<!ENTITY stringapikeypref.label "apikey">

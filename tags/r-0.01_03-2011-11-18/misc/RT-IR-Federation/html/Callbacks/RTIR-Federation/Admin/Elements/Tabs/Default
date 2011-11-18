@@ -1,0 +1,8 @@
+<%args>
+        $tabs   => undef
+</%args>
+<%init>
+        $tabs->{'Ba'} = { title => loc('Sites'), 		path => 'Admin/Groups/index.html?GroupString=SITE_&GroupOp=LIKE' };
+	$tabs->{'Bb'} = { title => loc('Federations'), 		path => 'Admin/Groups/index.html?GroupString=FEDERATION&GroupOp=LIKE' };
+	$tabs->{'Bc'} = { title => loc('WorkingGroups'), 	path => 'Admin/Groups/index.html?GroupString=WORKINGGROUP&GroupOp=LIKE' };
+</%init>

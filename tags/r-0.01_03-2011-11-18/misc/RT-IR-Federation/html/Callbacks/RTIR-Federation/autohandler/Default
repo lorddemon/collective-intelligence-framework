@@ -1,0 +1,8 @@
+<%ONCE>
+eval {
+    	require RT::IR::Federation;
+};
+if ( $@ ) {
+    $RT::Logger->crit("System error. Couldn't load IR Federation module(s): $@");
+}
+</%ONCE>
