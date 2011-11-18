@@ -50,7 +50,7 @@ libs-install:
 etc-install:
 	[ -d $(sysconfdir) ] || $(INSTALL) -m 0770 -d $(sysconfdir)
 	-( cd etc && find . -type f -print ) | grep -v svn | while read file ; do \
-	    [ -e $(sysconfdir)/$$file ] || $(INSTALL) -m 0660 "etc/$$file" "$(sysconfdir)/$$file" ; \
+	    $(INSTALL) -m 0660 "etc/$$file" "$(sysconfdir)/$$file" ; \
 	done
 
 sbin-install:
