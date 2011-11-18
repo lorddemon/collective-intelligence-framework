@@ -1,0 +1,10 @@
+<%init>
+$tabs->{bb} = {
+    title => loc('Key Management'),
+    path  => 'GnuPG/Manage.html',
+};
+</%init>
+
+<%args>
+$tabs => undef
+</%args>
