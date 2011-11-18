@@ -1,0 +1,8 @@
+<!ENTITY cifsearch.label "Your localized menuitem">
+<!ENTITY cifsearchContext.label "Your Menuitem">
+<!ENTITY cifsearchContext.accesskey "Y">
+<!ENTITY cifsearchToolbarButton.label "Your Toolbar Button">
+<!ENTITY cifsearchToolbarButton.tooltip "This is your toolbar button!">
+<!ENTITY cifsearchSidebar.label "Your Sidebar">
+<!ENTITY cifsearchToolbar.name  "example">
+<!ENTITY cifsearchToolbar.label "This is an example toolbar. You can hide it under View &gt; toolbars &gt; &cifsearchToolbar.name;">
