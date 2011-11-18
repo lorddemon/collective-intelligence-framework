@@ -1,3 +1,0 @@
-autoreconf -vf
-./configure
-make
