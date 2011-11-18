@@ -65,3 +65,8 @@ CREATE TABLE infrastructure_passivedns () INHERITS (infrastructure);
 ALTER TABLE infrastructure_passivedns ADD PRIMARY KEY (id);
 ALTER TABLE infrastructure_passivedns ADD CONSTRAINT infrastructure_passivedns_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
 ALTER TABLE infrastructure_passivedns ADD UNIQUE(uuid,address);
+
+CREATE TABLE infrastructure_warez () INHERITS (infrastructure);
+ALTER TABLE infrastructure_warez ADD PRIMARY KEY (id);
+ALTER TABLE infrastructure_warez ADD CONSTRAINT infrastructure_warez_uuid_fkey FOREIGN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
+ALTER TABLE infrastructure_warez ADD UNIQUE(uuid,address);

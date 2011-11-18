@@ -99,11 +99,11 @@ sub myfeed {
     if($info->{'apikey'}){
         @recs = $class->search_feed(
             $info->{'detecttime'},
-            $info->{'detecttime'},
-            $info->{'confidence'},
             $info->{'severity'},
+            $info->{'confidence'},
             $info->{'restriction'},
             $info->{'apikey'},
+            $info->{'detecttime'},
             $info->{'limit'},
         );
     } else {
@@ -186,7 +186,6 @@ sub lookup {
     if($info->{'guid'}){
         return($class->search__lookup(
             $q,
-            $q,
             $sev,
             $conf,
             $restriction,
@@ -196,7 +195,6 @@ sub lookup {
     }
     return(
         $class->search_lookup(
-            $q,
             $q,
             $sev,
             $conf,
@@ -262,8 +260,7 @@ __PACKAGE__->set_sql('lookup' => qq{
     LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
     LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
     WHERE 
-        address != '0/0'
-        AND (address >>= ? OR address <<= ?)
+        address <<= ?
         AND severity >= ?
         AND confidence >= ?
         AND __TABLE__.restriction <= ?
@@ -277,8 +274,7 @@ __PACKAGE__->set_sql('_lookup' => qq{
     FROM __TABLE__
     LEFT JOIN archive ON archive.uuid = __TABLE__.uuid
     WHERE 
-        address != '0/0'
-        AND (address >>= ? OR address <<= ?)
+        address <<= ?
         AND severity >= ?
         AND confidence >= ?
         AND __TABLE__.restriction <= ?
@@ -293,20 +289,20 @@ __PACKAGE__->set_sql('feed' => qq{
     LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
     LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
     WHERE 
-        NOT EXISTS (SELECT uuid FROM domain where __TABLE__.uuid = domain.uuid)
-        AND NOT EXISTS (
-            SELECT uuid FROM infrastructure_whitelist iw 
-            WHERE 
-               iw.detecttime >= ?
-               AND iw.confidence >= 25 
-               AND __TABLE__.address <<= iw.address 
-               LIMIT 1
-        ) 
-        AND detecttime >= ?
-        AND __TABLE__.confidence >= ?
+        detecttime >= ?
         AND __TABLE__.severity >= ?
+        AND __TABLE__.confidence >= ?
         AND __TABLE__.restriction <= ?
         AND apikeys_groups.uuid = ?
+        AND NOT EXISTS (SELECT uuid FROM domain where __TABLE__.uuid = domain.uuid)
+        AND NOT EXISTS (
+            SELECT iw.address FROM infrastructure_whitelist iw 
+            WHERE 
+                __TABLE__.address <<= iw.address
+                AND iw.detecttime >= ?
+                AND iw.confidence >= 25 
+                AND severity IS NULL
+        ) 
     ORDER BY address,protocol,portlist ASC, confidence DESC, severity DESC, restriction ASC, detecttime DESC, __TABLE__.id DESC 
     LIMIT ?
 });

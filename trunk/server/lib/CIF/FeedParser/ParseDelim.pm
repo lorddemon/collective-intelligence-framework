@@ -24,10 +24,10 @@ sub parse {
         next if(/^(#|$|<)/);
         my @m = split($split,$_);
         my $h;
+        map { $h->{$_} = $f->{$_} } keys %$f;
         foreach (0 ... $#cols){
             $h->{$cols[$_]} = $m[$_];
         }
-        map { $h->{$_} = $f->{$_} } keys %$f;
         push(@array,$h);
     }
     return(\@array);

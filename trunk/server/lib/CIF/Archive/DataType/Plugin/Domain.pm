@@ -150,11 +150,11 @@ sub myfeed {
     if($info->{'apikey'}){
         @recs = $class->search_feed(
             $info->{'detecttime'},
-            $info->{'detecttime'},
             $info->{'confidence'},
             $info->{'severity'},
             $info->{'restriction'},
             $info->{'apikey'},
+            $info->{'detecttime'},
             $info->{'limit'},
         );
     } else {
@@ -195,20 +195,19 @@ __PACKAGE__->set_sql('feed' => qq{
     LEFT JOIN apikeys_groups ON __TABLE__.guid = apikeys_groups.guid
     LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
     WHERE
-        NOT EXISTS (
-            SELECT uuid 
-            FROM domain_whitelist dw
+        detecttime >= ?
+        AND __TABLE__.confidence >= ?
+        AND __TABLE__.severity >= ?
+        AND __TABLE__.restriction <= ?
+        AND apikeys_groups.uuid = ?
+        AND NOT EXISTS (
+            SELECT dw.address FROM domain_whitelist dw
             WHERE
                     dw.detecttime >= ?
                     AND dw.confidence >= 25
                     AND dw.md5 = __TABLE__.md5
-            LIMIT 1
+                    AND dw.severity IS NULL
         )
-        AND detecttime >= ?
-        AND __TABLE__.confidence >= ?
-        AND severity >= ?
-        AND __TABLE__.restriction <= ?
-        AND apikeys_groups.uuid = ?
     ORDER BY __TABLE__.uuid ASC, __TABLE__.id ASC, confidence DESC, severity DESC, __TABLE__.restriction ASC, detecttime DESC, __TABLE__.id DESC
     LIMIT ?
 });
