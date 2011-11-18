@@ -1,0 +1,11 @@
+INSTALLATION
+
+1. #> perl Makefile.PL
+2. #> make
+3. #> make install
+4. #> make initdb
+5. #> vi /opt/rt3/etc/RT_SiteConfig.pm
+
+Set(@Plugins,(qw(RT::FM RT::IR RT::IR::Federation)));
+
+6. #> /etc/init.d/httpd reload

@@ -1,0 +1,46 @@
+@Initial = ( sub {
+    eval { require RT::IR; };
+    if ($@) {
+        die "RT-IR-Federation is built on top of RTIR; please install RTIR before continuing.\n";
+    }
+} );
+
+@CustomFields = (
+	{
+		Name		=> 'asn',
+		Disabled	=> 0,
+		Type		=> 'FreeformMultiple',
+		Description	=> "Group's ASN Addresses",
+		LookupType	=> "RT::Group",
+	},
+	{
+		Name		=> 'ipv4-net',
+		Disabled	=> 0,
+		Type		=> 'FreeformMultiple',
+		Description	=> "Group's ipv4-address space",
+		LookupType	=> "RT::Group",
+	},
+	{
+		Name		=> 'ipv6-net',
+		Disabled	=> 0,
+		Type		=> 'FreeformMultiple',
+		Description	=> "Group's ipv6-address space",
+		LookupType	=> "RT::Group",
+	},
+	{
+		Name		=> 'vCard',
+		Disabled	=> 0,
+		Type		=> 'Binary',
+		Description	=> "Group's vCard contact information",
+		LookupType	=> "RT::Group",
+	},
+	{
+		Name		=> 'vCard',
+		Disabled	=> 0,
+		Type		=> 'Binary',
+		Description	=> "User's vCard contact information",
+		LookupType	=> "RT::User",
+	},
+);
+
+1;
