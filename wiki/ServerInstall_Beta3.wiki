@@ -67,7 +67,7 @@ $ sudo chmod 770 /mnt/archive
  # install the PerlClient (we use some functions in it for the server)
  # create your "cif" user/group (the configure script will default to this user "cif")
 {{{
-$ sudo useradd -U -m cif
+$ sudo adduser --disabled-password --gecos '' cif
 }}}
  # if you're upgrading, make sure you've backed up /opt/cif/etc appropriately (if you've modified anything inside it)
  # install the core server interface
