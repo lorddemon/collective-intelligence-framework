@@ -87,6 +87,7 @@ sub lookup {
     my $class = shift;
     my $info = shift;
     my $q = $info->{'query'};
+    return unless($q =~ / feed$/);
 
     if($info->{'guid'}){
         return(
