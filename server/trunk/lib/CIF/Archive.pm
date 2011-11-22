@@ -237,7 +237,6 @@ sub lookup {
                 $confidence     = $info->{'confidence'};
                 $severity       = $info->{'severity'};
                 $restriction    = $info->{'restriction'};
-                #$guid           = 'root';
                 $detecttime     = DateTime->from_epoch(epoch => time());
                 last;
             }

@@ -10,4 +10,16 @@ sub prepare {
     return(1);
 }
 
+__PACKAGE__->set_sql('feed' => qq{
+    SELECT COUNT(description),description,severity,confidence,restriction
+    FROM
+        (SELECT DISTINCT ON (source,description,severity,confidence,restriction) * FROM __TABLE__) AS t1
+    WHERE 
+        t1.detecttime >= ?
+    GROUP BY
+        description,severity,confidence,restriction
+    ORDER BY 
+        count desc,description asc, severity desc, confidence desc, restriction desc
+    LIMIT ?
+});
 1;
