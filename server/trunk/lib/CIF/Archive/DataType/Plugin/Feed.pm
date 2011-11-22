@@ -4,29 +4,55 @@ use base 'CIF::Archive::DataType';
 use strict;
 use warnings;
 
+use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/SUPER$/;
+
 __PACKAGE__->table('feed');
 __PACKAGE__->columns(All => qw/id uuid guid description confidence source hash_sha1 signature impact severity restriction detecttime created data/);
 __PACKAGE__->columns(Essential => qw/id uuid guid description confidence source hash_sha1 signature impact severity restriction detecttime created data/);
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->sequence('feed_id_seq');
 
+my @plugins = __PACKAGE__->plugins();
+
 sub prepare {
     my $class = shift;
     my $info = shift;
     return unless($info->{'impact'});
-    return(undef) unless($info->{'impact'} =~ /feed/);
+    return unless($info->{'impact'} =~ /feed/ || $info->{'description'} =~ /^search\s[\S\s]+\sfeed$/);
     return(1);
 }
 
 sub insert {
     my $self = shift;
     my $info = shift;
+
+    my $tbl = $self->table();
+    foreach(@plugins){
+        if($_->prepare($info)){
+            $self->table($_->table());
+        }
+    }
+
     my $uuid = $info->{'uuid'};
 
-    my $id = eval { $self->SUPER::insert($info) };
+    my $id = eval {
+        $self->SUPER::insert({
+            uuid        => $info->{'uuid'},
+            guid        => $info->{'guid'},
+            impact      => $info->{'impact'},
+            description => $info->{'description'},
+            severity    => $info->{'severity'},
+            confidence  => $info->{'confidence'},
+            restriction => $info->{'restriction'} || 'private',
+            detecttime  => $info->{'detecttime'},
+            data        => $info->{'data'},
+            source      => $info->{'source'},
+        });
+    };
     if($@){
         return(undef,$@) unless($@ =~ /unique/);
     }
+    $self->table($tbl);
     return($id);
 }
 
@@ -60,6 +86,7 @@ __PACKAGE__->set_sql('_lookup' => qq{
 sub lookup {
     my $class = shift;
     my $info = shift;
+    my $q = $info->{'query'};
 
     if($info->{'guid'}){
         return(
