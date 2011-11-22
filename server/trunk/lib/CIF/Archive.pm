@@ -227,6 +227,7 @@ sub lookup {
                 $uuid = $q;
                 last;
             }
+            last if(/ feed$/);
             $addr = $q;
         }
 
