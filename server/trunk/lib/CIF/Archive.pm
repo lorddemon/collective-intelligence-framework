@@ -214,6 +214,12 @@ sub lookup {
         my $source = genSourceUUID($info->{'source'} || 'unknown');
         my $q = lc($info->{'query'});
         my ($uuid,$md5,$sha1,$addr);
+        my $confidence  = 50;
+        my $severity    = 'low';
+        my $restriction = 'private';
+        my $guid        = $info->{'guid'} || $info->{'default_guid'};
+        my $detecttime;
+
         for($q){
             if(/^[a-f0-9]{32}$/){
                 $md5 = $q;
@@ -227,7 +233,14 @@ sub lookup {
                 $uuid = $q;
                 last;
             }
-            last if(/ feed$/);
+            if(/ feed$/){
+                $confidence     = $info->{'confidence'};
+                $severity       = $info->{'severity'};
+                $restriction    = $info->{'restriction'};
+                #$guid           = 'root';
+                $detecttime     = DateTime->from_epoch(epoch => time());
+                last;
+            }
             $addr = $q;
         }
 
@@ -239,9 +252,11 @@ sub lookup {
             md5         => $md5,
             sha1        => $sha1,
             uuid        => $uuid,
-            confidence  => 50,
-            severity    => 'low',
-            guid        => $info->{'guid'} || $info->{'default_guid'},
+            confidence  => $confidence,
+            severity    => $severity,
+            guid        => $guid,
+            restriction => $restriction,
+            detecttime  => $detecttime,
         });
     }
     return(undef,$ret);
