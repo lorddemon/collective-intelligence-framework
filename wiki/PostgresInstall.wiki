@@ -54,12 +54,13 @@ wal_buffers = 16MB
 work_mem = 1GB # 25% of total ram
 shared_buffers = 1GB # 25% of total ra,
 checkpoint_segments = 32 # every 512meg, switch to 64, every 1G if you're using more than just public data
-effective_cache_size = 4GB    # whatever you set shmmax to
+effective_cache_size = 1GB    # whatever you set shmmax to
 }}}
  # restart postgres
 {{{
 $ sudo /etc/init.d/postgresql restart
 }}}
+ # *ONLY IF THIS IS A DEDICATED DATABASE SERVER AND APACHE IS SOMEWHERE ELSE!* o/w, skip this part.
  # create shmsetup.sh to configure your shared memory  (to about 1/2 - 2/3 the amount of system ram:
 {{{
 #!/bin/bash
@@ -74,7 +75,7 @@ echo kernel.shmall = $shmall
 {{{
 $ sudo ./shmsetup.sh >> /etc/sysctl.conf
 }}}
- # control virtual memory overcommit and swappiness *ONLY IF THIS IS A DEDICATED DATABASE SERVER AND APACHE IS SOMEWHERE ELSE!* o/w, skip this part.
+ # control virtual memory overcommit and swappiness
 {{{
 $ sudo echo vm.overcommit_memory = 2 >> /etc/sysctl.conf
 $ sudo echo vm.swappiness = 0 >> /etc/sysctl.conf
