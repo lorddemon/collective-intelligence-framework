@@ -60,7 +60,7 @@ effective_cache_size = 1GB    # whatever you set shmmax to
 {{{
 $ sudo /etc/init.d/postgresql restart
 }}}
- # *ONLY IF THIS IS A DEDICATED DATABASE SERVER AND APACHE IS SOMEWHERE ELSE!* o/w, skip this part.
+ # *ONLY IF THIS IS A DEDICATED DATABASE SERVER AND APACHE IS SOMEWHERE ELSE!* o/w, skip the rest of this.
  # create shmsetup.sh to configure your shared memory  (to about 1/2 - 2/3 the amount of system ram:
 {{{
 #!/bin/bash
