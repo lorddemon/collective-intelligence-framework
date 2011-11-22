@@ -135,6 +135,15 @@ for my $cf (@CustomFields) {
     );
 }
 
+@ScripConditions = (
+    {
+        Name                    => 'On IODEF Change',
+        Description             => 'When an IODEF field changes',
+        ApplicableTransTypes    => 'CustomField',
+        ExecModule              => 'CIFMinimal_IODEFFieldChange',
+    },
+);
+
 @ScripActions = (
 	{
 		Name		=> 'CIFMinimal ProcessReport',
@@ -173,6 +182,13 @@ for my $cf (@CustomFields) {
         Queue           => ['Incident Reports'],
         ScripCondition  => 'On Reject',
         ScripAction     => 'CIFMinimal RejectReport',
+        Template        => 'Blank',
+    },
+    {
+        Description     => 'On IODEF Field Change Update CIF',
+        Queue           => ['Incident Reports'],
+        ScripCondition  => 'On IODEF Change',
+        ScripAction     => 'CIFMinimal ReopenReport',
         Template        => 'Blank',
     },
 );
