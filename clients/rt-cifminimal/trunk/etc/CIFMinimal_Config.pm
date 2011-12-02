@@ -14,7 +14,16 @@ Set(%CIFMinimal_RestrictionMapping,
        #white          => 'public',
 );
 
-#Set(@CIFMinimal_Assessments, 'botnet/C2','malware/exploit','scanner/bruteforcer','hijacked','phishing','fastflux','suspicious','whitelist');
+Set(%CIFMinimal_Assessments, 
+    'botnet/C2'             => "botnet C&C infrastructure, things used to control botnets",
+    'malware/exploit'       => "things used to exploit or drop malware",
+    'scanner/bruteforcer'   => "things used for scanning, ssh, rdp, etc...",
+    'hijacked'              => "things that shouldn't be routed, criminally hijacked networks and/or domains",
+    'phishing'              => "phishing lure's, reply-to's, drop boxes, etc",
+    'fastflux'              => "things part of a fast-flux infrastructure",
+    'suspicious'            => "something that's suspicious, not really good, but not sure what kinda bad",
+    'whitelist'             => "something that needs to be whitelisted, could be bad, but could cause pain if blocked",
+);
 Set($CIFMinimal_DefaultAssessment,'botnet/C2');
 Set($CIFMinimal_DefaultSharingPolicy,'http://en.wikipedia.org/wiki/Traffic_Light_Protocol');
 Set($CIFMinimal_DefaultConfidence, 85);
