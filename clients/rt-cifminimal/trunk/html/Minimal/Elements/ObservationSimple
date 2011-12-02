@@ -1,0 +1,18 @@
+<form method="post" />
+<table>
+% foreach my $a (keys %assessments){
+    <tr>
+        <td align="right"><input type="submit" name="assessment" value="<% $a %>" style="width=100px"/></td>       
+        <td align="left"><i><% $assessments{$a} %></i></td>
+    </tr>
+% }
+</table>
+</form>
+
+<%INIT>
+my %assessments = RT->Config->Get('CIFMinimal_Assessments');
+
+</%INIT>
+<%ARGS>
+
+</%ARGS>
