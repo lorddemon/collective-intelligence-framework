@@ -46,7 +46,7 @@ getopts('L:l:K:D:ht:S:c:df:s:r:m:F:C:T:g:',\%opts);
 my $severity    = $opts{'s'};
 my $confidence  = $opts{'c'};
 my $restriction = $opts{'r'};
-my $maxdays     = $opts{'D'} || 3;
+my $maxdays     = $opts{'D'};
 my $debug       = $opts{'d'};
 my $config      = $opts{'C'} || $ENV{'HOME'}.'/.cif';
 my $last_feeds  = $opts{'F'} || 5;
@@ -67,6 +67,12 @@ my $cf = $cfg->param(-block => 'cif_feeds')->{'confidence_feeds'};
 my $rf = $cfg->param(-block => 'cif_feeds')->{'restriction_feeds'};
 my $RKF = $cfg->param(-block => 'cif_feeds')->{'apikeys'};
 my $disabled_feeds = $cfg->param(-block => 'cif_feeds')->{'disabled_feeds'};
+
+if(my $m2 = $cfg->param(-block => 'cif_feeds')->{'max_days'}){
+    $maxdays = $m2 unless($maxdays);
+} else {
+    $maxdays = 3;
+}
 
 $SIG{'INT'} = 'cleanup';
 $SIG{__DIE__} = 'cleanup';

@@ -41,12 +41,31 @@ getopts('hLt:e:',\%opts);
 my $limit   = $opts{'L'} || 100;
 my $time    = $opts{'t'} || (time() - 84600);
 my $admin   = $opts{'e'} || 'root';
+die usage() if($opts{'h'});
+
 if($time =~ /^\d+$/){
     $time = DateTime->from_epoch(epoch => $time);
 } else {
     $time = DateTime::Format::DateParse->parse_datetime($time) || die('time format: '.$time.' not supported');
 }
 $time = $time->ymd().'T'.$time->hms().'Z';
+
+sub usage {
+    return << "EOF";
+Usage: perl $0
+    -h  --help:     this message
+    -L  --limit:    result limit, default: $limit
+    -e  --email:    email to send the report to, default: $admin
+    -t  --time:     what the start time/date of the report should be, default: $time
+
+Examples:
+    perl $0
+    perl $0 -L 25
+    perl $0 -L 25 -t 2011-01-01
+    perl $0 -e 'admin\@example.com'
+EOF
+}
+
 my $reporttime = DateTime->from_epoch(epoch => time());
 
 my $p = 'CIF::Archive::DataType::Plugin::Feed::Search';
