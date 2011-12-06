@@ -25,7 +25,29 @@ BEGIN {
         }
         unshift @INC, $lib;
     }
-
 }
 
-1;
+
+use Getopt::Std;
+
+my %opts;
+getopts('dh',\%opts);
+
+our $debug  = $opts{'d'};
+
+if($opts{'h'}){
+    print usage();
+    exit(0);
+}
+sub usage {
+    return <<EOF;
+Usage: $0
+    -h  --help:     this message
+    -d  --debug:    debug
+
+Examples:
+    $0
+
+EOF
+}
+
