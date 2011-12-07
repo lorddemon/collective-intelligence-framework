@@ -47,6 +47,7 @@ sub insert {
             detecttime  => $info->{'detecttime'},
             data        => $info->{'data'},
             source      => $info->{'source'},
+            created     => $info->{'created'},
         });
     };
     if($@){
