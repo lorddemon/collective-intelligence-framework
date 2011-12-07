@@ -238,7 +238,6 @@ die $@ if ($@ && $@ !~ qr{^Can't locate RT/CIFMinimal_Local.pm});
 
 package RT::User;
 use Hook::LexWrap;
-
 {
 my $obj;
 wrap 'RT::User::Create',
