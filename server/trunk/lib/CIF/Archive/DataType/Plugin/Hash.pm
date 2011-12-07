@@ -42,6 +42,7 @@ sub insert {
             restriction => $info->{'restriction'} || 'private',
             detecttime  => $info->{'detecttime'},
             guid        => $info->{'guid'},
+            created     => $info->{'created'},
         }) };
     
         if($@){

@@ -71,6 +71,7 @@ sub insert {
                 restriction => $info->{'restriction'} || 'private',
                 detecttime  => $info->{'detecttime'},
                 guid        => $info->{'guid'},
+                created     => $info->{'created'},
             }); 
         };
         if($@){
@@ -169,6 +170,12 @@ sub myfeed {
         );
     }
     return unless(@recs);
+    my %hash;
+    foreach(@recs){
+        next if(exists($hash{$_->address()}));
+        $hash{$_->address()} = $_;
+    }
+    @recs = map { $hash{$_} } keys %hash;
     return $class->mapfeed(\@recs);
 }
 

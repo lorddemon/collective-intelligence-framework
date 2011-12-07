@@ -14,8 +14,8 @@ use DateTime;
 
 __PACKAGE__->table('infrastructure');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(All => qw/id uuid address portlist protocol confidence source guid severity restriction detecttime/);
-__PACKAGE__->columns(Essential => qw/uuid address portlist protocol confidence source severity restriction detecttime/);
+__PACKAGE__->columns(All => qw/id uuid address portlist protocol confidence source guid severity restriction detecttime created/);
+__PACKAGE__->columns(Essential => qw/uuid address portlist protocol confidence source severity restriction detecttime created/);
 __PACKAGE__->sequence('infrastructure_id_seq');
 
 my @plugins = __PACKAGE__->plugins();
@@ -166,6 +166,7 @@ sub insert {
             severity    => $info->{'severity'} || 'null',
             restriction => $info->{'restriction'} || 'private',
             detecttime  => $info->{'detecttime'},
+            created     => $info->{'created'},
         });
     };
     if($@){
@@ -255,17 +256,17 @@ __PACKAGE__->set_sql('lookup_byseverity' => qq{
     LIMIT ?
 });
 __PACKAGE__->set_sql('lookup' => qq{
-    SELECT __TABLE__.id,__TABLE__.uuid, archive.data
-    FROM __TABLE__
-    LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
-    LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
+    SELECT t.id, t.uuid, archive.data
+    FROM __TABLE__ t
+    LEFT JOIN apikeys_groups on t.guid = apikeys_groups.guid
+    LEFT JOIN archive ON t.uuid = archive.uuid
     WHERE 
-        address <<= ?
+        address >>= ?
         AND severity >= ?
         AND confidence >= ?
-        AND __TABLE__.restriction <= ?
+        AND t.restriction <= ?
         AND apikeys_groups.uuid = ?
-    ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
+    ORDER BY t.detecttime DESC, t.created DESC, t.id DESC
     LIMIT ?
 });
 
