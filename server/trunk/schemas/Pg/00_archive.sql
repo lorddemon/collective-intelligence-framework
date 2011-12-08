@@ -19,3 +19,4 @@ CREATE TABLE archive (
 SET default_tablespace = 'index';
 ALTER TABLE archive ADD PRIMARY KEY (id);
 ALTER TABLE archive ADD UNIQUE(uuid);
+CREATE INDEX idx_created_archive ON archive (created);

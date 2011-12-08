@@ -2,7 +2,7 @@ SET default_tablespace = 'index';
 DROP TABLE IF EXISTS asn CASCADE;
 CREATE TABLE asn (
     id BIGSERIAL PRIMARY KEY NOT NULL,
-    uuid uuid REFERENCES archive(uuid) ON DELETE CASCADE NOT NULL,
+    uuid uuid NOT NULL,
     asn float not null,
     asn_desc text,
     source uuid NOT NULL,
@@ -14,3 +14,5 @@ CREATE TABLE asn (
     created timestamp with time zone DEFAULT NOW(),
     unique(uuid,asn)
 );
+
+-- ALTER TABLE asn ADD CONSTRAINT asn_uuid_fkey FOREIN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
