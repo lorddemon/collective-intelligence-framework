@@ -30,7 +30,7 @@ sub isEmail {
     return unless($e);
     return if($e =~ /^$RE{'URI'}$/);
     return if($e =~ /^$RE{'URI'}{'HTTP'}{-scheme => 'https'}$/);
-    return unless(lc($e) =~ /[a-z0-9_.-\+]+\@[a-z0-9.-]+\.[a-z0-9.-]{2,5}/);
+    return unless(lc($e) =~ /[a-z0-9_.-]+\@[a-z0-9.-]+\.[a-z0-9.-]{2,5}/);
     return(1);
 }
 1;

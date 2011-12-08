@@ -104,6 +104,7 @@ my %AVOID = (
 );
 
 $deps{'CORE'} = [ text_to_hash( << '.') ];
+Date::Manip 6.11
 Config::Simple 4.59
 Class::DBI 3.0.17
 Compress::Zlib 2.008

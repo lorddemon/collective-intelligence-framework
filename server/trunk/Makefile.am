@@ -65,7 +65,7 @@ bin-install:
 		$(INSTALL) -m 0750 "bin/$$file" "$(bindir)/$$file" ; \
 	done
 
-initdb: createdb archive index tableindex
+initdb: createdb archive index 
 
 createdb:
 	$(PSQL) -U $(DB_DBA) -h $(DB_HOST) -p $(DB_PORT) -c 'CREATE DATABASE $(DB_DATABASE)'
@@ -78,7 +78,9 @@ index:
 	[ -d $(DB_INDEX_LOC) ] || mkdir -p $(DB_INDEX_LOC) && chown $(DB_UNIXOWNER):$(DB_UNIXOWNER) $(DB_INDEX_LOC) 
 	$(PSQL) -U $(DB_DBA) -h $(DB_HOST) -p $(DB_PORT) -d $(DB_DATABASE) -c "CREATE TABLESPACE index LOCATION '$(DB_INDEX_LOC)'"
 
-tables:
+tables: inittables tableindex
+
+inittables:
 	-( cd schemas/$(DB_TYPE) && find -type f -print | grep -v svn | sort ) | while read file ; do \
 	$(PSQL) -U $(DB_DBA) -d $(DB_DATABASE) -h $(DB_HOST) -p $(DB_PORT) < "schemas/$(DB_TYPE)/$$file" ; \
 	done
