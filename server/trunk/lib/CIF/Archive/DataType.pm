@@ -152,4 +152,20 @@ __PACKAGE__->set_sql('_feed' => qq{
     LIMIT ?
 });
 
+sub prune {
+    my $class = shift;
+    my $date = shift || return;
+    $class->db_Main->{'AutoCommit'} = 0;
+
+    warn 'pruning: '.$class if($::debug);
+    eval { $class->sql_prune->execute($date); };
+    if($@){
+        warn $@;
+        $class->dbi_rollback();
+        return(0);
+    }
+    $class->dbi_commit();
+    return(1);
+}
+
 1;

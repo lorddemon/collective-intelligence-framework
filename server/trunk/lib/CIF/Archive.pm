@@ -110,25 +110,29 @@ sub insert {
     ## http://archives.postgresql.org/pgsql-performance/2008-12/msg00225.php
     ## write out to a tmp table; them merge the non dups via query?
     my $r = $self->retrieve(uuid => $info->{'uuid'});
-    return (undef,$r) if($r);
 
-    my $id = eval {
-        # this needs to be here
-        # if we manipulate __DIE__ in the global space it creates
-        # all sorts of problems for catching duplicate key violations
-        $self->SUPER::insert({
-            uuid        => $info->{'uuid'},
-            format      => $info->{'format'},
-            description => lc($info->{'description'}),
-            data        => $info->{'data'},
-            restriction => $info->{'restriction'} || 'private',
-            source      => $info->{'source'} || 'unknown',
-            guid        => $info->{'guid'},
-        });
-    };
-    if($@){
-        $self->dbi_rollback() unless($self->db_Main->{'AutoCommit'});
-        return($@,undef);
+    my $id;
+    if($r){
+        $id = $r;
+    } else {
+        $id = eval {
+            # this needs to be here
+            # if we manipulate __DIE__ in the global space it creates
+            # all sorts of problems for catching duplicate key violations
+            $self->SUPER::insert({
+                uuid        => $info->{'uuid'},
+                format      => $info->{'format'},
+                description => lc($info->{'description'}),
+                data        => $info->{'data'},
+                restriction => $info->{'restriction'} || 'private',
+                source      => $info->{'source'} || 'unknown',
+                guid        => $info->{'guid'},
+            });
+        };
+        if($@){
+            $self->dbi_rollback() unless($self->db_Main->{'AutoCommit'});
+            return($@,undef);
+        }
     }
 
     delete($info->{'format'});
@@ -259,6 +263,50 @@ sub lookup {
         });
     }
     return(undef,$ret);
+}
+
+sub create_partition {
+    my $class = shift;
+    my $date = shift;
+    my $day = $date->ymd('_');
+    my $start = $date->ymd.'T00:00:00Z';
+    my $end = $date->ymd.'T23:59:59Z';
+
+    __PACKAGE__->set_sql('create_partition' => qq{
+        DROP TABLE IF EXISTS archive_$day;
+        CREATE TABLE archive_$day (
+            CHECK (created >= DATE '$start' AND created <= '$end')
+        ) INHERITS(archive) TABLESPACE archive;
+        set default_tablespace = 'index';
+        ALTER TABLE archive_$day ADD PRIMARY KEY (id);
+        ALTER TABLE archive_$day ADD UNIQUE(uuid);
+    });
+    return $class->sql_create_partition()->execute();
+} 
+
+sub prune {
+    my $class = shift;
+    my $date = shift || return;
+    $class->db_Main->{'AutoCommit'} = 0;
+
+    foreach (@datatype_plugs){
+        warn 'pruning: '.$_ if($::debug);
+        eval { $_->sql_prune->execute($date); };
+        if($@){
+            warn $@;
+            $class->dbi_rollback();
+            return(0);
+        }
+    }
+
+    eval { $class->sql_prune->execute($date); };
+    if($@){
+        warn $@;
+        $class->dbi_rollback();
+        return(0);
+    }
+    $class->dbi_commit();
+    return(1);
 }
 
 1;

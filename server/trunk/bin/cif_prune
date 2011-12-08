@@ -30,7 +30,7 @@ BEGIN {
 use Getopt::Std;
 use DateTime;
 use Data::Dumper;
-use Date::Manip;
+use Date::Manip::Date;
 
 my %opts;
 getopts('hdk:s:',\%opts);

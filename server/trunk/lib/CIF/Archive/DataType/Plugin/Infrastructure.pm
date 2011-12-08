@@ -193,17 +193,33 @@ sub lookup {
             $info->{'guid'},
             $info->{'limit'},
         ));
+    } else {
+        if($q =~ /^$RE{'net'}{'IPv4'}$/){
+            return(
+                $class->search_lookup(
+                    $q,
+                    $q,
+                    $sev,
+                    $conf,
+                    $restriction,
+                    $info->{'apikey'},
+                    $info->{'limit'},
+                )
+            );
+        } else {
+            return(
+               $class->search_lookup(
+                    $q,
+                    $q,
+                    $sev,
+                    $conf,
+                    $restriction,
+                    $info->{'apikey'},
+                    $info->{'limit'},
+                )
+            );
+        } 
     }
-    return(
-        $class->search_lookup(
-            $q,
-            $sev,
-            $conf,
-            $restriction,
-            $info->{'apikey'},
-            $info->{'limit'},
-        )
-    );
 }
 
 ## TODO -- re-write this as a "good" SQL stmt
@@ -240,32 +256,34 @@ __PACKAGE__->set_sql('isWhitelisted' => qq{
     LIMIT 5
 });
 
-__PACKAGE__->set_sql('lookup_byseverity' => qq{
-    SELECT __TABLE__.id,__TABLE__.uuid, archive.data
-    FROM __TABLE__
-    LEFT JOIN apikeys_groups on __TABLE__.guid = apikeys_groups.guid
-    LEFT JOIN archive ON __TABLE__.uuid = archive.uuid
+__PACKAGE__->set_sql('lookup_cidr' => qq{
+    SELECT t.id, t.uuid, archive.data
+    FROM __TABLE__ t
+    LEFT JOIN apikeys_groups on t.guid = apikeys_groups.guid
+    LEFT JOIN archive ON t.uuid = archive.uuid
     WHERE 
-        address != '0/0'
-        AND (address >>= ? OR address <<= ?)
+        address <<= ?
         AND severity >= ?
         AND confidence >= ?
-        AND __TABLE__.restriction <= ?
+        AND t.restriction <= ?
         AND apikeys_groups.uuid = ?
-    ORDER BY severity DESC, confidence DESC, detecttime DESC, __TABLE__.id DESC
+        AND archive.uuid IS NOT NULL
+    ORDER BY t.detecttime DESC, t.created DESC, t.id DESC
     LIMIT ?
 });
+
 __PACKAGE__->set_sql('lookup' => qq{
     SELECT t.id, t.uuid, archive.data
     FROM __TABLE__ t
     LEFT JOIN apikeys_groups on t.guid = apikeys_groups.guid
     LEFT JOIN archive ON t.uuid = archive.uuid
     WHERE 
-        address >>= ?
+        (address <<= ? OR address >>= ?)
         AND severity >= ?
         AND confidence >= ?
         AND t.restriction <= ?
         AND apikeys_groups.uuid = ?
+        AND archive.uuid IS NOT NULL
     ORDER BY t.detecttime DESC, t.created DESC, t.id DESC
     LIMIT ?
 });
@@ -275,11 +293,12 @@ __PACKAGE__->set_sql('_lookup' => qq{
     FROM __TABLE__
     LEFT JOIN archive ON archive.uuid = __TABLE__.uuid
     WHERE 
-        address <<= ?
+        (address <<= ? OR address >>= ?)
         AND severity >= ?
         AND confidence >= ?
         AND __TABLE__.restriction <= ?
         AND __TABLE__.guid = ?
+        AND archive.uuid IS NOT NULL
     ORDER BY __TABLE__.detecttime DESC, __TABLE__.created DESC, __TABLE__.id DESC
     LIMIT ?
 });

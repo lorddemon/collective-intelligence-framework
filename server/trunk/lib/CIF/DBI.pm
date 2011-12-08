@@ -32,6 +32,12 @@ __PACKAGE__->set_sql('retrieve_uuid' => qq{
     LIMIT 1
 });
 
+__PACKAGE__->set_sql('prune' => qq{
+    DELETE FROM __TABLE__
+    WHERE created <= ?;
+});
+
+
 1;
 
 =head1 NAME
