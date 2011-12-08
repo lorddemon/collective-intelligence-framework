@@ -85,6 +85,10 @@ $ sudo make install
 $ sudo make initdb
 $ make tables
 }}}
+ # these types of messages are considered normal:
+{{{
+NOTICE:  table "domain" does not exist, skipping
+}}}
  # if you're upgrading a previous install you'll need to restart apache2
 {{{
 $ sudo /etc/init.d/apache2 restart
