@@ -2,7 +2,7 @@ set default_tablespace = 'index';
 DROP TABLE IF EXISTS analytic CASCADE;
 CREATE TABLE analytic (
     id bigserial primary key not null,
-    uuid uuid not null references archive(uuid) on delete cascade not null,
+    uuid uuid not null,
     description text,
     startid bigint,
     endid bigint,
@@ -10,3 +10,5 @@ CREATE TABLE analytic (
     created timestamp with time zone default NOW(),
     unique(uuid)
 );
+
+-- ALTER TABLE analytic ADD CONSTRAINT analytic_uuid_fkey FOREIN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;

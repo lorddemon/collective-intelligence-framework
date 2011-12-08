@@ -2,7 +2,7 @@ SET default_tablespace = 'index';
 DROP TABLE IF EXISTS countrycode CASCADE;
 CREATE TABLE countrycode (
     id BIGSERIAL PRIMARY KEY NOT NULL,
-    uuid uuid REFERENCES archive(uuid) ON DELETE CASCADE NOT NULL,
+    uuid uuid NOT NULL,
     cc varchar(5),
     source uuid NOT NULL,
     guid uuid,
@@ -13,3 +13,5 @@ CREATE TABLE countrycode (
     created timestamp with time zone DEFAULT NOW(),
     unique(uuid,cc)
 );
+
+-- ALTER TABLE countrycode ADD CONSTRAINT countrycode_uuid_fkey FOREIN KEY (uuid) REFERENCES archive(uuid) ON DELETE CASCADE;
