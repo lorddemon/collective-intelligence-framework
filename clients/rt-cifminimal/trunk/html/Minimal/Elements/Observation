@@ -51,10 +51,10 @@ window.onload = hide_me;
     <td><b>Assessment</b></td>
     <td>
         <select name='assessment'>
-% foreach my $p (keys %assessments){
+% foreach my $p (@assessments_sorted){
 % my $selected = '';
 % if(($assessment && lc($p) eq $assessment) || (lc($p) eq lc($d_assessment))){ $selected = " selected='selected'"; }
-            <option value='<%$p%>'<%$selected%>><%$p%></option>
+            <option value='<% $p %>'<%$selected%>><% $p %></option>
 % }
         </select><br/>
         <i>closest that's appropriate, best estimate</i>
@@ -63,8 +63,10 @@ window.onload = hide_me;
     <tr>
         <td><b>Data</b></td>
         <td>
-            <input onBlur=show_me(this) type='text' size=80 name="data" value="<%$data%>" title="ip's, domains, urls"/>
-            <br><i>eg: 192.168.1.1,https://www.baddomain.com/bad.aspx</i>
+            <input onBlur=show_me(this) type='text' size=80 name="data" value="<%$data%>" title="ip's, domains, urls"/><br>
+            <i>multiple datapoints can be entered using csv as long as they're both <b><% $assessment %></b> related<br>
+            (eg: 192.168.1.1,192.168.1.2 OR example1.com,example2.com,182.168.1.1 etc)</i>
+                
         </td>
     </tr>
 
@@ -83,6 +85,17 @@ cf%>-Values" /><div id
                     );
                     </script>
         <br><i>eg: torpig, zeus, spyeye, paypal, etc... <b>1-2, no more than 2</b></i>
+        </td>
+    </tr>
+    <tr>
+        <td><b>Confidence</b></td>
+        <td>
+            <select name='confidence'>
+% foreach my $c (@confidence_sorted){
+                <option value='<% $confidence{$c}->{value} %>'><% $c %></option>
+% }
+            </select></br>
+            <i>best estimate, eg: would you put "boots on the ground" based on this observation?</i>
         </td>
     </tr>
     <tr>
@@ -175,7 +188,12 @@ unless($rmap){
 }
 
 my %assessments = RT->Config->Get('CIFMinimal_Assessments');
+my @assessments_sorted = sort { $assessments{$a}->{'order'} <=> $assessments{$b}->{'order'} } keys(%assessments);
 my $d_assessment = RT->Config->Get('CIFMinimal_DefaultAssesment') || 'botnet';
+
+my %confidence = RT->Config->Get('CIFMinimal_ConfidenceMapping');
+my @confidence_sorted = sort { $confidence{$a}->{'order'} <=> $confidence{$b}->{'order'} } keys (%confidence);
+
 my $sharing_policy = RT->Config->Get('CIFMinimal_DefaultSharingPolicy') || 'http://en.wikipedia.org/wiki/Traffic_Light_Protocol';
 
 my $user = $session{'CurrentUser'}->UserObj();
