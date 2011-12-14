@@ -24,9 +24,11 @@ sub Load {
     else {
         $ret = $self->LoadByCol( "Name", $identifier );
     }
-    my $mod = caller();
-    if($mod eq 'RT::Interface::Web' && ref($self) eq 'RT::CurrentUser'){
-        $self->CheckGroups();
+    if($self->Id()){
+        my $mod = caller();
+        if($mod eq 'RT::Interface::Web' && ref($self) eq 'RT::CurrentUser'){
+            $self->CheckGroups();
+        }
     }
     return($ret);
 }
@@ -49,8 +51,8 @@ sub CheckGroups {
                     ($ret,$err) = $y->AddMember($self->PrincipalId);
                     unless($ret){
                         $RT::Logger->error("Couldn't add user to group: ".$y->Name());
-                        $RT::logger->error($err);
-                        $RT::Handle->Rollback();
+                        $RT::Logger->error($err);
+                        #$RT::Handle->Rollback();
                         return(0);
                     }
                 }
