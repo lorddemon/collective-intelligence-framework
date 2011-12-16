@@ -160,18 +160,18 @@ $ sudo adduser www-data cif
 == Load Data ==
  # perform [Tools_cif_crontool cif_crontool's] "first run" to prime the database with it's initial intel (should take about 30min).
 {{{
-$ time /opt/cif/bin/cif_crontool -f -d && /opt/cif/bin/cif_crontool -d -p daily && /opt/cif/bin/cif_crontool -d
+$ time /opt/cif/bin/cif_crontool -f -d && /opt/cif/bin/cif_crontool -d -p daily && /opt/cif/bin/cif_crontool -d -p hourly
 }}}
  # after this starts, run your first batch of analytics (the first batch might take a few hours up through a few days depending on how much data you have, as long as you keep seeing uuid's fly across the screen.. you're good). If you have more cores/ram, you can increase -t/-m respectively. Sending cif_analytic a "KILL -INT" (CTRL+C) will spin down the process when it's finished the current batch so you can adjust accordingly. It'll pick back up where it left off.
- # a good setting for less than 8 cores and 8 gig of ram
+  * a good setting for less than 8 cores and 8 gig of ram
 {{{
 $ time /opt/cif/bin/cif_analytic -d -t 16 -m 2500
 }}}
- # a good setting for 8 cores and 16 gig of ram (this will crush your host for a while, esp your disk io, use htop to keep an eye that you're not swapping yourself to death)
+  * a good setting for 8 cores and 16 gig of ram (this will crush your host for a while, esp your disk io, use htop to keep an eye that you're not swapping yourself to death)
 {{{
 $ time /opt/cif/bin/cif_analytic -d -t 32 -m 5000
 }}}
- # when that's finished, run your first batch of feeds (could take anywhere from 20min to 2 hours depending on system, data load, etc)
+ * when that's finished, run your first batch of feeds (could take anywhere from 20min to 2 hours depending on system, data load, etc)
 {{{
 $ time /opt/cif/bin/cif_feeds -d
 }}}
