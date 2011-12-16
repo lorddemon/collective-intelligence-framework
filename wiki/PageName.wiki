@@ -1,0 +1,23 @@
+#summary One-sentence summary of this page.
+
+{{{
+--- /usr/sbin/autopostgresqlbackup	2011-12-16 16:53:36.000000000 +0000
++++ autopostgresqlbackup	2011-12-16 16:53:15.000000000 +0000
+@@ -266,6 +266,16 @@
+ BACKUPFILES=""
+ OPT=""						# OPT string for use with pg_dump ( see man pg_dump )
+ 
++if [ "$TABLES" ]; then
++    for T in $TABLES; do
++        OPT="$OPT -t $T "
++    done
++fi
++
++if [ "$COMP_INLINE" ]; then
++    OPT="$OPT -Z $COMP_INLINE ";
++fi
++
+ # Add --compress pg_dump option to $OPT
+ if [ "$COMMCOMP" -gt 0 ];
+ 	then
+}}}
