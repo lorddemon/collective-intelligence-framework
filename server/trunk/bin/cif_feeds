@@ -234,6 +234,7 @@ $dt = $dt->ymd().'T'.$dt->hms().'Z';
 
 my $threads = $opts{'t'} || CIF::Utils::throttle($throttle);
 my $batches = CIF::Utils::split_batches($threads,\@plugs);
+my $start = time();
 if(scalar @{$batches} == 1){
     process(@{$batches});
 } else {
@@ -293,6 +294,7 @@ sub build_feed {
     my $restriction = $args{'restriction'};
 
     _debug('generating '.$plugin .' '.$severity.' severity '.$confidence.'% confidence '.$restriction.' feed');
+    _profile('getting feed');
 
     my $ret = $plugin->feed({
         severity    => $severity,
@@ -309,6 +311,7 @@ sub build_feed {
         return();
     }
     my @feeds = @$ret;
+    _profile('compressing');
     foreach my $f (@feeds){
         my @recs = @{$f->{'feed'}->{'entry'}};
         _debug('records: '.@recs);
@@ -377,7 +380,8 @@ sub purge_feed {
         foreach (@feeds){
             print 'removing feed: '.$_->id().' -- '.$_->uuid->id()."\n";
             eval {
-                CIF::Archive->retrieve(uuid => $_->uuid->id())->delete();
+                # the after_delete trigger in DataType.pm takes care of cleaning up CIF::Archive
+                $_->delete();
             };
             if($@){
                 warn $@;
@@ -429,6 +433,6 @@ sub _debug {
 }
 
 sub _profile {
-    my ($msg,$start) = @_;
+    my ($msg) = @_;
     _debug('('.(time() - $start).') '.$msg);
 }
