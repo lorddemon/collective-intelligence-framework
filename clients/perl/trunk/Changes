@@ -1,6 +1,7 @@
 Revision history for Perl extension CIF::Client.
 
 0.01 2011-12-19
+    - added outfile option
     - initial stable release (i hope :x)
     - doc update
     - fixed bug in csv output
