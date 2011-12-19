@@ -7,8 +7,9 @@ use Getopt::Std;
 use CIF::Client;
 
 my %opts;
-getopt('G:l:g:hTHL:p:f:q:c:s:r:C:z', \%opts);
+getopt('O:G:l:g:hTHL:p:f:q:c:s:r:C:z', \%opts);
 
+my $outfile     = $opts{'O'};
 my $query       = $opts{'q'} || shift;
 our $debug       = ($opts{'d'}) ? 1 : 0;
 my $c           = $opts{'C'} || $ENV{'HOME'}.'/.cif';
@@ -42,7 +43,8 @@ Usage: perl $0 -q xyz.com
     -C  --config:           specify cofiguration file, default: $c
     -q  --query:            query string (use 'url\\/<md5|sha1>' for url hash lookups)
     -p  --plugin:           output plugin ($plugs), default: $plugin
-    -n  --nolog             perform a "silent" query (no log query), default: $nolog
+    -n  --nolog:            perform a "silent" query (no log query), default: $nolog
+    -O  --outfile:          specify an output file to print to
     
 Common Filters:
     -l  --limit:            set the default result limit (queries only), default is set on server, usually around 500.
@@ -120,5 +122,14 @@ foreach (@q){
     eval "require $plug";
     die($@) if($@);
     $feed->{'query'} = $_;
-    print $plug->write_out($client,$feed,$summary) if($feed->{'feed'});
+    if($feed->{'feed'}){
+        my $text = $plug->write_out($client,$feed,$summary);
+        if($outfile){
+            open(F,">",$outfile) || die($!);
+            print F $text;
+            close(F);
+        } else {
+            print $text;
+        }
+    }
 }
