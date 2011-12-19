@@ -1,6 +1,7 @@
 Revision history for Perl extension CIF::Client.
 
-0.01_12 2011-12-19
+0.01 2011-12-19
+    - initial stable release (i hope :x)
     - doc update
     - fixed bug in csv output
     - cleaned up table output wrt to long adddresses (over 32 chars)
