@@ -1,7 +1,9 @@
 #summary FAQ
+= Frequently Asked Questions =
+
 <wiki:toc max_depth="3" />
 
-=== When I try to pull a feed, no data is returned? ===
+== When I try to pull a feed, no data is returned? ==
 Typically, when you do an initial feed search:
 {{{
 $ cif -q infrastructure/botnet
@@ -27,7 +29,7 @@ $ cif -q infrastructure/network -s medium
 
 which will give you a nice mix of SSH scanners as well as the spamhuas.org [http://www.spamhaus.org/drop/ DROP] list.
 
-=== When I search for a URL, I get back a list of hashes? ===
+== When I search for a URL, I get back a list of hashes? ==
 
 When you search for a URL, a few things happen:
 
@@ -37,6 +39,6 @@ When you search for a URL, a few things happen:
 
 The results can be a bit non-obvious. You may get back a list of references for that URL, you may get back a list of searches for that hash. You may also get a combination of the two.
 
-=== Is there a client for OS X? ===
+== Is there a client for OS X? ==
 
 The PerlClient and PythonClient work well on OS X. The PythonClient can take a little bit of work to get installed (cython throws some errors from time to time), but if you're just looking for a simple CLI, test out the PerlClient.
