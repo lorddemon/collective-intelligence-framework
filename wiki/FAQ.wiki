@@ -1,10 +1,6 @@
 #summary FAQ
 <wiki:toc max_depth="3" />
 
-=== Is there a client for OS X? ===
-
-The PerlClient and PythonClient work well on OS X. The PythonClient can take a little bit of work to get installed (cython throws some errors from time to time), but if you're just looking for a simple CLI, test out the PerlClient.
-
 === When I try to pull a feed, no data is returned? ===
 Typically, when you do an initial feed search:
 {{{
@@ -30,3 +26,15 @@ $ cif -q infrastructure/network -s medium
 }}}
 
 which will give you a nice mix of SSH scanners as well as the spamhuas.org [http://www.spamhaus.org/drop/ DROP] list.
+
+=== When I search for a URL, I get back a list of hashes? ===
+
+When you search for a URL, a few things happen:
+
+ # the client "normalizes" the url (escaping and encoding certain characters)
+ # the client then hashes the url (md5/sha1)
+ # the client then searches the system for the hash rather than the url itself (cleaner with the REST API)
+
+=== Is there a client for OS X? ===
+
+The PerlClient and PythonClient work well on OS X. The PythonClient can take a little bit of work to get installed (cython throws some errors from time to time), but if you're just looking for a simple CLI, test out the PerlClient.
