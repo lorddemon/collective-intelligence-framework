@@ -35,6 +35,8 @@ When you search for a URL, a few things happen:
  # the client then hashes the url (md5/sha1)
  # the client then searches the system for the hash rather than the url itself (cleaner with the REST API)
 
+The results can be a bit non-obvious. You may get back a list of references for that URL, you may get back a list of searches for that hash. You may also get a combination of the two.
+
 === Is there a client for OS X? ===
 
 The PerlClient and PythonClient work well on OS X. The PythonClient can take a little bit of work to get installed (cython throws some errors from time to time), but if you're just looking for a simple CLI, test out the PerlClient.
