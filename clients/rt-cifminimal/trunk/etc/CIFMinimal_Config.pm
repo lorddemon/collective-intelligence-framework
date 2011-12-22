@@ -3,7 +3,6 @@ Set($RTIR_DisableBlocksQueue, 1);
 Set($MinimalRegex, qr!^(?:/+Minimal/)!x );
 my $rt_no_auth = RT->Config->Get('WebNoAuthRegex');
 Set($WebNoAuthRegex, qr{ (?: $rt_no_auth | ^/+Minimal/+NoAuth/ ) }x);
-Set(@Active_MakeClicky, qw(httpurl_overwrite address email domain));
 
 # everything here should be lower case
 Set(%CIFMinimal_RestrictionMapping,
@@ -14,21 +13,60 @@ Set(%CIFMinimal_RestrictionMapping,
        #white          => 'public',
 );
 
-Set(%CIFMinimal_Assessments, 
-    'botnet/C2'             => "botnet C&C infrastructure, things used to control botnets",
-    'malware/exploit'       => "things used to exploit or drop malware",
-    'scanner/bruteforcer'   => "things used for scanning, ssh, rdp, etc...",
-    'hijacked'              => "things that shouldn't be routed, criminally hijacked networks and/or domains",
-    'phishing'              => "phishing lure's, reply-to's, drop boxes, etc",
-    'fastflux'              => "things part of a fast-flux infrastructure",
-    'suspicious'            => "something that's suspicious, not really good, but not sure what kinda bad",
-    'whitelist'             => "something that needs to be whitelisted, could be bad, but could cause pain if blocked",
+Set(%CIFMinimal_ConfidenceMapping,
+    'very confident'    => {
+        order   => 1,
+        value   => 85,
+     },
+     'somewhat confident'   => {
+        order   => 2,
+        value   => 75,
+     },
 );
-Set($CIFMinimal_DefaultAssessment,'botnet/C2');
+
+Set(%CIFMinimal_Assessments,
+    'botnet'    => {
+        order   => 1,
+        desc    => 'things used to control or communicate with botnets',
+    },
+    'malware/exploit'   => {
+        order   => 2,
+        desc    => 'things used to drop malware, malware itself, things used to exploit the browser, etc.',
+    },
+    'scanner'   => {
+        order   => 3,
+        desc    => 'things used for scanning or bruteforcing, ssh, rdp, mssql, www etc...',
+    },
+    'spam'  => {
+        order   => 4,
+        desc    => "things used for sending spam (spam relays, open proxies, etc...)",
+    },
+    'hijacked'  => {
+        order   => 5,
+        desc    => "things that shouldn't be routed (criminally hijacked networks, domains, etc)",
+    },
+    'phishing'  => {
+        order   => 6,
+        desc    => "phishing lures, replytos, drop boxes, etc",
+    },
+    'fastflux'  => {
+        order   => 7,
+        desc    => "things that appear to be fast-flux in nature (ips, domains, etc)",
+    },
+    'suspicious'    => {
+        order   => 8,
+        desc    => "something that's suspicious, not really good, but not sure what kinda bad (other, etc)",
+    },
+    'whitelist' => {
+        order   => 9,
+        desc    => "something that needs to be whitelisted, could be bad, but could cause pain if blocked",
+    },
+);
+Set($CIFMinimal_DefaultAssessment,'botnet');
 Set($CIFMinimal_DefaultSharingPolicy,'http://en.wikipedia.org/wiki/Traffic_Light_Protocol');
 Set($CIFMinimal_DefaultConfidence, 85);
 Set($CIFMinimal_RejectPrivateAddress,1);
-Set($CIFMinimal_HelpUrl,'http://code.google.com/p/collective-intelligence-framework/');
+Set($CIFMinimal_HelpUrl,'http://code.google.com/p/collective-intelligence-framework/wiki/Taxonomy');
 
 Set(%CIFMinimal_ShareWith,
     'leo.example.com'         => {
