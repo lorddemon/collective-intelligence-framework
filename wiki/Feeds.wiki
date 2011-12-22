@@ -1,5 +1,4 @@
 #summary the basics about datasets and feeds
-<wiki:toc max_depth="2" />
 = Introduction =
 
 This describes the various dynamically generated data-sets within the framework. These data-sets can be used as:
@@ -9,49 +8,65 @@ This describes the various dynamically generated data-sets within the framework.
  * firewall rules
  * and more...
 
-= Getting Started =
-
 Before you begin, make sure you review the [Taxonomy] page. This will help with measuring your risk tolerance and which feed combinations you should use.
 
 The simplest feed to get started with is the [FeedsBotnet#Infrastructure botnet Infrastructure] feed. Typically botnet infrastructure is tagged with a severity of [TaxonomySeverity#High high], meaning, if you combine this with a [TaxonomyConfidence#85_-_94 high confidence] (85-100) observation, it's likely that you're dealing with a compromised host.
 
-= Getting a Feed =
+= Details =
 By default, servers will deliver feeds with a severity of "high" and a confidence of "95" respectively by default. These paramaters can be over-written at the command-line (typically with the -s and -c flags) or via the [API].
 
 Because of this, *the botnet infrastructure (high severity, high confidence) feed will remain relatively small or even empty* until users enter fairly confidence data either via manual submission, or a known, high-quality data-set is added to the system. This is by design, novice users of the system should use these feeds as starter-feeds to get a feel for the system with-out having to deal with too many false-positives.
 
 Advanced users, who understand their organizations risk tolerance can dig into the more advanced botnet feeds [FeedsBotnet page] or even the [API#Common_Parameters API] to override these default values.
 
+_You'll need the [http://code.google.com/p/collective-intelligence-framework/wiki/PerlClient PerlClient] installed to pull these feeds. There is also a [http://code.google.com/p/collective-intelligence-framework/wiki/PythonClient PythonClient] that has less features, but can be used at your own risk for right now._
+
 == Infrastructure ==
-=== API ===
+IP-based threats
+=== Detection ===
+ * detecting botnet controller communication
 {{{
-GET https://cif.example.com:443/api/infrastructure/botnet
-GET https://cif.example.com:443/api/infrastructure/botnet
+$ cif -q infrastructure/botnet -c 85
 }}}
-=== CLI ===
+=== Mitigation ===
+ * mitigation against infection (exploit pages, etc, should use domain or url based where possible)
 {{{
-$ cif -q infrastructure/botnet
-$ cif -q infrastructure/botnet -p snort
+$ cif -q infrastructure/malware -c 85 -s medium
 }}}
-== Domain ==
-=== API ===
+ * mitigation against brute-force and/or network scanner-based threats
 {{{
-GET https://cif.example.com:443/api/domain/botnet
-GET https://cif.example.com:443/api/domain/botnet
+$ cif -q infrastructure/scan -s medium -c 85
 }}}
-=== CLI ===
+ * mitigation against suspicious networks (known criminal hosting, could lead to infection)
 {{{
-$ cif -q domain/botnet
-$ cif -q domain/botnet -p bindzone
+$ cif -q infrastructure/network -s medium -c 85
 }}}
-== Url ==
-=== API ===
+
+== Domains ==
+Domain-based threats
+=== Detection ===
+ * detecting botnet controller communication:
 {{{
-GET https://cif.example.com:443/api/url/botnet
-GET https://cif.example.com:443/api/url/botnet
+cif -q domain/botnet -c 85
 }}}
-=== Url ===
+=== Mitigation ===
+ * mitigating against infections (exploit pages, etc):
 {{{
-$ cif -q url/botnet
-$ cif -q url/botnet -p raw
+cif -q domain/malware -c 85 -s medium
+}}}
+== Urls ==
+URL-based threats
+=== Detection ===
+ * detecting botnet controller traffic:
+{{{
+cif -q url/botnet -c 85
+}}}
+=== Mitigation ===
+ * mitigation against infection (exploit pages, etc):
+{{{
+cif -q url/malware -s medium -c 85
+}}}
+ * mitigation against phishing url lures
+{{{
+cif -q url/phishing -s medium -c 85
 }}}
