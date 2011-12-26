@@ -105,6 +105,10 @@ if [ -d "/opt/cif/bin" ]; then
     PATH="/opt/cif/bin:$PATH"
 fi
 }}}
+ # make a directory for your backups
+{{{
+$ mkdir backups
+}}}
  # generate your initial apikey to be used with your [ClientSetup client]
 {{{
 $ cif_apikeys -u myuser@mydomain.com -a -g everyone -G everyone
