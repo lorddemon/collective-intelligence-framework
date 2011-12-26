@@ -65,6 +65,11 @@ bin-install:
 		$(INSTALL) -m 0750 "bin/$$file" "$(bindir)/$$file" ; \
 	done
 
+cron-daily-install:
+	-( cd cron.daily && find . -type f -print ) | grep -v svn | while read file; do \
+        $(INSTALL) -m 0750 "cron.daily/$$file" "/etc/cron.daily/$$file" ; \
+    done
+
 initdb: createdb archive index 
 
 createdb:
@@ -81,7 +86,7 @@ index:
 tables: inittables tableindex
 
 inittables:
-	-( cd schemas/$(DB_TYPE) && find -type f -print | grep -v svn | sort ) | while read file ; do \
+	-( cd schemas/$(DB_TYPE) && find -type f -print | grep -v svn | grep -v index | sort ) | while read file ; do \
 	$(PSQL) -U $(DB_DBA) -d $(DB_DATABASE) -h $(DB_HOST) -p $(DB_PORT) < "schemas/$(DB_TYPE)/$$file" ; \
 	done
 	@echo "Tables built"
