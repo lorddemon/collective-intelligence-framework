@@ -4,6 +4,7 @@ use base 'CIF::DBI';
 __PACKAGE__->columns(All => qw/id uuid/);
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->has_a(uuid => 'CIF::Archive');
+__PACKAGE__->add_trigger(after_delete => \&trigger_after_delete);
 
 use Module::Pluggable require => 1, except => qr/::Plugin::\S+::/;
 
@@ -15,6 +16,12 @@ use Module::Pluggable require => 1, except => qr/::Plugin::\S+::/;
 #    my $class = shift;
 #    $class->{'uuid'} = CIF::Archive->retrieve(uuid => $class->uuid->id());
 #}
+
+sub trigger_after_delete {
+    my $class = shift;
+    my $ret = CIF::Archive->retrieve(uuid => $class->uuid())->delete();
+    return;
+}
 
 sub prepare {
     my $class = shift;

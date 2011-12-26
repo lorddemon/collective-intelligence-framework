@@ -19,7 +19,6 @@ __PACKAGE__->set_sql('feed' => qq{
     GROUP BY
         description,severity,confidence,restriction
     ORDER BY 
-        count desc,description asc, severity desc, confidence desc, restriction desc
-    LIMIT ?
+        count desc,description desc, severity desc, confidence desc, restriction desc
 });
 1;

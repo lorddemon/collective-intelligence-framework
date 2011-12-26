@@ -42,8 +42,8 @@ USERNAME=postgres
 DBHOST=localhost
 
 # List of DBNAMES for Daily/Weekly Backup e.g. "DB1 DB2 DB3"
-DBNAMES="all"
-TABLES=""
+DBNAMES="cif"
+TABLES="apikeys apikeys_groups archive"
 
 # Backup directory location e.g /backups
 BACKUPDIR="/backups"
@@ -102,8 +102,8 @@ LATEST=no
 # === Debian specific options ===
 #================================
 
-if [ -f /etc/default/autopostgresqlbackup ]; then
-	. /etc/default/autopostgresqlbackup
+if [ -f /opt/cif/etc/autopostgresqlbackup ]; then
+	. /opt/cif/etc/autopostgresqlbackup
 fi
 
 #=====================================================================
@@ -436,7 +436,7 @@ echo ======================================================================
 			fi
 			echo Monthly Backup of $MDB...
 				dbdump "$MDB" "$BACKUPDIR/monthly/$MDB/${MDB}_$DATE.$M.$MDB.sql"
-				compression "$BACKUPDIR/monthly/$MDB/${MDB}_$DATE.$M.$MDB.sql"
+				#compression "$BACKUPDIR/monthly/$MDB/${MDB}_$DATE.$M.$MDB.sql"
 				BACKUPFILES="$BACKUPFILES $BACKUPDIR/monthly/$MDB/${MDB}_$DATE.$M.$MDB.sql$SUFFIX"
 			echo ----------------------------------------------------------------------
 		done
@@ -472,7 +472,7 @@ echo ======================================================================
 		eval rm -fv "$BACKUPDIR/weekly/$DB/${DB}_week.$REMW.*"
 		echo
 			dbdump "$DB" "$BACKUPDIR/weekly/$DB/${DB}_week.$W.$DATE.sql"
-			compression "$BACKUPDIR/weekly/$DB/${DB}_week.$W.$DATE.sql"
+			#compression "$BACKUPDIR/weekly/$DB/${DB}_week.$W.$DATE.sql"
 			BACKUPFILES="$BACKUPFILES $BACKUPDIR/weekly/$DB/${DB}_week.$W.$DATE.sql$SUFFIX"
 		echo ----------------------------------------------------------------------
 	
@@ -483,7 +483,7 @@ echo ======================================================================
 		eval rm -fv "$BACKUPDIR/daily/$DB/*.$DOW.sql.*" 
 		echo
 			dbdump "$DB" "$BACKUPDIR/daily/$DB/${DB}_$DATE.$DOW.sql"
-			compression "$BACKUPDIR/daily/$DB/${DB}_$DATE.$DOW.sql"
+			#compression "$BACKUPDIR/daily/$DB/${DB}_$DATE.$DOW.sql"
 			BACKUPFILES="$BACKUPFILES $BACKUPDIR/daily/$DB/${DB}_$DATE.$DOW.sql$SUFFIX"
 		echo ----------------------------------------------------------------------
 	fi
@@ -499,7 +499,7 @@ echo ======================================================================
 	if [ "$DOM" = "01" ]; then
 		echo Monthly full Backup of \( $MDBNAMES \)...
 			dbdump "$MDBNAMES" "$BACKUPDIR/monthly/$DATE.$M.all-databases.sql"
-			compression "$BACKUPDIR/monthly/$DATE.$M.all-databases.sql"
+			#compression "$BACKUPDIR/monthly/$DATE.$M.all-databases.sql"
 			BACKUPFILES="$BACKUPFILES $BACKUPDIR/monthly/$DATE.$M.all-databases.sql$SUFFIX"
 		echo ----------------------------------------------------------------------
 	fi
@@ -519,7 +519,7 @@ echo ======================================================================
 		eval rm -fv "$BACKUPDIR/weekly/week.$REMW.*" 
 		echo
 			dbdump "$DBNAMES" "$BACKUPDIR/weekly/week.$W.$DATE.sql"
-			compression "$BACKUPDIR/weekly/week.$W.$DATE.sql"
+			#compression "$BACKUPDIR/weekly/week.$W.$DATE.sql"
 			BACKUPFILES="$BACKUPFILES $BACKUPDIR/weekly/week.$W.$DATE.sql$SUFFIX"
 		echo ----------------------------------------------------------------------
 		
@@ -531,7 +531,7 @@ echo ======================================================================
 		eval rm -fv "$BACKUPDIR/daily/*.$DOW.sql.*" 
 		echo
 			dbdump "$DBNAMES" "$BACKUPDIR/daily/$DATE.$DOW.sql"
-			compression "$BACKUPDIR/daily/$DATE.$DOW.sql"
+			#compression "$BACKUPDIR/daily/$DATE.$DOW.sql"
 			BACKUPFILES="$BACKUPFILES $BACKUPDIR/daily/$DATE.$DOW.sql$SUFFIX"
 		echo ----------------------------------------------------------------------
 	fi

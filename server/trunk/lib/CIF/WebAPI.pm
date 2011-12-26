@@ -211,6 +211,10 @@ sub GET {
         $q = lc($type);
         $q = lc($impact).' '.$q if($impact);
         $q .= ' feed';
+        if($q eq 'search plugin webapi feed'){
+            $response->{'message'} = 'there is no top-level feed, you must specify a datatype (eg: infrastructure, domain, url, etc...)';
+            return Apache2::Const::HTTP_OK;
+        }
         my $severity = $request->{'r'}->param('severity') || $request->{'r'}->dir_config->get('CIFDefaultFeedSeverity') || 'high';
         my $confidence = $request->{'r'}->param('confidence') || $request->{'r'}->dir_config->get('CIFDefaultFeedConfidence') || 95;
         my $ret = CIF::Archive->lookup({    

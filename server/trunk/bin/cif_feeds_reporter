@@ -37,18 +37,12 @@ use DateTime::Format::DateParse;
 use Text::Table;
 
 my %opts;
-getopts('hLt:e:',\%opts);
+getopts('nhL:t:e:',\%opts);
 my $limit   = $opts{'L'} || 100;
-my $time    = $opts{'t'} || (time() - 84600);
+my $time    = $opts{'t'} || (time() - 86400);
 my $admin   = $opts{'e'} || 'root';
+my $noemail = $opts{'n'} || 0;
 die usage() if($opts{'h'});
-
-if($time =~ /^\d+$/){
-    $time = DateTime->from_epoch(epoch => $time);
-} else {
-    $time = DateTime::Format::DateParse->parse_datetime($time) || die('time format: '.$time.' not supported');
-}
-$time = $time->ymd().'T'.$time->hms().'Z';
 
 sub usage {
     return << "EOF";
@@ -57,6 +51,7 @@ Usage: perl $0
     -L  --limit:    result limit, default: $limit
     -e  --email:    email to send the report to, default: $admin
     -t  --time:     what the start time/date of the report should be, default: $time
+    -n  --noemail:  print to stdout instead of mail
 
 Examples:
     perl $0
@@ -66,16 +61,28 @@ Examples:
 EOF
 }
 
+if($time =~ /^\d+$/){
+    $time = DateTime->from_epoch(epoch => $time);
+} else {
+    $time = DateTime::Format::DateParse->parse_datetime($time) || die('time format: '.$time.' not supported');
+}
+$time = $time->ymd().'T'.$time->hms().'Z';
+
 my $reporttime = DateTime->from_epoch(epoch => time());
+$reporttime = $reporttime->ymd().'T'.$reporttime->hms().'Z';
 
 my $p = 'CIF::Archive::DataType::Plugin::Feed::Search';
-my @recs = $p->search_feed($time,$limit);
+my @recs = $p->search_feed($time);
 
 my @cols = ('count','description','severity','confidence','restriction');
 my $table = Text::Table->new(@cols);
-foreach my $r (@recs){
-    $r->{'description'} =~ s/search //;
-    $table->load([ map { $r->{$_} } @cols ]);
+if($#recs > -1){
+    $limit = $#recs+1 if($limit > $#recs);
+    foreach (0 ... $limit-1){
+        my $r = $recs[$_];
+        $r->{'description'} =~ s/search //;
+        $table->load([ map { $r->{$_} } @cols ]);
+    }
 }
 
 my $report = <<"EOF";
@@ -85,8 +92,12 @@ $table
 
 EOF
 
-my $msg = MIME::Lite->new(
-    To      => $admin,
-    Subject => 'CIF Feed Report',
-    Data    => $report,
-)->send() || die($!);
+unless($noemail){
+    my $msg = MIME::Lite->new(
+        To      => $admin,
+        Subject => 'CIF Feed Report',
+        Data    => $report,
+    )->send() || die($!);
+} else {
+    print $report;
+}
