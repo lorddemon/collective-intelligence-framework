@@ -2,11 +2,14 @@
         <form method="post">
 <table>
     <tr>
-        <td>Key Description</td>
+        <td><b>Key Description<b></td>
         <td><input type='text' name='key_description' size=30 value='myapp'/></td>
     </tr>
     <tr>
-        <td>Key Groups</td>
+        <td>
+            <b>Key Groups</b><br>
+            <i>Groups this key should<br>be able to access</i>
+        </td>
         <td align="right">
             <select name="add_groups" multiple="multiple">
 % foreach(@sorted){
@@ -16,7 +19,10 @@
             </select>
         </td>
     <tr>
-        <td>Default Group</td>
+        <td>
+            <b>Default Group</b><br>
+            <i>What group this key's searches<br>should be exposed to</i>
+        </td>
         <td align="right">
             <select name="default_group">
 % foreach(@sorted){

@@ -1,23 +1,51 @@
 <& Elements/Header, Title => loc("Results") &>
 <& /Elements/ListActions, actions => \@results &>
 
-% if($submitted) {
-% my $url = '3;url='.RT->Config->Get('WebURL')."Minimal/Display.html?id=$submitted";
+% warn $#submitted;
+% if($#submitted > -1){
+% if($#submitted == 0){
+% my $url = '3;url='.RT->Config->Get('WebURL')."Minimal/Display.html?id=".$submitted[0];
 <meta http-equiv="refresh" content="<% "$url" %>" />
+% } else {  
+% my $sc = RT::Tickets->new($session{'CurrentUser'});
+% foreach (@submitted){
+% $sc->Limit(FIELD => 'id', VALUE => $_, ENTRYAGGREGATOR => 'OR', OPPERATOR => '=');
 % }
+<& /Elements/CollectionList, 
+    title       => loc('Results'),
+    Collection  => $sc,
+    Format      => $Format, 
+    Order       => @Order,
+    OrderBy     => @OrderBy,
+    Class       => 'RT::Tickets',
+    Rows        => $Rows,
+    Page        => $Page,
+    AllowSorting    => $AllowSorting,
+&>
+% }
+% }
+
 <%INIT>
 
 unless($data){
     RT::Interface::Web::Redirect(RT->Config->Get('WebURL').'Minimal/Observation.html');
 }
 
+my $Format = qq{
+   '<B><A HREF="}. RT->Config->Get('WebPath') .qq{/Minimal/Display.html?id=__id__" target='_blank'">__id__</a></B>/TITLE:#',
+   '<B><A HREF="}. RT->Config->Get('WebPath') .qq{/Minimal/Display.html?id=__id__" target='_blank'">__Subject__</a></B>/TITLE:Subject',
+    Created,
+    LastUpdated,
+    };
+
 require XML::IODEF::Simple;
 require CIF::Utils;
 
 # just in case someone tries to set it on their own
 # w/o the proper rights
-unless($session{'CurrentUser'}->Privileged()){
-    $confidence = RT->Config->Get('CIFMinimal_DefaultConfidence') || 85;
+my $d_confidence = RT->Config->Get('CIFMinimal_DefaultConfidence') || 85;
+if($confidence > $d_confidence){
+    $confidence = $d_confidence unless($session{'CurrentUser'}->Privileged());
 }
 
 #my $guid = (CIF::Utils::isUUID($group)) ? $group : CIF::Utils::genSourceUUID($group);
@@ -30,6 +58,8 @@ $ARGS{$constituency_field} = $group;
 my $real_assessment = $assessment;
 $real_assessment =~ s/\/\S+$//;
 my @datas = split(/,/,$data);
+my @submitted;
+my %entered;
 foreach $data (@datas){
     $data =~ s/[ \t]+$//g;
     $data =~ s/^[ \t]+//g;
@@ -60,30 +90,34 @@ foreach $data (@datas){
     
     $ARGS{'Subject'} = $subject;
     $ARGS{'Queue'} = 'Incident Reports';
-    my ($ticket,@res) = CreateTicket(Content => $msg, Attachments => $session{'Attachments'}, %ARGS, Status => 'new');
-    $ticket->Comment(Content => $ARGS{'ReferenceDescription'});
-    if($ticket->Status() eq 'rejected'){
-        push(@results,'Ticket contained bad-data (private address?), auto-rejected');
+    if($entered{$data}){
+        # we call this the 'gabe' clause
+        push(@results,'skipping duplicate: '.$data);
     } else {
-        $submitted = 1;
-        push(@results,@res);
-    }
-    if($submitted){
-        push(@results,$msg) if(RT->Config->Get('LogToSyslog') eq 'debug');
-        $submitted = $ticket->id();
-        require CIF::Archive;
-        require CIF::FeedParser::ParseJsonIodef;
-        require JSON;
-        my $r = $ticket->IODEF();
-
-        my $ret = CIF::FeedParser::ParseJsonIodef::parse(undef,JSON::to_json([$r->to_tree()]));
-        foreach(@$ret){
-            $_->{'detcttime'} = $ticket->CreatedAsString();
-            my ($err,$id) = CIF::Archive->insert($_);
-            warn $err if($err);
-            warn $id if($id);
-        }
+        my ($ticket,@res) = CreateTicket(Content => $msg, Attachments => $session{'Attachments'}, %ARGS, Status => 'new');
+        $ticket->Comment(Content => $ARGS{'ReferenceDescription'});
+        if($ticket->Status() eq 'rejected'){
+            push(@results,'Ticket contained bad-data (private address?), auto-rejected');
+        } else {
+            $entered{$data} = 1;
+            push(@submitted,$ticket->Id());
+            my $rr = 'Ticket '.$ticket->Id().' Created -- '.$ticket->Subject();
+            push(@results,$rr);
         
+            #push(@results,$msg) if(RT->Config->Get('LogToSyslog') eq 'debug');
+            require CIF::Archive;
+            require CIF::FeedParser::ParseJsonIodef;
+            require JSON;
+            my $r = $ticket->IODEF();
+
+            my $ret = CIF::FeedParser::ParseJsonIodef::parse(undef,JSON::to_json([$r->to_tree()]));
+            foreach(@$ret){
+                $_->{'detcttime'} = $ticket->CreatedAsString();
+                my ($err,$id) = CIF::Archive->insert($_);
+                warn $err if($err);
+                warn $id if($id);
+            }
+        }
     }
 }
 
@@ -101,6 +135,12 @@ $portlist => undef
 @results => undef
 $assessment => undef
 $Queue => 'Incident Reports'
-$confidence => RT->Config->Get('CIFMinimal_DefaultConfidence') || 85;
-$submitted => undef
+$confidence => RT->Config->Get('CIFMinimal_DefaultConfidence') || 85
+
+$Collection => undef
+$Page => 1
+$AllowSorting => 1
+@Order => ('DESC')
+@OrderBy => ('Created')
+$Rows => 50
 </%ARGS>
