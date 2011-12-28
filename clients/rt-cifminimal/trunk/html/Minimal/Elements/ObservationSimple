@@ -1,9 +1,9 @@
 <form method="post" />
 <table>
-% foreach my $a (keys %assessments){
+% foreach my $a (@sorted){
     <tr>
         <td align="right"><input type="submit" name="assessment" value="<% $a %>" style="width=100px"/></td>       
-        <td align="left"><i><% $assessments{$a} %></i></td>
+        <td align="left"><i><% $assessments{$a}->{'desc'} %></i></td>
     </tr>
 % }
 </table>
@@ -11,6 +11,7 @@
 
 <%INIT>
 my %assessments = RT->Config->Get('CIFMinimal_Assessments');
+my @sorted = sort { $assessments{$a}->{'order'} <=> $assessments{$b}->{'order'} } keys(%assessments);
 
 </%INIT>
 <%ARGS>
