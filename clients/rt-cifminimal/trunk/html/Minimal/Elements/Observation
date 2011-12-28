@@ -47,19 +47,7 @@ window.onload = hide_me;
 <h3>Document the Observation</h3>
 <table>
 <form method="post" enctype="multipart/form-data" action="Submission.html">
-    <tr>
-    <td><b>Assessment</b></td>
-    <td>
-        <select name='assessment'>
-% foreach my $p (@assessments_sorted){
-% my $selected = '';
-% if(($assessment && lc($p) eq $assessment) || (lc($p) eq lc($d_assessment))){ $selected = " selected='selected'"; }
-            <option value='<% $p %>'<%$selected%>><% $p %></option>
-% }
-        </select><br/>
-        <i>closest that's appropriate, best estimate</i>
-    </td>
-    </tr>
+<input type="hidden" name="assessment" value="<% $assessment %>">
     <tr>
         <td><b>Data</b></td>
         <td>
