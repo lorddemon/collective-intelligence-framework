@@ -42,11 +42,10 @@ USERNAME=postgres
 DBHOST=localhost
 
 # List of DBNAMES for Daily/Weekly Backup e.g. "DB1 DB2 DB3"
-DBNAMES="cif"
-TABLES="apikeys apikeys_groups archive"
+DBNAMES=""
 
 # Backup directory location e.g /backups
-BACKUPDIR="/backups"
+BACKUPDIR="/home/cif/backups"
 
 # Mail setup
 # What would you like to be mailed to you?
@@ -83,11 +82,10 @@ DOWEEKLY=6
 
 # Choose Compression type. (gzip or bzip2)
 COMP=gzip
-COMP_INLINE="9"
 
 # Compress communications between backup server and PostgreSQL server?
 # set compression level from 0 to 9 (0 means no compression)
-COMMCOMP=0
+COMMCOMP=9
 
 # Additionally keep a copy of the most recent backup in a seperate directory.
 LATEST=no
@@ -268,16 +266,6 @@ LOGERR=$BACKUPDIR/ERRORS_$DBHOST-`date +%N`.log		# Logfile Name
 BACKUPFILES=""
 OPT=""						# OPT string for use with pg_dump ( see man pg_dump )
 
-if [ "$TABLES" ]; then
-    for T in $TABLES; do
-        OPT="$OPT -t $T "
-    done
-fi
-
-if [ "$COMP_INLINE" ]; then
-    OPT="$OPT -Z $COMP_INLINE ";
-fi
-
 # Add --compress pg_dump option to $OPT
 if [ "$COMMCOMP" -gt 0 ];
 	then
@@ -315,14 +303,14 @@ eval rm -f "$BACKUPDIR/latest/*"
 fi
 
 # IO redirection for logging.
-touch $LOGFILE
-exec 6>&1           # Link file descriptor #6 with stdout.
-                    # Saves stdout.
-exec > $LOGFILE     # stdout replaced with file $LOGFILE.
-touch $LOGERR
-exec 7>&2           # Link file descriptor #7 with stderr.
-                    # Saves stderr.
-exec 2> $LOGERR     # stderr replaced with file $LOGERR.
+#touch $LOGFILE
+#exec 6>&1           # Link file descriptor #6 with stdout.
+#                    # Saves stdout.
+#exec > $LOGFILE     # stdout replaced with file $LOGFILE.
+#touch $LOGERR
+#exec 7>&2           # Link file descriptor #7 with stderr.
+#                    # Saves stderr.
+#exec 2> $LOGERR     # stderr replaced with file $LOGERR.
 
 
 # Functions
@@ -556,8 +544,8 @@ if [ "$POSTBACKUP" ]
 fi
 
 #Clean up IO redirection
-exec 1>&6 6>&-      # Restore stdout and close file descriptor #6.
-exec 1>&7 7>&-      # Restore stdout and close file descriptor #7.
+#exec 1>&6 6>&-      # Restore stdout and close file descriptor #6.
+#exec 1>&7 7>&-      # Restore stdout and close file descriptor #7.
 
 if [ "$MAILCONTENT" = "files" ]
 then

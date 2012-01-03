@@ -187,6 +187,7 @@ sub lookup {
     if($info->{'guid'}){
         return($class->search__lookup(
             $q,
+            $q,
             $sev,
             $conf,
             $restriction,
@@ -208,8 +209,7 @@ sub lookup {
             );
         } else {
             return(
-               $class->search_lookup(
-                    $q,
+               $class->search_lookup_cidr(
                     $q,
                     $sev,
                     $conf,

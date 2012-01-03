@@ -25,14 +25,10 @@ USERNAME=postgres
 DBHOST=localhost
 
 # List of DBNAMES for Daily/Weekly Backup e.g. "DB1 DB2 DB3"
-DBNAMES="cif"
-TABLES="archive apikeys apikeys_groups"
-
-# compress inline
-COMP_INLINE="9"
+DBNAMES="rt3"
 
 # Backup directory location e.g /backups
-BACKUPDIR="/home/cif/backup"
+BACKUPDIR="/home/cif/backups"
 
 # Mail setup
 # What would you like to be mailed to you?
@@ -40,7 +36,7 @@ BACKUPDIR="/home/cif/backup"
 # - files : send log file and sql files as attachments (see docs)
 # - stdout : will simply output the log to the screen if run manually.
 # - quiet : Only send logs if an error occurs to the MAILADDR.
-MAILCONTENT="quiet"
+MAILCONTENT="stdout"
 
 # Set the maximum allowed email size in k. (4000 = approx 5MB email [see docs])
 MAXATTSIZE="4000"
