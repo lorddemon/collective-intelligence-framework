@@ -131,6 +131,18 @@ apikeys = role_everyone_feed
 max_days = 2
 disabled_feeds = hash,rir,asn,countrycode,malware
 }}}
+ # add this to /opt/cif/whitelist_infrastructure, make sure the file has the cif:cif permissions:
+{{{
+0.0.0.0/8
+10.0.0.0/8
+127.0.0.0/8
+192.168.0.0/16
+169.254.0.0/16
+192.0.2.0/24
+224.0.0.0/4
+240.0.0.0/5
+248.0.0.0/5
+}}}
  # setup a role-key for your default feeds:
 {{{
  $ cif_apikeys -u role_everyone_feed -a -g everyone -G everyone
