@@ -94,9 +94,21 @@ NOTICE:  table "domain" does not exist, skipping
 $ sudo /etc/init.d/apache2 restart
 }}}
 == Configuration ==
- # install the apache2 config
-  # [Beta3Apache2Debian Debian Based]
-  # your config should look something like
+ # enable the default-ssl site
+{{{
+$ sudo a2ensite default-ssl
+$ sudo a2enmod apreq
+$ sudo a2enmod ssl
+}}}
+ # configure apache2, add this line to your default-ssl site (or default if you're not using TLS)
+{{{
+<IfModule mod_ssl.c>
+<VirtualHost _default_:443>
++      PerlRequire /opt/cif/bin/webapi.pl
++      Include /etc/apache2/cif.conf
+....
+}}}
+ # create your config at /etc/apache2/cif.conf, which should look like:
 {{{
 <Location /api>
     SetHandler perl-script
@@ -114,6 +126,7 @@ $ sudo /etc/init.d/apache2 restart
     PerlAddVar Apache2RESTWriterRegistry 'table'
     PerlAddVar Apache2RESTWriterRegistry 'CIF::WebAPI::Writer::table'
 </Location>
+
 }}}
  # add your "www-data" user (whoever apache is set to run under) to the group "cif" (/etc/group):
 {{{
