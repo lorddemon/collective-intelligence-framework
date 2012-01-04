@@ -93,8 +93,33 @@ NOTICE:  table "domain" does not exist, skipping
 {{{
 $ sudo /etc/init.d/apache2 restart
 }}}
-
 == Configuration ==
+ # install the apache2 config
+  # [Beta3Apache2Debian Debian Based]
+  # your config should look something like
+{{{
+<Location /api>
+    SetHandler perl-script
+    PerlSetVar Apache2RESTHandlerRootClass "CIF::WebAPI::Plugin"
+    PerlSetVar Apache2RESTAPIBase "/api"
+    PerlResponseHandler Apache2::REST
+    PerlSetVar Apache2RESTWriterDefault 'json'
+    PerlSetVar Apache2RESTAppAuth 'CIF::WebAPI::AppAuth'
+
+    # feed defaults
+    PerlSetVar CIFLookupLimitDefault 500
+    PerlSetVar CIFDefaultFeedSeverity "high"
+
+    # extra outputs
+    PerlAddVar Apache2RESTWriterRegistry 'table'
+    PerlAddVar Apache2RESTWriterRegistry 'CIF::WebAPI::Writer::table'
+</Location>
+}}}
+ # add your "www-data" user (whoever apache is set to run under) to the group "cif" (/etc/group):
+{{{
+$ sudo adduser www-data cif
+}}}
+ # restart apache2
  # log in as the cif user:
 {{{
 $ sudo su - cif
@@ -147,32 +172,6 @@ disabled_feeds = hash,rir,asn,countrycode,malware
 {{{
  $ cif_apikeys -u role_everyone_feed -a -g everyone -G everyone
 }}}
- # install the apache2 config
-  # [Beta3Apache2Debian Debian Based]
-  # your config should look something like
-{{{
-<Location /api>
-    SetHandler perl-script
-    PerlSetVar Apache2RESTHandlerRootClass "CIF::WebAPI::Plugin"
-    PerlSetVar Apache2RESTAPIBase "/api"
-    PerlResponseHandler Apache2::REST
-    PerlSetVar Apache2RESTWriterDefault 'json'
-    PerlSetVar Apache2RESTAppAuth 'CIF::WebAPI::AppAuth'
-
-    # feed defaults
-    PerlSetVar CIFLookupLimitDefault 500
-    PerlSetVar CIFDefaultFeedSeverity "high"
-
-    # extra outputs
-    PerlAddVar Apache2RESTWriterRegistry 'table'
-    PerlAddVar Apache2RESTWriterRegistry 'CIF::WebAPI::Writer::table'
-</Location>
-}}}
- # add your "www-data" user (whoever apache is set to run under) to the group "cif" (/etc/group):
-{{{
-$ sudo adduser www-data cif
-}}}
- # restart apache2
 == Load Data ==
  # perform [Tools_cif_crontool cif_crontool's] "first run" to prime the database with it's initial intel (should take about 30min).
 {{{
