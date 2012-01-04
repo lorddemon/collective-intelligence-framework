@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/SUPER$/;
+use DateTime;
 
 __PACKAGE__->table('feed');
 __PACKAGE__->columns(All => qw/id uuid guid description confidence source hash_sha1 signature impact severity restriction detecttime created data/);
@@ -47,7 +48,7 @@ sub insert {
             detecttime  => $info->{'detecttime'},
             data        => $info->{'data'},
             source      => $info->{'source'},
-            created     => $info->{'created'},
+            created     => $info->{'created'} || DateTime->from_epoch(epoch => time()),
         });
     };
     if($@){

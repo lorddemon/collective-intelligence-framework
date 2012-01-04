@@ -6,6 +6,7 @@ use warnings;
 
 use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/SUPER$/;
 use Regexp::Common qw/URI/;
+use DateTime;
 
 __PACKAGE__->table('email');
 __PACKAGE__->columns(Primary => 'id');
@@ -51,7 +52,7 @@ sub insert {
         restriction     => $info->{'restriction'} || 'private',
         detecttime      => $info->{'detecttime'},
         guid            => $info->{'guid'},
-        created         => $info->{'created'},
+        created         => $info->{'created'} || DateTime->from_epoch(epoch => time()),
     }) };
     if($@){
         return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);

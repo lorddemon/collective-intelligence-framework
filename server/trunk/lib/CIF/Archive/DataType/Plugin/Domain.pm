@@ -8,6 +8,7 @@ use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/S
 use Net::Abuse::Utils qw(:all);
 use Digest::MD5 qw/md5_hex/;
 use Digest::SHA1 qw/sha1_hex/;
+use DateTime;
 
 __PACKAGE__->table('domain');
 __PACKAGE__->columns(Primary => 'id');
@@ -71,7 +72,7 @@ sub insert {
                 restriction => $info->{'restriction'} || 'private',
                 detecttime  => $info->{'detecttime'},
                 guid        => $info->{'guid'},
-                created     => $info->{'created'},
+                created     => $info->{'created'} || DateTime->from_epoch(epoch => time()),
             }); 
         };
         if($@){

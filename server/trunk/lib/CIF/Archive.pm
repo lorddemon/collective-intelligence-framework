@@ -127,6 +127,7 @@ sub insert {
                 restriction => $info->{'restriction'} || 'private',
                 source      => $info->{'source'} || 'unknown',
                 guid        => $info->{'guid'},
+                created     => $info->{'created'} || DateTime->from_epoch(epoch => time()),
             });
         };
         if($@){

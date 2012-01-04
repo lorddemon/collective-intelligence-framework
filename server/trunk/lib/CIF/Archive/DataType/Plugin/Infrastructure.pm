@@ -5,6 +5,7 @@ use warnings;
 use strict;
 
 use Module::Pluggable require => 1, search_path => [__PACKAGE__], except => qr/SUPER$/;
+use DateTime;
 
 use Net::CIDR;
 use Net::Abuse::Utils qw(:all);
@@ -163,10 +164,10 @@ sub insert {
             confidence  => $info->{'confidence'},
             source      => $info->{'source'},
             guid        => $info->{'guid'},
-            severity    => $info->{'severity'} || 'null',
+            severity    => $info->{'severity'},
             restriction => $info->{'restriction'} || 'private',
             detecttime  => $info->{'detecttime'},
-            created     => $info->{'created'},
+            created     => $info->{'created'} || DateTime->from_epoch(epoch => time()),
         });
     };
     if($@){
