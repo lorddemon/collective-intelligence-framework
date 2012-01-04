@@ -10,6 +10,7 @@ use Digest::MD5 qw(md5_hex);
 use Encode qw/encode_utf8/;
 use URI::Escape;
 use Regexp::Common qw/URI/;
+use DateTime;
 
 __PACKAGE__->table('url');
 __PACKAGE__->columns(Primary => 'id');
@@ -64,7 +65,7 @@ sub insert {
         restriction     => $info->{'restriction'} || 'private',
         detecttime      => $info->{'detecttime'},
         guid            => $info->{'guid'},
-        created         => $info->{'created'},
+        created     => $info->{'created'} || DateTime->from_epoch(epoch => time()),
     }) };
     if($@){
         return(undef,$@) unless($@ =~ /duplicate key value violates unique constraint/);

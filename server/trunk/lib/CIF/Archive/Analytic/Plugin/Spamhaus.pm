@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Regexp::Common qw/net/;
+use CIF::Archive::DataType::Plugin::Infrastructure;
 
 my $codes = {
     '127.0.0.2' => {
@@ -85,6 +86,8 @@ sub process {
     my $aid = $data->{'alternativeid'};
     return if($aid && $aid =~ /spamhaus\.org/);
 
+    return if(CIF::Archive::DataType::Plugin::Infrastructure::isPrivateAddress($addr));
+
     require Net::DNS::Resolver;
     my $r = Net::DNS::Resolver->new(recursive => 0);
     my @bits = split(/\./,$addr);
@@ -139,9 +142,6 @@ sub process {
         warn $id->{'uuid'} if($::debug && $id);
     }
 }
-
-
-
 
 # Preloaded methods go here.
 

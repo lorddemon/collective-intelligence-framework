@@ -5,6 +5,7 @@ use warnings;
 
 require CIF::Archive;
 use Regexp::Common qw/net/;
+require CIF::Archive::DataType::Plugin::Infrastructure;
 
 sub process {
     my $self = shift;
@@ -16,6 +17,8 @@ sub process {
     my $addr = $data->{'rdata'};
     return unless($addr);
     return unless($addr =~ /^$RE{'net'}{'IPv4'}/);
+
+    return if(CIF::Archive::DataType::Infrastructure::Plugin::isPrivateAddress($addr));
 
     my $conf = $data->{'confidence'} || 25;
     $conf = ($conf / 2);
