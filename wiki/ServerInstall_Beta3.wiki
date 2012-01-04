@@ -188,6 +188,7 @@ disabled_feeds = hash,rir,asn,countrycode,malware
  $ cif_apikeys -u role_everyone_feed -a -g everyone -G everyone
 }}}
 == Load Data ==
+ # log in as the cif user (sudo su - cif)
  # perform [Tools_cif_crontool cif_crontool's] "first run" to prime the database with it's initial intel (should take about 30min).
 {{{
 $ time /opt/cif/bin/cif_crontool -f -d && /opt/cif/bin/cif_crontool -d -p daily && /opt/cif/bin/cif_crontool -d -p hourly
