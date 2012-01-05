@@ -20,9 +20,6 @@ install: dirs files-install fixperms etc-link
 
 files-install: libs-install etc-install bin-install local-whitelist
 
-apikey:
-	$(prefix)/bin/cif_apikeys -u root -a
-
 depends: fixdeps
 
 fixdeps:
@@ -64,11 +61,6 @@ bin-install:
 	-( cd bin && find . -type f -print ) | grep -v svn | while read file ; do \
 		$(INSTALL) -m 0750 "bin/$$file" "$(bindir)/$$file" ; \
 	done
-
-cron-daily-install:
-	-( cd cron.daily && find . -type f -print ) | grep -v svn | while read file; do \
-        $(INSTALL) -m 0750 "cron.daily/$$file" "/etc/cron.daily/$$file" ; \
-    done
 
 initdb: createdb archive index 
 
@@ -124,15 +116,29 @@ realclean: clean
 reconf:
 	autoreconf -vf
 
-BUILD=0.01-b$(shell date +%Y%m%d_%H%M%S)
-SNAPSHOT=cif-$(BUILD)
+BUILD=b$(shell date +%Y%m%d_%H%M%S)
+TAG=0.01
+SNAPSHOT=cif-$(TAG)-$(BUILD)
+RELEASE=cif-$(TAG)
 snapshot: build-snapshot
+release: build-release
+
+build-release:
+	rm -Rf "/tmp/$(RELEASE)"
+	svn export ./ /tmp/$(RELEASE)
+	( cd /tmp/$(RELEASE) && \
+		echo "$(TAG)" > .tag && \
+		sh rebuild.sh && \
+		make dist && \
+		cp $(RELEASE).tar.gz /tmp/ \
+	)
+	rm -R -f "/tmp/$(RELEASE)"
 
 build-snapshot:
 	rm -Rf "/tmp/$(SNAPSHOT)"
 	svn export ./ /tmp/$(SNAPSHOT)
 	( cd /tmp/$(SNAPSHOT) && \
-		echo "$(BUILD)" > .tag && \
+		echo "$(TAG)-$(BUILD)" > .tag && \
 		sh rebuild.sh && \
 		make dist && \
 		cp $(SNAPSHOT).tar.gz /tmp/ \

@@ -63,7 +63,7 @@ MAILADDR="root"
 #=============================================================
 
 # List of DBBNAMES for Monthly Backups.
-MDBNAMES="template1 $DBNAMES"
+MDBNAMES="$DBNAMES"
 
 # List of DBNAMES to EXLUCDE if DBNAMES are set to all (must be in " quotes)
 DBEXCLUDE=""
@@ -392,21 +392,15 @@ echo Backup Start Time `date`
 echo ======================================================================
 	# Monthly Full Backup of all Databases
 	if [ "$DOM" = "01" ]; then
-		for MDB in $MDBNAMES
-		do
- 
-			 # Prepare $DB for using
-		        MDB="`echo $MDB | sed 's/%/ /g'`"
-
-			if [ ! -e "$BACKUPDIR/monthly/$MDB" ]		# Check Monthly DB Directory exists.
-			then
-				mkdir -p "$BACKUPDIR/monthly/$MDB"
-			fi
-			echo Monthly Backup of $MDB...
-				dbdump "$MDB" "$BACKUPDIR/monthly/$MDB/${MDB}_$DATE.$M.$MDB.sql.gz"
-				BACKUPFILES="$BACKUPFILES $BACKUPDIR/monthly/$MDB/${MDB}_$DATE.$M.$MDB.sql.gz"
-			echo ----------------------------------------------------------------------
-		done
+	    if [ ! -e "$BACKUPDIR/monthly/cif" ]		# Check Monthly DB Directory exists.
+		then
+		    mkdir -p "$BACKUPDIR/monthly/cif"
+		fi
+		echo Monthly Backup of the archive table
+		eval rm -fv `find $BACKUPDIR/monthly/cif/cif_archive_* -ctime +120`
+        dbdump "cif" "$BACKUPDIR/monthly/cif/cif_archive_$DATE.$M.sql.gz"
+		BACKUPFILES="$BACKUPFILES $BACKUPDIR/monthly/cif/cif_archive_$DATE.$M.sql.gz"
+		echo ----------------------------------------------------------------------
 	fi
 
 	for DB in $DBNAMES
