@@ -59,7 +59,7 @@ MAILCONTENT="stdout"
 MAXATTSIZE="4000"
 
 # Email Address to send mail to? (user@domain.com)
-MAILADDR="user@domain.com"
+MAILADDR="root"
 
 # ============================================================
 # === ADVANCED OPTIONS ( Read the doc's below for details )===
@@ -85,7 +85,7 @@ COMP=gzip
 
 # Compress communications between backup server and PostgreSQL server?
 # set compression level from 0 to 9 (0 means no compression)
-COMMCOMP=9
+COMMCOMP=0
 
 # Additionally keep a copy of the most recent backup in a seperate directory.
 LATEST=no
@@ -264,7 +264,7 @@ VER=1.0							# Version Number
 LOGFILE=$BACKUPDIR/$DBHOST-`date +%N`.log			# Logfile Name
 LOGERR=$BACKUPDIR/ERRORS_$DBHOST-`date +%N`.log		# Logfile Name
 BACKUPFILES=""
-OPT=""						# OPT string for use with pg_dump ( see man pg_dump )
+OPT="-b"						# OPT string for use with pg_dump ( see man pg_dump )
 
 # Add --compress pg_dump option to $OPT
 if [ "$COMMCOMP" -gt 0 ];
@@ -303,14 +303,14 @@ eval rm -f "$BACKUPDIR/latest/*"
 fi
 
 # IO redirection for logging.
-#touch $LOGFILE
-#exec 6>&1           # Link file descriptor #6 with stdout.
+touch $LOGFILE
+exec 6>&1           # Link file descriptor #6 with stdout.
 #                    # Saves stdout.
-#exec > $LOGFILE     # stdout replaced with file $LOGFILE.
-#touch $LOGERR
-#exec 7>&2           # Link file descriptor #7 with stderr.
+exec > $LOGFILE     # stdout replaced with file $LOGFILE.
+touch $LOGERR
+exec 7>&2           # Link file descriptor #7 with stderr.
 #                    # Saves stderr.
-#exec 2> $LOGERR     # stderr replaced with file $LOGERR.
+exec 2> $LOGERR     # stderr replaced with file $LOGERR.
 
 
 # Functions
@@ -424,7 +424,7 @@ echo ======================================================================
 			fi
 			echo Monthly Backup of $MDB...
 				dbdump "$MDB" "$BACKUPDIR/monthly/$MDB/${MDB}_$DATE.$M.$MDB.sql"
-				#compression "$BACKUPDIR/monthly/$MDB/${MDB}_$DATE.$M.$MDB.sql"
+				compression "$BACKUPDIR/monthly/$MDB/${MDB}_$DATE.$M.$MDB.sql"
 				BACKUPFILES="$BACKUPFILES $BACKUPDIR/monthly/$MDB/${MDB}_$DATE.$M.$MDB.sql$SUFFIX"
 			echo ----------------------------------------------------------------------
 		done
@@ -460,7 +460,7 @@ echo ======================================================================
 		eval rm -fv "$BACKUPDIR/weekly/$DB/${DB}_week.$REMW.*"
 		echo
 			dbdump "$DB" "$BACKUPDIR/weekly/$DB/${DB}_week.$W.$DATE.sql"
-			#compression "$BACKUPDIR/weekly/$DB/${DB}_week.$W.$DATE.sql"
+			compression "$BACKUPDIR/weekly/$DB/${DB}_week.$W.$DATE.sql"
 			BACKUPFILES="$BACKUPFILES $BACKUPDIR/weekly/$DB/${DB}_week.$W.$DATE.sql$SUFFIX"
 		echo ----------------------------------------------------------------------
 	
@@ -471,7 +471,7 @@ echo ======================================================================
 		eval rm -fv "$BACKUPDIR/daily/$DB/*.$DOW.sql.*" 
 		echo
 			dbdump "$DB" "$BACKUPDIR/daily/$DB/${DB}_$DATE.$DOW.sql"
-			#compression "$BACKUPDIR/daily/$DB/${DB}_$DATE.$DOW.sql"
+			compression "$BACKUPDIR/daily/$DB/${DB}_$DATE.$DOW.sql"
 			BACKUPFILES="$BACKUPFILES $BACKUPDIR/daily/$DB/${DB}_$DATE.$DOW.sql$SUFFIX"
 		echo ----------------------------------------------------------------------
 	fi
@@ -507,7 +507,7 @@ echo ======================================================================
 		eval rm -fv "$BACKUPDIR/weekly/week.$REMW.*" 
 		echo
 			dbdump "$DBNAMES" "$BACKUPDIR/weekly/week.$W.$DATE.sql"
-			#compression "$BACKUPDIR/weekly/week.$W.$DATE.sql"
+			compression "$BACKUPDIR/weekly/week.$W.$DATE.sql"
 			BACKUPFILES="$BACKUPFILES $BACKUPDIR/weekly/week.$W.$DATE.sql$SUFFIX"
 		echo ----------------------------------------------------------------------
 		
@@ -519,7 +519,7 @@ echo ======================================================================
 		eval rm -fv "$BACKUPDIR/daily/*.$DOW.sql.*" 
 		echo
 			dbdump "$DBNAMES" "$BACKUPDIR/daily/$DATE.$DOW.sql"
-			#compression "$BACKUPDIR/daily/$DATE.$DOW.sql"
+		    compression "$BACKUPDIR/daily/$DATE.$DOW.sql"
 			BACKUPFILES="$BACKUPFILES $BACKUPDIR/daily/$DATE.$DOW.sql$SUFFIX"
 		echo ----------------------------------------------------------------------
 	fi
@@ -544,8 +544,8 @@ if [ "$POSTBACKUP" ]
 fi
 
 #Clean up IO redirection
-#exec 1>&6 6>&-      # Restore stdout and close file descriptor #6.
-#exec 1>&7 7>&-      # Restore stdout and close file descriptor #7.
+exec 1>&6 6>&-      # Restore stdout and close file descriptor #6.
+exec 1>&7 7>&-      # Restore stdout and close file descriptor #7.
 
 if [ "$MAILCONTENT" = "files" ]
 then
