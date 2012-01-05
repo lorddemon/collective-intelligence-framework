@@ -4,5 +4,5 @@
 <!ENTITY cifsearchToolbarButton.label "Your Toolbar Button">
 <!ENTITY cifsearchToolbarButton.tooltip "This is your toolbar button!">
 <!ENTITY cifsearchSidebar.label "Your Sidebar">
-<!ENTITY cifsearchToolbar.name  "example">
+<!ENTITY cifsearchToolbar.name  "CIF Search">
 <!ENTITY cifsearchToolbar.label "This is an example toolbar. You can hide it under View &gt; toolbars &gt; &cifsearchToolbar.name;">
