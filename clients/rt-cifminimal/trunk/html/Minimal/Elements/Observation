@@ -39,12 +39,14 @@ window.onload = hide_me;
 </SCRIPT>
 <h3>Getting Started</h3>
 <ul>
-    <li>Sometimes less is more</li>
+    <li>Information in the '<i>Raw Information</i>' section <b>is not shared externally</b></li>
     <li>Don't get stuck on where the data might end up</li>
     <li>Extra context can always go in the "details" box</li>
     <li>Let the system handle the rest, we're just documenting observations here</li>
 </ul>
+<hr>
 <h3>Document the Observation</h3>
+<h4>General Details</h4>
 <table>
 <form method="post" enctype="multipart/form-data" action="Submission.html">
 <input type="hidden" name="assessment" value="<% $assessment %>">
@@ -57,7 +59,6 @@ window.onload = hide_me;
                 
         </td>
     </tr>
-
     <tr>
         <td><b>Tags</b></td>
         <td>
@@ -86,20 +87,7 @@ cf%>-Values" /><div id
             <i>best estimate, eg: would you put "boots on the ground" based on this observation?</i>
         </td>
     </tr>
-    <tr>
-        <td><b>Details</b></td>
-        <td>
-            <& /Elements/MessageBox, Default => $ARGS{'ReferenceDescription'}, Name => 'ReferenceDescription' &>
-            <br><i>e.g. full message headers, analysis, etc...</i>
-        </td>
-    </tr>
-    <tr>
-        <td>attachment</td>
-        <td><input name="Attach" type="file"/>
-            <br><i>any supporting doc, reports, pdf's, binaries, etc... </i>
-        </td>
-    </tr>
-    <tr id="portlist">
+<tr id="portlist">
         <td>Portlist</td>
         <td>
             <input title="the entire list will be tagged against each data entered" type='text' size=80 name='portlist' value="<%$portlist%>">
@@ -152,10 +140,30 @@ cf%>-Values" /><div id
 % }
         </td>
     </tr>
+</table>
+<hr>
+<table>
+<h4>Raw Information</h4>
+    <tr>
+        <td>
+            details
+        </td>
+        <td>
+            <& /Elements/MessageBox, Default => $ARGS{'ReferenceDescription'}, Name => 'ReferenceDescription' &>
+            <br><i>e.g. full message headers, analysis, etc... <b>not-shared</b></i>
+        </td>
+    </tr>
+    <tr>
+        <td>attachment</td>
+        <td><input name="Attach" type="file"/>
+            <br><i>any supporting doc, reports, pdf's, binaries, etc... <b>not-shared</b></i>
+        </td>
+    </tr>
     <tr>
         <td></td>
         <td><& /Elements/Submit, Label => loc("Submit")&></td>
     </tr>
+
 </table>
 </form>
 
