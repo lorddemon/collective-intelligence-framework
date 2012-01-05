@@ -1,7 +1,7 @@
 #summary howto install the perl client
 
 = Known Issues =
- 1. if you have some issues installing *REST::Client*, please try http://search.cpan.org/CPAN/authors/id/M/MC/MCRAWFOR/REST-Client-217.tar.gz version 217] until it's able to be resolved.
+ 1. if you have some issues installing *REST::Client*, please try version [http://search.cpan.org/CPAN/authors/id/M/MC/MCRAWFOR/REST-Client-217.tar.gz 217] until it's able to be resolved.
 
 = Installation =
  
