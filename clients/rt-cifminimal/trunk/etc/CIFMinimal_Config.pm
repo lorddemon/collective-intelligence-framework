@@ -6,9 +6,9 @@ Set($WebNoAuthRegex, qr{ (?: $rt_no_auth | ^/+Minimal/+NoAuth/ ) }x);
 
 # everything here should be lower case
 Set(%CIFMinimal_RestrictionMapping,
-       default         => 'amber',
-       red             => 'private',
-       amber           => 'need-to-know',
+       #default         => 'amber',
+       #red             => 'private',
+       #amber           => 'need-to-know',
        #green          => 'need-to-know',
        #white          => 'public',
 );
