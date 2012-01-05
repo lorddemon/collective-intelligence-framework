@@ -13,7 +13,7 @@ use Net::CIDR;
 sub cif_data {
     my $args = shift;
     
-    my $fields  = $args->{'fields'} || 'restriction,guid,severity,confidence,address,portlist,protocol,impact,description,detecttime,alternativeid_restriction,alternativeid';
+    my $fields  = $args->{'fields'} || 'restriction,guid,severity,confidence,address,rdata,portlist,protocol,impact,description,detecttime,alternativeid_restriction,alternativeid';
     my $user    = $args->{'user'};
     my $q       = $args->{'q'};
     my $nolog   = $args->{'nolog'};
