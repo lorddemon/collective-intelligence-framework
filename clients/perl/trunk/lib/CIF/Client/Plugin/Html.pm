@@ -37,6 +37,9 @@ sub write_out {
         if(exists($t->{'address'})){
             push(@cols,('address'));
         }
+        if(exists($t->{'rdata'})){
+            push(@cols,'rdata');
+        }
         if(exists($t->{'protocol'})){
             push(@cols,'protocol');
         }
