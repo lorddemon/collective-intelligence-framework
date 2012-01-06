@@ -1,15 +1,22 @@
 #summary idea collection
 
-*Projects Lab*
-
-<wiki:toc max_depth="3" />
+= Projects Lab =
 
 This is a collection of projects and ideas based on CIF. Here you'll find two things, the client-side projects and a wish-list
 
 = Client Side Projects =
-== PerlClient ==
-== PythonClient ==
-== FirefoxToolbar ==
-== ChromeToolbar ==
+ * PerlClient
+ * PythonClient
+ * FirefoxToolbar
+ * ChromeToolbar
 
-= Wish-list =
+= Idea List =
+ * os x mail.app plugin
+ * right click tool for windows
+ * snort domains output plugin
+ * nfsen lookup module
+ * amazon EC2 guide
+ * vmware appliance
+ * kippo integration
+ * grease monkey integration
+ * netglub integration
