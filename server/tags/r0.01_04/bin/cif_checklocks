@@ -1,0 +1,104 @@
+#!/usr/bin/perl -w
+
+use strict;
+use Data::Dumper;
+use Getopt::Std;
+use DateTime;
+use MIME::Lite;
+
+my %opts;
+getopts('S:I:P:hT:d',\%opts);
+
+our $debug      = $opts{'d'};
+my $dir         = $opts{'D'} || '/tmp';
+my $period      = $opts{'P'} || 'hour';
+my $admin       = $opts{'A'} || 'root';
+my $interval    = $opts{'I'} || 6;
+my $specific    = $opts{'S'};
+
+die(usage()) if($opts{'h'});
+
+sub usage {
+    return <<EOF;
+Usage: perl $0
+    
+    -h      --help:     this message
+    -A      --admin:    admin address to send too, default: $admin
+    -P      --period:   delay before a 'lock' is stale, (hour, day), default: $period
+    -I      --interval: interval to test lock against <number>, eg: 6 hours or 3 days, default: $interval
+    -D      --dir       default lockfie directory, default: $dir
+    -S      --specific: specific lock to check
+    -d      --debug:    enable debugging
+
+EOF
+}
+
+for(lc($period)){
+    if(/hour/){
+        $period = 3600;
+        last;
+    }
+    if(/day/){
+        $period = 84600;
+        last;
+    }
+}
+
+$period = ($interval * $period);
+
+opendir(D,$dir) || die($!);
+my @crons = grep { /^cif_.*\.lock$/ && -f "$dir/$_" } readdir(D);
+closedir(D);
+opendir(D,$dir) || die($!);
+my @checklocks = grep { /^cif_checklocks_/ && -f "$dir/$_" } readdir(D);
+closedir(D);
+
+if($specific){
+    @crons = grep(/$specific/,@crons);
+    @checklocks = grep(/$specific/,@checklocks);
+}
+
+my $now = time();
+foreach my $cron (@crons){
+    my @stats = stat($dir."/".$cron);
+    my $ctime = $stats[10];
+    if(($now - $ctime) > $period){
+        sendmsg('CIF: process possibly hung -- '.$cron) unless(test_sent($cron));
+    } else {
+        if(test_sent($cron)){
+            system('rm '.$dir.'/'.'cif_checklocks_'.$cron.'.error');
+        }
+    }
+}
+
+foreach my $checklock (@checklocks){
+    my $lf = $checklock;
+    $lf =~ s/^cif_checklocks_//;
+    $lf =~ s/\.error$//;
+    unless(-f $dir.'/'.$lf){
+        system('rm '.$dir.'/'.$checklock);
+        sendmsg('CIF: process '.$lf.' cleared');
+    }
+}
+
+sub sendmsg {
+    my $subject = shift;
+
+    my $m = MIME::Lite->new(
+        To      => $admin,
+        Subject => $subject,
+        Data    => '',
+    );
+    $m->send();
+}
+
+sub test_sent {
+    my $file = shift;
+    if(-e '/tmp/cif_checklocks_'.$file.'.error'){
+        return(1);
+    } else {
+        system('touch /tmp/cif_checklocks_'.$file.'.error');
+        return(0);
+    }
+
+}
