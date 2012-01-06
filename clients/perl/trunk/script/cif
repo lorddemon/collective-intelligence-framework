@@ -116,7 +116,11 @@ foreach (@q){
         limit       => $limit,
         group_map   => $group_map,
     );
-    die('request failed with code: '.$client->responseCode()."\n\n".$client->responseContent()) unless($client->responseCode == 200);
+    unless($client->responseCode() == 200){
+        my $json = JSON::from_json($client->responseContent());
+        print 'request failed with code: '.$json->{'status'}." ".$json->{'message'}."\n";
+        exit(-1);
+    }
    
     my $plug = 'CIF::Client::Plugin::'.ucfirst($plugin);
     eval "require $plug";
