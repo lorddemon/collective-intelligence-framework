@@ -1,0 +1,15 @@
+#summary idea collection
+
+*Projects Lab*
+
+<wiki:toc max_depth="3" />
+
+This is a collection of projects and ideas based on CIF. Here you'll find two things, the client-side projects and a wish-list
+
+= Client Side Projects =
+== PerlClient ==
+== PythonClient ==
+== FirefoxToolbar ==
+== ChromeToolbar ==
+
+= Wish-list =
