@@ -52,7 +52,10 @@ sub POST {
     my ($self,$req,$resp) = @_;
     my $buffer;
     my $len = $req->headers_in->{'content-length'};
-    return Apache2::Const::FORBIDDEN unless($len > 0);
+    unless($len > 0){
+        $resp->{'status'} = Apache2::Const::FORBIDDEN;
+        return Apache2::Const::FORBIDDEN;
+    }
     $req->read($buffer,$req->headers_in->{'content-length'});
     my $json;
     $json = eval {
@@ -60,6 +63,7 @@ sub POST {
     };
     if($@){
         ## TODO -- add well-formed error msg here
+        $resp->{'status'} = Apache2::Const::FORBIDDEN;
         return Apache2::Const::FORBIDDEN;
     }
     my @recs;
@@ -83,6 +87,7 @@ sub POST {
         }
         if($err){   
             $resp->{'message'} = $err;
+            $resp->{'status'} = Apache2::Const::FORBIDDEN;
             return Apache2::Const::FORBIDDEN;
         }
     }
@@ -96,6 +101,7 @@ sub POST {
                 $x->delete();
             }
             $resp->{'message'} = $err;
+            $resp->{'status'} = Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
             return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
         }
         push(@ids,$id->uuid());
@@ -103,6 +109,7 @@ sub POST {
     
     CIF::Archive->dbi_commit() unless(CIF::Archive->db_Main->{'AutoCommit'});
     $resp->{'data'} = \@ids;
+    $resp->{'status'} = Apache2::Const::HTTP_CREATED;
     return Apache2::Const::HTTP_CREATED;
 }
 
@@ -136,7 +143,8 @@ sub GET {
     my $q = $self->{'query'};
     if($q && $q =~ /^ERROR/){
         $response->{'message'} = $q;
-        return Apache2::Const::HTTP_OK;
+        $response->{'status'} = Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
+        return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
 
     ## TODO -- clean this up
@@ -155,6 +163,7 @@ sub GET {
         my $severity = $request->{'r'}->param('severity') || 'null';
         my $confidence = $request->{'r'}->param('confidence') || 0;
         my $limit = $request->{'r'}->param('limit') || $request->{'r'}->dir_config->get('CIFLookupLimitDefault') || 500;
+
         my ($err,$ret) = CIF::Archive->lookup({ 
             nolog           => $nolog,
             query           => $q,
@@ -176,7 +185,7 @@ sub GET {
                 }
                 $response->{'message'} = 'unknown error';
             }
-            $response->{'status'} = '403';
+            $response->{'status'} = Apache2::Const::HTTP_FORBIDDEN;
             return Apache2::Const::HTTP_FORBIDDEN;
         }
         unless($ret){

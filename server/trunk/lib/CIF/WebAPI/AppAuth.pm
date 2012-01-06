@@ -66,8 +66,14 @@ sub authorize {
     my ( $self , $req , $resp ) = @_ ;
     my $key = lc($req->param('apikey'));
     
+    # set the status by default, we re-set it at the end.
+    $resp->{'status'} = Apache2::Const::HTTP_UNAUTHORIZED;
+    $resp->{'message'} = 'missing apikey';
+
     # test1
     return(0) unless ($key && $key =~ /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
+    $resp->{'message'} = 'invalid apikey';
+
     my $rec = CIF::WebAPI::APIKey->retrieve(uuid => $key);
     return(0) unless($rec);
     return(0) if($rec->revoked()); # revoked keys
@@ -87,10 +93,12 @@ sub authorize {
     my @stack = split('\/+' , $uri);
     @stack = grep { length($_)>0 } @stack;
 
+    
     return(0) if($guid && !$rec->inGroup($guid));
     return(0) unless($rec->access());
     return(0) unless($rec->access() eq 'all' || $rec->access() eq $stack[0]); # ACL
 
+    $resp->{'message'} = '';
     # map out the groups
     my @groups = $req->{'r'}->dir_config->get('CIFGroups');
     push(@groups,('everyone','root'));
@@ -103,6 +111,7 @@ sub authorize {
     }
     $req->{'group_map'} = \%h;
 
+    $resp->{'status'} = Apache2::Const::HTTP_OK;
     return(1); # all good
 }
 
