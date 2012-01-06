@@ -9,6 +9,7 @@ This is a collection of projects and ideas based on CIF. Here you'll find two th
  * PythonClient
  * FirefoxToolbar
  * ChromeToolbar
+ * RT-CIFMinimal RT [http://search.cpan.org/~saxjazman/RT-CIFMinimal/lib/RT/CIFMinimal.pm plugin]
 
 = Idea List =
  * os x mail.app plugin
