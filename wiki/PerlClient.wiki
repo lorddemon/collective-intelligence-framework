@@ -2,6 +2,7 @@
 
 = Known Issues =
  1. if you have some issues installing *REST::Client*, please try version [http://search.cpan.org/CPAN/authors/id/M/MC/MCRAWFOR/REST-Client-217.tar.gz 217] until it's able to be resolved.
+ 1. if you're using BSD, p5-JSON-XS will solve some performance issues for you
 
 = Installation =
  
