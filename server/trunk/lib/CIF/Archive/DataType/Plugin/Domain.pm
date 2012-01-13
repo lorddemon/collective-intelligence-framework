@@ -68,7 +68,7 @@ sub insert {
                 sha1        => $sha1,
                 source      => $info->{'source'},
                 confidence  => $info->{'confidence'},
-                severity    => $info->{'severity'} || 'null',
+                severity    => $info->{'severity'}, 
                 restriction => $info->{'restriction'} || 'private',
                 detecttime  => $info->{'detecttime'},
                 guid        => $info->{'guid'},

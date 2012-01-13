@@ -18,7 +18,7 @@ sub process {
     return unless($addr);
     return unless($addr =~ /^$RE{'net'}{'IPv4'}/);
 
-    return if(CIF::Archive::DataType::Infrastructure::Plugin::isPrivateAddress($addr));
+    return if(CIF::Archive::DataType::Plugin::Infrastructure::isPrivateAddress($addr));
 
     my $conf = $data->{'confidence'} || 25;
     $conf = ($conf / 2);
