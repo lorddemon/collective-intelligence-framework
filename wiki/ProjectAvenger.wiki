@@ -10,7 +10,7 @@ The Avenger System  is not a competitor to already existing network monitoring c
 
 Project Liaison:
 
-Michelle Valdez
-Team Lead, Critical Infrastructure Strategy & Operations
-CERT Coordination Center (CERT/CC)
-Software Engineering Institute (SEI)
+ * Michelle Valdez
+   * Team Lead, Critical Infrastructure Strategy & Operations 
+   * CERT Coordination Center (CERT/CC)
+   * Software Engineering Institute (SEI)
