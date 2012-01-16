@@ -19,7 +19,7 @@ use URI::Escape;
 
 __PACKAGE__->mk_accessors(qw/apikey config/);
 
-our $VERSION = '0.02';
+our $VERSION = '0.02_01';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 # Preloaded methods go here.
@@ -71,6 +71,8 @@ sub new {
     $self->{'limit'}            = $args->{'limit'} || $cfg->{'limit'};
     $self->{'group_map'}        = (defined($args->{'group_map'})) ? $args->{'group_map'} : $cfg->{'group_map'};
     $self->{'compress_address'} = $args->{'compress_address'} || $cfg->{'compress_address'};
+
+    $self->{'proxy'}            = $args->{'proxy'} || $cfg->{'proxy'};
     
     if($args->{'fields'}){
         @{$self->{'fields'}} = split(/,/,$args->{'fields'}); 
@@ -78,6 +80,11 @@ sub new {
 
     if(defined($self->{'verify_tls'}) && $self->{'verify_tls'} == 0){
         $self->getUseragent->ssl_opts(verify_hostname => 0);
+    }
+
+    if($self->{'proxy'}){
+        warn 'setting proxy' if($::debug);
+        $self->getUseragent->proxy(['http','https'],$self->{'proxy'});
     }
 
     return($self);
@@ -115,7 +122,6 @@ sub GET  {
 
     $self->SUPER::GET($rest);
     my $content = $self->{'_res'}->{'_content'};
-    warn $content if($::debug);
     return unless($content);
     return unless($self->responseCode == 200);
     my $text = $self->responseContent();

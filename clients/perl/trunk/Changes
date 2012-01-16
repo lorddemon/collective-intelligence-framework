@@ -1,5 +1,8 @@
 Revision history for Perl extension CIF::Client.
 
+0.02_01 2012-01-19
+    - added basic proxy support for testing
+
 0.02 2012-01-19
     - added parser warnings to Table output
     - cleaned up bindzone output
