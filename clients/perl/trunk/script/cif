@@ -7,9 +7,10 @@ use Getopt::Std;
 use CIF::Client;
 
 my %opts;
-getopt('O:G:l:g:hTHL:p:f:q:c:s:r:C:z', \%opts);
+getopt('O:G:l:g:hTHL:p:f:q:c:s:r:C:zP:', \%opts);
 
 my $outfile     = $opts{'O'};
+my $proxy       = $opts{'P'} || undef;
 my $query       = $opts{'q'} || shift;
 our $debug       = ($opts{'d'}) ? 1 : 0;
 my $c           = $opts{'C'} || $ENV{'HOME'}.'/.cif';
@@ -42,6 +43,7 @@ Usage: perl $0 -q xyz.com
     -h  --help:             this message
     -C  --config:           specify cofiguration file, default: $c
     -q  --query:            query string (use 'url\\/<md5|sha1>' for url hash lookups)
+    -P  --proxy:            set a proxy (eg: https://localhost:5555)
     -p  --plugin:           output plugin ($plugs), default: $plugin
     -n  --nolog:            perform a "silent" query (no log query), default: $nolog
     -O  --outfile:          specify an output file to print to
@@ -85,6 +87,7 @@ Configuration:
 
     [client]
     host = https://example.com:443/api
+    # proxy = https://localhost:5555
     apikey = xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     timeout = 60
     # add this if you have a self signed cert
@@ -114,10 +117,11 @@ my ($client,$err) = CIF::Client->new({
     fields      => $fields,
     max_desc    => $max_desc,
     nolog       => $nolog,
-    simple_hashes => $simple_hashes,
     verify_tls  => $verify_tls,
     guid        => $guid,
     group_map   => $group_map,
+    proxy       => $proxy,
+    simple_hashes       => $simple_hashes,
     compress_address    => $compress_address,
 });
 
@@ -136,8 +140,12 @@ foreach (@q){
         group_map   => $group_map,
     );
     unless($client->responseCode() == 200){
-        my $json = JSON::from_json($client->responseContent());
-        print 'request failed with code: '.$json->{'status'}." ".$json->{'message'}."\n";
+        if($client->responseCode() == 500){
+            print $client->responseContent()."\n";
+        } else {
+            my $json = JSON::from_json($client->responseContent());
+            print 'request failed with code: '.$json->{'status'}." ".$json->{'message'}."\n";
+        }
         exit(-1);
     }
    
