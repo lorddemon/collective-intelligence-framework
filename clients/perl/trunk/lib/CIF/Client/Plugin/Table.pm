@@ -115,6 +115,10 @@ sub write_out {
         $table = 'Feed Group ID: '.$feed_guid."\n".$table;
     }
     $table = "Query: ".$query."\n".$table;
+    unless($config->{'config'}->{'table_nowarning'}){
+        $table = 'WARNING: Turn off this warning by adding: \'table_nowarning = 1\' to your ~/.cif config'."\n\n".$table;
+        $table = 'WARNING: This table output not to be used for parsing, see "-p plugins" (via cif -h)'."\n".$table;
+    }
     return "\n".$table;
 }
 
