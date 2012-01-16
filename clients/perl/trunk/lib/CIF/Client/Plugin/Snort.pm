@@ -10,7 +10,7 @@ sub write_out {
     my $feed = shift;
     my @array = @{$feed->{'feed'}->{'entry'}};
     return '' unless(exists($array[0]->{'address'}));
-    my $sid = ($config->{'snortsid'}) ? $config->{'snortsid'} : 1;
+    my $sid = ($config->{'snort_startsid'}) ? $config->{'snort_startsid'} : 1;
     my $rules = '';
     foreach (@array){
         next unless($_->{'address'});

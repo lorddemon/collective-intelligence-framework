@@ -1,5 +1,10 @@
 Revision history for Perl extension CIF::Client.
 
+0.02 2012-01-19
+    - added parser warnings to Table output
+    - cleaned up bindzone output
+    - cleaned up snort, bindzone and table doc
+
 0.01 2011-12-19
     - added outfile option
     - initial stable release (i hope :x)
