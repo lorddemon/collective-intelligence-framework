@@ -1,5 +1,13 @@
 #summary installing the python client library
 
+= Known Issues =
+the PythonClient is currently *[http://code.google.com/p/collective-intelligence-framework/issues/detail?id=82 UNSTABLE]* and being re-written, use at your own risk or switch to the PerlClient
+ 1. httplib2 TLS issues
+ 1. no plugin support
+ 1. no proxy support
+
+= Installation =
+
  1. make sure setup tools is installed
  1. easy_install [http://pypi.python.org/pypi?:action=pkg_edit&name=cif cif]
  1. run a sample query for testing:
