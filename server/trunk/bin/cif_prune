@@ -33,11 +33,13 @@ use Data::Dumper;
 use Date::Manip::Date;
 
 my %opts;
-getopts('hdk:s:',\%opts);
+getopts('hdk:s:c:S:',\%opts);
 
 our $debug      = $opts{'d'};
 my $keep        = $opts{'k'} || 180;
-my $specific    = $opts{'s'};
+my $specific    = $opts{'S'};
+my $confidence  = $opts{'c'} || 40;
+my $severity    = $opts{'s'} || 'medium';
 
 if($opts{'h'}){
     print usage();
@@ -49,12 +51,15 @@ Usage: $0
     -h  --help:     this message
     -d  --debug:    debug
 
-    -s  --specific: prune specific index
-    -k  --keep:     number of days to keep, default: $keep
+    -S  --specific:     prune specific index
+    -k  --keep:         number of days to keep, default: $keep
+    -c  --confidence:   min confidence to keep, default $confidence
+    -s  --severity:     min severity to keep, default: $severity
 
 Examples:
-    $0 -s infrastructure -d
+    $0 -S infrastructure -d
     $0 -k 365
+    $0 -k 365 -c 75
 
 EOF
 }
@@ -71,4 +76,4 @@ if($specific){
 }
 eval "require $p";
 die($@) if($@);
-my $ret = $p->prune($dt);
+my $ret = $p->prune($dt,$confidence,$severity);
