@@ -288,11 +288,15 @@ sub create_partition {
 sub prune {
     my $class = shift;
     my $date = shift || return;
+    my $confidence = shift || return;
+    my $severity = shift || return;
+
     $class->db_Main->{'AutoCommit'} = 0;
 
     foreach (@datatype_plugs){
+        next if($_ =~ /(Analytic|Feed)/);
         warn 'pruning: '.$_ if($::debug);
-        eval { $_->sql_prune->execute($date); };
+        eval { $_->sql_prune->execute($date,$confidence,$severity); };
         if($@){
             warn $@;
             $class->dbi_rollback();
