@@ -148,12 +148,13 @@ sub insert {
             }
         };
         if($@){
+            my $msg = $@;
             if($self->db_Main->{'AutoCommit'}){
                 $id->delete();
             } else {
                 $self->dbi_rollback();
             }
-            return($@,undef);
+            return(undef,$msg);
         }
     }
     return(undef,$id);
