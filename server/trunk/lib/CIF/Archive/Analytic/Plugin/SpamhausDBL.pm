@@ -8,13 +8,13 @@ my $codes = {
         impact      => 'suspicious domain',
         description => 'spammed domain',
         severity    => 'medium',
-        confidence  => 95,
+        confidence  => 50,
     },
     '127.0.1.3' => {
         impact      => 'suspicious domain',
         description => 'spammed redirector domain',
         severity    => 'medium',
-        confidence  => 95,
+        confidence  => 50,
     },
     '127.0.1.255'   => {
         description => 'YOU ARE BANNED!',
@@ -26,7 +26,7 @@ foreach(4 ... 19){
         impact  => 'suspicious domain',
         description => 'spammed domain',
         severity    => 'medium',
-        confidence  => 95,
+        confidence  => 50,
     };
 }
 
