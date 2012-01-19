@@ -116,34 +116,6 @@ sub lookup {
     );
 }
 
-## TODO -- fix this to work with feed
-sub isWhitelisted {
-    my $self = shift;
-    my $addr = shift;
-
-    my @bits = reverse(split(/\./,$addr));
-    my $tld = $bits[0];
-    my @array;
-    push(@array,$tld);
-    my @hashes;
-    foreach(1 ... $#bits){
-        push(@array,$bits[$_]);
-        my $d = join('.',reverse(@array));
-        $d = md5_hex($d);
-        $d = "'".$d."'";
-        push(@hashes,$d);
-    }
-    my $sql .= join(' OR md5 = ',@hashes);
-    $sql =~ s/^/md5 = /;
-
-    $sql .= qq{\nORDER BY detecttime DESC, created DESC, id DESC};
-    my $t = $self->table();
-    $self->table('domain_whitelist');
-    my @recs = $self->retrieve_from_sql($sql);
-    $self->table($t);
-    return @recs;
-}
-
 sub myfeed {
     my $class = shift;
     my $info = shift;
@@ -175,6 +147,30 @@ sub myfeed {
     foreach(@recs){
         next if(exists($hash{$_->address()}));
         $hash{$_->address()} = $_;
+    }
+    unless($class eq 'CIF::Archive::DataType::Plugin::Domain::Whitelist'){
+        my @whitelist = $class->search_feed_whitelist(
+            $info->{'detecttime'},
+            25000,
+        );        
+        # the whitelist is hopefully smaller than the feeds
+        foreach my $w (@whitelist){
+            my $wa = $w->{'address'};
+            # linear approach
+            if(exists($hash{$wa})){
+                warn 'removing: '.$wa;
+                delete($hash{$wa});
+            } else {
+                # else rip through the keys and make sure
+                # test1.yahoo.com doesn't exist in the whitelist as yahoo.com
+                foreach my $x (keys %hash){
+                    if($x =~ /$wa$/){
+                        warn 'removing: '.$x;
+                        delete($hash{$x});
+                    }
+                }
+            }
+        }
     }
     @recs = map { $hash{$_} } keys %hash;
     return $class->mapfeed(\@recs);
@@ -217,6 +213,21 @@ __PACKAGE__->set_sql('feed' => qq{
                     AND dw.severity IS NULL
         )
     ORDER BY __TABLE__.uuid ASC, __TABLE__.id ASC, confidence DESC, severity DESC, __TABLE__.restriction ASC, detecttime DESC, __TABLE__.id DESC
+    LIMIT ?
+});
+
+__PACKAGE__->set_sql('feed_whitelist' => qq{
+    WITH dw AS (
+        SELECT DISTINCT ON (t.uuid) t.uuid, address, confidence
+        FROM domain_whitelist t
+        WHERE
+            t.detecttime >= ?
+            AND t.confidence >= 25
+        ORDER BY t.uuid DESC, t.id ASC
+    )
+    SELECT DISTINCT ON (address) address, uuid, confidence
+    FROM dw
+    ORDER BY address ASC
     LIMIT ?
 });
 
