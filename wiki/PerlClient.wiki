@@ -6,7 +6,10 @@
  1. there have been reports of TLS "read" errors on older versions of REHL (5.4, etc), the cause is still unknown.
 
 = Installation =
- 
+== Distro Helpers ==
+ * [PerlClientBSD BSD based]
+
+== From Source == 
  1. Make sure you have the following dependancies installed:
   * libssl-dev / openssl-devel (deb / RHEL)
   * make, automake (developer tools on OS X)
