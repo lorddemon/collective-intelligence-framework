@@ -164,7 +164,7 @@ sub insert {
             confidence  => $info->{'confidence'},
             source      => $info->{'source'},
             guid        => $info->{'guid'},
-            severity    => $info->{'severity'},
+            severity    => $info->{'severity'} || 'null',
             restriction => $info->{'restriction'} || 'private',
             detecttime  => $info->{'detecttime'},
             created     => $info->{'created'} || DateTime->from_epoch(epoch => time()),
@@ -316,13 +316,24 @@ __PACKAGE__->set_sql('feed' => qq{
         AND __TABLE__.restriction <= ?
         AND apikeys_groups.uuid = ?
         AND NOT EXISTS (SELECT uuid FROM domain where __TABLE__.uuid = domain.uuid)
+        -- TODO: evolve this into a datatype or database wide constraint of sorts
+        -- for now it works
+        AND NOT (
+            address <<= '0.0.0.0/8'
+            OR address <<= '127.0.0.0/8'
+            OR address <<= '192.168.0.0/16'
+            OR address <<= '169.254.0.0/16'
+            OR address <<= '192.0.2.0/24'
+            OR address <<= '224.0.0.0/4'
+            OR address <<= '240.0.0.0/5'
+            OR address <<= '248.0.0.0/5' 
+        )
         AND NOT EXISTS (
             SELECT iw.address FROM infrastructure_whitelist iw 
             WHERE 
                 __TABLE__.address <<= iw.address
                 AND iw.detecttime >= ?
                 AND iw.confidence >= 25 
-                AND severity IS NULL
         ) 
     ORDER BY address,protocol,portlist ASC, confidence DESC, severity DESC, restriction ASC, detecttime DESC, __TABLE__.id DESC 
     LIMIT ?

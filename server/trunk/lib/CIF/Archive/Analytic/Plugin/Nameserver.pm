@@ -32,8 +32,10 @@ sub process {
     return unless(@rdata);
     warn 'processing: '.$rdata if($::debug);
 
-    my $conf = $data->{'confidence'};
-    $conf = ($conf) ? ($conf / 2) : 0;
+    my $conf = $data->{'confidence'} || 1;
+    my $log = log($conf) / log(500);
+    $conf = sprintf('%.3f',($conf * $log));
+
     my $impact = 'suspicious nameserver';
 
     # because nameservers are "a degree" away from the original infrastructure

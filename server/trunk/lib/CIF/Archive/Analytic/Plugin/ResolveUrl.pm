@@ -33,7 +33,10 @@ sub process {
     $port = 80 unless($port && ($port ne ''));
     my $severity = $data->{'severity'};
     my $conf = $data->{'confidence'};
-    $conf = ($conf / 2);
+    #$conf = ($conf / 2);
+    my $log = log($conf) / log(500);
+    $conf = sprintf('%.3f',($conf * $log));
+
     my $impact = $data->{'impact'};
     my $bucket = $archive->new();
     my ($err,$id) = $bucket->insert({

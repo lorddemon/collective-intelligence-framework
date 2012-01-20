@@ -68,7 +68,7 @@ sub insert {
                 sha1        => $sha1,
                 source      => $info->{'source'},
                 confidence  => $info->{'confidence'},
-                severity    => $info->{'severity'}, 
+                severity    => $info->{'severity'} || 'null', 
                 restriction => $info->{'restriction'} || 'private',
                 detecttime  => $info->{'detecttime'},
                 guid        => $info->{'guid'},
@@ -158,14 +158,12 @@ sub myfeed {
             my $wa = $w->{'address'};
             # linear approach
             if(exists($hash{$wa})){
-                warn 'removing: '.$wa;
                 delete($hash{$wa});
             } else {
                 # else rip through the keys and make sure
                 # test1.yahoo.com doesn't exist in the whitelist as yahoo.com
                 foreach my $x (keys %hash){
-                    if($x =~ /$wa$/){
-                        warn 'removing: '.$x;
+                    if($x =~ /\.$wa$/){
                         delete($hash{$x});
                     }
                 }
@@ -210,13 +208,24 @@ __PACKAGE__->set_sql('feed' => qq{
                     dw.detecttime >= ?
                     AND dw.confidence >= 25
                     AND dw.md5 = __TABLE__.md5
-                    AND dw.severity IS NULL
         )
     ORDER BY __TABLE__.uuid ASC, __TABLE__.id ASC, confidence DESC, severity DESC, __TABLE__.restriction ASC, detecttime DESC, __TABLE__.id DESC
     LIMIT ?
 });
 
 __PACKAGE__->set_sql('feed_whitelist' => qq{
+    SELECT DISTINCT ON (t.uuid) t.uuid, address, confidence
+    FROM domain_whitelist t
+    WHERE
+        t.detecttime >= ?
+        AND t.confidence >= 25
+    ORDER BY t.uuid DESC, t.id ASC
+    LIMIT ?
+});
+
+## THIS ONLY WORKS WITH PGSQL 8.4+
+## WORKS EITHER WAY, this might just be a hair faster...
+__PACKAGE__->set_sql('feed_whitelist2' => qq{
     WITH dw AS (
         SELECT DISTINCT ON (t.uuid) t.uuid, address, confidence
         FROM domain_whitelist t

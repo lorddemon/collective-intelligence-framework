@@ -14,13 +14,13 @@ sub process {
     return unless($data->{'impact'} eq 'domain whitelist');
     return unless($data->{'prefix'});
 
-    # 95 conf / 2 == 47.5
-    return unless($data->{'confidence'} >= 47.5);
-
+    return unless($data->{'confidence'} >= 69);
     my $conf = $data->{'confidence'};
+    my $log = log($conf) / log(500);
+    $conf = sprintf('%.3f',($conf * $log));
     my ($err,$id) = $archive->insert({
         severity                    => 'null',
-        confidence                  => ($conf / 2),
+        confidence                  => $conf,
         address                     => $data->{'prefix'},
         impact                      => 'infrastructure whitelist',
         description                 => $data->{'address'},

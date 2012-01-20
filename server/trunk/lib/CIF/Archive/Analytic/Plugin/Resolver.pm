@@ -47,8 +47,10 @@ sub process {
         my ($as,$network,$ccode,$rir,$date,$as_desc) = asninfo($_->{'address'});
         my $conf = $data->{'confidence'};
         #$conf = ($conf/2) unless($_->{'type'} =~ /^(A|CNAME|PTR)$/);
-        $conf = ($conf / 2);
-        next if($conf < 1);
+        #$conf = ($conf / 2);
+        my $log = log($conf) / log(500);
+        $conf = sprintf('%.3f',($conf * $log));
+        next if($conf < 20);
         my ($err,$id) = $archive->insert({
             impact      => $data->{'impact'},
             guid        => $data->{'guid'},
