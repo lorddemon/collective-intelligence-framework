@@ -2,7 +2,7 @@
 
 = Introduction =
 
-Care of our friends @ scranton.edu
+Care of our friends @ scranton.edu.
 
 = Details =
 {{{
@@ -38,7 +38,7 @@ cd ~/
 /usr/bin/perl -MCPAN -e 'install REST::Client'
 
 echo "Installing CIF::Client from CPAN"
-sudo perl -MCPAN -e 'install CIF::Client'
+/usr/bin/perl -MCPAN -e 'install CIF::Client'
 
 echo "Moving bsdpan ports from /var/db/pkg to /root/pkg"
 echo " See: http://www.freebsd.org/cgi/query-pr.cgi?pr=140273"
