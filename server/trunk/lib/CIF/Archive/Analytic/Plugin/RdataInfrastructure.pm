@@ -21,7 +21,10 @@ sub process {
     return if(CIF::Archive::DataType::Plugin::Infrastructure::isPrivateAddress($addr));
 
     my $conf = $data->{'confidence'} || 25;
-    $conf = ($conf / 2);
+    #$conf = ($conf / 2);
+    my $log = log($conf) / log(500);
+    $conf = sprintf('%.3f',($conf * $log));
+
     my $impact = $data->{'impact'};
     $impact =~ s/domain/infrastructure/;
 

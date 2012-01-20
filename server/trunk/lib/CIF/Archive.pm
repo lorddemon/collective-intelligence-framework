@@ -169,6 +169,18 @@ sub insert {
 #    END;
 #});
 
+__PACKAGE__->set_sql('searches_feed' => qq{
+    SELECT COUNT(source),source
+    FROM archive t
+    WHERE 
+        t.created >= ?
+        AND description LIKE 'search %'
+    GROUP BY
+        source
+    ORDER BY 
+        count DESC 
+});
+
 __PACKAGE__->set_sql('lookup' => qq{
     SELECT __TABLE__.id,__TABLE__.uuid
     FROM __TABLE__

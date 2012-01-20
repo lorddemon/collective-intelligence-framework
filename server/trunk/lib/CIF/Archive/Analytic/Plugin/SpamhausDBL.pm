@@ -8,13 +8,13 @@ my $codes = {
         impact      => 'suspicious domain',
         description => 'spammed domain',
         severity    => 'medium',
-        confidence  => 50,
+        confidence  => 65,
     },
     '127.0.1.3' => {
         impact      => 'suspicious domain',
         description => 'spammed redirector domain',
         severity    => 'medium',
-        confidence  => 50,
+        confidence  => 25,
     },
     '127.0.1.255'   => {
         description => 'YOU ARE BANNED!',
