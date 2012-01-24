@@ -230,10 +230,10 @@ $ time /opt/cif/bin/cif_feeds -d
 PATH=/bin:/usr/local/bin:/opt/cif/bin
 
 # run analytics
-*/5 * * * * /opt/cif/bin/cif_analytic -t 16 -m 2500 &> /dev/null
+*/5 * * * * /opt/cif/bin/cif_analytic -t 8 -m 8000 &> /dev/null
 
 # pull feed data
-05     *       * * * /opt/cif/bin/cif_crontool -p hourly -T medium &> /dev/null
+05     *       * * * /opt/cif/bin/cif_crontool -p hourly -T low &> /dev/null
 30     00      * * * /opt/cif/bin/cif_crontool -p daily -T low &> /dev/null
 
 # update the feeds
@@ -245,10 +245,10 @@ PATH=/bin:/usr/local/bin:/opt/cif/bin
 PATH=/bin:/usr/local/bin:/opt/cif/bin
 
 # run analytics
-*/2 * * * * /opt/cif/bin/cif_analytic -d -t 16 -m 2500 >> /home/cif/analytics.log 2>&1
+*/2 * * * * /opt/cif/bin/cif_analytic -d -t 8 -m 8000 >> /home/cif/analytics.log 2>&1
 
 # pull feed data
-05     *       * * * /opt/cif/bin/cif_crontool -p hourly -T medium >> /home/cif/crontool_hourly.log 2>&1
+05     *       * * * /opt/cif/bin/cif_crontool -p hourly -T low >> /home/cif/crontool_hourly.log 2>&1
 30     00      * * * /opt/cif/bin/cif_crontool -p daily -T low >> /home/cif/crontool_daily.log 2>&1
 
 # update the feeds
