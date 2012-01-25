@@ -47,7 +47,7 @@ fi
 
 echo "Writing .cif configuration file to homedir"
 echo '[client]' > ~/.cif
-echo 'host = https://YOUR-SES-SERVER:443/api' >> ~/.cif
+echo 'host = https://YOUR-CIF-SERVER:443/api' >> ~/.cif
 echo 'apikey = YOUR-API-KEY' >> ~/.cif
 echo 'timeout = 60' >> ~/.cif
 echo 'verify_tls = 0' >> ~/.cif
