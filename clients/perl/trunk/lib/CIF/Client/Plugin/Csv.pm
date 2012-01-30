@@ -9,6 +9,9 @@ sub write_out {
     my $config = shift;
     my $feed = shift;
     my @array = @{$feed->{'feed'}->{'entry'}};
+    
+    $config = $config->{'config'};
+    my $nosep = $config->{'csv_noseperator'};
     #my @header = keys(%{$array[0]});
     my @header;
     # skip things like arrays and hashrefs for now
@@ -20,8 +23,19 @@ sub write_out {
     my $body = '';
     foreach my $a (@array){
         delete($a->{'message'}); 
+        # there's no clean way to do this just yet
+        foreach (@header){
+            if($a->{$_} && !ref($a->{$_})){
+                if($nosep){
+                    $a->{$_} =~ s/,/ /g;
+                    $a->{$_} =~ s/\s+/ /g;
+                } else {
+                    $a->{$_} =~ s/,/_/g;
+                }
+            }
+        }
         # the !ref() bits skip things like arrays and hashref's for now...
-        $body .= join(',',map { ($a->{$_} && !ref($a->{$_})) ? $a->{$_} : ''} @header)."\n";
+        $body .= join(',', map { ($a->{$_} && !ref($a->{$_})) ? $a->{$_} : ''} @header)."\n";
     }
     my $text = '# '.join(',',@header);
     $text .= "\n".$body;
