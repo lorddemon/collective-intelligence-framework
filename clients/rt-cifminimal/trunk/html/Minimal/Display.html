@@ -75,6 +75,13 @@ unless ( $Ticket->Load( $id[0] ) ) {
     $m->comp( 'Error.html', Why => loc( "Couldn't load ticket '[_1]'", $id ) );
     $m->abort();
 }
+# This code does automatic redirection if any updates happen.
+unless ( $Ticket->CurrentUserHasRight('ShowTicket') ) {
+    $m->comp( 'Error.html',
+        Why => loc("No permission to display that ticket") );
+    # XXX: Why abort? then we loose footer //ruz
+    $m->abort();
+}
 
 my ( $code, $msg );
 
@@ -102,12 +109,12 @@ if((defined($ARGS{'Status'})) and $ARGS{'Status'} and ( $ARGS{'Status'} ne $Tick
 }
 
 # This code does automatic redirection if any updates happen.
-unless ( $Ticket->CurrentUserHasRight('ShowTicket') ) {
-    $m->comp( 'Error.html',
-        Why => loc("No permission to display that ticket") );
-    # XXX: Why abort? then we loose footer //ruz
-    $m->abort();
-}
+#unless ( $Ticket->CurrentUserHasRight('ShowTicket') ) {
+#    $m->comp( 'Error.html',
+#        Why => loc("No permission to display that ticket") );
+#    # XXX: Why abort? then we loose footer //ruz
+#    $m->abort();
+#}
 
 if (@results) {
     # We've done something, so we need to clear the decks to avoid
