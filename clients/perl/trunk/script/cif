@@ -27,6 +27,7 @@ our $uuid        = $opts{'u'} || 0;
 our $relateduuid = $opts{'R'} || 0;
 my $guid         = $opts{'g'};
 my $limit       = $opts{'l'};
+my $round_confidence = $opts{'I'} || 0;
 my $group_map   = (defined($opts{'G'})) ? $opts{'G'} : 1;
 my $plugs = join(',',CIF::Client::_plugins);
 my $simple_hashes = (defined($opts{'H'})) ? $opts{'H'} : 1;
@@ -63,6 +64,7 @@ Advanced:
     -g  --guid:             filter by a specific group id (guid), ex: group1.example.com
     -G  --groupmap:         turn group mapping (guid to 'group name') on/off, default: $group_map
     -z                      compact address field to 32 chars, applies only to defalt table output, default: 1 (0 turns it off)
+    -I  --round_confidence: round (down) confidence to the nearest integer
 
 Queries:
 
@@ -97,8 +99,13 @@ Plugin Specific Configurations:
 
     Table:
         
-        [clent]
+        [client]
         table_nowarning = 1
+
+    Csv:
+        [client]
+        # when we filter out commas in the various fields, do we replace them with "_"'s or just spaces
+        csv_noseperator = 1
 
     Bindzone:
         
@@ -123,6 +130,7 @@ my ($client,$err) = CIF::Client->new({
     proxy       => $proxy,
     simple_hashes       => $simple_hashes,
     compress_address    => $compress_address,
+    round_confidence    => $round_confidence,
 });
 
 die($err) unless($client);

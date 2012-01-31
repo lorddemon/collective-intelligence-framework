@@ -26,12 +26,16 @@ sub write_out {
         # there's no clean way to do this just yet
         foreach (@header){
             if($a->{$_} && !ref($a->{$_})){
+                # deal with , in the field
                 if($nosep){
                     $a->{$_} =~ s/,/ /g;
                     $a->{$_} =~ s/\s+/ /g;
                 } else {
                     $a->{$_} =~ s/,/_/g;
                 }
+                # strip out non-ascii (typically unicode) chars
+                # there are better ways to do this, but this works for now
+                $a->{$_} =~ tr/\000-\177//cd;
             }
         }
         # the !ref() bits skip things like arrays and hashref's for now...

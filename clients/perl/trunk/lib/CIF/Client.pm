@@ -19,7 +19,7 @@ use URI::Escape;
 
 __PACKAGE__->mk_accessors(qw/apikey config/);
 
-our $VERSION = '0.02_01';
+our $VERSION = '0.02_05';
 $VERSION = eval $VERSION;  # see L<perlmodstyle>
 
 # Preloaded methods go here.
@@ -71,6 +71,7 @@ sub new {
     $self->{'limit'}            = $args->{'limit'} || $cfg->{'limit'};
     $self->{'group_map'}        = (defined($args->{'group_map'})) ? $args->{'group_map'} : $cfg->{'group_map'};
     $self->{'compress_address'} = $args->{'compress_address'} || $cfg->{'compress_address'};
+    $self->{'round_confidence'} = $args->{'round_confidence'} || $cfg->{'round_confidence'};
 
     $self->{'proxy'}            = $args->{'proxy'} || $cfg->{'proxy'};
     
@@ -137,6 +138,12 @@ sub GET  {
     ## TODO -- finish implementing this into the config
     if($self->{'simple_hashes'}){
         $self->hash_simple($hash);
+        if($self->{'round_confidence'}){
+            foreach (@{$hash->{'data'}->{'feed'}->{'entry'}}){
+                # we're rouding down on purpose
+                $_->{'confidence'} = int($_->{'confidence'});
+            }
+        }
     }
     return($hash->{'data'});
 }       
