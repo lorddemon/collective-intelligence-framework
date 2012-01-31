@@ -84,8 +84,26 @@
 
 
 <%INIT>
+my ( $field, @results );
 
-my $Ticket = LoadTicket($id);
+# {{{ Load the ticket
+#If we get handed two ids, mason will make them an array. bleck.
+# We want teh first one. Just because there's no other sensible way
+# to deal
+my @id = ( ref $id eq 'ARRAY' ) ? @{$id} : ($id);
+
+my $Ticket = new RT::Ticket( $session{'CurrentUser'} );
+unless ( $Ticket->CurrentUserHasRight('ModifyTicket') ) {
+    $m->comp( 'Error.html',
+        Why => loc("No permission to modify that ticket") );
+    $m->abort();
+}
+
+unless ( $Ticket->Load( $id[0] ) ) {
+    $m->comp( 'Error.html', Why => loc( "Couldn't load ticket '[_1]'", $id ) );
+    $m->abort();
+}
+#my $Ticket = LoadTicket($id);
 my $title = loc( "Update ticket #[_1]", $Ticket->id );
 $DefaultStatus = $ARGS{Status} || $Ticket->Status() unless ($DefaultStatus);
 my $queue = 'Incident Reports';
