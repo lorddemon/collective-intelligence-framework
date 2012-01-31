@@ -93,6 +93,9 @@ sub write_out {
             $r->{'address'} = substr($r->{'address'},0,31);
             $r->{'address'} .= '...';
         }
+        # strip out non-ascii (typically unicode) chars
+        # there are better ways to do this, but this works for now
+        $r->{'description'} =~ tr/\000-\177//cd;
         $table->load([ map { $r->{$_} } @cols]);
     }
     if($created){
