@@ -1,4 +1,4 @@
-#summary describes the various taxonomy's used through the framework
+#summary describes the various taxonomies used through the framework
 
 = Introduction =
 
