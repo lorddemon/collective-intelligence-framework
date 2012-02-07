@@ -22,6 +22,7 @@ $ sudo make install
  1. Make sure you have the following dependancies installed:
   * libssl-dev / openssl-devel (deb / RHEL)
   * make, automake (developer tools on OS X)
+  * build-essential (deb)
  1. install REST-Client-217 manually (see bug [http://code.google.com/p/collective-intelligence-framework/issues/detail?id=117 117]):
 {{{
 $ wget http://search.cpan.org/CPAN/authors/id/M/MC/MCRAWFOR/REST-Client-217.tar.gz
