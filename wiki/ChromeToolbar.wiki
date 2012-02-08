@@ -8,7 +8,7 @@
  1. Fill in the settings:
 {{{
 Name: MyCIFInstance
-URL https://example.com/api/%s?apikey=xx-xx-xx-xxx-xx
+URL https://example.com/api/%s?apikey=xx-xx-xx-xx-xx
 }}}
  1. Click "Add"
 
