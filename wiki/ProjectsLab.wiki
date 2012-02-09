@@ -12,6 +12,7 @@ This is a collection of projects and ideas based on CIF. Here you'll find two th
  * RT-CIFMinimal RT [http://search.cpan.org/~saxjazman/RT-CIFMinimal/lib/RT/CIFMinimal.pm plugin]
 
 = Idea List =
+ * Refactoring Chrome's  [http://code.google.com/p/scriptno/source/browse/trunk ScriptNo] to support CIF feed downloading (Same with NoScript?)
  * os x mail.app plugin
  * right click tool for windows
  * snort domains output plugin
