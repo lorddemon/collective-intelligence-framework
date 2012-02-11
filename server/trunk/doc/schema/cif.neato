@@ -1,0 +1,101 @@
+digraph g {
+node [ fontsize = "10", shape = record ];
+edge [];
+
+"analytic" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\ldescription:  text\lstartid:  bigint\lendid:  bigint\lsource:  uuid\lcreated:  timestamp with time zone\l}" ];
+
+"apikeys" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\luuid_alias:  text\ldescription:  text\lparentid:  uuid\lrevoked:  boolean\laccess:  character varying(100)\lwrite:  boolean\lcreated:  timestamp with time zone\l}" ];
+
+"apikeys_groups" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\lguid:  uuid\ldefault_guid:  boolean\lcreated:  timestamp with time zone\l}" ];
+
+"archive" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\lsource:  uuid\lguid:  uuid\lformat:  text\ldescription:  text\lrestriction:  restriction\lcreated:  timestamp with time zone\ldata:  text\l}" ];
+
+"asn" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\lasn:  double precision\lasn_desc:  text\lsource:  uuid\lguid:  uuid\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"countrycode" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\lcc:  character varying(5)\lsource:  uuid\lguid:  uuid\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\laddress:  text\lmd5:  character varying(32)\lsha1:  character varying(40)\ltype:  character varying(10)\lconfidence:  real\lsource:  uuid\lguid:  uuid\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_botnet" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lmd5:  character varying(32)\lsha1:  character varying(40)\ltype:  character varying(10)\lconfidence:  real\lsource:  uuid\lguid:  uuid\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_fastflux" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lmd5:  character varying(32)\lsha1:  character varying(40)\ltype:  character varying(10)\lconfidence:  real\lsource:  uuid\lguid:  uuid\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_malware" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lmd5:  character varying(32)\lsha1:  character varying(40)\ltype:  character varying(10)\lconfidence:  real\lsource:  uuid\lguid:  uuid\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_nameserver" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lmd5:  character varying(32)\lsha1:  character varying(40)\ltype:  character varying(10)\lconfidence:  real\lsource:  uuid\lguid:  uuid\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_passivedns" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lmd5:  character varying(32)\lsha1:  character varying(40)\ltype:  character varying(10)\lconfidence:  real\lsource:  uuid\lguid:  uuid\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_phishing" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lmd5:  character varying(32)\lsha1:  character varying(40)\ltype:  character varying(10)\lconfidence:  real\lsource:  uuid\lguid:  uuid\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_search" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lmd5:  character varying(32)\lsha1:  character varying(40)\ltype:  character varying(10)\lconfidence:  real\lsource:  uuid\lguid:  uuid\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_suspicious" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lmd5:  character varying(32)\lsha1:  character varying(40)\ltype:  character varying(10)\lconfidence:  real\lsource:  uuid\lguid:  uuid\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"domain_whitelist" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lmd5:  character varying(32)\lsha1:  character varying(40)\ltype:  character varying(10)\lconfidence:  real\lsource:  uuid\lguid:  uuid\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"email" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\laddress:  text\lsource:  uuid\lguid:  uuid\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"email_phishing" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lsource:  uuid\lguid:  uuid\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"email_registrant" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lsource:  uuid\lguid:  uuid\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"email_search" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lsource:  uuid\lguid:  uuid\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"feed" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\ldescription:  text\lsource:  uuid\lguid:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\ldata:  text\l}" ];
+
+"feed_search" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\ldescription:  text\lsource:  uuid\lguid:  uuid\lhash_sha1:  character varying(40)\lsignature:  text\limpact:  character varying(140)\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\ldata:  text\l}" ];
+
+"hash" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\lhash:  text\lsource:  uuid\lguid:  uuid\ltype:  text\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"hash_md5" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\lhash:  text\lsource:  uuid\lguid:  uuid\ltype:  text\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"hash_sha1" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\lhash:  text\lsource:  uuid\lguid:  uuid\ltype:  text\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"hash_uuid" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\lhash:  text\lsource:  uuid\lguid:  uuid\ltype:  text\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\laddress:  inet\lportlist:  character varying(255)\lprotocol:  integer\lsource:  uuid\lguid:  uuid\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_botnet" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  inet\lportlist:  character varying(255)\lprotocol:  integer\lsource:  uuid\lguid:  uuid\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_malware" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  inet\lportlist:  character varying(255)\lprotocol:  integer\lsource:  uuid\lguid:  uuid\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_network" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  inet\lportlist:  character varying(255)\lprotocol:  integer\lsource:  uuid\lguid:  uuid\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_passivedns" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  inet\lportlist:  character varying(255)\lprotocol:  integer\lsource:  uuid\lguid:  uuid\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_phishing" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  inet\lportlist:  character varying(255)\lprotocol:  integer\lsource:  uuid\lguid:  uuid\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_scan" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  inet\lportlist:  character varying(255)\lprotocol:  integer\lsource:  uuid\lguid:  uuid\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_search" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  inet\lportlist:  character varying(255)\lprotocol:  integer\lsource:  uuid\lguid:  uuid\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_spam" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  inet\lportlist:  character varying(255)\lprotocol:  integer\lsource:  uuid\lguid:  uuid\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_suspicious" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  inet\lportlist:  character varying(255)\lprotocol:  integer\lsource:  uuid\lguid:  uuid\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_warez" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  inet\lportlist:  character varying(255)\lprotocol:  integer\lsource:  uuid\lguid:  uuid\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"infrastructure_whitelist" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  inet\lportlist:  character varying(255)\lprotocol:  integer\lsource:  uuid\lguid:  uuid\lseverity:  severity\lconfidence:  real\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"malware" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\lsource:  uuid\lguid:  uuid\lmd5:  character varying(32)\lsha1:  character varying(40)\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"malware_search" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\lsource:  uuid\lguid:  uuid\lmd5:  character varying(32)\lsha1:  character varying(40)\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"rir" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\lrir:  character varying(8)\lconfidence:  real\lsource:  uuid\lguid:  uuid\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"url" [shape = record, label = "{<col0> \N| id:  bigserial\luuid:  uuid\laddress:  text\lsource:  uuid\lguid:  uuid\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"url_botnet" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lsource:  uuid\lguid:  uuid\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"url_malware" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lsource:  uuid\lguid:  uuid\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"url_phishing" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lsource:  uuid\lguid:  uuid\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+"url_search" [shape = record, label = "{<col0> \N| id:  bigint\luuid:  uuid\laddress:  text\lsource:  uuid\lguid:  uuid\lconfidence:  real\lseverity:  severity\lrestriction:  restriction\ldetecttime:  timestamp with time zone\lcreated:  timestamp with time zone\l}" ];
+
+
+"apikeys_groups" -> "apikeys" [label="apikeys_groups_uuid_fkey"];
+}
+
+
