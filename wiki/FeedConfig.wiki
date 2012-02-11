@@ -1,0 +1,16 @@
+#summary designing your own custom.cfg feed parsing config
+
+= Introduction =
+
+CIF comes with a variety of pre-built feed configurations, with that there are ways to create your own configs for various custom feeds.
+
+= Details =
+== Common Parameters ==
+=== Delimited Text Files ===
+|| Parameter Name || Possible Values || Description ||
+=== NonDelimited Text Files ===
+|| Parameter Name || Possible Values || Description ||
+=== XML Files ===
+|| Parameter Name || Possible Values || Description ||
+=== JSON Files ===
+|| Parameter Name || Possible Values || Description ||
