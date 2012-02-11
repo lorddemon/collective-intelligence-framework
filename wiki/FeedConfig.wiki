@@ -89,5 +89,3 @@ alternativeid_restriction = 'public'
 || Parameter Name || Values || Description ||
 || fields || <csv-string> || a comma separated list of the fields ||
 || field_map ||  <csv-string> || a comma separated list of the fields ||
-
-= Examples =
