@@ -66,7 +66,9 @@ alternativeid = 'http://support.clean-mx.de/clean-mx/viruses.php?id=<id>'
 period = daily
 }}}
 || Parameter Name || Values || Description ||
-
+|| node || <string> || what xml node we should use as the key node ||
+|| elements || <csv-string> || what elements within <node> we should map out ||
+|| elements_map || <csv-string> || what values we map the <elements> to ||
 
 === JSON Files ===
 {{{
