@@ -17,6 +17,8 @@ This is a collection of projects and ideas based on CIF. Here you'll find two th
  * BroGuide
  * ElsaGuide
  * BindGuide
+ * NFSenGuide
+ * TippingpointGuide
 
 == Client Side Goodies ==
  * Refactoring Chrome's  [http://code.google.com/p/scriptno/source/browse/trunk ScriptNo] to support CIF feed downloading (Same with NoScript?)
