@@ -1,0 +1,9 @@
+#summary how to get CIF working with ELSA
+
+= Introduction =
+
+This guide will show you how to hook ELSA up to CIF
+
+
+= Details =
+ * http://ossectools.blogspot.com/2012/01/hunting-with-elsa-transforms.html
