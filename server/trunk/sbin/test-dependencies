@@ -135,6 +135,7 @@ XML::RSS 1.33
 File::Type 0.22
 CIF::Client 0.01
 LWP::Simple 6.00
+LWP::Protocol::https 6.02
 Linux::Cpuinfo 1.7
 LWP::UserAgent 6.02
 VT::API 0.12

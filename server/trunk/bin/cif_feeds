@@ -207,15 +207,19 @@ sub usage {
 Usage: perl $0 -s medium -c 95
     -h  --help:         this meessage
 
+Basic Usage:
+    -C  --config:       specify an alternate config location, default $config
+    -d  --debug
     -s  --severity:     feed severity (low|medium|high), default: $severity
     -c  --confidence:   minimal confidence (0.00 - 100.0), default: $confidence
     -r  --restriction:  feed restriction (default|public|need-to-know|private), default: $restriction
     -l  --limit:        max feed records, default: $limit
     -D  --maxdays:      max days to go back in feed search, default: $maxdays
+
+Advanced Usage:
+    -K  --role:         run as a specific "user" (eg: group1_role_key)
     -T  --throttle:     throttle the feed generation (low|medium|high), default: $throttle
     -S  --specific:     generate a specific feed (eg: infrastructure, domain, etc)
-    -C  --config:       specify an alternate config location, default $config
-    -d  --debug
     -L  --mutex:        specify a different lockfile location, default: $mutex
     -F  --lastfeeds:    specify how many feeds to keep in the archive, default: $last_feeds
 

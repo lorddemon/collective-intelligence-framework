@@ -48,6 +48,7 @@ sub process {
         my $conf = $data->{'confidence'};
         #$conf = ($conf/2) unless($_->{'type'} =~ /^(A|CNAME|PTR)$/);
         #$conf = ($conf / 2);
+        
         my $log = log($conf) / log(500);
         $conf = sprintf('%.3f',($conf * $log));
         next if($conf < 20);
