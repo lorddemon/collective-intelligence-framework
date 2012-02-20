@@ -1,4 +1,4 @@
-#summary the Beta3 Server Installation
+#summary the Server Installation
 #labels Phase-Implementation
 
 <wiki:toc max_depth="3" />
