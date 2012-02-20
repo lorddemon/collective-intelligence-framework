@@ -21,6 +21,7 @@ sub process {
     return unless($sw[0]);
     return unless($data->{'confidence'} >= ($config->{'sharewith_minconfidence'} || 85));
     my $sw_restriction = $config->{'sharewith_restriction'} || 'private';
+    my $guid = $data->{'guid'};
 
     @sw = split(/,/,$sw[0]);
     my %info = %$data;
@@ -34,6 +35,8 @@ sub process {
     $info{'alternativeid_restriction'}  = undef;
 
     foreach (@sw){
+        # skip if our group is tagged with the guid
+        next if($_ eq $guid);
         $info{'guid'} = $_;
         my ($err,$id) = $archive->insert(\%info);
         warn $err if($err);
