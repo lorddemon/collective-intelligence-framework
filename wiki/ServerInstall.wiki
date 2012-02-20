@@ -44,7 +44,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 = Install =
 == Known Issues ==
  # If you've modified anything other than /opt/cif/etc/custom.cfg in /opt/cif/etc, *BACK UP YOUR etc/cif* directory. This install will overwrite all the main .cfg files
- # *IF YOU'RE USING A PREVIOUS VERSION OF CIF, you'll need to drop your database, including any apikeys you've generated. Make sure you back up your apikeys table using pg_dump, you can then re-import the apikeys once the new database has been setup.
+ # *IF YOU'RE USING A PREVIOUS VERSION OF CIF*, you'll need to drop your database, including any apikeys you've generated. Make sure you back up your apikeys table using pg_dump, you can then re-import the apikeys once the new database has been setup.
  # we're using postgres as an embedded db, these current configs assume your postgres instance is locked down from the outside world. if someone gets shell, they've already got your data.
 
 == Server ==
