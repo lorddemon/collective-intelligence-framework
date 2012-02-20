@@ -4,14 +4,16 @@
 <wiki:toc max_depth="3" />
 
 = Preamble =
- * Most things are stable; you might have to dump your database between releases until we're out of beta.
+ * CIF is considered a technology demo. Although most working bits are considered stable for production use, there are many known architectural limitations that are being worked out in the next release (~ 2013)
+  * the code is written in perl (bad threading, slow)
+  * the database is embedded in postgres instead of something like hbase
+  * the technology was written to be embedded as a single server, instead of an agent / manager / database relationship setup
 
  * These scripts do a lot of dns queries. You're gonna wanna install bind and configure it to use forwarders. Maybe something like google public dns to help mask your queries. Then point your resolv.conf to localhost
 
  * Once installed, monitor your dns traffic a bit, your server will be looking up some interesting information. Get a good handle on this and work with your security teams to whitelist this server.
 
-= Before you Begin =
-This framework was developed against debian (lenny, squeeze and ubuntu > 10.10 or so). This has *NOT* been tested against any other distro's yet (RHEL, BSD, etc). Purely due to lack of cycles. Look here for new doc to pop up when that's complete (or help us write it).
+ * This framework was developed against debian (lenny, squeeze and ubuntu > 10.10 or so). This has *NOT* been tested against any other distro's yet (RHEL, BSD, etc). Purely due to lack of cycles. Look here for new doc to pop up when that's complete (or help us write it).
 
 = System Requirements =
 These requirements will handle everything on the same box pretty well with the default open source data-sets. The more (bigger) data-sets you add, the more ram / disk space you'll need. The more cores you add, the more threads that can "batch out" the feed parsers (thus, resulting in faster data consumption).
@@ -63,9 +65,9 @@ $ sudo adduser --disabled-password --gecos '' cif
  # if you're upgrading, make sure you've backed up /opt/cif/etc appropriately (if you've modified anything inside it)
  # install the core server interface
 {{{
-$ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01-b20120119_153340.tar.gz
-$ tar -zxvf cif-0.01-b20120119_153340.tar.gz
-$ cd cif-0.01-b20120119_153340
+$ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01.tar.gz
+$ tar -zxvf cif-0.01.tar.gz
+$ cd cif-0.01
 $ ./configure
 $ make testdeps
 $ make fixdeps
@@ -221,7 +223,7 @@ $ time /opt/cif/bin/cif_feeds -d
 PATH=/bin:/usr/local/bin:/opt/cif/bin
 
 # run analytics
-*/5 * * * * /opt/cif/bin/cif_analytic -t 8 -m 8000 &> /dev/null
+*/5 * * * * /opt/cif/bin/cif_analytic -t 4 -m 4000 &> /dev/null
 
 # pull feed data
 05     *       * * * /opt/cif/bin/cif_crontool -p hourly -T low &> /dev/null
@@ -236,7 +238,7 @@ PATH=/bin:/usr/local/bin:/opt/cif/bin
 PATH=/bin:/usr/local/bin:/opt/cif/bin
 
 # run analytics
-*/2 * * * * /opt/cif/bin/cif_analytic -d -t 8 -m 8000 >> /home/cif/analytics.log 2>&1
+*/2 * * * * /opt/cif/bin/cif_analytic -d -t 4 -m 4000 >> /home/cif/analytics.log 2>&1
 
 # pull feed data
 05     *       * * * /opt/cif/bin/cif_crontool -p hourly -T low >> /home/cif/crontool_hourly.log 2>&1
