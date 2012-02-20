@@ -11,7 +11,7 @@
  * Once installed, monitor your dns traffic a bit, your server will be looking up some interesting information. Get a good handle on this and work with your security teams to whitelist this server.
 
 = Before you Begin =
-This framework was developed against debian (lenny, squeeze and ubuntu > 10.10 or so). This has *NOT* been tested against any other distro's yet (RHEL, BSD, etc). Purely due to lack of cycles. Look here for new doc to pop up when that's complete.
+This framework was developed against debian (lenny, squeeze and ubuntu > 10.10 or so). This has *NOT* been tested against any other distro's yet (RHEL, BSD, etc). Purely due to lack of cycles. Look here for new doc to pop up when that's complete (or help us write it).
 
 = System Requirements =
 These requirements will handle everything on the same box pretty well with the default open source data-sets. The more (bigger) data-sets you add, the more ram / disk space you'll need. The more cores you add, the more threads that can "batch out" the feed parsers (thus, resulting in faster data consumption).
@@ -26,15 +26,16 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 = Prerequisites =
 == Required Services ==
  # Join the [http://groups.google.com/group/ci-framework mailing list] -- we like to archive the Q and A there. When you ask questions directly, I will usually Cc my responses.
- # Beta2_Removal (if you have beta2 installed this is *critical*)
  # DiskLayout
  # PostgresInstall
  # BindSetup
 
 == System Deps ==
- # ServerInstall_Beta3_Generic
+=== Stable ===
  # ServerInstall_Beta3_Lenny
  # ServerInstall_Beta3_Squeeze
+=== Unstable ===
+ # ServerInstall_Beta3_Generic
  # ServerInstall_Beta3_Ubuntu10
  # [ServerInstall_Beta3_CentOS6]
 
