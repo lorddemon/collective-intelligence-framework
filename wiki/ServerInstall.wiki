@@ -42,17 +42,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 = Install =
 == Known Issues ==
  # If you've modified anything other than /opt/cif/etc/custom.cfg in /opt/cif/etc, *BACK UP YOUR etc/cif* directory. This install will overwrite all the main .cfg files
- # *IF YOU'RE USING A PREVIOUS VERSION OF CIF (aka: beta2), you'll need to drop your database, including any apikeys you've generated. We've added unix style "group" support to both the data-warehouse as well as the apikeys. Follow the Beta2_Removal guide*
- # libwww6 was released mid-stream on us; which drastically changes the way libwww works (LWP, etc). Before you begin, make sure you update your libwww-perl instance to v6 until we fix this in the Makefile.am:
-{{{
-$ sudo perl -MCPAN -e 'install LWP::Simple'
-}}}
- # depending on what cpan mirror you use; Config::Simple 4.59 won't install (even though it's been out since like 2006), you might need to:
-{{{
-$ wget http://search.cpan.org/CPAN/authors/id/S/SH/SHERZODR/Config-Simple-4.59.tar.gz
-$ tar -zxvf Config-Simple-4.59.tar.gz
-$ cd Config-Simple-4.59 && perl Makefile.PL && sudo make install
-}}}
+ # *IF YOU'RE USING A PREVIOUS VERSION OF CIF, you'll need to drop your database, including any apikeys you've generated. Make sure you back up your apikeys table using pg_dump, you can then re-import the apikeys once the new database has been setup.
  # we're using postgres as an embedded db, these current configs assume your postgres instance is locked down from the outside world. if someone gets shell, they've already got your data.
 
 == Server ==
