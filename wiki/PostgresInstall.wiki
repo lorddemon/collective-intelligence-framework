@@ -32,6 +32,7 @@ $ diff -u pg_hba.conf.orig pg_hba.conf
 -host    all         all         ::1/128               md5
 +host    all         all         ::1/128               trust
 }}}
+ # reload postgres
  # make sure your user can:
 {{{
 $> psql -U postgres
