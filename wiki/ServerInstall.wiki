@@ -1,5 +1,5 @@
 #summary the Beta3 Server Installation
-#labels Deprecated
+#labels Phase-Implementation
 
 <wiki:toc max_depth="3" />
 
