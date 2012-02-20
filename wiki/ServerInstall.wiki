@@ -34,12 +34,12 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 
 == System Deps ==
 === Stable ===
- # ServerInstall_Beta3_Lenny
- # ServerInstall_Beta3_Squeeze
+ # ServerInstall_Lenny
+ # ServerInstall_Squeeze
 === Unstable ===
- # ServerInstall_Beta3_Generic
- # ServerInstall_Beta3_Ubuntu10
- # [ServerInstall_Beta3_CentOS6]
+ # ServerInstall_Generic
+ # ServerInstall_Ubuntu10
+ # [ServerInstall_CentOS6]
 
 = Install =
 == Known Issues ==
