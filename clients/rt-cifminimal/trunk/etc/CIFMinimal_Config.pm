@@ -112,4 +112,7 @@ Set(%CIFMinimal_StaleMap,
     'whitelist' => 1095,
 );
 
+# turn on the embedded "CIF Results view" to Display.html
+Set($CIFMinimal_CollectiveView,0);
+
 1;

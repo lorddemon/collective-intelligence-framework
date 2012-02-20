@@ -1,3 +1,4 @@
+% if(RT->Config->Get('CIFMinimal_CollectiveView')){
 <table width="100%" class="ticketsummary" >
     <tr>
         <td valign="bottom" width="75%" class="boxcontainer">
@@ -9,6 +10,7 @@
         </td>
     </tr>
 </table>
+% }
 
 <%init>
 #If we get handed two ids, mason will make them an array. bleck.

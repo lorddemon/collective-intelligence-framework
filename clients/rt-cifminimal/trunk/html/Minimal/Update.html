@@ -26,6 +26,7 @@
         </td>
 
     </tr>
+% if($Ticket->CurrentUserHasRight('ModifyTicket')){
     <tr>
         <td class="label">Service Portlist</td>
         <td>
@@ -46,6 +47,7 @@
         </td>
         <td><i>ICMP - 1, TCP - 6, UDP - 17<br>if multiple protocols exist, leave blank to denote "all-ip"</i></td>
     </tr>
+% }
 % if (exists $session{'Attachments'}) {
 <tr>
     <td class="label">
@@ -93,11 +95,6 @@ my ( $field, @results );
 my @id = ( ref $id eq 'ARRAY' ) ? @{$id} : ($id);
 
 my $Ticket = new RT::Ticket( $session{'CurrentUser'} );
-unless ( $Ticket->CurrentUserHasRight('ModifyTicket') ) {
-    $m->comp( 'Error.html',
-        Why => loc("No permission to modify that ticket") );
-    $m->abort();
-}
 
 unless ( $Ticket->Load( $id[0] ) ) {
     $m->comp( 'Error.html', Why => loc( "Couldn't load ticket '[_1]'", $id ) );
@@ -111,7 +108,7 @@ my $queueObj = RT::Queue->new($session{'CurrentUser'});
 $queueObj->Load($queue);
 
 Abort( loc("No permission to update ticket") )
-  unless ( $Ticket->CurrentUserHasRight('ReplyToTicket') || $Ticket->CurrentUserHasRight('ModifyTicket') );
+  unless ( $Ticket->CurrentUserHasRight('ReplyToTicket') );
 
 my $category = $Ticket->FirstCustomFieldValue('Address category');
 

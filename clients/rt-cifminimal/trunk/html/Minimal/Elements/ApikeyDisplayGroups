@@ -1,5 +1,4 @@
 % if(@sorted){
-<h1>My Groups</h1>
 % $m->out($table);
 % }
 

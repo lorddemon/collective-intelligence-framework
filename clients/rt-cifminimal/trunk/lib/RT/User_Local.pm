@@ -1,5 +1,18 @@
 package RT::User;
 
+=head2 Apikeys
+
+return an array of the user's apikeys from CIF
+
+=cut
+
+sub Apikeys {
+    my $self = shift;
+    require CIF::WebAPI::APIKey;
+    my @recs = CIF::WebAPI::APIKey->search(uuid_alias => $self->EmailAddress());
+    return(\@recs);
+}
+
 =head2 Load
 
 Load a user object from the database. Takes a single argument.
