@@ -4,11 +4,16 @@
     groups  => \%group_map,
     %ARGS 
 &>
+
+% if(@recs){
+<h1>CIF API keys</h1>
 <& Elements/ApikeyDisplay, 
     recs    => \@recs,
     groups  => \%group_map,
     %ARGS 
 &>
+% }
+
 <& Elements/ApikeyDisplayGroups,
     groups  => \%group_map,
     %ARGS

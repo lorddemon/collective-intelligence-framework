@@ -73,7 +73,7 @@ cf%>-Values" /><div id
                     { tokens: [ '\s' ] }
                     );
                     </script>
-        <br><i>eg: torpig, zeus, spyeye, paypal, etc... <b>1-2, no more than 2</b></i>
+        <br><i>eg: torpig zeus spyeye paypal<br>space delimited and <b>1-2, no more than 2</b></i>
         </td>
     </tr>
     <tr>

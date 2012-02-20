@@ -1,6 +1,5 @@
-% if(@recs){
-<h1>API Keys</h1>
 <table>
+% if(@recs){
     <tr valign="top">
         <td></td>
         <td><b>Key</b></td>

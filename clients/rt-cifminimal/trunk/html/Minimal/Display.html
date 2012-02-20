@@ -19,6 +19,7 @@
         </td>
     </tr>
 </table>
+% if(RT->Config->Get('CIFMinimal_CollectiveView')){
 <table width="100%" class="ticketsummary" >
     <tr>
         <td valign="bottom" width="75%" class="boxcontainer">
@@ -30,6 +31,7 @@
         </td>
     </tr>
 </table>
+% }
 
 %#!!pape: selfservice_find_attachments.patch {{
 <& /Ticket/Elements/ShowHistory, 

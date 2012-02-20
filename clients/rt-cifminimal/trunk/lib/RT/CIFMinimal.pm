@@ -264,11 +264,11 @@ wrap 'RT::User::Create',
                         require RT::Group;
                         my $y = RT::Group->new($RT::SystemUser);
                         my ($ret,$err) = $y->LoadUserDefinedGroup($group_map->{$_});
-                        RT::Logger->debug("adding user to group: $g");  
+                        $RT::Logger->debug("adding user to group: $g");  
                         ($ret,$err) = $y->AddMember($$val);
                         unless($ret){
                             $RT::Logger->error("Couldn't add user to group: ".$y->Name());
-                            $RT::logger->error($err);
+                            $RT::Logger->error($err);
                             $RT::Handle->Rollback();
                             return(0);
                         }
