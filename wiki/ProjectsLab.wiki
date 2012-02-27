@@ -35,3 +35,5 @@ This is a collection of projects and ideas based on CIF. Here you'll find two th
  * netglub integration
  * snort preprocessor
  * native bro integration
+ * Virus Total Analytic
+ * SURBL analytic
