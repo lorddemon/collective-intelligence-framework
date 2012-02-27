@@ -1,9 +1,13 @@
 #summary howto install the perl client
 
 = Known Issues =
- 1. if you have some issues installing *REST::Client*, please try version [http://search.cpan.org/CPAN/authors/id/M/MC/MCRAWFOR/REST-Client-217.tar.gz 217] until it's able to be resolved.
- 1. if you're using BSD, p5-JSON-XS will solve some performance issues for you
- 1. there have been reports of TLS "read" errors on older versions of REHL (5.4, etc), the cause is still unknown.
+== REST::Client ==
+ 1. *Installation* please try version [http://search.cpan.org/CPAN/authors/id/M/MC/MCRAWFOR/REST-Client-217.tar.gz 217] until it's able to be resolved.
+== BSD ==
+ 1. *Performance* p5-JSON-XS will solve some performance issues for you
+== RedHat ==
+ 1. *TLS* there have been reports of TLS "read" errors on older versions of REHL (5.4, etc), the cause is still unknown.
+== Proxies ==
  1. if the server requires a *proxy*, some perl dep's will *fail to install*, most likely LWP::Protocol::https. The work-around is to install this dep manually to bypass the connectivity tests:
 {{{
 $ wget http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/LWP-Protocol-https-6.02.tar.gz
@@ -13,6 +17,8 @@ $ perl Makefile.PL
 $ make
 $ sudo make install
 }}}
+== MacOS X ==
+ 1. *MacOS X 10.7* -- If you install XCode 4.3, you'll need to go to Preferences, install cmdline tools (you'll also need to reg as a developer). You should use [https://developer.apple.com/downloads/index.action 4.2.1] for now if you don't want to reg as developer.
 
 = Installation =
 == Distro Helpers ==
