@@ -1,8 +1,6 @@
 #summary howto install the perl client
 
 = Known Issues =
-== REST::Client ==
- 1. *Installation* please try version [http://search.cpan.org/CPAN/authors/id/M/MC/MCRAWFOR/REST-Client-217.tar.gz 217] until it's able to be resolved.
 == BSD ==
  1. *Performance* p5-JSON-XS will solve some performance issues for you
 == RedHat ==
@@ -29,18 +27,8 @@ $ sudo make install
   * libssl-dev / openssl-devel (deb / RHEL)
   * make, automake (developer tools on OS X)
   * build-essential (deb)
- 1. install REST-Client-217 manually (see bug [http://code.google.com/p/collective-intelligence-framework/issues/detail?id=117 117]):
-{{{
-$ wget http://search.cpan.org/CPAN/authors/id/M/MC/MCRAWFOR/REST-Client-217.tar.gz
-$ tar -zxvf REST-Client-217.tar.gz
-$ cd REST-Client-217
-$ perl Makefile.PL
-$ make
-$ sudo make install
-}}}
  1. install the client library
 {{{
-$ sudo perl -MCPAN -e 'install Crypt::SSLeay, Module::Install, LWP::Protocol::https, HTTP::Server::Simple, Text::Table, HTML::Table, JSON, Module::Pluggable, Config::Simple, Snort::Rule, Class::Accessor, Digest::MD5, Digest::SHA1, Regexp::Common::net, Regexp::Common::net::CIDR'
 $ sudo perl -MCPAN -e 'install CIF::Client'
 }}}
  1. setup your [ClientSetup#Global_Configuration_File configuration file]
