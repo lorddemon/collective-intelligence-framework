@@ -33,7 +33,7 @@ su -
 {{{
 $> apt-get install build-essential libssl-dev
 }}}
- # install the client library
+ # install the client library (accept all defaults)
 {{{
 perl -MCPAN -e 'install CIF::Client'
 }}}
