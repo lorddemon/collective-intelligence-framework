@@ -32,7 +32,7 @@ sub get_feed {
     return(undef,$err) if($err);
     return(undef,'no content') unless($content);
     # auto-decode the content if need be
-    $content = _decode($content);
+    $content = _decode($content,$f);
 
     # encode to utf8
     $content = encode_utf8($content);
@@ -114,13 +114,14 @@ sub parse {
 
 sub _decode {
     my $data = shift;
+    my $f = shift;
 
     my $ft = File::Type->new();
     my $t = $ft->mime_type($data);
     my @plugs = __PACKAGE__->plugins();
     @plugs = grep(/Decode/,@plugs);
     foreach(@plugs){
-        if(my $ret = $_->decode($data,$t)){
+        if(my $ret = $_->decode($data,$t,$f)){
             return($ret);
         }
     }
