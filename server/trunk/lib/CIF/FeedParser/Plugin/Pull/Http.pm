@@ -3,6 +3,8 @@ package CIF::FeedParser::Plugin::Pull::Http;
 require LWP::Simple;
 require LWP::UserAgent;
 
+our $VERSION = '0.01';
+
 ## TODO -- remove LWP::Simple
 sub pull {
     my $class = shift;
@@ -25,8 +27,25 @@ sub pull {
        }
        $content = $ress->decoded_content();
     } else {
-        $content = LWP::Simple::get($f->{'feed'});
-        print 'failed to get feed: '.$f->{'feed'}."\n" unless($content);
+        my $ua = LWP::UserAgent->new(agent => 'CIF/'.$VERSION);
+        my $r;
+        if($f->{'mirror'}){
+            $f->{'feed'} =~ m/\/([a-zA-Z0-9._-]+)$/;
+            my $file = $f->{'mirror'}.'/'.$1;
+            $ua->mirror($f->{'feed'},$file);
+            open(F,$file) || die($!.': '.$file);
+            $content = join('',<F>);
+            close(F);
+            return('no content',undef) unless($content && $content ne '');
+        } else {
+            $r = $ua->get($f->{'feed'});
+            if($r->is_success()){
+                $content = $r->decoded_content();
+            } else {
+                #$content = LWP::Simple::get($f->{'feed'});
+                print 'failed to get feed: '.$f->{'feed'}."\n".$r->status_line();
+            }
+        }
     }
     return($content);
 }
