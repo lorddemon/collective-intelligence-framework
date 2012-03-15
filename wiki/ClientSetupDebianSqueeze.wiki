@@ -37,4 +37,10 @@ $> apt-get install build-essential libssl-dev
 {{{
 perl -MCPAN -e 'install CIF::Client'
 }}}
+
+= Configuration =
+ # As a standard user (non-root), create the .cif file on the home directory
+{{{
+nano /home/$user/.cif
+}}}
  # setup your [ClientSetup#Global_Configuration_File configuration file]
