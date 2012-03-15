@@ -1,4 +1,4 @@
-#summary installing the client on debian squeeze
+#summary installing the perl client on debian squeeze
 
 = CPAN =
 On a clean install of Debian Squeeze 6.0.4 you will need to do the following to get CPAN "configured properly". 
