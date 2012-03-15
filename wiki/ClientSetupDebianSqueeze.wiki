@@ -25,7 +25,7 @@ exit
 }}}
 
 = Installation =
-  # Become root or use sudo if installed
+ # Become root or use sudo if installed
 {{{
 su -
 }}}
@@ -33,3 +33,8 @@ su -
 {{{
 $> apt-get install build-essential libssl-dev
 }}}
+ # install the client library
+{{{
+perl -MCPAN -e 'install CIF::Client'
+}}}
+ # setup your [ClientSetup#Global_Configuration_File configuration file]
