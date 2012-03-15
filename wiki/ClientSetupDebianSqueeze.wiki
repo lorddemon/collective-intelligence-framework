@@ -3,11 +3,14 @@
 = CPAN =
 On a clean install of Debian Squeeze 6.0.4 you will need to do the following to get CPAN "configured properly". 
 
+ # Become root or use sudo if installed
+{{{
+su -
+}}}
  # open cpan (Note: if this is your first time, accept all defaults)
 {{{
-sudo cpan
+cpan
 }}}
-
  # Install the newest version of CPAN
 {{{
 install CPAN
@@ -22,7 +25,11 @@ exit
 }}}
 
 = Installation =
+  # Become root or use sudo if installed
+{{{
+su -
+}}}
  # make sure build-essential and libssl-dev is installed (for Crypt::SSleay and REST::Client)
 {{{
-$> sudo apt-get install build-essential libssl-dev
+$> apt-get install build-essential libssl-dev
 }}}
