@@ -125,6 +125,7 @@ sub _decode {
             return($ret);
         }
     }
+    return $data;
 }
 
 sub _sort_detecttime {
