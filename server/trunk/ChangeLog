@@ -1,4 +1,9 @@
 Collective Intelligence Framework
 =================================
 
-see: http://code.google.com/p/collective-intelligence-framework/updates/list
+0.01    2012-03-16
+    - adjusted a few of the confidence values in zeustracker and malware domains
+    - added a "mirror" option to the cif_feeparser configs
+    - adjusted FeedParser.pm so that it could mirror larger feeds (test for changes)
+    - fixed issue with analytics not carring "source" over
+    - added new reporting scripts to bin/
