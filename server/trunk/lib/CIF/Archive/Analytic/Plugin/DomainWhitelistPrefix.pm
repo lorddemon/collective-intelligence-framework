@@ -19,6 +19,7 @@ sub process {
     my $log = log($conf) / log(500);
     $conf = sprintf('%.3f',($conf * $log));
     my ($err,$id) = $archive->insert({
+        source                      => $data->{'source'},
         severity                    => 'null',
         confidence                  => $conf,
         address                     => $data->{'prefix'},

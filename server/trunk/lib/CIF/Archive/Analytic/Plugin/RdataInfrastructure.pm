@@ -29,18 +29,19 @@ sub process {
     $impact =~ s/domain/infrastructure/;
 
     my ($err,$id) = $archive->insert({
-         description    => $data->{'description'},
-         impact         => $impact,
-         severity       => $data->{'severity'},
-         confidence     => $conf,
-         portlist       => $data->{'portlist'},
-         protocol       => $data->{'protocol'},
-         address        => $addr,
-         guid           => $data->{'guid'},
-         relatedid      => $data->{'uuid'},
-         restriction    => $data->{'restriction'},
-         alternativeid  => $data->{'alternativeid'},
-         alternativeid_restriction  => $data->{'alternativeid_restriction'},
+        source          => $data->{'source'},
+        description    => $data->{'description'},
+        impact         => $impact,
+        severity       => $data->{'severity'},
+        confidence     => $conf,
+        portlist       => $data->{'portlist'},
+        protocol       => $data->{'protocol'},
+        address        => $addr,
+        guid           => $data->{'guid'},
+        relatedid      => $data->{'uuid'},
+        restriction    => $data->{'restriction'},
+        alternativeid  => $data->{'alternativeid'},
+        alternativeid_restriction  => $data->{'alternativeid_restriction'},
      });
     warn $err if($err);
     warn $id->{'uuid'} if($::debug && $id);

@@ -53,6 +53,7 @@ sub process {
         $conf = sprintf('%.3f',($conf * $log));
         next if($conf < 20);
         my ($err,$id) = $archive->insert({
+            source      => $data->{'source'},
             impact      => $data->{'impact'},
             guid        => $data->{'guid'},
             description => $data->{'description'},
