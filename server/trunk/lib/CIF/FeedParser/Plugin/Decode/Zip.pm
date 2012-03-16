@@ -9,7 +9,7 @@ sub decode {
     my $data = shift;
     my $type = shift;
     my $f = shift;
-    return unless($type =~ /zip/ || $type !~ /gzip/);
+    return unless($type =~ /zip/ && $type !~ /gzip/);
 
     my $file;
     if($f->{'zip_filename'}){
