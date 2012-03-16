@@ -160,15 +160,6 @@ sub insert {
     return(undef,$id);
 }
 
-#__PACKAGE__->set_sql(MakeNewObj => qq{ 
-#    BEGIN
-#        INSERT INTO __TABLE__ (%s) VALUES (%s)
-#        RETURN
-#    EXCEPTION WHEN unique_violation THEN
-#         -- do nothing
-#    END;
-#});
-
 __PACKAGE__->set_sql('searches_feed' => qq{
     SELECT COUNT(source),source
     FROM archive t
@@ -278,25 +269,6 @@ sub lookup {
     }
     return(undef,$ret);
 }
-
-sub create_partition {
-    my $class = shift;
-    my $date = shift;
-    my $day = $date->ymd('_');
-    my $start = $date->ymd.'T00:00:00Z';
-    my $end = $date->ymd.'T23:59:59Z';
-
-    __PACKAGE__->set_sql('create_partition' => qq{
-        DROP TABLE IF EXISTS archive_$day;
-        CREATE TABLE archive_$day (
-            CHECK (created >= DATE '$start' AND created <= '$end')
-        ) INHERITS(archive) TABLESPACE archive;
-        set default_tablespace = 'index';
-        ALTER TABLE archive_$day ADD PRIMARY KEY (id);
-        ALTER TABLE archive_$day ADD UNIQUE(uuid);
-    });
-    return $class->sql_create_partition()->execute();
-} 
 
 sub prune {
     my $class = shift;

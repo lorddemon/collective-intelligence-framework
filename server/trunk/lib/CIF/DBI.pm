@@ -39,17 +39,3 @@ __PACKAGE__->set_sql('prune' => qq{
 
 
 1;
-
-=head1 NAME
-
-CIF::DBI - Perl extension for interfacing with the CIF data-warehouse.
-
-=head1 SYNOPSIS
-
-  use CIF::DBI;
-  blah blah blah
-
-=head1 DESCRIPTION
-
-=cut
-
