@@ -85,6 +85,7 @@ sub process {
         return if($code->{'description'} =~ /BANNED/);
 
         my ($err,$id) = $archive->insert({
+            source                      => $data->{'source'},
             guid                        => $data->{'guid'},
             relatedid                   => $data->{'uuid'},
             address                     => $data->{'address'},

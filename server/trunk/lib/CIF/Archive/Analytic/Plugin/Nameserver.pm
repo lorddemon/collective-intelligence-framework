@@ -47,6 +47,7 @@ sub process {
     foreach(@rdata){
         my ($as,$network,$ccode,$rir,$date,$as_desc) = asninfo($_->{'address'});
         my ($err,$id) = $archive->insert({
+            source      => $data->{'source'},
             impact      => $impact,
             description => $data->{'description'},
             relatedid   => $data->{'uuid'},

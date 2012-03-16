@@ -109,6 +109,7 @@ sub process {
         # see http://www.spamhaus.org/faq/answers.lasso?section=Spamhaus%20PBL#183
         return if($_->{'address'} =~ /\.(10|11)$/);
         my ($err,$id) = $archive->insert({
+            source                      => $data->{'source'},
             relatedid                   => $data->{'uuid'},
             guid                        => $data->{'guid'},
             address                     => $data->{'address'},
@@ -124,6 +125,7 @@ sub process {
         });
         if(lc($code->{'description'}) =~ /^direct ube sources/){
             $archive->insert({
+                source                      => $data->{'source'},
                 guid                        => $data->{'guid'},
                 relatedid                   => $data->{'uuid'},
                 address                     => $data->{'address'},
