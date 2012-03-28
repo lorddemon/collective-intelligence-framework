@@ -31,4 +31,4 @@ $ sudo make install
 {{{
 $ sudo perl -MCPAN -e 'install CIF::Client'
 }}}
- 1. setup your [ClientSetup#Global_Configuration_File configuration file]
+ 1. setup your [GlobalConfigurationFile configuration file]
