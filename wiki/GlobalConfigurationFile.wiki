@@ -1,0 +1,11 @@
+#summary initial setup of configuration file
+
+= Global Configuration File =
+ 1. create a configuration file: ~/.cif with the following:
+{{{
+[client]
+host = https://example.com:443/api
+apikey = xx-xx-xx-xx-xx
+timeout = 60
+#verify_tls = 0
+}}}
