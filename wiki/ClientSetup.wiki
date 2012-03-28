@@ -23,12 +23,5 @@ RESTRICTED |        |example.com|     |    |2011-01-20 15:00:00+00|search exampl
  # PerlClient
  # PythonClient
 
-= Global Configuration File =
- 1. create a configuration file: ~/.cif with the following:
-{{{
-[client]
-host = https://example.com:443/api
-apikey = xx-xx-xx-xx-xx
-timeout = 60
-#verify_tls = 0
-}}}
+= Client Configuration = 
+ # GlobalConfigurationFile
