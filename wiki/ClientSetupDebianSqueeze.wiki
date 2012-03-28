@@ -43,4 +43,4 @@ perl -MCPAN -e 'install CIF::Client'
 {{{
 nano /home/$user/.cif
 }}}
- # setup your [ClientSetup#Global_Configuration_File configuration file]
+ # setup your [GlobalConfigurationFile configuration file]
