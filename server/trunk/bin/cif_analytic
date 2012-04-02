@@ -208,6 +208,9 @@ sub _process {
     $archive->db_Main->{'AutoCommit'} = 0;
 
     if($disabled){
+        if($disabled =~ /,/){
+            $disabled = [split(/,/,$disabled)];
+        }
         if(ref($disabled) eq 'ARRAY'){
             foreach my $d (@$disabled){
                 $d = lc($d);
