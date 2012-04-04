@@ -10,6 +10,7 @@ sub prepare {
     my $info    = shift;
 
     my $address = $info->{'address'};
+    return unless($address);
     $address = lc($address);
     my $safe = uri_escape($address,'\x00-\x1f\x7f-\xff');
     return unless(isUrl($info->{'address'}));
