@@ -19,7 +19,6 @@ This is a collection of projects and ideas based on CIF. Here you'll find two th
  * BindGuide
  * NFSenGuide
  * TippingpointGuide
- * DynamicDnsDetection
 
 == Client Side Goodies ==
  * Refactoring Chrome's  [http://code.google.com/p/scriptno/source/browse/trunk ScriptNo] to support CIF feed downloading (Same with NoScript?)
@@ -39,3 +38,7 @@ This is a collection of projects and ideas based on CIF. Here you'll find two th
  * native bro integration
  * Virus Total Analytic
  * SURBL analytic
+
+== Other ==
+ * NewFeedSources
+ * DynamicDnsDetection
