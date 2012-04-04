@@ -8,7 +8,7 @@ sub prepare {
     return(1) if($info->{'asn'});
     return(1) if($info->{'cc'});
     return(1) if($info->{'rir'});
-    return(1) if(isAsn(uc($info->{'address'})));
+    return(1) if($info->{'address'} && isAsn(uc($info->{'address'})));
 
     return(0);
 }
