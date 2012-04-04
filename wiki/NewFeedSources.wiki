@@ -12,6 +12,7 @@ http://jsunpack.jeek.org/dec/go?list=1
 http://vxvault.siri-urz.net/ViriList.php
 http://minotauranalysis.com/malwarelist.aspx -- overlaps malc0de and cleanmx
 http://rss.uribl.com/nic/NAUNET_REG_RIPN.xml
+http://www.malwareblacklist.com/showMDL.php
 }}}
 
 = References =
