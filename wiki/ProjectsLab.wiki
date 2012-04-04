@@ -22,6 +22,7 @@ This is a collection of projects and ideas based on CIF. Here you'll find two th
 
 == Client Side Goodies ==
  * Refactoring Chrome's  [http://code.google.com/p/scriptno/source/browse/trunk ScriptNo] to support CIF feed downloading (Same with NoScript?)
+ * submission extension for chrome
  * os x mail.app plugin
  * right click tool for windows
  * grease monkey integration
