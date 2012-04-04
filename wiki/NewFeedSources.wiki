@@ -1,0 +1,17 @@
+#summary an ongoing list of relevant feed sources that should be reviewed
+
+= Sources =
+{{{
+
+http://contagiodump.blogspot.com/2010/11/links-and-resources-for-malware-samples.html
+http://zeltser.com/combating-malicious-software/malware-sample-sources.html
+http://isc.sans.edu/tools/suspicious_domains.html
+http://urlquery.net/index.php
+http://www3.malekal.com/malwares/
+http://jsunpack.jeek.org/dec/go?list=1
+http://vxvault.siri-urz.net/ViriList.php
+http://minotauranalysis.com/malwarelist.aspx -- overlaps malc0de and cleanmx
+}}}
+
+= References =
+ref: http://lists.emergingthreats.net/pipermail/emerging-sigs/2011-July/015036.html
