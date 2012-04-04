@@ -27,7 +27,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 
 = Prerequisites =
 == Required Services ==
- # Join the [http://groups.google.com/group/ci-framework mailing list] -- we like to archive the Q and A there. When you ask questions directly, I will usually Cc my responses.
+ # Join the [http://groups.google.com/group/ci-framework mailing list] -- we like to archive the Q & A there. When you ask questions directly, we will usually Cc our responses.
  # DiskLayout
  # PostgresInstall
  # BindSetup
