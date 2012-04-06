@@ -9,6 +9,7 @@ CIF comes with a variety of pre-built feed configurations, with that there are w
 || Parameter Name || Values || Description || Required ||
 || address || <ip_address><url><domain> || || yes ||
 || detecttime || <string> || Most common timestamp formats are valid || no ||
+|| null || n/a || Use the null value for columns of data you want to ignore || no ||
 || feed || <uri><filename> || path to the feed || no ||
 || source || <FQDN> || source of the feed, usually the domain where the feed is from (eg: example.com) || no ||
 || impact || <string> || see TaxonomyImpact || no ||
