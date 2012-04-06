@@ -6,21 +6,23 @@ CIF comes with a variety of pre-built feed configurations, with that there are w
 
 = Details =
 == Common Parameters ==
-|| Parameter Name || Values || Description ||
-|| feed || <uri><filename> || path to the feed ||
-|| source || <FQDN> || source of the feed, usually the domain where the feed is from (eg: example.com) ||
-|| impact || <string> || see TaxonomyImpact ||
-|| description || <string> || short (1-2 space delimited word) description of the activity (eg: tdss spyeye) ||
-|| severity || <string> || see TaxonomySeverity ||
-|| confidence || <int> || see TaxonomyConfidence ||
-|| guid || <string> || default: 'everyone' unless you know what you're doing ||
-|| restriction || <string> || public, default, need-to-know, private ||
-|| alternativeid || <string> || usually a url pointing to the original data point (as a reference id) ||
-|| alternativeid_restriction || <string> || public, default, need-to-know,private || 
-|| detection || <string> || hourly/daily: what to "fuzz" the detection string to ||
-|| period || <string> || hourly/daily: how often the cif_crontool should pick up this feed (when in doubt, use daily) ||
-|| mirror || <string> || file path (eg: mirror = '/tmp'), allows for testing to see if the downloaded feed has changed before re-downloading ||
-|| zip_filename || <string> || when the feed is a zip file, this should identify what the zip header is ||
+|| Parameter Name || Values || Description || Required ||
+|| address || <ip_address><url><domain> || || yes ||
+|| detecttime || <string> || Most common timestamp formats are valid || no ||
+|| feed || <uri><filename> || path to the feed || no ||
+|| source || <FQDN> || source of the feed, usually the domain where the feed is from (eg: example.com) || no ||
+|| impact || <string> || see TaxonomyImpact || no ||
+|| description || <string> || short (1-2 space delimited word) description of the activity (eg: tdss spyeye) || no ||
+|| severity || <string> || see TaxonomySeverity || no ||
+|| confidence || <int> || see TaxonomyConfidence || no ||
+|| guid || <string> || default: 'everyone' unless you know what you're doing || no ||
+|| restriction || <string> || public, default, need-to-know, private || no ||
+|| alternativeid || <string> || usually a url pointing to the original data point (as a reference id) || no ||
+|| alternativeid_restriction || <string> || public, default, need-to-know,private || no ||
+|| detection || <string> || hourly/daily: what to "fuzz" the detection string to || no ||
+|| period || <string> || hourly/daily: how often the cif_crontool should pick up this feed (when in doubt, use daily) || no ||
+|| mirror || <string> || file path (eg: mirror = '/tmp'), allows for testing to see if the downloaded feed has changed before re-downloading || no ||
+|| zip_filename || <string> || when the feed is a zip file, this should identify what the zip header is || no ||
 
 === Delimited Text Files ===
 {{{
