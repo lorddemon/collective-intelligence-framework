@@ -2,7 +2,6 @@
 
 = Sources =
 {{{
-
 http://contagiodump.blogspot.com/2010/11/links-and-resources-for-malware-samples.html
 http://zeltser.com/combating-malicious-software/malware-sample-sources.html
 http://isc.sans.edu/tools/suspicious_domains.html
@@ -13,6 +12,9 @@ http://vxvault.siri-urz.net/ViriList.php
 http://minotauranalysis.com/malwarelist.aspx -- overlaps malc0de and cleanmx
 http://rss.uribl.com/nic/NAUNET_REG_RIPN.xml
 http://www.malwareblacklist.com/showMDL.php
+http://abusix.org/service/spamfeeds
+http://atlas.arbor.net/summary/fastflux?out=xml
+http://dshield.org/diary.html?storyid=12373
 }}}
 
 = References =
