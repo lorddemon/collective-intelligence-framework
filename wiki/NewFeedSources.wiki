@@ -21,4 +21,4 @@ http://dshield.org/diary.html?storyid=12373
 }}}
 
 = References =
-ref: http://lists.emergingthreats.net/pipermail/emerging-sigs/2011-July/015036.html
+ * http://lists.emergingthreats.net/pipermail/emerging-sigs/2011-July/015036.html
