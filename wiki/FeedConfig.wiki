@@ -23,7 +23,7 @@ CIF comes with a variety of pre-built feed configurations, with that there are w
 
 == Common Parameters ==
 || Parameter Name || Values || Description || Required ||
-|| address || <ip_address><url><domain> || || yes ||
+|| address || <ip_address><url><domain> || This is usually a IP address, URL or domain that are found in feeds of data but is not limited to those data types|| yes ||
 || alternativeid || <string> || usually a url pointing to the original data point (as a reference id) || no ||
 || alternativeid_restriction || <string> || public, default, need-to-know,private || no ||
 || confidence || <int> || see TaxonomyConfidence || no ||
