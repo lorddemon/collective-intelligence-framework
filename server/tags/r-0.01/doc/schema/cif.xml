@@ -1,0 +1,11955 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- $Header: /cvsroot/autodoc/autodoc/xml.tmpl,v 1.2 2006/05/16 19:01:27 rbt Exp $ -->
+
+<book id="database.cif" xreflabel="cif database schema"><title>cif Model</title>
+
+
+
+
+  <chapter id="public.schema"
+           xreflabel="public">
+    <title>Schema public</title>
+    <para>standard public schema</para>
+
+
+      <section id="public.table.analytic"
+               xreflabel="public.analytic">
+        <title id="public.table.analytic-title">
+         Table:
+         
+         <structname>analytic</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>analytic</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>startid</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>endid</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.apikeys"
+               xreflabel="public.apikeys">
+        <title id="public.table.apikeys-title">
+         Table:
+         
+         <structname>apikeys</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>apikeys</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid_alias</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>parentid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>revoked</structfield></term>
+              <listitem><para>
+                <type>boolean</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>access</structfield></term>
+              <listitem><para>
+                <type>character varying(100)</type>
+
+
+
+
+
+                <literal>DEFAULT &apos;all&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>write</structfield></term>
+              <listitem><para>
+                <type>boolean</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+        <itemizedlist>
+          <title>
+            Tables referencing apikeys_groups via Foreign Key Constraints
+          </title>
+
+          <listitem>
+            <para>
+              <xref linkend="public.table.apikeys-groups"/>
+            </para>
+          </listitem>
+
+        </itemizedlist>
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.apikeys-groups"
+               xreflabel="public.apikeys_groups">
+        <title id="public.table.apikeys-groups-title">
+         Table:
+         
+         <structname>apikeys_groups</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>apikeys_groups</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+                <literal>REFERENCES</literal> <xref linkend="public.table.apikeys"/>
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>default_guid</structfield></term>
+              <listitem><para>
+                <type>boolean</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.archive"
+               xreflabel="public.archive">
+        <title id="public.table.archive-title">
+         Table:
+         
+         <structname>archive</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>archive</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>format</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>data</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.asn"
+               xreflabel="public.asn">
+        <title id="public.table.asn-title">
+         Table:
+         
+         <structname>asn</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>asn</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn</structfield></term>
+              <listitem><para>
+                <type>double precision</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>asn_desc</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on asn</title>
+
+          <varlistentry>
+            <term>idx_feed_asn</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_feed_countrycode</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.countrycode"
+               xreflabel="public.countrycode">
+        <title id="public.table.countrycode-title">
+         Table:
+         
+         <structname>countrycode</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>countrycode</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>cc</structfield></term>
+              <listitem><para>
+                <type>character varying(5)</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.domain"
+               xreflabel="public.domain">
+        <title id="public.table.domain-title">
+         Table:
+         
+         <structname>domain</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>domain</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>md5</structfield></term>
+              <listitem><para>
+                <type>character varying(32)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>sha1</structfield></term>
+              <listitem><para>
+                <type>character varying(40)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.domain-botnet"
+               xreflabel="public.domain_botnet">
+        <title id="public.table.domain-botnet-title">
+         Table:
+         
+         <structname>domain_botnet</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>domain_botnet</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;domain_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>md5</structfield></term>
+              <listitem><para>
+                <type>character varying(32)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>sha1</structfield></term>
+              <listitem><para>
+                <type>character varying(40)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on domain_botnet</title>
+
+          <varlistentry>
+            <term>idx_feed_domain_botnet</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_domain_botnet</term>
+            <listitem><para>md5, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.domain-fastflux"
+               xreflabel="public.domain_fastflux">
+        <title id="public.table.domain-fastflux-title">
+         Table:
+         
+         <structname>domain_fastflux</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>domain_fastflux</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;domain_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>md5</structfield></term>
+              <listitem><para>
+                <type>character varying(32)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>sha1</structfield></term>
+              <listitem><para>
+                <type>character varying(40)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on domain_fastflux</title>
+
+          <varlistentry>
+            <term>idx_feed_domain_fastflux</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_domain_fastflux</term>
+            <listitem><para>md5, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.domain-malware"
+               xreflabel="public.domain_malware">
+        <title id="public.table.domain-malware-title">
+         Table:
+         
+         <structname>domain_malware</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>domain_malware</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;domain_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>md5</structfield></term>
+              <listitem><para>
+                <type>character varying(32)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>sha1</structfield></term>
+              <listitem><para>
+                <type>character varying(40)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on domain_malware</title>
+
+          <varlistentry>
+            <term>idx_feed_domain_malware</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_domain_malware</term>
+            <listitem><para>md5, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.domain-nameserver"
+               xreflabel="public.domain_nameserver">
+        <title id="public.table.domain-nameserver-title">
+         Table:
+         
+         <structname>domain_nameserver</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>domain_nameserver</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;domain_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>md5</structfield></term>
+              <listitem><para>
+                <type>character varying(32)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>sha1</structfield></term>
+              <listitem><para>
+                <type>character varying(40)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on domain_nameserver</title>
+
+          <varlistentry>
+            <term>idx_feed_domain_nameserver</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_domain_nameserver</term>
+            <listitem><para>md5, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.domain-passivedns"
+               xreflabel="public.domain_passivedns">
+        <title id="public.table.domain-passivedns-title">
+         Table:
+         
+         <structname>domain_passivedns</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>domain_passivedns</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;domain_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>md5</structfield></term>
+              <listitem><para>
+                <type>character varying(32)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>sha1</structfield></term>
+              <listitem><para>
+                <type>character varying(40)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on domain_passivedns</title>
+
+          <varlistentry>
+            <term>idx_feed_domain_passivedns</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_domain_passivedns</term>
+            <listitem><para>md5, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.domain-phishing"
+               xreflabel="public.domain_phishing">
+        <title id="public.table.domain-phishing-title">
+         Table:
+         
+         <structname>domain_phishing</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>domain_phishing</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;domain_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>md5</structfield></term>
+              <listitem><para>
+                <type>character varying(32)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>sha1</structfield></term>
+              <listitem><para>
+                <type>character varying(40)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on domain_phishing</title>
+
+          <varlistentry>
+            <term>idx_feed_domain_phishing</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_domain_phishing</term>
+            <listitem><para>md5, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.domain-search"
+               xreflabel="public.domain_search">
+        <title id="public.table.domain-search-title">
+         Table:
+         
+         <structname>domain_search</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>domain_search</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;domain_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>md5</structfield></term>
+              <listitem><para>
+                <type>character varying(32)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>sha1</structfield></term>
+              <listitem><para>
+                <type>character varying(40)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on domain_search</title>
+
+          <varlistentry>
+            <term>idx_feed_domain_search</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_domain_search</term>
+            <listitem><para>md5, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.domain-suspicious"
+               xreflabel="public.domain_suspicious">
+        <title id="public.table.domain-suspicious-title">
+         Table:
+         
+         <structname>domain_suspicious</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>domain_suspicious</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;domain_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>md5</structfield></term>
+              <listitem><para>
+                <type>character varying(32)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>sha1</structfield></term>
+              <listitem><para>
+                <type>character varying(40)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on domain_suspicious</title>
+
+          <varlistentry>
+            <term>idx_feed_domain_suspicious</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_domain_suspicious</term>
+            <listitem><para>md5, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.domain-whitelist"
+               xreflabel="public.domain_whitelist">
+        <title id="public.table.domain-whitelist-title">
+         Table:
+         
+         <structname>domain_whitelist</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>domain_whitelist</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;domain_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>md5</structfield></term>
+              <listitem><para>
+                <type>character varying(32)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>sha1</structfield></term>
+              <listitem><para>
+                <type>character varying(40)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on domain_whitelist</title>
+
+          <varlistentry>
+            <term>idx_feed_domain_whitelist</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_domain_whitelist</term>
+            <listitem><para>md5, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.email"
+               xreflabel="public.email">
+        <title id="public.table.email-title">
+         Table:
+         
+         <structname>email</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>email</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.email-phishing"
+               xreflabel="public.email_phishing">
+        <title id="public.table.email-phishing-title">
+         Table:
+         
+         <structname>email_phishing</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>email_phishing</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;email_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on email_phishing</title>
+
+          <varlistentry>
+            <term>idx_feed_email_phishing</term>
+            <listitem><para>address, detecttime DESC, severity DESC, confidence DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.email-registrant"
+               xreflabel="public.email_registrant">
+        <title id="public.table.email-registrant-title">
+         Table:
+         
+         <structname>email_registrant</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>email_registrant</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;email_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on email_registrant</title>
+
+          <varlistentry>
+            <term>idx_feed_email_registrant</term>
+            <listitem><para>address, detecttime DESC, severity DESC, confidence DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.email-search"
+               xreflabel="public.email_search">
+        <title id="public.table.email-search-title">
+         Table:
+         
+         <structname>email_search</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>email_search</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;email_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on email_search</title>
+
+          <varlistentry>
+            <term>idx_feed_email_search</term>
+            <listitem><para>address, detecttime DESC, severity DESC, confidence DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.feed"
+               xreflabel="public.feed">
+        <title id="public.table.feed-title">
+         Table:
+         
+         <structname>feed</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>feed</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+                <literal>DEFAULT &apos;feed&apos;::text</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>hash_sha1</structfield></term>
+              <listitem><para>
+                <type>character varying(40)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>signature</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>impact</structfield></term>
+              <listitem><para>
+                <type>character varying(140)</type>
+
+
+
+
+
+                <literal>DEFAULT &apos;feed&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>data</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on feed</title>
+
+          <varlistentry>
+            <term>idx_feed</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.feed-search"
+               xreflabel="public.feed_search">
+        <title id="public.table.feed-search-title">
+         Table:
+         
+         <structname>feed_search</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>feed_search</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;feed_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+                <literal>DEFAULT &apos;feed&apos;::text</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>hash_sha1</structfield></term>
+              <listitem><para>
+                <type>character varying(40)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>signature</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>impact</structfield></term>
+              <listitem><para>
+                <type>character varying(140)</type>
+
+
+
+
+
+                <literal>DEFAULT &apos;feed&apos;::character varying</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>data</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on feed_search</title>
+
+          <varlistentry>
+            <term>idx_feed_feed_search</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.hash"
+               xreflabel="public.hash">
+        <title id="public.table.hash-title">
+         Table:
+         
+         <structname>hash</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>hash</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>hash</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.hash-md5"
+               xreflabel="public.hash_md5">
+        <title id="public.table.hash-md5-title">
+         Table:
+         
+         <structname>hash_md5</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>hash_md5</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;hash_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>hash</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+                <literal>DEFAULT &apos;md5&apos;::text</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on hash_md5</title>
+
+          <varlistentry>
+            <term>idx_feed_hash_md5</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_hash_md5</term>
+            <listitem><para>lower(hash), detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.hash-sha1"
+               xreflabel="public.hash_sha1">
+        <title id="public.table.hash-sha1-title">
+         Table:
+         
+         <structname>hash_sha1</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>hash_sha1</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;hash_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>hash</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+                <literal>DEFAULT &apos;sha1&apos;::text</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on hash_sha1</title>
+
+          <varlistentry>
+            <term>idx_feed_hash_sha1</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_hash_sha1</term>
+            <listitem><para>lower(hash), detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.hash-uuid"
+               xreflabel="public.hash_uuid">
+        <title id="public.table.hash-uuid-title">
+         Table:
+         
+         <structname>hash_uuid</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>hash_uuid</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;hash_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>hash</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+                <literal>DEFAULT &apos;uuid&apos;::text</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on hash_uuid</title>
+
+          <varlistentry>
+            <term>idx_feed_hash_uuid</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_hash_uuid</term>
+            <listitem><para>lower(hash), detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.infrastructure"
+               xreflabel="public.infrastructure">
+        <title id="public.table.infrastructure-title">
+         Table:
+         
+         <structname>infrastructure</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>infrastructure</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>portlist</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>protocol</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.infrastructure-botnet"
+               xreflabel="public.infrastructure_botnet">
+        <title id="public.table.infrastructure-botnet-title">
+         Table:
+         
+         <structname>infrastructure_botnet</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>infrastructure_botnet</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;infrastructure_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>portlist</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>protocol</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on infrastructure_botnet</title>
+
+          <varlistentry>
+            <term>idx_feed_infrastructure_botnet</term>
+            <listitem><para>address, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_infrastructure_botnet</term>
+            <listitem><para>address, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.infrastructure-malware"
+               xreflabel="public.infrastructure_malware">
+        <title id="public.table.infrastructure-malware-title">
+         Table:
+         
+         <structname>infrastructure_malware</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>infrastructure_malware</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;infrastructure_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>portlist</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>protocol</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on infrastructure_malware</title>
+
+          <varlistentry>
+            <term>idx_feed_infrastructure_malware</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_infrastructure_malware</term>
+            <listitem><para>address, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.infrastructure-network"
+               xreflabel="public.infrastructure_network">
+        <title id="public.table.infrastructure-network-title">
+         Table:
+         
+         <structname>infrastructure_network</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>infrastructure_network</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;infrastructure_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>portlist</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>protocol</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on infrastructure_network</title>
+
+          <varlistentry>
+            <term>idx_feed_infrastructure_network</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_infrastructure_network</term>
+            <listitem><para>address, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.infrastructure-passivedns"
+               xreflabel="public.infrastructure_passivedns">
+        <title id="public.table.infrastructure-passivedns-title">
+         Table:
+         
+         <structname>infrastructure_passivedns</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>infrastructure_passivedns</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;infrastructure_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>portlist</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>protocol</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on infrastructure_passivedns</title>
+
+          <varlistentry>
+            <term>idx_feed_infrastructure_passivedns</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_infrastructure_passivedns</term>
+            <listitem><para>address, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.infrastructure-phishing"
+               xreflabel="public.infrastructure_phishing">
+        <title id="public.table.infrastructure-phishing-title">
+         Table:
+         
+         <structname>infrastructure_phishing</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>infrastructure_phishing</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;infrastructure_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>portlist</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>protocol</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on infrastructure_phishing</title>
+
+          <varlistentry>
+            <term>idx_feed_infrastructure_phishing</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_infrastructure_phishing</term>
+            <listitem><para>address, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.infrastructure-scan"
+               xreflabel="public.infrastructure_scan">
+        <title id="public.table.infrastructure-scan-title">
+         Table:
+         
+         <structname>infrastructure_scan</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>infrastructure_scan</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;infrastructure_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>portlist</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>protocol</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on infrastructure_scan</title>
+
+          <varlistentry>
+            <term>idx_feed_infrastructure_scan</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_infrastructure_scan</term>
+            <listitem><para>address, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.infrastructure-search"
+               xreflabel="public.infrastructure_search">
+        <title id="public.table.infrastructure-search-title">
+         Table:
+         
+         <structname>infrastructure_search</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>infrastructure_search</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;infrastructure_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>portlist</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>protocol</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on infrastructure_search</title>
+
+          <varlistentry>
+            <term>idx_feed_infrastructure_search</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_infrastructure_search</term>
+            <listitem><para>address, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.infrastructure-spam"
+               xreflabel="public.infrastructure_spam">
+        <title id="public.table.infrastructure-spam-title">
+         Table:
+         
+         <structname>infrastructure_spam</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>infrastructure_spam</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;infrastructure_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>portlist</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>protocol</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on infrastructure_spam</title>
+
+          <varlistentry>
+            <term>idx_feed_infrastructure_spam</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_infrastructure_spam</term>
+            <listitem><para>address, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.infrastructure-suspicious"
+               xreflabel="public.infrastructure_suspicious">
+        <title id="public.table.infrastructure-suspicious-title">
+         Table:
+         
+         <structname>infrastructure_suspicious</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>infrastructure_suspicious</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;infrastructure_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>portlist</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>protocol</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on infrastructure_suspicious</title>
+
+          <varlistentry>
+            <term>idx_feed_infrastructure_suspicious</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_infrastructure_suspicious</term>
+            <listitem><para>address, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.infrastructure-warez"
+               xreflabel="public.infrastructure_warez">
+        <title id="public.table.infrastructure-warez-title">
+         Table:
+         
+         <structname>infrastructure_warez</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>infrastructure_warez</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;infrastructure_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>portlist</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>protocol</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on infrastructure_warez</title>
+
+          <varlistentry>
+            <term>idx_feed_infrastructure_warez</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_infrastructure_warez</term>
+            <listitem><para>address, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.infrastructure-whitelist"
+               xreflabel="public.infrastructure_whitelist">
+        <title id="public.table.infrastructure-whitelist-title">
+         Table:
+         
+         <structname>infrastructure_whitelist</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>infrastructure_whitelist</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;infrastructure_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>inet</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>portlist</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>protocol</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on infrastructure_whitelist</title>
+
+          <varlistentry>
+            <term>idx_feed_infrastructure_whitelist</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>idx_query_infrastructure_whitelist</term>
+            <listitem><para>address, detecttime DESC, severity DESC, confidence DESC, restriction DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.malware"
+               xreflabel="public.malware">
+        <title id="public.table.malware-title">
+         Table:
+         
+         <structname>malware</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>malware</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>md5</structfield></term>
+              <listitem><para>
+                <type>character varying(32)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>sha1</structfield></term>
+              <listitem><para>
+                <type>character varying(40)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.malware-search"
+               xreflabel="public.malware_search">
+        <title id="public.table.malware-search-title">
+         Table:
+         
+         <structname>malware_search</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>malware_search</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;malware_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>md5</structfield></term>
+              <listitem><para>
+                <type>character varying(32)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>sha1</structfield></term>
+              <listitem><para>
+                <type>character varying(40)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on malware_search</title>
+
+          <varlistentry>
+            <term>idx_feed_malware_search</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.rir"
+               xreflabel="public.rir">
+        <title id="public.table.rir-title">
+         Table:
+         
+         <structname>rir</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>rir</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>rir</structfield></term>
+              <listitem><para>
+                <type>character varying(8)</type>
+
+
+
+
+                      <literal>UNIQUE#1</literal>
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.url"
+               xreflabel="public.url">
+        <title id="public.table.url-title">
+         Table:
+         
+         <structname>url</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>url</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigserial</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.url-botnet"
+               xreflabel="public.url_botnet">
+        <title id="public.table.url-botnet-title">
+         Table:
+         
+         <structname>url_botnet</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>url_botnet</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;url_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on url_botnet</title>
+
+          <varlistentry>
+            <term>idx_feed_url_botnet</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.url-malware"
+               xreflabel="public.url_malware">
+        <title id="public.table.url-malware-title">
+         Table:
+         
+         <structname>url_malware</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>url_malware</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;url_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on url_malware</title>
+
+          <varlistentry>
+            <term>idx_feed_url_malware</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.url-phishing"
+               xreflabel="public.url_phishing">
+        <title id="public.table.url-phishing-title">
+         Table:
+         
+         <structname>url_phishing</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>url_phishing</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;url_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on url_phishing</title>
+
+          <varlistentry>
+            <term>idx_feed_url_phishing</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.url-search"
+               xreflabel="public.url_search">
+        <title id="public.table.url-search-title">
+         Table:
+         
+         <structname>url_search</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>url_search</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>bigint</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval(&apos;url_id_seq&apos;::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>uuid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+                      <literal>UNIQUE</literal>
+
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>address</structfield></term>
+              <listitem><para>
+                <type>text</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>source</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>guid</structfield></term>
+              <listitem><para>
+                <type>uuid</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>confidence</structfield></term>
+              <listitem><para>
+                <type>real</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>severity</structfield></term>
+              <listitem><para>
+                <type>severity</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>restriction</structfield></term>
+              <listitem><para>
+                <type>restriction</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT &apos;private&apos;::restriction</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>detecttime</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>created</structfield></term>
+              <listitem><para>
+                <type>timestamp with time zone</type>
+
+
+
+
+
+                <literal>DEFAULT now()</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on url_search</title>
+
+          <varlistentry>
+            <term>idx_feed_url_search</term>
+            <listitem><para>detecttime DESC, severity DESC, confidence DESC</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+      </para>
+    </section>
+
+
+
+  </chapter>
+
+</book>
+
