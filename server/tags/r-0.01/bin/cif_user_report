@@ -1,0 +1,120 @@
+#!/usr/bin/perl
+
+use warnings;
+use strict;
+
+# fix lib paths, some may be relative
+BEGIN {
+    require File::Spec;
+    my @libs = ("lib", "local/lib");
+    my $bin_path;
+
+    for my $lib (@libs) {
+        unless ( File::Spec->file_name_is_absolute($lib) ) {
+            unless ($bin_path) {
+                if ( File::Spec->file_name_is_absolute(__FILE__) ) {
+                    $bin_path = ( File::Spec->splitpath(__FILE__) )[1];
+                }
+                else {
+                    require FindBin;
+                    no warnings "once";
+                    $bin_path = $FindBin::Bin;
+                }
+            }
+            $lib = File::Spec->catfile( $bin_path, File::Spec->updir, $lib );
+        }
+        unshift @INC, $lib;
+    }
+
+}
+
+use Getopt::Std;
+require CIF::Archive;
+require CIF::WebAPI::APIKey;
+use Data::Dumper;
+use MIME::Lite;
+use DateTime;
+use DateTime::Format::DateParse;
+use Text::Table;
+
+my %opts;
+getopts('nhL:t:e:',\%opts);
+my $limit   = $opts{'L'} || 100;
+my $time    = $opts{'t'} || (time() - 86400);
+my $admin   = $opts{'e'} || 'root';
+my $noemail = $opts{'n'} || 0;
+die usage() if($opts{'h'});
+
+sub usage {
+    return << "EOF";
+Usage: perl $0
+    -h  --help:     this message
+    -L  --limit:    result limit, default: $limit
+    -e  --email:    email to send the report to, default: $admin
+    -t  --time:     what the start time/date of the report should be, default: $time
+    -n  --noemail:  print to stdout instead of mail
+
+Examples:
+    perl $0
+    perl $0 -L 25
+    perl $0 -L 25 -t 2011-01-01
+    perl $0 -e 'admin\@example.com'
+EOF
+}
+
+if($time =~ /^\d+$/){
+    $time = DateTime->from_epoch(epoch => $time);
+} else {
+    $time = DateTime::Format::DateParse->parse_datetime($time) || die('time format: '.$time.' not supported');
+}
+$time = $time->ymd().'T'.$time->hms().'Z';
+
+my $reporttime = DateTime->from_epoch(epoch => time());
+$reporttime = $reporttime->ymd().'T'.$reporttime->hms().'Z';
+
+my $p = 'CIF::Archive';
+$p->set_sql('user_count' => qq{
+    SELECT count(source),source
+    FROM __TABLE__
+    WHERE created >= '$time' AND created < '$reporttime'
+    AND description like 'search %'
+    GROUP BY source
+    ORDER BY count DESC
+});
+
+my @recs = $p->search_user_count();
+my @apikeys = CIF::WebAPI::APIKey->retrieve_all();
+my @sources;
+foreach my $k (@apikeys){
+    my $hashed = CIF::Utils::genSourceUUID($k->uuid());
+    foreach my $r (@recs){
+       $r->{'uuid_alias'} = $k->uuid_alias() if($r->source() eq $hashed); 
+    }
+}
+
+my @cols = ('count','source','uuid_alias');
+my $table = Text::Table->new(@cols);
+if($#recs > -1){
+    $limit = $#recs+1 if($limit > $#recs);
+    foreach (0 ... $limit-1){
+        my $r = $recs[$_];
+        $table->load([ map { $r->{$_} } @cols ]);
+    }
+}
+
+my $report = <<"EOF";
+Report Window: $time - $reporttime
+
+$table
+
+EOF
+
+unless($noemail){
+    my $msg = MIME::Lite->new(
+        To      => $admin,
+        Subject => 'CIF User Report',
+        Data    => $report,
+    )->send() || die($!);
+} else {
+    print $report;
+}
