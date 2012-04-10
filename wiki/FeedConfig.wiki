@@ -5,6 +5,22 @@
 CIF comes with a variety of pre-built feed configurations, with that there are ways to create your own configs for various custom feeds.
 
 = Details =
+
+== File Format ==
+{{{
+#Global Parameters
+<parameter> = <value>
+<parameter> = <value>
+<parameter> = <value>
+
+#Feed Parameters
+[feed_name]
+<parameter> = <value>
+<parameter> = <value>
+<parameter> = <value>
+}}}
+
+
 == Common Parameters ==
 || Parameter Name || Values || Description || Required ||
 || address || <ip_address><url><domain> || || yes ||
