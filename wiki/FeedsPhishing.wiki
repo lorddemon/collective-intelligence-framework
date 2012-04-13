@@ -13,9 +13,9 @@ Typically addresses that have been enumerated from phishing domains. Confidence 
 
 === API ===
 {{{
-GET https://cif.example.com:443/api/infrastructure/phishing?confidence=95&severity=medium
-GET https://cif.example.com:443/api/infrastructure/phishing?confidence=85&severity=medium
-GET https://cif.example.com:443/api/infrastructure/phishing?confidence=40&severity=medium
+GET https://cif.example.com:443/api/infrastructure/phishing?confidence=95&severity=medium&apikey=XXX
+GET https://cif.example.com:443/api/infrastructure/phishing?confidence=85&severity=medium&apikey=XXX
+GET https://cif.example.com:443/api/infrastructure/phishing?confidence=40&severity=medium&apikey=XXX
 }}}
 
 === CLI ===
@@ -30,9 +30,9 @@ $ cif -q infrastructure/phishing -c 95 -s medium -p iptables
 Typically addresses that have been enumerated from a phishing url. Confidence tends to be lower than that of a more specific phishing url.
 === API ===
 {{{
-GET https://cif.example.com:443/api/domain/phishing?confidence=95&severity=medium
-GET https://cif.example.com:443/api/domain/phishing?confidence=85&severity=medium
-GET https://cif.example.com:443/api/domain/phishing?confidence=40&severity=medium
+GET https://cif.example.com:443/api/domain/phishing?confidence=95&severity=medium&apikey=XXX
+GET https://cif.example.com:443/api/domain/phishing?confidence=85&severity=medium&apikey=XXX
+GET https://cif.example.com:443/api/domain/phishing?confidence=40&severity=medium&apikey=XXX
 }}}
 
 === CLI ===
@@ -46,9 +46,9 @@ $ cif -q domain/phishing -c 95 -s medium -p bindzone
 == Urls ==
 === API ===
 {{{
-GET https://cif.example.com:443/api/url/phishing?confidence=95&severity=medium
-GET https://cif.example.com:443/api/url/phishing?confidence=85&severity=medium
-GET https://cif.example.com:443/api/url/phishing?confidence=40&severity=medium
+GET https://cif.example.com:443/api/url/phishing?confidence=95&severity=medium&apikey=XXX
+GET https://cif.example.com:443/api/url/phishing?confidence=85&severity=medium&apikey=XXX
+GET https://cif.example.com:443/api/url/phishing?confidence=40&severity=medium&apikey=XXX
 }}}
 
 === CLI ===
@@ -64,9 +64,9 @@ Typically reply-to type drop boxes used in phishing attempts.
 
 === API ===
 {{{
-GET https://cif.example.com:443/api/email/phishing?confidence=95&severity=medium
-GET https://cif.example.com:443/api/email/phishing?confidence=85&severity=medium
-GET https://cif.example.com:443/api/email/phishing?confidence=40&severity=medium
+GET https://cif.example.com:443/api/email/phishing?confidence=95&severity=medium&apikey=XXX
+GET https://cif.example.com:443/api/email/phishing?confidence=85&severity=medium&apikey=XXX
+GET https://cif.example.com:443/api/email/phishing?confidence=40&severity=medium&apikey=XXX
 }}}
 
 === CLI ===
