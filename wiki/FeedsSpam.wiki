@@ -8,9 +8,9 @@ The [TaxonomyImpact#Spam spam] assessment is typically a [TaxonomySeverity#Mediu
 == Infrastructure ==
 === API ===
 {{{
-GET https://cif.example.com:443/api/infrastructure/spam?confidence=95&severity=medium
-GET https://cif.example.com:443/api/infrastructure/spam?confidence=85&severity=medium
-GET https://cif.example.com:443/api/infrastructure/spam?confidence=40&severity=medium
+GET https://cif.example.com:443/api/infrastructure/spam?confidence=95&severity=medium&apikey=XXX
+GET https://cif.example.com:443/api/infrastructure/spam?confidence=85&severity=medium&apikey=XXX
+GET https://cif.example.com:443/api/infrastructure/spam?confidence=40&severity=medium&apikey=XXX
 }}}
 
 === CLI ===
