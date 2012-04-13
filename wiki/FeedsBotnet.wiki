@@ -8,9 +8,9 @@ The [TaxonomyImpact#Botnet botnet] assessment is typically a [TaxonomySeverity#H
 == Infrastructure ==
 === API ===
 {{{
-GET https://cif.example.com:443/api/infrastructure/botnet?confidence=95
-GET https://cif.example.com:443/api/infrastructure/botnet?confidence=85
-GET https://cif.example.com:443/api/infrastructure/botnet?confidence=40
+GET https://cif.example.com:443/api/infrastructure/botnet?confidence=95&apikey=XXX
+GET https://cif.example.com:443/api/infrastructure/botnet?confidence=85&apikey=XXX
+GET https://cif.example.com:443/api/infrastructure/botnet?confidence=40&apikey=XXX
 }}}
 
 === CLI ===
@@ -24,9 +24,9 @@ $ cif -q infrastructure/botnet -c 95 -p iptables
 == Domains ==
 === API ===
 {{{
-GET https://cif.example.com:443/api/domain/botnet?confidence=95
-GET https://cif.example.com:443/api/domain/botnet?confidence=85
-GET https://cif.example.com:443/api/domain/botnet?confidence=40
+GET https://cif.example.com:443/api/domain/botnet?confidence=95&apikey=XXX
+GET https://cif.example.com:443/api/domain/botnet?confidence=85&apikey=XXX
+GET https://cif.example.com:443/api/domain/botnet?confidence=40&apikey=XXX
 }}}
 
 === CLI ===
@@ -40,9 +40,9 @@ $ cif -q domain/botnet -c 95 -p snort
 == Urls ==
 === API ===
 {{{
-GET https://cif.example.com:443/api/url/botnet?confidence=95
-GET https://cif.example.com:443/api/url/botnet?confidence=85
-GET https://cif.example.com:443/api/url/botnet?confidence=40
+GET https://cif.example.com:443/api/url/botnet?confidence=95&apikey=XXX
+GET https://cif.example.com:443/api/url/botnet?confidence=85&apikey=XXX
+GET https://cif.example.com:443/api/url/botnet?confidence=40&apikey=XXX
 }}}
 
 === CLI ===
