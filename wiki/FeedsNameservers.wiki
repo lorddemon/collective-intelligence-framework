@@ -8,9 +8,9 @@ The [TaxonomyImpact#Nameserver suspicious name-server] assessment is typically a
 == Domains ==
 === API ===
 {{{
-GET https://cif.example.com:443/api/domain/nameserver?confidence=95&severity=medium
-GET https://cif.example.com:443/api/domain/nameserver?confidence=85&severity=medium
-GET https://cif.example.com:443/api/domain/nameserver?confidence=40&severity=medium
+GET https://cif.example.com:443/api/domain/nameserver?confidence=95&severity=medium&apikey=XXX
+GET https://cif.example.com:443/api/domain/nameserver?confidence=85&severity=medium&apikey=XXX
+GET https://cif.example.com:443/api/domain/nameserver?confidence=40&severity=medium&apikey=XXX
 }}}
 
 === CLI ===
