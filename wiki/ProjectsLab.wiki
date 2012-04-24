@@ -28,7 +28,7 @@ This is a collection of projects and ideas based on CIF. Here you'll find two th
  * grease monkey integration
 
 == Infrastructure Related Goodies ==
- * [http://ossectools.blogspot.com/2012/04/accelerating-cif-with-sphinx.html Sphinx] Integration
+ * [http://ossectools.blogspot.com/2012/04/accelerating-cif-with-sphinx.html Sphinx] Integration ([https://github.com/mcholste/cif-rest-sphinx repo])
  * snort domains output plugin
  * nfsen lookup module
  * amazon EC2 guide
