@@ -1,11 +1,13 @@
 #summary a recipe book of goodies
 #labels Phase-Implementation,Client,Phase-Deploy
 
-= Splunk =
+= SEM integration =
  * http://eyeis.net/2012/04/querying-cif-data-from-splunk/
+ * http://code.google.com/p/collective-intelligence-framework/wiki/ElsaGuide
 
 = Tips and Tricks =
- # aliases are fun.. vi ~/.profile (or .bashrc):
+ * http://ossectools.blogspot.com/2012/04/accelerating-cif-with-sphinx.html
+ * aliases are fun.. vi ~/.profile (or .bashrc):
 {{{
 alias ci1='cif -C ~/.cif1'
 alias ci2='cif -C ~/.cif2'
