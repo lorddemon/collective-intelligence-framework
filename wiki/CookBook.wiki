@@ -4,6 +4,7 @@
 = SEM integration =
  * http://eyeis.net/2012/04/querying-cif-data-from-splunk/
  * http://code.google.com/p/collective-intelligence-framework/wiki/ElsaGuide
+ * http://dfirjournal.wordpress.com/2012/04/28/cif-integration-with-arcsight/
 
 = Tips and Tricks =
  * http://ossectools.blogspot.com/2012/04/accelerating-cif-with-sphinx.html
