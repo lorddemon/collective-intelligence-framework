@@ -1,0 +1,189 @@
+#summary the Server Installation
+
+<wiki:toc max_depth="3" />
+
+= Preamble =
+ * CIF version 1 beta 1 is *STRICTLY A BETA*
+ * BETA 1 does NOT include analytics and feeds, it only pulls in data and allows you to query the data
+
+= Changes =
+ * Moved from JSON to Google Protocol Buffers (protobuf)
+ * added compression (compress-snappy)
+ * enabled remote database connectivity
+ * split out:
+  * cif-perl (core cif messaging protocol)
+  * cif-dbi-perl (core database interface)
+  * cif-smrt (formally cif_feedparser)
+  * cif-router (formally CIF::WebAPI)
+ * turned cif-router into a driver framework (eg: REST, ZeroMQ are just plugins and can be swapped out)
+ * simplified the CIF::Router api (removed severity and restriction from the api)
+ * simplified the query data model, most things are now just sha1 hash lookups (with the exception of ipv4/6 addresses)
+ * less "index" tables to swap in and out of memory, faster lookups, ip-addr's will probably follow in beta2
+
+= System Requirements =
+These requirements will handle everything on the same box pretty well with the default open source data-sets. The more (bigger) data-sets you add, the more ram / disk space you'll need. The more cores you add, the more threads that can "batch out" the feed parsers (thus, resulting in faster data consumption).
+
+These specs will handle around 10k feeds at once with minimal impact on memory usage. Past that you'll need to start doubling your specs. Virtual machine technology is great for prototyping your implementation and will give you a good baseline of what you'll need for production.
+
+ # an x86-64bit platform
+ # at-least 8GB ram
+ # at-least 4 cores
+ # at-least 100GB of free (after OS install) disk space, which will last you about 6-9 months.
+
+= Prerequisites =
+== Required Services ==
+ # Join the [http://groups.google.com/group/ci-framework mailing list] -- we like to archive the Q & A there. When you ask questions directly, we will usually Cc our responses.
+ # DiskLayout
+ # PostgresInstall
+
+== System Deps ==
+=== Stable ===
+ # [ServerInstall_v1_b1_Squeeze Debian Squeeze]
+=== Unstable ===
+ # [ServerInstall_v1_b1_Generic From Source]
+
+= Install =
+== Server ==
+ # create the index / archive table spaces if you haven't via DiskLayout already (it's OK if you don't want to use LVM, these directories can exist on your root volume if you choose, but performance will increase if these are spread out across many disks):
+{{{
+$ sudo mkdir /mnt/archive
+$ sudo mkdir /mnt/index
+$ sudo chown postgres:postgres /mnt/index
+$ sudo chown postgres:postgres /mnt/archive
+$ sudo chmod 770 /mnt/index
+$ sudo chmod 770 /mnt/archive
+}}}
+ # create your "cif" user/group (the configure script will default to this user "cif")
+{{{
+$ sudo adduser --disabled-password --gecos '' cif
+}}}
+ # if you're upgrading, make sure you've backed up /opt/cifv1/etc appropriately (if you've modified anything inside it)
+ # install the core server interface
+{{{
+$ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01.tar.gz
+$ tar -zxvf cif-0.01.tar.gz
+$ cd cif-0.01
+$ ./configure
+$ make testdeps
+$ make fixdeps
+$ sudo make install
+}}}
+ # if this is a first-time install:
+{{{
+$ sudo make initdb
+$ make tables
+}}}
+ # these types of messages are considered normal:
+{{{
+NOTICE:  table "domain" does not exist, skipping
+}}}
+ # if you're upgrading a previous install you'll need to restart apache2
+{{{
+$ sudo /etc/init.d/apache2 restart
+}}}
+== Configuration ==
+=== Apache2 ===
+ # enable the default-ssl site (debian):
+{{{
+$ sudo a2ensite default-ssl
+$ sudo a2enmod apreq
+$ sudo a2enmod ssl
+}}}
+ # unless you know what you're doing with virtual hosts, comment out the port-80 stuff in /etc/apache2/ports.conf
+{{{
+# If you just change the port or add more ports here, you will likely also
+# have to change the VirtualHost statement in
+# /etc/apache2/sites-enabled/000-default
+# This is also true if you have upgraded from before 2.2.9-3 (i.e. from
+# Debian etch). See /usr/share/doc/apache2.2-common/NEWS.Debian.gz and
+# README.Debian.gz
+
++ #NameVirtualHost *:80
++ #Listen 80
+
+<IfModule mod_ssl.c>
+    # If you add NameVirtualHost *:443 here, you will also have to change
+    # the VirtualHost statement in /etc/apache2/sites-available/default-ssl
+    ...
+}}}
+ # configure apache2, add this line to your default-ssl site (or default if you're not using TLS)
+{{{
+<IfModule mod_ssl.c>
+<VirtualHost _default_:443>
++      PerlRequire /opt/cif/bin/webapi.pl
++      Include /etc/apache2/cif.conf
+....
+}}}
+ # create your config at /etc/apache2/cif.conf, which should look like:
+{{{
+<Location /api>
+    SetHandler perl-script
+    PerlResponseHandler CIF::Router::REST
+    PerlSetVar CIFRouterRESTConfig "/home/cif/.cif"
+</Location>
+
+}}}
+ # add your "www-data" user (whoever apache is set to run under) to the group "cif" (/etc/group):
+{{{
+$ sudo adduser www-data cif
+}}}
+ # restart apache2
+=== CIF Config ===
+ # log in as the cif user:
+{{{
+$ sudo su - cif
+}}}
+ # modify your local path, vi ~/.profile
+{{{
+if [ -d "/opt/cif/bin" ]; then
+    PATH="/opt/cif/bin:$PATH"
+fi
+}}}
+ # make a directory for your backups, where possible make this an NFS mount or SSHFS mount to another server
+{{{
+$ mkdir backups
+}}}
+ # generate your initial apikey to be used with your [ClientSetup client]
+{{{
+$ cif_apikeys -u myuser@mydomain.com -a -g everyone -G everyone
+userid              key                                  description guid                                 default_guid access write revoked created                     
+myuser@mydomain.com 4c3b44b2-8196-4af9-a77c-afb182793544             8c864306-d21a-37b1-8705-746a786719bf true         all                  2011-10-25 11:40:58.81532+00
+}}}
+ # check to make sure your 'guid' has _*8c864306-d21a-37b1-8705-746a786719bf*_ in it. If it doesn't you won't be able to see all the default, public data that's permissioned to the 'everyone' group in your system
+ # to list all of your apikeys:
+{{{
+$ cif_apikeys -l
+}}}
+ # cif_apikeys -h will give you an example of how to use the tool
+
+== Load Data ==
+ # log in as the cif user (sudo su - cif)
+ # perform [Tools_cif_crontool cif_crontool's] "first run" to prime the database with it's initial intel (should take about 30min).
+{{{
+$ time /opt/cif/bin/cif_crontool -f -d && /opt/cif/bin/cif_crontool -d -p daily && /opt/cif/bin/cif_crontool -d -p hourly
+}}}
+== Finishing up ==
+ # log into the cif user (sudo su - cif) and modify it's cron tab (crontab -e)
+{{{
+# set the path
+PATH=/bin:/usr/local/bin:/opt/cif/bin
+
+# pull feed data
+05     *       * * * /opt/cif/bin/cif_crontool -p hourly -T low &> /dev/null
+30     00      * * * /opt/cif/bin/cif_crontool -p daily -T low &> /dev/null
+
+# update the feeds
+45     *       * * * /opt/cif/bin/cif_feeds &> /dev/null
+}}}
+ # or if you want to setup logging (as an example)
+{{{
+# set the path
+PATH=/bin:/usr/local/bin:/opt/cif/bin
+
+# pull feed data
+05     *       * * * /opt/cif/bin/cif_crontool -p hourly -T low >> /home/cif/crontool_hourly.log 2>&1
+30     00      * * * /opt/cif/bin/cif_crontool -p daily -T low >> /home/cif/crontool_daily.log 2>&1
+
+# update the feeds
+45     *       * * * /opt/cif/bin/cif_feeds >> /home/cif/feeds.log 2>&1
+}}}
