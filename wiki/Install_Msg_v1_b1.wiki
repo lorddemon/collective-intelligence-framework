@@ -1,0 +1,9 @@
+{{{
+wget http://collective-intelligence-framework.googlecode.com/files/cif-perl-0.99.01.tar.gz
+tar -zxvf cif-perl-0.99.01.tar.gz
+cd cif-perl-0.99.01
+./configure
+make testdeps
+sudo make fixdeps
+sudo make install
+}}}
