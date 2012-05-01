@@ -1,0 +1,9 @@
+ # if this is a first-time install:
+{{{
+$ sudo make initdb
+$ make tables
+}}}
+ # these types of messages are considered normal:
+{{{
+NOTICE:  table "domain" does not exist, skipping
+}}}
