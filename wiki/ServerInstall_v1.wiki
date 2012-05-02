@@ -135,7 +135,7 @@ $ cif_apikeys -l
 $ sudo su - cif
 $ vi ~/.cif
 }}}
-# edit ~/.cif using this as a template:
+ # edit ~/.cif using this as a template:
 {{{
 [db]
 host = 127.0.0.1
