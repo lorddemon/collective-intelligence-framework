@@ -3,10 +3,8 @@
 <wiki:toc max_depth="3" />
 
 = Preamble =
- * You *cannot run this beta on the same box as CIF 0.01*, it will break stuff, you will loose your data, you will be angry with me.
- * 0.99.02 does NOT include analytics and feeds, it only pulls in data and allows you to query the data
-
-= Changes =
+== Changes==
+=== 0.01 to 0.99.01 ==
  * Moved from JSON to Google Protocol Buffers (protobuf)
  * added compression (compress-snappy)
  * enabled remote database connectivity
@@ -18,7 +16,12 @@
  * turned cif-router into a driver framework (eg: REST, ZeroMQ are just plugins and can be swapped out)
  * simplified the CIF::Router api (removed severity and restriction from the api)
  * simplified the query data model, most things are now just sha1 hash lookups (with the exception of ipv4/6 addresses)
- * less "index" tables to swap in and out of memory, faster lookups, ip-addr's will probably follow in beta2
+ * less "index" tables to swap in and out of memory, faster lookups, ip-addr's will follow in upcoming beta's
+
+== Known Issues ==
+ * You *cannot run this beta on the same box as CIF 0.01*, it will break stuff, you will loose your data, you will be angry with me.
+ * This *BETA* does NOT include analytics and feeds, it only pulls in data and allows you to query the data
+
 
 = System Requirements =
 These requirements will handle everything on the same box pretty well with the default open source data-sets. The more (bigger) data-sets you add, the more ram / disk space you'll need. The more cores you add, the more threads that can "batch out" the feed parsers (thus, resulting in faster data consumption).
@@ -42,8 +45,9 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 === Unstable ===
  # [ServerInstall_v1_b1_Generic From Source]
 
-= Install =
-== Disk Layout ==
+= Server =
+== Install ==
+=== Disk Layout ===
  # create the index / archive table spaces if you haven't via DiskLayout already (it's OK if you don't want to use LVM, these directories can exist on your root volume if you choose, but performance will increase if these are spread out across many disks):
 {{{
 $ sudo mkdir /mnt/archive
@@ -57,7 +61,7 @@ $ sudo chmod 770 /mnt/archive
 {{{
 $ sudo adduser --disabled-password --gecos '' cif
 }}}
-== Core Message Protocol ==
+=== Core Message Protocol ===
  # this is the core protocol used to access the api (CIF::Message)
 {{{
 wget http://collective-intelligence-framework.googlecode.com/files/cif-perl-0.99.01.tar.gz
@@ -68,7 +72,7 @@ make testdeps
 sudo make fixdeps
 sudo make install
 }}}
-== Database Interface ==
+=== Database Interface ===
  # this is the database driver, mostly used by CIF::Router and CIF::Smrt
 {{{
 wget http://collective-intelligence-framework.googlecode.com/files/cif-dbi-perl-0.99.01.tar.gz
@@ -85,7 +89,7 @@ make tables
 {{{
 NOTICE:  table "archive" does not exist, skipping
 }}}
-== Router ==
+=== Router ===
  # this provides a pluggable transport layer (Apache2, ZeroMQ) for the core protocol, it also provides read/write authorization support to the interfaces
 {{{
 wget http://collective-intelligence-framework.googlecode.com/files/cif-router-perl-0.99.01.tar.gz
@@ -96,7 +100,7 @@ make testdeps
 sudo make fixdeps
 sudo make install
 }}}
-== Smrt Parser ==
+=== Smrt Parser ===
 {{{
 wget http://collective-intelligence-framework.googlecode.com/files/cif-smrt-perl-0.99.01.tar.gz
 tar -zxvf cif-smrt-perl-0.99.01.tar.gz
@@ -107,8 +111,8 @@ sudo make fixdeps
 sudo make install
 }}}
 
-= Configuration =
-== Profile ==
+== Configuration ==
+=== Profile ===
  # log in as the cif user:
 {{{
 $ sudo su - cif
@@ -119,7 +123,7 @@ if [ -d "/opt/cif/bin" ]; then
     PATH="/opt/cif/bin:$PATH"
 fi
 }}}
-== APIKey ==
+=== APIKey ===
  # generate your initial apikey
 {{{
 $ cif_apikeys -u myuser@mydomain.com -a -g everyone -G everyone
@@ -132,7 +136,21 @@ myuser@mydomain.com 4c3b44b2-8196-4af9-a77c-afb182793544             8c864306-d2
 $ cif_apikeys -l
 }}}
  # cif_apikeys -h will give you an example of how to use the tool
-== Apache2 ==
+=== Basic Configuration ===
+ # log into the cif user:
+{{{
+$ sudo su - cif
+$ vi ~/.cif
+}}}
+# edit ~/.cif using this as a template:
+{{{
+[db]
+host = 127.0.0.1
+user = postgres
+password =
+database = cif
+}}}
+=== Apache2 ===
  # enable the default-ssl site (debian):
 {{{
 $ sudo a2ensite default-ssl
@@ -178,3 +196,30 @@ $ sudo a2enmod ssl
 $ sudo adduser www-data cif
 }}}
  # restart apache2
+
+= Client =
+== Installation ==
+{{{
+wget http://collective-intelligence-framework.googlecode.com/files/cif-client-perl-0.99.01.tar.gz
+tar -zxvf cif-client-perl-0.99.01.tar.gz
+cd cif-client-perl-0.99.01
+./configure
+make testdeps
+sudo make fixdeps
+sudo make install
+}}}
+== Configuration ==
+ # edit ~/.cif using this as a template:
+{{{
+[client]
+timeout = 60
+apikey = XXXXXXX
+
+[client_rest]
+host = https://localhost:443/api
+verify_tls = 0
+
+# for future use
+# [client_zeromq]
+# host = tcp://localhost:5555
+}}}
