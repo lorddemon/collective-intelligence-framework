@@ -25,7 +25,7 @@
  * [API]
   * PerlExample
   * PythonExample
- * [ServerInstall_Beta3 Server]
+ * [ServerInstall Server]
   * [ServerBackup Backup]
   * [GroupSupport Group Support]
   * [RTCIFMinimal RT Plugin]
