@@ -36,9 +36,9 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 === Stable ===
  # [ServerInstall_Lenny Debian Lenny]
  # [ServerInstall_Squeeze Debian Squeeze]
+ # [ServerInstall_Ubuntu10 [X|K|U]buntu v10]
 === Unstable ===
  # [ServerInstall_Generic From Source]
- # [ServerInstall_Ubuntu10 Ubuntu v10]
  # [ServerInstall_CentOS6 CentOS 6]
 
 = Install =
