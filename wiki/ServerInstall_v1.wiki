@@ -64,7 +64,7 @@ $ sudo adduser --disabled-password --gecos '' cif
 }}}
 === Core Message Protocol ===
  # this is the core protocol used to access the api (CIF::Message)
- # download the latest tag: https://github.com/downloads/collectiveintel/cif-perl
+ # download the latest tag: https://github.com/collectiveintel/cif-perl/downloads
 {{{
 ./configure
 make testdeps
@@ -73,7 +73,7 @@ sudo make install
 }}}
 === Database Interface ===
  # this is the database driver, mostly used by CIF::Router and CIF::Smrt
- # download the latest tag: https://github.com/downloads/collectiveintel/cif-dbi-perl
+ # download the latest tag: https://github.com/collectiveintel/cif-dbi-perl/downloads
 {{{
 ./configure
 make testdeps
@@ -88,7 +88,7 @@ NOTICE:  table "archive" does not exist, skipping
 }}}
 === Router ===
  # this provides a pluggable transport layer (Apache2, ZeroMQ) for the core protocol, it also provides read/write authorization support to the interfaces
- # download the latest download: https://github.com/downloads/collectiveintel/cif-router-perl/
+ # download the latest download: https://github.com/collectiveintel/cif-router-perl/downloads
 {{{
 ./configure
 make testdeps
@@ -96,7 +96,7 @@ sudo make fixdeps
 sudo make install
 }}}
 === Smrt Parser ===
- # download the latest tag: https://github.com/downloads/collectiveintel/cif-smrt-perl
+ # download the latest tag: https://github.com/collectiveintel/cif-smrt-perl/downloads
 {{{
 ./configure
 make testdeps
