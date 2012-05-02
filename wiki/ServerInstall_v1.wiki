@@ -64,10 +64,8 @@ $ sudo adduser --disabled-password --gecos '' cif
 }}}
 === Core Message Protocol ===
  # this is the core protocol used to access the api (CIF::Message)
+ # download the latest tag: https://github.com/collectiveintel/cif-perl/tags
 {{{
-wget http://collective-intelligence-framework.googlecode.com/files/cif-perl-0.99.01.tar.gz
-tar -zxvf cif-perl-0.99.01.tar.gz
-cd cif-perl-0.99.01
 ./configure
 make testdeps
 sudo make fixdeps
@@ -75,10 +73,8 @@ sudo make install
 }}}
 === Database Interface ===
  # this is the database driver, mostly used by CIF::Router and CIF::Smrt
+ # download the latest tag: https://github.com/collectiveintel/cif-dbi-perl/tags
 {{{
-wget http://collective-intelligence-framework.googlecode.com/files/cif-dbi-perl-0.99.01.tar.gz
-tar -zxvf cif-dbi-perl-0.99.01.tar.gz
-cd cif-dbi-perl-0.99.01
 ./configure
 make testdeps
 sudo make fixdeps
@@ -92,20 +88,16 @@ NOTICE:  table "archive" does not exist, skipping
 }}}
 === Router ===
  # this provides a pluggable transport layer (Apache2, ZeroMQ) for the core protocol, it also provides read/write authorization support to the interfaces
+ # download the latest tag: https://github.com/collectiveintel/cif-router-perl/tags
 {{{
-wget http://collective-intelligence-framework.googlecode.com/files/cif-router-perl-0.99.01.tar.gz
-tar -zxvf cif-router-perl-0.99.01.tar.gz
-cd cif-router-perl-0.99.01
 ./configure
 make testdeps
 sudo make fixdeps
 sudo make install
 }}}
 === Smrt Parser ===
+ # download the latest tag: https://github.com/collectiveintel/cif-smrt-perl/tags
 {{{
-wget http://collective-intelligence-framework.googlecode.com/files/cif-smrt-perl-0.99.01.tar.gz
-tar -zxvf cif-smrt-perl-0.99.01.tar.gz
-cd cif-smrt-perl-0.99.01
 ./configure
 make testdeps
 sudo make fixdeps
