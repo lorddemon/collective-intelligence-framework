@@ -5,8 +5,11 @@
  1. *Performance* p5-JSON-XS will solve some performance issues for you
 == RedHat ==
  1. *TLS* there have been reports of TLS "read" errors on older versions of REHL (5.4, etc), the cause is still unknown.
-== Proxies ==
- 1. if the server requires a *proxy*, some perl dep's will *fail to install*, most likely LWP::Protocol::https. The work-around is to install this dep manually to bypass the connectivity tests:
+== TLS Issues ==
+ 1. if the server requires a *proxy*, some perl dep's will *fail to install*, most likely LWP::Protocol::https.
+ 1. in some cases where LWP::Protocol::https fails to install you might see "*Can't locate object method "ssl_opts" via package "LWP::UserAgent"*"... too.
+
+The work-around is to install this dep manually to bypass the connectivity tests:
 {{{
 $ wget http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/LWP-Protocol-https-6.02.tar.gz
 $ tar -zxvf LWP-Protocol-https-6.02.tar.gz
