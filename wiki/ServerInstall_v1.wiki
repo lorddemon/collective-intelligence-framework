@@ -47,8 +47,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  # [ServerInstall_v1_Generic From Source]
 
 = Server =
-== Install ==
-=== Disk Layout ===
+== Disk Layout ==
  # create the index / archive table spaces if you haven't via DiskLayout already (it's OK if you don't want to use LVM, these directories can exist on your root volume if you choose, but performance will increase if these are spread out across many disks):
 {{{
 $ sudo mkdir /mnt/archive
@@ -58,13 +57,24 @@ $ sudo chown postgres:postgres /mnt/archive
 $ sudo chmod 770 /mnt/index
 $ sudo chmod 770 /mnt/archive
 }}}
+== Default User ==
  # create your "cif" user/group (the configure script will default to this user "cif")
 {{{
 $ sudo adduser --disabled-password --gecos '' cif
 }}}
+== Install ==
+# the latest packages can be pulled from [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=cif-v1-b1.tar here]
+{{{
+$ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-b1.tar
+$ tar -xvf cif-v1-b1.tar
+cif-client-perl-v0.99.03-1-g0831daf.tar.gz
+cif-dbi-perl-v0.99.02-5-g816d9d6.tar.gz
+cif-perl-v0.99.02-1-gbe4362c.tar.gz
+cif-router-perl-v0.99.02-6-ge70d175.tar.gz
+cif-smrt-perl-v0.99.02-4-gebd1ac3.tar.gz
+}}}
 === Core Message Protocol ===
- # this is the core protocol used to access the api (CIF::Message)
- # download the latest tag: https://github.com/collectiveintel/cif-perl/downloads
+ # cif-perl is the core protocol used to access the api (CIF::Message)
 {{{
 ./configure
 make testdeps
@@ -72,8 +82,7 @@ sudo make fixdeps
 sudo make install
 }}}
 === Database Interface ===
- # this is the database driver, mostly used by CIF::Router and CIF::Smrt
- # download the latest tag: https://github.com/collectiveintel/cif-dbi-perl/downloads
+ # cif-dbi-perl is the database driver, mostly used by CIF::Router and CIF::Smrt
 {{{
 ./configure
 make testdeps
@@ -87,8 +96,7 @@ make tables
 NOTICE:  table "archive" does not exist, skipping
 }}}
 === Router ===
- # this provides a pluggable transport layer (Apache2, ZeroMQ) for the core protocol, it also provides read/write authorization support to the interfaces
- # download the latest download: https://github.com/collectiveintel/cif-router-perl/downloads
+ # cif-router-perl provides a pluggable transport layer (Apache2, ZeroMQ) for the core protocol, it also provides read/write authorization support to the interfaces
 {{{
 ./configure
 make testdeps
@@ -96,7 +104,7 @@ sudo make fixdeps
 sudo make install
 }}}
 === Smrt Parser ===
- # download the latest tag: https://github.com/collectiveintel/cif-smrt-perl/downloads
+ # cif-smrt-perl is the former cif_feedparser, processes feeds and active lists into IODEF
 {{{
 ./configure
 make testdeps
