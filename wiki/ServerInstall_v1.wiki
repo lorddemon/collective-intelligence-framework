@@ -193,6 +193,14 @@ $ sudo a2enmod ssl
 $ sudo adduser www-data cif
 }}}
  # restart apache2
+== Initial Data Load ==
+ # sudo into the cif user and run the cif_crontool
+{{{
+$ sudo su - cif
+$ cd /opt/cif
+$ ./bin/cif_crontool -d
+$ ./bin/cif_crontool -p hourly -d
+}}}
 
 = Client =
 == Installation ==
