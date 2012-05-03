@@ -196,7 +196,7 @@ $ sudo adduser www-data cif
 
 = Client =
 == Installation ==
- # download the latest v0.99.XX tag: https://github.com/collectiveintel/cif-client-perl/tags
+ # download the latest from https://github.com/collectiveintel/cif-client-perl/downloads
 {{{
 ./configure
 make testdeps
