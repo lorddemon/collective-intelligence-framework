@@ -133,6 +133,9 @@ host = 127.0.0.1
 user = postgres
 password =
 database = cif
+
+[router]
+groups = everyone
 }}}
 === APIKey ===
  # generate your initial apikey
@@ -198,10 +201,15 @@ $ sudo adduser www-data cif
 {{{
 $ sudo su - cif
 $ cd /opt/cif
-$ ./bin/cif_crontool -d
-$ ./bin/cif_crontool -p hourly -d
+$ time ./bin/cif_crontool -d
+$ time ./bin/cif_crontool -p hourly -d
 }}}
-
+ # check your database for data
+{{{
+$ psql -U postgres -d cif
+psql> select * from archive order by id desc limit 5;
+psql> select * from infrastructure order by id desc limit 5;
+}}}
 = Client =
 == Installation ==
  # download the latest from https://github.com/collectiveintel/cif-client-perl/downloads
