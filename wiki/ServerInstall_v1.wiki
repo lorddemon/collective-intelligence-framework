@@ -116,6 +116,10 @@ if [ -d "/opt/cif/bin" ]; then
     PATH="/opt/cif/bin:$PATH"
 fi
 }}}
+ # reload your env
+{{{
+$ source ~/.profile
+}}}
 === APIKey ===
  # generate your initial apikey
 {{{
