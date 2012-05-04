@@ -116,6 +116,11 @@ make testdeps
 sudo make fixdeps
 sudo make install
 }}}
+ # sudo in as the cif user and create a few files (work-around for an installer bug):
+{{{
+$ sudo su - cif
+$ touch /opt/cif/etc/whitelist_domains && touch /opt/cif/etc/whitelist_infrastructure
+}}}
 
 == Configuration ==
 === Profile ===
