@@ -4,7 +4,7 @@
 <wiki:toc max_depth="3" />
 
 = Preamble =
- * CIF is considered a technology demo. Although most working bits are considered stable for production use, there are many known architectural limitations that are being worked out in the next release (~ 2013)
+ * CIF is considered a technology demo. Although most working bits are considered stable for production use, there are many known architectural limitations that are being worked out in the next release (~ [https://groups.google.com/d/topic/ci-framework/3-V-zDgW9l0/discussion Summer 2012])
   * the code is written in perl (bad threading, slow)
   * the database is embedded in postgres instead of something like hbase
   * the technology was written to be embedded as a single server, instead of an agent / manager / database relationship setup
