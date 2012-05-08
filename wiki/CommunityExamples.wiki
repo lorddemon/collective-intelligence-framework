@@ -1,0 +1,13 @@
+#summary a page of 3rd party community examples
+
+= Introductions =
+ * https://overhack.wordpress.com/2012/05/07/introduction-to-the-collective-intelligence-framework/
+
+= SEM integration =
+ * http://eyeis.net/2012/04/querying-cif-data-from-splunk/
+ * http://code.google.com/p/collective-intelligence-framework/wiki/ElsaGuide
+ * http://dfirjournal.wordpress.com/2012/04/28/cif-integration-with-arcsight
+ * http://dfirjournal.wordpress.com/2012/04/29/using-cif-to-create-content-for-arcsight-part-1/
+
+= Advanced Stuff =
+ * http://ossectools.blogspot.com/2012/04/accelerating-cif-with-sphinx.html
