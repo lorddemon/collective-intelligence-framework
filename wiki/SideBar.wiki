@@ -1,7 +1,6 @@
- * [Taxonomy]
-  * [TaxonomyImpact Impact Definitions]
-  * [TaxonomySeverity Severity Definitions]
-  * [TaxonomyConfidence Confidence Definitions]
+ * Help
+  * [FAQ]
+  * [http://groups.google.com/group/ci-framework Discussion Group]
  * [ClientSetup Client]
   * OS Clients
    * [ClientSetupDebianLenny Debian Lenny]
@@ -11,6 +10,14 @@
   * Toolbars
    * [FirefoxToolbar Firefox]
    * [ChromeToolbar Chrome]
+ * [ServerInstall Server]
+  * [ServerBackup Backup]
+  * [GroupSupport Group Support]
+  * [RTCIFMinimal RT Plugin]
+ * [Taxonomy]
+  * [TaxonomyImpact Impact Definitions]
+  * [TaxonomySeverity Severity Definitions]
+  * [TaxonomyConfidence Confidence Definitions]
  * [Feeds]
   * [FeedsBotnet]
   * [FeedsMalware]
@@ -25,10 +32,3 @@
  * [API]
   * PerlExample
   * PythonExample
- * [ServerInstall Server]
-  * [ServerBackup Backup]
-  * [GroupSupport Group Support]
-  * [RTCIFMinimal RT Plugin]
- * Help
-  * [FAQ]
-  * [http://groups.google.com/group/ci-framework Discussion Group]
