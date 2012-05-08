@@ -13,7 +13,8 @@ sub prepare {
 __PACKAGE__->set_sql('feed' => qq{
     SELECT COUNT(description),description,severity,confidence,restriction
     FROM
-        (SELECT DISTINCT ON (source,description,severity,confidence,restriction) * FROM __TABLE__) AS t1
+        -- (SELECT DISTINCT ON (source,description,severity,confidence,restriction) * FROM __TABLE__) AS t1
+        feed_search as t1
     WHERE 
         t1.detecttime >= ?
     GROUP BY
