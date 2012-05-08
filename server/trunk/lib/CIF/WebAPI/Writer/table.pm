@@ -54,7 +54,7 @@ sub asBytes{
     if(1 || $args{'conf'}->{'simple'}){
         CIF::Client->hash_simple($hash);
     }
-    my $t = CIF::Client::Plugin::Table->write_out({group_map => 1},$hash->{'data'},undef);
+    my $t = CIF::Client::Plugin::Table->write_out({table_nowarning => 1, group_map => 1},$hash->{'data'},undef);
     return($t);
 }
 
