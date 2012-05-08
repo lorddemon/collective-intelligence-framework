@@ -14,6 +14,9 @@
   * [ServerBackup Backup]
   * [GroupSupport Group Support]
   * [RTCIFMinimal RT Plugin]
+ * [API]
+  * PerlExample
+  * PythonExample
  * [Taxonomy]
   * [TaxonomyImpact Impact Definitions]
   * [TaxonomySeverity Severity Definitions]
@@ -29,6 +32,3 @@
  * [CookBook]
   * [MalwareDomains]
   * [CookBookNFSen NFSen]
- * [API]
-  * PerlExample
-  * PythonExample
