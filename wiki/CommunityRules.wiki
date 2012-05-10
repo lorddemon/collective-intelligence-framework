@@ -1,0 +1,12 @@
+#summary rules to live by
+
+= Introduction =
+
+This doc aims to set the expectations of the CIF community; it's not a set of restrictions but a set of expectations enabling the sharing of good ideas.
+
+= Guidelines =
+
+ # NO Sales Pitches for non-open source, freely available software.
+ # Vendors ARE more than welcome, ultimately we want integration, this is how we train them
+ # Vendors SHALL NOT compare their products to another
+ # we reserve the right to kick anyone off the list for violating any of these guidelines
