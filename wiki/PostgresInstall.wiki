@@ -2,7 +2,7 @@
 <wiki:toc max_depth="3" />
 = Introduction =
 
-This guide will show you how to setup an embedded instance of postgres using localhost. If you need to access the db from another host, modify accordingly. This config assumes you have trusted access to the instance from localhost.
+This guide will show you how to setup an embedded instance of postgres using localhost. This config assumes you have trusted access to the instance from localhost.
 
 Before you begin, you should consult the DiskLayout page for optimum database performance.
 
