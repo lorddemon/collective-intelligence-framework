@@ -23,7 +23,6 @@ sub process {
     my $sw_restriction = $config->{'sharewith_restriction'} || 'private';
     my $guid = $data->{'guid'};
 
-    @sw = split(/,/,$sw[0]);
     my %info = %$data;
 
     $info{'relatedid'}                  = $info{'uuid'};
