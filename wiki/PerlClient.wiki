@@ -1,29 +1,12 @@
 #summary howto install the perl client
+= Table of Contents =
 
-= Known Issues =
-== BSD ==
- 1. *Performance* p5-JSON-XS will solve some performance issues for you
-== RedHat ==
- 1. *TLS* there have been reports of TLS "read" errors on older versions of REHL (5.4, etc), the cause is still unknown.
-== TLS Issues ==
- 1. if the server requires a *proxy*, some perl dep's will *fail to install*, most likely LWP::Protocol::https.
- 1. in some cases where LWP::Protocol::https fails to install you might see "*Can't locate object method "ssl_opts" via package "LWP::UserAgent"*"... too.
-
-The work-around is to install this dep manually to bypass the connectivity tests:
-{{{
-$ wget http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/LWP-Protocol-https-6.02.tar.gz
-$ tar -zxvf LWP-Protocol-https-6.02.tar.gz
-$ cd LWP-Protocol-https-6.02
-$ perl Makefile.PL
-$ make
-$ sudo make install
-}}}
-== MacOS X ==
- 1. *MacOS X 10.7* -- If you install XCode 4.3, you'll need to go to Preferences, install cmdline tools (you'll also need to reg as a developer). You should use [https://developer.apple.com/downloads/index.action 4.2.1] for now if you don't want to reg as developer.
+<wiki:toc max_depth="3" />
 
 = Installation =
 == Distro Helpers ==
- * [PerlClientBSD BSD based]
+ * [PerlClientBSD BSD]
+ * [PerlClientCygwin Cigwin]
 
 == From Source == 
  1. Make sure you have the following dependancies installed:
@@ -35,3 +18,20 @@ $ sudo make install
 $ sudo perl -MCPAN -e 'install CIF::Client'
 }}}
  1. setup your [GlobalConfigurationFile configuration file]
+
+= Known Issues =
+ * BSD *Performance* p5-JSON-XS will solve some performance issues
+ *  *TLS* there have been reports of TLS "read" errors on older versions of REHL (5.4, etc), the cause is still unknown.
+ * TLS Issues
+  * if the server requires a *proxy*, some perl dep's will *fail to install*, most likely LWP::Protocol::https.
+  * in some cases where LWP::Protocol::https fails to install you might see "*Can't locate object method "ssl_opts" via package "LWP::UserAgent"*"... too.
+  * The work-around is to install this dep manually to bypass the connectivity tests:
+{{{
+$ wget http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/LWP-Protocol-https-6.02.tar.gz
+$ tar -zxvf LWP-Protocol-https-6.02.tar.gz
+$ cd LWP-Protocol-https-6.02
+$ perl Makefile.PL
+$ make
+$ sudo make install
+}}}
+ *  *MacOS X 10.7* -- If you install XCode 4.3, you'll need to go to Preferences, install cmdline tools (you'll also need to reg as a developer). You should use [https://developer.apple.com/downloads/index.action 4.2.1] for now if you don't want to reg as developer.
