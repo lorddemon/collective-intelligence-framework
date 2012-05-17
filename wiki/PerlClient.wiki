@@ -6,7 +6,7 @@
 = Installation =
 == Distro Helpers ==
  * [PerlClientBSD BSD]
- * [PerlClientCygwin Cigwin]
+ * [PerlClientCygwin Cygwin]
 
 == From Source == 
  1. Make sure you have the following dependancies installed:
