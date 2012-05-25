@@ -15,7 +15,8 @@ Confidence details the degree of certainty of a given observation.
 == Very Confident (85 - 94) ==
  * vetted data by known, trusted security professionals
  * data that has been vetted by a human or set of known and proven processes
- * proven to be consistent for at-least a year
+ * vetting relationship has been consistent and in-place for at-least 1 year
+ * data feed has been observed for at-least a year
  * data should be highly specific (eg: port/protocols, prefixes should be as narrow as possible)
 
 == Somewhat Confident (75 - 84) ==
