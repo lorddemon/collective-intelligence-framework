@@ -12,7 +12,7 @@ See the official [http://tools.ietf.org/html/rfc5070#section-3.10.4 IODEF] confi
  * proven to be consistent for more than 2 years
  * very specific data (eg: ip+port+protocol, or a specific url, or malware hash)
 
-== Highly Confident (85 - 94) ==
+== Very Confident (85 - 94) ==
  * data that has been vetted by a human or set of known and proven processes
  * proven to be consistent for at-least a year
  * data should be highly specific (eg: port/protocols, prefixes should be as narrow as possible)
