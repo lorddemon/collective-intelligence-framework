@@ -3,7 +3,7 @@
 
 = Introduction =
 
-See the official [http://tools.ietf.org/html/rfc5070#section-3.10.4 IODEF] confidence class.
+Confidence details the degree of certainty of a given observation.
 
 = Details =
 
