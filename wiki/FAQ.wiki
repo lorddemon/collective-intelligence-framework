@@ -51,3 +51,21 @@ The results can be a bit non-obvious. You may get back a list of references for 
 == Is there a client for OS X? ==
 
 The PerlClient and PythonClient work well on OS X. The PythonClient can take a little bit of work to get installed (cython throws some errors from time to time), but if you're just looking for a simple CLI, test out the PerlClient.
+
+== Semi-Random XML Parser Errors (CleanMX) ==
+
+Sometimes, usually with the CleanMX feed you might see something like:
+{{{
+:173111: parser error : Sequence ']]>' not allowed in content
+/mojodownloads.info/dl/index.cgi?cid=114&eid=001&key=mojodownloads1227A]]></url>
+                                                                                ^
+:173111: parser error : internal error
+/mojodownloads.info/dl/index.cgi?cid=114&eid=001&key=mojodownloads1227A]]></url>
+                                                                                ^
+:173111: parser error : Extra content at the end of the document
+/mojodownloads.info/dl/index.cgi?cid=114&eid=001&key=mojodownloads1227A]]></url>
+}}}
+
+This is normal and should be ignored. CleanMX doesn't appear to be producing valid XML from time to time. It's something that needs to be addressed, but have no control over at the moment. See:
+
+https://groups.google.com/forum/?hl=en&fromgroups#!topic/ci-framework/jCgvMZkTOVs
