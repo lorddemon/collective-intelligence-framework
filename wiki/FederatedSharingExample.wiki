@@ -6,6 +6,7 @@ In this use case scenario, there is an institution running CIF (CIF West) that w
 
 [http://i.imgur.com/JNqs1.png]
 
+<wiki:toc max_depth="4" />
 
 =Prerequisites=
 
