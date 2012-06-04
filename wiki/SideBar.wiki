@@ -32,3 +32,4 @@
  * [CookBook]
   * [MalwareDomains]
   * [CookBookNFSen NFSen]
+  * [FederatedSharingExample]
