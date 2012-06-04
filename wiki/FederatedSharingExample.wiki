@@ -89,7 +89,7 @@ confidence_feeds = 95,85
 apikeys = role_everyone_feed, role_sshgroup_feed
 max_days = 2
 disabled_feeds = hash,rir,asn,countrycode,malware
-}}
+}}}
 Feeds will be generated for the primary groups of these ‘role’ users.
 
 
