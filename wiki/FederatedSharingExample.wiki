@@ -74,7 +74,7 @@ alternativeid = 'http://dragonresearchgroup.org/insight/sshpwauth.txt'
 guid = sshgroup
 }}}
 
-The highlighted section is the added configuration required to give sshgroup access to the data from that source. (_Note: If a config value is mostly the same throughout the file, it can be set globally at the top. For example, if this file was for one source, everything could be moved to the top except for the guid to reduce duplication._)
+The *drg_ssh_sshgroup* section is the added configuration required to give sshgroup access to the data from that source. (_Note: If a config value is mostly the same throughout the file, it can be set globally at the top. For example, if this file was for one source, everything could be moved to the top except for the guid to reduce duplication._)
 
 At this point, sshgroup can access the data, but no feeds are generated for sshgroup (i.e. it can send queries for addresses, etc, but queries for feeds like 'infrastructure' will not return data). To generate feeds for sshgroup, the .cif configuration file in the cif home directory (_/home/cif/.cif_) needs to be modified to generate a feed for an additional API key.
 
