@@ -5,7 +5,7 @@
 In this use case scenario, there is an institution running CIF (CIF West) that we (CIF East) want to receive network threats from to proactively block SSH scanners. Each institution has its own CIF instance that receives threat data, normalizes it, and produces feeds for CIF clients.
 
 [http://i.imgur.com/JNqs1.png]
-
+=Table Of Contents=
 <wiki:toc max_depth="4" />
 
 =Prerequisites=
