@@ -8,6 +8,7 @@
  * http://code.google.com/p/collective-intelligence-framework/wiki/ElsaGuide
  * http://dfirjournal.wordpress.com/2012/04/28/cif-integration-with-arcsight
  * http://dfirjournal.wordpress.com/2012/04/29/using-cif-to-create-content-for-arcsight-part-1/
+ * http://ossectools.blogspot.com/2012/06/elsa-with-collective-intelligence.html
 
 = Advanced Stuff =
  * http://ossectools.blogspot.com/2012/04/accelerating-cif-with-sphinx.html
