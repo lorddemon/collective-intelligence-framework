@@ -235,7 +235,7 @@ while (<$fh>) {
 close($fh);
 
 my $dt = DateTime->now;
-my $atom = $dt->ymd('-').'T'.$dt->hms(':').$dt->offset();
+my $atom = $dt->ymd('-').'T'.$dt->hms(':').'Z';
 my $blacklist = "#SSH blacklist generated on $atom\n";
 
 foreach my $offender (keys %offenders){
@@ -256,7 +256,7 @@ foreach my $offender (keys %offenders){
         }
         if ($willblacklist){
                 $dt = DateTime->from_epoch( epoch => $lastseen );
-                $atom = $dt->ymd('-').'T'.$dt->hms(':').$dt->offset();
+                $atom = $dt->ymd('-').'T'.$dt->hms(':').'Z';
                 $lastseen=$atom;
                 $blacklist.="$hostname|||$offender|||$lastseen|||sshfailure\n";
         }
