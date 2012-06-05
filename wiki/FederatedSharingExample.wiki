@@ -7,15 +7,15 @@
 
 This is an example document for sharing data between two entities (sites, orgs, federations...)
 
-In this use case scenario, there is an institution running CIF (CIF West) that we (CIF East) want to receive network threats from to proactively block SSH scanners. Each institution has its own CIF instance that receives threat data, normalizes it, and produces feeds for CIF clients.
+In this use case scenario, there is an entity running CIF (CIF West) that we (CIF East) want to receive network threats from to proactively block SSH scanners. Each entity has its own CIF instance that receives threat data, normalizes it, and produces feeds for CIF clients.
 
-[http://i.imgur.com/JNqs1.png]
+[http://collective-intelligence-framework.googlecode.com/svn/wiki/CIFdiagram.png]
 
 =Prerequisites=
 
 ==CIF Servers==
 
-This use case requires two CIF server installations - one for the institution that will be sharing data (CIF West), and another for the one that will import the data (CIF East).
+This use case requires two CIF server installations - one for the entity that will be sharing data (CIF West), and another for the one that will import the data (CIF East).
 
 Use the following [http://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall guide] to setup the CIF servers.
 
@@ -186,7 +186,7 @@ That specific configuration expects each IP address (or CIDR notation network) t
 
 = Appendix =
 
-The following instructions show how to create threat data from local SSH logs and import it into the CIF server so it can be shared with other servers or another institution. 
+The following instructions show how to create threat data from local SSH logs and import it into the CIF server so it can be shared with other servers or another entity. 
 
 == Configure SSH Servers to Produce Attack Feeds ==
 
