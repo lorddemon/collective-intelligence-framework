@@ -1,12 +1,15 @@
 #summary Federated Sharing Example
 
+=Table Of Contents=
+<wiki:toc max_depth="2" />
+
 =Overview=
+
+This is an example document for sharing data between two entities (sites, orgs, federations...)
 
 In this use case scenario, there is an institution running CIF (CIF West) that we (CIF East) want to receive network threats from to proactively block SSH scanners. Each institution has its own CIF instance that receives threat data, normalizes it, and produces feeds for CIF clients.
 
 [http://i.imgur.com/JNqs1.png]
-=Table Of Contents=
-<wiki:toc max_depth="4" />
 
 =Prerequisites=
 
@@ -14,8 +17,7 @@ In this use case scenario, there is an institution running CIF (CIF West) that w
 
 This use case requires two CIF server installations - one for the institution that will be sharing data (CIF West), and another for the one that will import the data (CIF East).
 
-Use the following guide to setup the CIF servers: 
-[http://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall]
+Use the following [http://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall guide] to setup the CIF servers.
 
 If you don't want to use all of the public feeds that are enabled by default, use the following commands to append .example to the end of all of the feed configs to disable them. 
 {{{
@@ -25,13 +27,11 @@ for f in *.cfg; do mv $f $f.example; done
 
 ==CIF Client on the SSH server==
 
-In this use case, the SSH server needs the CIF client  to receive feeds from CIF East to automatically block SSH scanner addresses. Use the following guide to install the CIF client: 
-[http://code.google.com/p/collective-intelligence-framework/wiki/PerlClient]
+In this use case, the SSH server needs the CIF client  to receive feeds from CIF East to automatically block SSH scanner addresses. Use the following guide to install the PerlClient
 
+= Configuration =
 
-
-
-=Configure the CIF West Instance to Share SSH Feeds=
+== CIF West Instance to Share SSH Feeds ==
 
 To control the data that CIF West shares to CIF East, a new group needs to be created that only has access to unrestricted SSH threat data that it aggregates. 
 
@@ -95,13 +95,9 @@ disabled_feeds = hash,rir,asn,countrycode,malware
 }}}
 Feeds will be generated for the group sets of these 'role' users.
 
+== Import the CIF West Feed into CIF East ==
 
-
-
-
-=Import the CIF West Feed into CIF East=
-
-Currently, the CIF feed parser doesn't support directly adding another CIF server as a feed source due to the encoding used in the API. ([http://code.google.com/p/collective-intelligence-framework/wiki/API#Feed_Queries]) Instead, the CIF client has to be run on the CIF server to pull the feed from the other server, format it and write it to a file so it can be imported. 
+Currently (and ironically), the CIF feed parser doesn't directly support directly adding another CIF server as a feed source due to the encoding used in the [http://code.google.com/p/collective-intelligence-framework/wiki/API#Feed_Queries API]. The CIF client has to be run on the CIF server to pull the feed from the other server, format it and write it to a file so it can be imported. This work is being completed in the next version of CIF (v1).
 
 Create a client configuration file that contains the API key and the URL to the CIF server that the feed will be pulled from. The following example client config is named cifclient_west.cfg:
 {{{
@@ -113,7 +109,7 @@ verify_tls = 0
 }}}
 You can then test it by running `cif -C cifclient_west.cfg -q infrastructure`, which should either return feed data or nothing (i.e. no errors).
 
-Then setup a script as a cron job ([https://help.ubuntu.com/community/CronHowto]) to run the client hourly and save the output as JSON to a file. The following script is an example that saves the output to /home/cif/WEST_infrastructure.json:
+Then setup a script as a [https://help.ubuntu.com/community/CronHowto cron] job to run the client hourly and save the output as JSON to a file. The following script is an example that saves the output to /home/cif/WEST_infrastructure.json:
 {{{
 #!/bin/bash
 cd /home/cif/
@@ -133,11 +129,9 @@ detection = hourly
 
 The CIF East server will now import all of the data from CIF West. The 'source' field is being overwritten to 'CIFWEST' in this case, but it could be imported from the feed by adding it to the 'fields' and 'fields_map' options instead.
 
-More details on the feed configuration options can be found here: [http://code.google.com/p/collective-intelligence-framework/wiki/FeedConfig]
+More details on the feed configuration options can be found [http://code.google.com/p/collective-intelligence-framework/wiki/FeedConfig here]
 
-
-
-=Configure the SSH Server to Retrieve the Infrastructure Feeds from the CIF Server=
+== SSH Server to Retrieve the Infrastructure Feeds from the CIF Server ==
 
 The SSH server should have the CIF client already installed at this point. Run *cif -V* to print the client version. It should be at least v0.1104 for this tutorial.
 
@@ -165,18 +159,13 @@ echo "iptables -X CIF_OUT" >> /root/iptables.sh
 /bin/bash /root/iptables.sh
 }}}
 The first three lines flush the firewall rules to prevent errors from duplicate rules and to make sure old addresses/networks are removed once they are no longer in the feed.
-The third line runs the client with the iptables plugin to retrieve the infrastructure/scan feed. It also restricts the results to high severity results with a confidence level of 95 or higher. For more information on these parameters, refer to the following page: [http://code.google.com/p/collective-intelligence-framework/wiki/Feeds]
+The third line runs the client with the iptables plugin to retrieve the infrastructure/scan feed. It also restricts the results to high severity results with a confidence level of 95 or higher. For more information on these parameters, refer to the following [http://code.google.com/p/collective-intelligence-framework/wiki/Feeds page]
 Rules to log the dropped packets are generated as well. However, a significant amount of traffic from a blocked source can fill logs quickly, so the example above shows how to remove these log rules by piping the cif client output through grep first. 
 The last line is what ultimately inserts the firewall rules by executing the iptables commands placed in /root/iptables.sh
 
-This script could then be run hourly using cron ([https://help.ubuntu.com/community/CronHowto]). Increasing the frequency won't have any benefit since the feeds are only generated by the CIF server on an hourly basis.
+This script could then be run hourly using [https://help.ubuntu.com/community/CronHowto cron]. Increasing the frequency won't have any benefit since the feeds are only generated by the CIF server on an hourly basis.
 
-
-
-
-
-
-=Add a Whitelist=
+== Add a Whitelist ==
 
 Since these data feeds will be used to create firewall rules on servers, it's a good idea to have a method to whitelist known good hosts to prevent them from being blocked even if they generate login failures. 
 
@@ -193,32 +182,19 @@ confidence = 100
 detection = hourly
 }}}
 
-That specific configuration expects each IP address (or CIDR notation network) to be entered as an individual line in the */opt/serverwhitelist.txt* file. To parse a whitelist in a different format, refer to the following guide for designing your own feed parser config:
-[http://code.google.com/p/collective-intelligence-framework/wiki/FeedConfig] 
+That specific configuration expects each IP address (or CIDR notation network) to be entered as an individual line in the */opt/serverwhitelist.txt* file. To parse a whitelist in a different format, refer to the following guide for designing your own feed parser [http://code.google.com/p/collective-intelligence-framework/wiki/FeedConfig config]. 
 
-
-
-
-
-
-
-
-
-
-
-
-
-=Appendix=
+= Appendix =
 
 The following instructions show how to create threat data from local SSH logs and import it into the CIF server so it can be shared with other servers or another institution. 
 
-==Configure SSH Servers to Produce Attack Feeds==
+== Configure SSH Servers to Produce Attack Feeds ==
 
 Parsing SSH log files directly for login failures with CIF wouldn't work too well because a single login failure would cause a host to end up in the CIF database. 
 
 The PHP script included below parses through a log file (the $authlog variable) for sshd password failures and creates a blacklist of IP addresses that cause more than a threshold (the $threshold variable) of failures in a 60 second window and writes it to a file (the $blacklistfile variable) in a format that's easy for a CIF server to parse. 
 
-Put this script in a cron job that runs hourly ([https://help.ubuntu.com/community/CronHowto]). A higher frequency won't help since CIF will only read the blacklist on an hourly or daily basis.
+Put this script in a [https://help.ubuntu.com/community/CronHowto cron] job that runs hourly. A higher frequency won't help since CIF will only read the blacklist on an hourly or daily basis.
 
 The blacklist needs to be accessible by the CIF server to be parsed. In this case the SSH server is also running Apache2, so the blacklist can be accessed directly via HTTP. Another option could be to push the blacklist to another server using SCP. 
 PHP Script to Parse SSH logs for excessive failures
@@ -270,7 +246,7 @@ foreach ($offenses as $ip=>$ipoffenses){
 file_put_contents($blacklistfile,$blacklist);
 }}}
 
-==Import the SSH Attack Feeds into the CIF server==
+== Import the SSH Attack Feeds into the CIF server ==
 
 On the CIF server, create a new config file in */opt/cif/etc/* to pull in the SSH attack feed. The following is an example configuration file (*/opt/cif/etc/eastsshservers.cfg*):
 {{{
