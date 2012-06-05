@@ -1,0 +1,14 @@
+#summary Trying out CIF on Amazon's EC2
+
+= Introduction =
+
+These instructions are for launching a demo EC2 instance of CIF. The image in its default configuration is not meant for production because it has limited disk space. 
+
+= Details =
+
+Currently, the only public AMI is available in the East(Virginia) availability zone. 
+The AMI ID is *ami-b014b5d9*. 
+
+For instructions on launching an EC2 instance, follow the instructions from Amazon's site [http://docs.amazonwebservices.com/AWSEC2/latest/GettingStartedGuide/GetStartedLinux.html]. Once at the *Launch an Instance* step, use the *Classic Wizard* and search for the AMI ID (*ami-b014b5d9*) in the *Community AMIs* tab. 
+
+The only inbound ports that need to be permitted in the security group are TCP 443 for access to the CIF API and TCP 22 for SSH access.
