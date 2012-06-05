@@ -192,58 +192,81 @@ The following instructions show how to create threat data from local SSH logs an
 
 Parsing SSH log files directly for login failures with CIF wouldn't work too well because a single login failure would cause a host to end up in the CIF database. 
 
-The PHP script included below parses through a log file (the $authlog variable) for sshd password failures and creates a blacklist of IP addresses that cause more than a threshold (the $threshold variable) of failures in a 60 second window and writes it to a file (the $blacklistfile variable) in a format that's easy for a CIF server to parse. 
+The Perl script included below parses through a log file (the $authlog variable) for sshd password failures and creates a blacklist of IP addresses that cause more than a threshold (the $threshold variable) of failures in a 60 second window and writes it to a file (the $blacklistfile variable) in a format that's easy for a CIF server to parse. 
 
 Put this script in a [https://help.ubuntu.com/community/CronHowto cron] job that runs hourly. A higher frequency won't help since CIF will only read the blacklist on an hourly or daily basis.
 
 The blacklist needs to be accessible by the CIF server to be parsed. In this case the SSH server is also running Apache2, so the blacklist can be accessed directly via HTTP. Another option could be to push the blacklist to another server using SCP. 
-PHP Script to Parse SSH logs for excessive failures
+Perl Script to Parse SSH logs for excessive failures
 {{{
-#!/usr/bin/php
-<?php
-$authlog="/var/log/auth.log"; //set the path to the auth.log file here
-$blacklistfile="/var/www/sshblacklist.txt";//location to place blacklist
-$threshold=8; //required number of failed login attempts in a 60 second window to blacklist an IP
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Date::Parse;
+use DateTime;
 
-$offenses=array();
-$data=@file_get_contents($authlog);
-if (!$data) die("could not get the contents of '$authlog'. does it exist?\n");
+my $authlog = "/var/log/auth.log"; #set the path to the auth.log file here
+my $blacklistfile = "/var/www/sshblacklist.txt"; #location to place blacklist
+my $threshold = 3; #required number of failed login attempts in a 60 second window to blacklist an IP
 
-$lines=explode("\n",$data);
-
-foreach ($lines as $line){
-        $chunks=explode(" ",$line);
-        if (!isset($chunks[3])) continue;
-        list($month,$day,$time,$hostname,$daemon)=$chunks;
-        if (strpos($daemon,'sshd')!==0) continue;
-        if (strpos($line,'Failed password for ')===false) continue;
-        $unixstamp=strtotime("$month $day $time");
-        $chunks=explode(" from ",$line);
-        list($offendingip)=explode(" ",$chunks[count($chunks)-1]);
-        if (!isset($offenses[$offendingip])) $offenses[$offendingip]=array();
-        $offenses[$offendingip][]=$unixstamp;
+open(my $fh, "<", "$authlog")
+        or die("Could not open $authlog\n");
+my %offenders;
+my $hostname="";
+while (<$fh>) {
+        my $line = $_;
+        my @values = split(' ', $line);
+        if (scalar(@values)<4){ next;}
+        my ($month,$day,$time,$lhostname,$daemon) = @values;
+        $hostname = $lhostname;
+        if (index($daemon,"sshd")!=0){ next;}
+        if (index($line, "Failed password for ")==-1){ next;}
+        my $eventdate = str2time("$month $day $time");
+        my @fromhalves = split(' from ',$line);
+        my @splitsecondtolast = split(' ', $fromhalves[scalar(@fromhalves)-1]);
+        my $offendingip = $splitsecondtolast[0];
+        if (exists($offenders{$offendingip})){
+                push($offenders{$offendingip},$eventdate);
+        } else {
+                my @timestamps = ($eventdate);
+                $offenders{$offendingip} = \@timestamps;
+        }
 }
+close($fh);
 
-$blacklist="#SSH blacklist generated on ".date('r')."\n";
-foreach ($offenses as $ip=>$ipoffenses){
-        $willblacklist=false;
-        $lastseen=0;
-        foreach ($ipoffenses as $basetime){
-                $ctr=0;
-                foreach ($ipoffenses as $time){
-                        if ($time<$basetime) continue;
-                        if (($time-$basetime)>60) continue;
+my $dt = DateTime->now;
+my $atom = $dt->ymd('-').'T'.$dt->hms(':').$dt->offset();
+my $blacklist = "#SSH blacklist generated on $atom\n";
+
+foreach my $offender (keys %offenders){
+        my $willblacklist = 0;
+        my $lastseen = 0;
+        my $t =  $offenders{$offender};
+        my @offenses = @$t;
+        foreach (@offenses){
+                my $ctr=0;
+                my $basetime = $_;
+                foreach (@offenses){
+                        if ($_ < $basetime){ next;}
+                        if (($_ - $basetime)>60){ next;}
                         $ctr++;
                 }
-                if ($ctr>=$threshold) $willblacklist=true;
-                if ($basetime>$lastseen) $lastseen=$basetime;
+                if ($ctr > $threshold){ $willblacklist = 1;}
+                if ($basetime > $lastseen){ $lastseen = $basetime;}
         }
         if ($willblacklist){
-                $lastseen=date(DATE_ATOM,$lastseen);
-                $blacklist.="$hostname|||$ip|||$lastseen|||sshfailure\n";
+                $dt = DateTime->from_epoch( epoch => $lastseen );
+                $atom = $dt->ymd('-').'T'.$dt->hms(':').$dt->offset();
+                $lastseen=$atom;
+                $blacklist.="$hostname|||$offender|||$lastseen|||sshfailure\n";
         }
 }
-file_put_contents($blacklistfile,$blacklist);
+
+open(my $fh_blacklist, ">", "$blacklistfile")
+        or die("Could not open $blacklistfile for writing\n");
+print $fh_blacklist $blacklist;
+close($fh_blacklist);
+exit 0;
 }}}
 
 == Import the SSH Attack Feeds into the CIF server ==
