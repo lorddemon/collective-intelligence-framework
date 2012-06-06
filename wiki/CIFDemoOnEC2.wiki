@@ -12,3 +12,23 @@ The AMI ID is *ami-b014b5d9*.
 For instructions on launching an EC2 instance, follow the instructions from Amazon's site [http://docs.amazonwebservices.com/AWSEC2/latest/GettingStartedGuide/GetStartedLinux.html]. Once at the *Launch an Instance* step, use the *Classic Wizard* and search for the AMI ID (*ami-b014b5d9*) in the *Community AMIs* tab. 
 
 The only inbound ports that need to be permitted in the security group are TCP 443 for access to the CIF API and TCP 22 for SSH access.
+
+= Disable the EC2 Temporary Storage on non-micro Instances =
+
+EC2 provides a temporary storage drive to any instances larger than a micro instance. By default, it is mounted to */mnt/*, which conflicts with the CIF configuration. Edit */etc/fstab* and remove the entry mounting a drive to */mnt* that isn't */dev/xvdf1*. 
+{{{
+LABEL=cloudimg-rootfs   /        ext4   defaults        0 0
+/dev/xvdf1              /mnt    ext4    rw              0 0
+/dev/xvdb  /mnt    auto    defaults,nobootwait,comment=cloudconfig 0 2  #REMOVE THIS LINE
+
+}}}
+
+
+= Configuring CIF =
+
+Once the instance starts up, a few changes need to be made to get it to work. Perform the *CIF Config* and *Load Data* sections from the server install guide [http://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall#CIF_Config]. 
+
+Logging has not been setup, and the entry for analytics in the crontab has been commented out. To enable it, uncomment the following line in the crontab:
+{{{
+*/5 * * * * /opt/cif/bin/cif_analytic -t 4 -m 4000 &> /dev/null
+}}}
