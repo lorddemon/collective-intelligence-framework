@@ -35,18 +35,14 @@ work.
 {{{
 $ sudo su - cif
 }}}
-
  # Add a role key that will be used to generate feeds.
 {{{
 $ cif_apikeys -u role_everyone_feed -a -g everyone -G everyone
 }}}
-
  # Add a CIF user to get an API key that will be used to access CIF with the client. Copy the API key that's generated from this command.
 {{{
 $ cif_apikeys -u myuser@mydomain.com -a -g everyone -G everyone
 }}}
-
-
  # Edit *~/.cif* and paste the following configuration in to generate feeds and setup the client.
 {{{
 [cif_feeds]
@@ -63,12 +59,10 @@ apikey = xx-xx-xx-xx-xx #<<<< Paste in the API key from the last step here
 timeout = 60
 verify_tls = 0
 }}} 
-
  # Run cif_crontool to load data into the database. This should take about 30 minutes to complete. (Without running this command, CIF won't contain any information until the the hourly and daily cron jobs run.)  
 {{{
 $ time /opt/cif/bin/cif_crontool -f -d && /opt/cif/bin/cif_crontool -d -p daily && /opt/cif/bin/cif_crontool -d -p hourly
 }}}
-
  # Generate the first set of feeds. This will take up to 2 hours to complete.
 {{{
 $ time /opt/cif/bin/cif_feeds -d
