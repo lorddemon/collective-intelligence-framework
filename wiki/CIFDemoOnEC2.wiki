@@ -4,40 +4,50 @@
 
 These instructions are for launching a demo EC2 instance of CIF. The image in its default configuration is not meant for production because it has limited disk space. 
 
+A micro instance is good enough for a demo, but performance will be poor if you enable analytics as well. If you want to try analytics, use a larger instance size.
+
 = Details =
 
 Currently, the only public AMI is available in the East(Virginia) region. 
 The AMI ID is *ami-20ba1a49*. 
 
-For instructions on launching an EC2 instance, follow the instructions from Amazon's site [http://docs.amazonwebservices.com/AWSEC2/latest/GettingStartedGuide/GetStartedLinux.html]. Once at the *Launch an Instance* step, use the *Classic Wizard* and search for the AMI ID (*ami-20ba1a49*) in the *Community AMIs* tab. 
+For instructions on launching an EC2 instance, follow the instructions from Amazon's site [http://docs.amazonwebservices.com/AWSEC2/latest/GettingStartedGuide/GetStartedLinux.html]. 
 
-The only inbound ports that need to be permitted in the security group are TCP 443 for access to the CIF API and TCP 22 for SSH access.
+Once at the *Quick Launch Wizard*, select *More Amazon Machine Images* and enter *ami-20ba1a49* in the search box on the next page. Select the resulting image follow the rest of the Amazon guide to get it online.
 
-A micro instance is good enough for a demo, but performance will be poor if you enable analytics as well. If you want to try analytics, use a larger instance size.
+When configuring the security group, the only inbound ports that need to be permitted in the security group are TCP 443 for access to the CIF API and TCP 22 for SSH access.
 
+The username required to connect to the instance is *ubuntu*. SSH authentication is restricted to SSH keys and none of the users have passwords.
+
+SSH Example:
+{{{
+$ ssh -i EC2PrivKey.pem ubuntu@ec2-xx-xx-xx-xx.compute-1.amazonaws.com
+}}}
 
 = Configure CIF =
 
 Once the instance starts up, a few changes need to be made to get it to 
 work. 
 
-# Switch to the cif user.
+
+
+  # Switch to the cif user.
 {{{
 $ sudo su - cif
 }}}
 
-# Add a role key that will be used to generate feeds.
+  # Add a role key that will be used to generate feeds.
 {{{
 $ cif_apikeys -u role_everyone_feed -a -g everyone -G everyone
 }}}
 
-# Add a CIF user to get an API key that will be used to access CIF with the client. Copy the API key that's generated from this command.
+  # Add a CIF user to get an API key that will be used to access CIF with the client. Copy the API key that's generated from this command.
 {{{
 $ cif_apikeys -u myuser@mydomain.com -a -g everyone -G everyone
 }}}
 
 
-# Edit *~/.cif* and paste the following configuration in to generate feeds and setup the client.
+  # Edit *~/.cif* and paste the following configuration in to generate feeds and setup the client.
 {{{
 [cif_feeds]
 maxrecords = 10000
@@ -54,7 +64,15 @@ timeout = 60
 verify_tls = 0
 }}} 
 
-# Perform the steps from the *Load Data* section in the server guide. [http://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall#Load_Data]
+  # Run cif_crontool to load data into the database. This should take about 30 minutes to complete. (Without running this command, CIF won't contain any information until the the hourly and daily cron jobs run.)  
+{{{
+$ time /opt/cif/bin/cif_crontool -f -d && /opt/cif/bin/cif_crontool -d -p daily && /opt/cif/bin/cif_crontool -d -p hourly
+}}}
+
+  # Generate the first set of feeds. This will take up to 2 hours to complete.
+{{{
+$ time /opt/cif/bin/cif_feeds -d
+}}}
 
 = Enable Analytics and Logging (Optional)= 
 Logging has not been setup and analytics has been disabled. To enable analytics, uncomment the following line in the crontab for the cif user:
