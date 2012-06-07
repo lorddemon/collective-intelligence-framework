@@ -7,9 +7,9 @@ These instructions are for launching a demo EC2 instance of CIF. The image in it
 = Details =
 
 Currently, the only public AMI is available in the East(Virginia) region. 
-The AMI ID is *ami-eede7e87*. 
+The AMI ID is *ami-20ba1a49*. 
 
-For instructions on launching an EC2 instance, follow the instructions from Amazon's site [http://docs.amazonwebservices.com/AWSEC2/latest/GettingStartedGuide/GetStartedLinux.html]. Once at the *Launch an Instance* step, use the *Classic Wizard* and search for the AMI ID (*ami-eede7e87*) in the *Community AMIs* tab. 
+For instructions on launching an EC2 instance, follow the instructions from Amazon's site [http://docs.amazonwebservices.com/AWSEC2/latest/GettingStartedGuide/GetStartedLinux.html]. Once at the *Launch an Instance* step, use the *Classic Wizard* and search for the AMI ID (*ami-20ba1a49*) in the *Community AMIs* tab. 
 
 The only inbound ports that need to be permitted in the security group are TCP 443 for access to the CIF API and TCP 22 for SSH access.
 
