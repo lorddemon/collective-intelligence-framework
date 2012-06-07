@@ -63,7 +63,7 @@ verify_tls = 0
 {{{
 $ time /opt/cif/bin/cif_crontool -f -d && /opt/cif/bin/cif_crontool -d -p daily && /opt/cif/bin/cif_crontool -d -p hourly
 }}}
- # Generate the first set of feeds. This will take up to 2 hours to complete.
+ # Generate the first set of feeds. This could take up to 2 hours to complete.
 {{{
 $ time /opt/cif/bin/cif_feeds -d
 }}}
