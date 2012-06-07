@@ -11,15 +11,15 @@ A micro instance is good enough for a demo, but performance will be poor if you 
 Currently, the AMI is only available in the East(Virginia) region. 
 The AMI ID is *ami-20ba1a49*. 
 
-For instructions about configuring and launching an EC2 instance, follow the instructions from Amazon's site [http://docs.amazonwebservices.com/AWSEC2/latest/GettingStartedGuide/GetStartedLinux.html]. 
+  * For instructions about configuring and launching an EC2 instance, follow the instructions from Amazon's site [http://docs.amazonwebservices.com/AWSEC2/latest/GettingStartedGuide/GetStartedLinux.html Get Started with EC2 with a Linux/UNIX Instance]. 
 
-Once at the *Quick Launch Wizard*, select *More Amazon Machine Images* and enter *ami-20ba1a49* in the search box on the following page. Select the resulting image follow the rest of the Amazon guide to get it online.
+  * Once at the *Quick Launch Wizard*, select *More Amazon Machine Images* and enter *ami-20ba1a49* in the search box on the following page. Select the resulting image follow the rest of the Amazon guide to get it online.
 
-When configuring the security group, the only inbound ports that need to be permitted are TCP 443 for access to the CIF API and TCP 22 for SSH access.
+  * When configuring the security group, the only inbound ports that need to be permitted are TCP 443 for access to the CIF API and TCP 22 for SSH access.
 
-The username required to connect to the instance is *ubuntu*. SSH authentication is restricted to SSH keys and none of the users have passwords.
+  * The username required to connect to the instance is *ubuntu*. SSH authentication is restricted to SSH keys and none of the users have passwords.
 
-SSH Example:
+  * SSH Example:
 {{{
 $ ssh -i EC2PrivKey.pem ubuntu@ec2-xx-xx-xx-xx.compute-1.amazonaws.com
 }}}
