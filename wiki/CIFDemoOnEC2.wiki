@@ -73,7 +73,7 @@ Examples:
 $ cif -q infrastructure/network -c 85 -s medium
 }}}
 {{{
-$ cif -q url/botnet -c 85 -s medium
+$ cif -q url/botnet -c 85
 }}}
 = Enable Analytics and Logging (Optional)= 
 Logging has not been setup and analytics has been disabled. To enable analytics, uncomment the following line in the crontab for the cif user:
