@@ -70,10 +70,10 @@ $ time /opt/cif/bin/cif_feeds -d
  # You should now be able to run queries against your server using the cif client. For details on feed queries, refer to the [http://code.google.com/p/collective-intelligence-framework/wiki/Feeds Feeds wiki].
 Examples:
 {{{
-$ cif -q infrastructure/network
+$ cif -q infrastructure/network -c 85 -s medium
 }}}
 {{{
-$ cif -q url/botnet -c 85
+$ cif -q url/botnet -c 85 -s medium
 }}}
 = Enable Analytics and Logging (Optional)= 
 Logging has not been setup and analytics has been disabled. To enable analytics, uncomment the following line in the crontab for the cif user:
