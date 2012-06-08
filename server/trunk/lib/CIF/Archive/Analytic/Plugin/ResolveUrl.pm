@@ -16,16 +16,19 @@ sub process {
     return unless($a && ($a =~ /^$RE{'URI'}{'HTTP'}/ || $a =~ /^$RE{'URI'}{'HTTP'}{-scheme => 'https'}$/));
 
     my $address;
-    my $port;
+    my $port = $data->{'portlist'};
+    unless($port){
+        $port = 80;
+        $port = 443 if($a =~ /^https/);
+    }
     ## todo -- fix this, it flags on things like trainer.exe
     ## test with malc0de specifically
     if($a =~ /^(https?\:\/\/)?([A-Za-z0-9-.]+\.[a-z]{2,5})(:\d+)?(\/)?/){
         $address = $2;
-        $port = $3;
+        $port = $3 if($3);
     } elsif($a =~ /^(https?\:\/\/)?($RE{'net'}{'IPv4'})(:\d+)?(\/)?/) {
         $address = $2;
-        $port = $3;
-        $port = '443' unless($port);
+        $port = $3 if($3);
     } else {
         return;
     }
