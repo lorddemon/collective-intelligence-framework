@@ -13,7 +13,7 @@ The AMI ID is *ami-ac15b5c5*.
 
   * For instructions about configuring and launching an EC2 instance, follow Amazons [http://docs.amazonwebservices.com/AWSEC2/latest/GettingStartedGuide/GetStartedLinux.html Get Started] instructions.
 
-  * Once at the *Quick Launch Wizard*, select *More Amazon Machine Images* and enter *ami-20ba1a49* in the search box on the following page. Select the resulting image follow the rest of the Amazon guide to get it online.
+  * Once at the *Quick Launch Wizard*, select *More Amazon Machine Images* and enter *ami-ac15b5c5* in the search box on the following page. Select the resulting image follow the rest of the Amazon guide to get it online.
 
   * When configuring the security group, the only inbound ports that need to be permitted are TCP 443 for access to the CIF API and TCP 22 for SSH access.
 
