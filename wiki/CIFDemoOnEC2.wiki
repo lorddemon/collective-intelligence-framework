@@ -129,7 +129,7 @@ $ sudo vgdisplay
 }}}
   # Run *lvextend* with the Free PE number from above.
 {{{
-$ lvextend /dev/data/mntvol -l +10286
+$ sudo lvextend /dev/data/mntvol -l +10286
   Extending logical volume mntvol to 47.99 GiB
   Logical volume mntvol successfully resized
 }}}
