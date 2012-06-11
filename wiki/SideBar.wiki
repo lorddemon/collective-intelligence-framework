@@ -33,3 +33,4 @@
   * [MalwareDomains]
   * [CookBookNFSen NFSen]
   * [FederatedSharingExample]
+  * [CIFDemoOnEC2]
