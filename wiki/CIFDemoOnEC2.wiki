@@ -9,7 +9,7 @@ A micro instance is good enough for a demo, but performance will be poor if you 
 = Details =
 
 Currently, the AMI is only available in the East(Virginia) region. 
-The AMI ID is *ami-20ba1a49*. 
+The AMI ID is *ami-ac15b5c5*. 
 
   * For instructions about configuring and launching an EC2 instance, follow Amazons [http://docs.amazonwebservices.com/AWSEC2/latest/GettingStartedGuide/GetStartedLinux.html Get Started] instructions.
 
