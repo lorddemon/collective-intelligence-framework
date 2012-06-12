@@ -30,6 +30,7 @@
   * [FeedsNameservers]
   * [FeedsScanners]
   * [FeedsSpam]
+  * [FeedsFAQ]
  * [CookBook]
   * [MalwareDomains]
   * [CookBookNFSen NFSen]
