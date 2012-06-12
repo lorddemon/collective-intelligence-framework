@@ -17,6 +17,7 @@
  * [API]
   * PerlExample
   * PythonExample
+  * [WebAPI]
  * [Taxonomy]
   * [TaxonomyImpact Impact Definitions]
   * [TaxonomySeverity Severity Definitions]
