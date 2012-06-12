@@ -37,7 +37,7 @@
   * [CookBookNFSen NFSen]
   * [FederatedSharingExample]
   * [CIFDemoOnEC2]
- * [Other]
+ * Other
   * [Tools_crontool]
   * [DnsSinkhole]
   * [ElsaGuide]
