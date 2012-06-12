@@ -38,3 +38,4 @@
   * [CIFDemoOnEC2]
  * [Other]
   * [Tools_crontool]
+  * [DnsSinkhole]
