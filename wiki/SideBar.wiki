@@ -42,3 +42,4 @@
   * [DnsSinkhole]
   * [ElsaGuide]
   * [ProjectsLab]
+  * [CommunityExamples]
