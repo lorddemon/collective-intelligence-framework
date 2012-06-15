@@ -1,7 +1,7 @@
 #summary installing the perl client on ubuntu
 
 = CPAN =
-On a clean install of Debian Squeeze 6.0.4 you will need to do the following to get CPAN "configured properly". 
+On a clean install of Ubuntu you will need to do the following to get CPAN "configured properly". 
 
  # Become root or use sudo if installed
 {{{
