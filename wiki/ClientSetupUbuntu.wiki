@@ -1,6 +1,17 @@
 #summary installing the perl client on ubuntu
 
-= CPAN =
+= Installation =
+== Dependancies ==
+ # Become root or use sudo if installed
+{{{
+su -
+}}}
+ # make sure build-essential and libssl-dev is installed (for Crypt::SSleay and REST::Client)
+{{{
+$> apt-get install build-essential make libssl-dev libcrypt-ssleay-perl
+}}}
+
+== CPAN ==
 On a clean install of Ubuntu you will need to do the following to get CPAN "configured properly". 
 
  # Become root or use sudo if installed
@@ -24,15 +35,7 @@ reload CPAN
 exit
 }}}
 
-= Installation =
- # Become root or use sudo if installed
-{{{
-su -
-}}}
- # make sure build-essential and libssl-dev is installed (for Crypt::SSleay and REST::Client)
-{{{
-$> apt-get install build-essential make libssl-dev libcrypt-ssleay-perl
-}}}
+== Client ==
  # install the client library (accept all defaults)
 {{{
 perl -MCPAN -e 'install CIF::Client'
