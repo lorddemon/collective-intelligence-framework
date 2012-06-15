@@ -31,7 +31,7 @@ su -
 }}}
  # make sure build-essential and libssl-dev is installed (for Crypt::SSleay and REST::Client)
 {{{
-$> apt-get install build-essential libssl-dev libcrypt-ssleay-perl
+$> apt-get install build-essential make libssl-dev libcrypt-ssleay-perl
 }}}
  # install the client library (accept all defaults)
 {{{
