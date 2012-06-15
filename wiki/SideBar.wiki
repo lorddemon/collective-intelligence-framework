@@ -5,6 +5,7 @@
   * OS Clients
    * [ClientSetupDebianLenny Debian Lenny]
    * [ClientSetupDebianSqueeze Debian Squeeze]
+   * [ClientSetupUbuntu Ubuntu]
    * [ClientSetupRedhat5 Redhat]
    * [ClientSetupFreeBSD FreeBSD]
   * Toolbars
