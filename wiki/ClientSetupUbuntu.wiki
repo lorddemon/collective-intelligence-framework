@@ -1,14 +1,10 @@
 #summary installing the perl client on ubuntu
 
 = Installation =
-== Dependancies ==
- # Become root or use sudo if installed
-{{{
-su -
-}}}
+== Dependencies ==
  # make sure build-essential and libssl-dev is installed (for Crypt::SSleay and REST::Client)
 {{{
-$> apt-get install build-essential make libssl-dev libcrypt-ssleay-perl
+$> sudo apt-get install build-essential make libssl-dev libcrypt-ssleay-perl
 }}}
 
 == CPAN ==
