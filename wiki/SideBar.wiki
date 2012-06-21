@@ -38,9 +38,10 @@
   * [CookBookNFSen NFSen]
   * [FederatedSharingExample]
   * [CIFDemoOnEC2]
- * Other
+  * [AddingFeeds]
   * [Tools_crontool]
   * [DnsSinkhole]
   * [ElsaGuide]
+ * Other
   * [ProjectsLab]
   * [CommunityExamples]
