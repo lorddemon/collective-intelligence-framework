@@ -119,5 +119,12 @@ The feedparser should output a line for each item in the data source. If  nothin
 
 Generate feeds using this command
 {{{
-/opt/cif/bin/cif_feeds -d
+~$ /opt/cif/bin/cif_feeds -d
+}}}
+
+== Display the Feed ==
+
+Run this command to display a feed of domains
+{{{
+~$ cif -q domain -s medium -c 85
 }}}
