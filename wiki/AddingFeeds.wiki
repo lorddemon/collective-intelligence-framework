@@ -41,7 +41,7 @@ Add each feed into the configuration file. Feeds are delimited by the name of th
 {{{
 [dshield_suspiciousdomains]
 feed = 'http://isc.sans.edu/feeds/suspiciousdomains_Low.txt'
-confidence = 80
+confidence = 85
 regex = '^((?!Site)[^#]\S+)'
 regex_values = address
 source = 'isc.sans.edu'
@@ -50,7 +50,7 @@ description = 'dshield low false positive list'
 
 [urlblacklist]
 feed = 'http://urlblacklist.com/cgi-bin/commercialdownload.pl?type=download&file=bigblacklist'
-confidence = 80
+confidence = 85
 zip_filename = 'blacklists/malware/urls'
 regex = '^(\S+)' 
 regex_values = address
