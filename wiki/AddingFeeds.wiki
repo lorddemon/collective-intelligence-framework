@@ -114,3 +114,10 @@ isc.sans.edu -- 7c811c9b-83dc-5de5-8c2c-ee61dd5ec30c -- malware dshield low fals
 ~$
 }}}
 The feedparser should output a line for each item in the data source. If  nothing comes back, verify that the URL to the feed is correct.
+
+== Generate Feeds ==
+
+Generate feeds using this command
+{{{
+/opt/cif/bin/cif_feeds -d
+}}}
