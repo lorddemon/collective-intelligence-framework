@@ -52,7 +52,7 @@ The results can be a bit non-obvious. You may get back a list of references for 
 
 The PerlClient and PythonClient work well on OS X. The PythonClient can take a little bit of work to get installed (cython throws some errors from time to time), but if you're just looking for a simple CLI, test out the PerlClient.
 
-== Semi-Random XML Parser Errors (CleanMX) ==
+== XML Parser errors ==
 
 Sometimes, usually with the CleanMX feed you might see something like:
 {{{
