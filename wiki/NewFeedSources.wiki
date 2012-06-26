@@ -19,6 +19,7 @@ http://www.malwareblacklist.com/showMDL.php
 http://abusix.org/service/spamfeeds
 http://atlas.arbor.net/summary/fastflux?out=xml
 http://dshield.org/diary.html?storyid=12373
+https://reputation.alienvault.com/reputation.data
 }}}
 
 = References =
