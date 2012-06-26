@@ -20,6 +20,10 @@ http://abusix.org/service/spamfeeds
 http://atlas.arbor.net/summary/fastflux?out=xml
 http://dshield.org/diary.html?storyid=12373
 https://reputation.alienvault.com/reputation.data
+http://security-research.dyndns.org/pub/malware-feeds/ponmocup-botnet-domains.txt
+http://security-research.dyndns.org/pub/malware-feeds/ponmocup-botnet-ips.txt
+http://security-research.dyndns.org/pub/malware-feeds/ponmocup-malware-domains.txt
+http://security-research.dyndns.org/pub/malware-feeds/ponmocup-malware-ips.txt
 }}}
 
 = References =
