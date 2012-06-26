@@ -16,7 +16,7 @@ This is a collection of projects and ideas based on CIF. Here you'll find two th
  * SnortGuide
  * BroGuide
  * ElsaGuide
- * BindGuide
+ * DnsSinkhole
  * NFSenGuide
  * TippingpointGuide
 
