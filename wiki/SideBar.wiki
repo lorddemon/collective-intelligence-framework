@@ -8,6 +8,7 @@
    * [ClientSetupUbuntu Ubuntu]
    * [ClientSetupRedhat5 Redhat]
    * [ClientSetupFreeBSD FreeBSD]
+  *[ClientExamples] 
   * Toolbars
    * [FirefoxToolbar Firefox]
    * [ChromeToolbar Chrome]
