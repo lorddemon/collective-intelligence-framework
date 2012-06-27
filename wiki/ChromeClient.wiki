@@ -18,12 +18,15 @@ Note: this is in the alpha stage of the software release cycle
 = Documentation =
 == Installation == 
   # From Google Chrome, open this URL - [https://github.com/collectiveintel/cif-client-chrome/raw/master/CIF%20Chrome%20Extension_alpha.crx]
-  # Install the plug-in. (_Note: You will receive a warning that the plugin as access to your data on all websites. This is due to the fact that the plugin needs to be able to contact custom servers that you specify. The browsing activity warning is because of the 'tabs' permission, which is required to switch to an existing query tab.)_
+  # Install the plug-in. 
+   * (_Note: You will receive a warning that the plugin as access to your data on all websites. This is due to the fact that the plugin needs to be able to contact custom servers that you specify. The browsing activity warning is because of the 'tabs' permission, which is required to switch to an existing query tab.)_
   # Right click CIF button (in the top right) -> *Options*
   # Fill out *Nickname* (e.g. _CIF-West_)
-  # Fill out URL (e.g. _https://example.org/api/_)
+  # Fill out URL 
+   * (e.g. _https://example.org/api/_)
   # Fill out API key
-  # Click test connection (_Note: If you are using a self-signed certificate, you will need to open the URL in a separate tab to accept the certificate before this will succeed._)
+  # Click test connection 
+   * (_Note: If you are using a self-signed certificate, you will need to open the URL in a separate tab to accept the certificate before this will succeed._)
   # Click *Save* and close the settings page.
 
 == Running a Query ==  
