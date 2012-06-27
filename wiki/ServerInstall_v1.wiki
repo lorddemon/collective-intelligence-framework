@@ -9,7 +9,7 @@
 = Preamble =
 == Changes==
 === 0.99.01 to 0.99.02 ===
- * re-architected how feeds are generated and split into separate cif-feeds-perl component
+ * re-architected how feeds are generated (enabled only)
  * re-architected how ip-addresses are index'd (removed strict postgres dep)
 
 === 0.01 to 0.99.01 ==
