@@ -130,10 +130,14 @@ make testdeps
 sudo make fixdeps
 sudo make install
 }}}
- # sudo in as the cif user and create a few files (work-around for an installer bug):
+
+=== Client ===
+ # we'll install this locally to the default $PREFIX for now in the beta, you'll find it under /opt/cif/bin/cif to test with
 {{{
-$ sudo su - cif
-$ touch /opt/cif/etc/whitelist_domains && touch /opt/cif/etc/whitelist_infrastructure
+./configure
+make testdeps
+sudo make fixdeps
+sudo make install
 }}}
 
 == Configuration ==
@@ -152,23 +156,6 @@ fi
 {{{
 $ source ~/.profile
 }}}
-=== Basic Configuration ===
- # log into the cif user:
-{{{
-$ sudo su - cif
-$ vi ~/.cif
-}}}
- # edit ~/.cif using this as a template:
-{{{
-[db]
-host = 127.0.0.1
-user = postgres
-password =
-database = cif
-
-[router]
-groups = everyone
-}}}
 === APIKey ===
  # generate your initial apikey
 {{{
@@ -182,6 +169,34 @@ myuser@mydomain.com 4c3b44b2-8196-4af9-a77c-afb182793544             8c864306-d2
 $ cif_apikeys -l
 }}}
  # cif_apikeys -h will give you an example of how to use the tool
+=== Basic Configuration ===
+ # log into the cif user:
+{{{
+$ sudo su - cif
+$ vi ~/.cif
+}}}
+ # edit ~/.cif using this as a template:
+{{{
+[cif_feeds]
+limit = 100000
+confidence = 65,85,95
+roles = everyone
+limit_days = 3
+enabled = infrastructure,domain,url,email
+
+[client]
+apikey = XXXXXX-XXX-XXXX
+
+[client_rest]
+host = https://localhost:443/api
+verify_tls = 0
+
+[restriction_map]
+#public = limited
+#need-to-know = amber
+#private = red
+
+}}}
 === Apache2 ===
  # enable the default-ssl site (debian):
 {{{
@@ -241,28 +256,5 @@ $ time ./bin/cif_crontool -p hourly -d
 $ psql -U postgres -d cif
 psql> select * from archive order by id desc limit 5;
 psql> select * from infrastructure order by id desc limit 5;
-}}}
-= Client =
-== Installation ==
- # download the latest from https://github.com/collectiveintel/cif-client-perl/downloads
-{{{
-./configure
-make testdeps
-sudo make fixdeps
-sudo make install
-}}}
-== Configuration ==
- # edit ~/.cif using this as a template:
-{{{
-[client]
-timeout = 60
-apikey = XXXXXXX
-
-[client_rest]
-host = https://localhost:443/api
-verify_tls = 0
-
-# for future use
-# [client_zeromq]
-# host = tcp://localhost:5555
+psql> select * from domain order by id desc limit 5;
 }}}
