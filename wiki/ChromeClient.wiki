@@ -40,6 +40,14 @@ Note: this is in the alpha stage of the software release cycle
 
 The query page will parse out comma-separated, space-separated, new-line separated queries and a mix of all three. 
 
+===Filtering Results===
+
+Click the plus next to the query to view the possible filters for the query. The results can be filtered by the following attributes:
+  * *restriction*: filters records by their sharing restriction
+  * *confidence*: sets a minimum confidence that the incident must meet to be returned (numeric value between 0 and 100).
+  * *severity*: sets a minimum severity that the incident must meet 
+  * *limit*: numeric value that limits the total number of records that will come back.
+
 == Adding Data ==
   # Left click the CIF button
   # Click *Data Submission Form*
