@@ -85,7 +85,7 @@ cif-router-perl-v0.99.04-1-g1c4cc92.tar.gz
 cif-smrt-perl-v0.99.05-1-g8a02d8c.tar.gz
 }}}
 === Core CIF Utility Library ===
- # used to normalize timestamps and generate uuids
+ # cif-perl used to normalize timestamps and generate uuids
 {{{
 ./configure
 make testdeps
@@ -93,7 +93,7 @@ sudo make fixdeps
 sudo make install
 }}}
 === Core Message Protocol ===
- # cif-protocol is the core protocol used to access the api
+ # cif-protocol-perl is the core protocol used to access the api
 {{{
 ./configure
 make testdeps
