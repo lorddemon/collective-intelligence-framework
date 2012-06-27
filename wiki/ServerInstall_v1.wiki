@@ -1,4 +1,6 @@
 #summary the Server Installation
+= THIS PAGE UNDER CONSTRUCTION... CHECK BACK LATER =
+
 = Before you Begin =
  * If you've never used CIF before, *STOP RIGHT HERE*, please see ServerInstall for v0.01 which is considered stable
  * From this point on, ignore all other doc (including any client side doc), this page includes all the doc required to test v1 and it could conflict with other doc creating confusion, pain and potential alcohol abuse..
@@ -74,16 +76,24 @@ $ sudo adduser --disabled-password --gecos '' cif
 == Install ==
  # the latest packages can be pulled from [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=cif-v1-b1.tar here]
 {{{
-$ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-b1.tar
-$ tar -xvf cif-v1-b1.tar
-cif-client-perl-v0.99.03-1-g0831daf.tar.gz
-cif-dbi-perl-v0.99.02-5-g816d9d6.tar.gz
-cif-perl-v0.99.02-1-gbe4362c.tar.gz
-cif-router-perl-v0.99.02-6-ge70d175.tar.gz
-cif-smrt-perl-v0.99.02-4-gebd1ac3.tar.gz
+$ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-b2.tar
+$ tar -xvf cif-v1-b2.tar
+cif-client-perl-v0.99.05-1-g6fe062f.tar.gz
+cif-dbi-perl-v0.99.04-2-ga68ce41.tar.gz
+cif-protocol-perl-v0.00.02-11-ga859da3.tar.gz
+cif-router-perl-v0.99.04-1-g1c4cc92.tar.gz
+cif-smrt-perl-v0.99.05-1-g8a02d8c.tar.gz
+}}}
+=== Core CIF Utility Library ===
+ # used to normalize timestamps and generate uuids
+{{{
+./configure
+make testdeps
+sudo make fixdeps
+sudo make install
 }}}
 === Core Message Protocol ===
- # cif-perl is the core protocol used to access the api (CIF::Message)
+ # cif-protocol is the core protocol used to access the api
 {{{
 ./configure
 make testdeps
