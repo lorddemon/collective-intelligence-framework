@@ -1,0 +1,14 @@
+#summary Data types supported by CIF
+
+= Data types supported by CIF =
+
+By default CIF supports the following primary data types for queries or feeds:
+ # IP address
+ # Domain / FQDN
+ # URI
+ # CIDR
+ # Email address
+ # Malware hash
+  * (_must be enabled in feed config_)
+ # UUID
+  * (_generally used by the API_)
