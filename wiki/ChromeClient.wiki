@@ -32,10 +32,10 @@ Note: this is in the alpha stage of the software release cycle
 
 == Running a Query ==  
   # Left click the CIF button
-  # Paste something into the query text box
+  # Paste a [DataTypes data types] into the query text box
   # Click Submit
   OR
-  # Highlight some text
+  # Highlight a [DataTypes data type]
   # Right-click the highlighted text
   # Click *Collective Intelligence Framework* and then *Query CIF Server for...*
 
@@ -52,8 +52,9 @@ Click the plus next to the query to view the possible filters for the query. The
 == Adding Data ==
   # Left click the CIF button
   # Click *Data Submission Form*
+  # Paste in one or more [DataTypes data type] into Data
   OR
-  # Highlight some text
+  # Highlight a [DataTypes data type]
   # Right-click the highlighted text
   # Click *Collective Intelligence Framework* and then *Add 'x' to CIF...*
 === Notes on Adding Data ===
