@@ -12,6 +12,8 @@
   * Toolbars
    * [FirefoxToolbar Firefox]
    * [ChromeToolbar Chrome]
+  * Browser Plug-ins
+   * [ChromeClient]
  * [ServerInstall Server]
   * [ServerBackup Backup]
   * [GroupSupport Group Support]
