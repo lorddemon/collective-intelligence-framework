@@ -12,3 +12,7 @@ By default CIF supports the following primary data types for queries or feeds:
   * (_must be enabled in feed config_)
  # UUID
   * (_generally used by the API_)
+
+== Feed Examples ==
+
+You can find example feeds [http://code.google.com/p/collective-intelligence-framework/wiki/Feeds here].
