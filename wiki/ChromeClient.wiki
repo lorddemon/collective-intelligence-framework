@@ -32,7 +32,7 @@ Note: this is in the alpha stage of the software release cycle
 
 == Running a Query ==  
   # Left click the CIF button
-  # Paste a [DataTypes data types] into the query text box
+  # Paste a [DataTypes data type] into the query text box
   # Click Submit
   OR
   # Highlight a [DataTypes data type]
