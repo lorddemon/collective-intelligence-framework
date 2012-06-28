@@ -12,7 +12,7 @@ This extension for Google Chrome allows you to query CIF servers and get formatt
   * Search filters
   * Supports multiple API keys and multiple servers
   * No perl client required 
-  * Submit multiple observation points directly to the server without creating a feed.
+  * Submit multiple [DataTypes data types] points directly to the server without creating a feed.
   
 Note: this is in the alpha stage of the software release cycle
 
