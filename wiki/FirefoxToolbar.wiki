@@ -15,8 +15,8 @@ how to install the firefox search addon
   # In the Add-ons window, select the Extensions panel or Plugins panel.
  # highlight "CIF-Search" ([https://picasaweb.google.com/lh/photo/8BkVgvt-kqAQQEQthhv6f-EZyG2SI65uYXmxccFd480?feat=directlink ScreenShot])
  # click "preferences"
- # fill in the host and apikey with their appropriate values
+ # fill in the host and [Tools_cif_apikeys apikey] with their appropriate values
  # MAKE SURE THERE ARE NO SPACES BEFORE OR AFTER THE VALUES
  # close the preference box (the values will auto-save)
  # close the addon's window
- # type "infrastructure" into the "Search CIF" search box
+ # search for a [DataTypes data type] in the "Search CIF" search box
