@@ -45,6 +45,7 @@
   * [FederatedSharingExample]
   * [MalwareDomains]
   * [Tools_crontool]
+  * [Tools_cif_apikeys]
  * Other
   * [ProjectsLab]
   * [CommunityExamples]
