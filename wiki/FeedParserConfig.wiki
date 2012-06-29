@@ -1,0 +1,30 @@
+#summary understanding the cif_feedparser config file
+
+= Introduction =
+
+cif_feedparser... 
+
+= Details =
+
+== File format ==
+
+Default configuration
+
+{{{
+[cif_feeds]
+maxrecords = 10000
+severity_feeds = high,medium
+confidence_feeds = 95,85
+apikeys = role_everyone_feed
+max_days = 2
+disabled_feeds = hash,rir,asn,countrycode,malware
+}}}
+
+== Common Parameters ==
+|| Parameter Name || Values || Description || Required ||
+|| maxrecords || <int> || xxx || xxx ||
+|| severity_feeds || <string> || xxx || xxx ||
+|| confidence_feeds || <int> || xxx || xxx ||
+|| apikeys || <string> || xxx || xxx ||
+|| max_days || <int> || xxx || xxx ||
+|| disabled_feeds || <string> || xxx || xxx ||
