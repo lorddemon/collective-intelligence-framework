@@ -12,7 +12,7 @@
   * Toolbars
    * [FirefoxToolbar Firefox]
    * [ChromeToolbar Chrome]
-  * [BrowserPlugins Browser Plug-ins
+  * [BrowserPlugins Browser Plug-ins]
  * [ServerInstall Server]
   * [ServerBackup Backup]
   * [GroupSupport Group Support]
