@@ -14,7 +14,7 @@ This extension for Google Chrome/Firefox allows you to query CIF servers and get
   * *Submit* [DataTypes data types] points directly to the server without creating a feed
  * No perl client required
   
-Note: this is in the alpha stage of the software release cycle
+Note: this is in the beta stage of the software release cycle
 
 = Documentation =
 == Installation ==
