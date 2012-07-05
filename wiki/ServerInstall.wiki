@@ -200,6 +200,12 @@ disabled_feeds = hash,rir,asn,countrycode,malware
 }}}
 == Load Data ==
  # log in as the cif user (sudo su - cif)
+ # create your custom.cfg config if you're not upgrading from a previous version:
+{{{
+$ cd /opt/cif/etc
+$ cp custom.cfg.example custom.cfg
+$ chmod 660 custom.cfg
+}}}
  # perform [Tools_cif_crontool cif_crontool's] "first run" to prime the database with it's initial intel (should take about 30min).
 {{{
 $ time /opt/cif/bin/cif_crontool -f -d && /opt/cif/bin/cif_crontool -d -p daily && /opt/cif/bin/cif_crontool -d -p hourly
