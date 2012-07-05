@@ -18,7 +18,7 @@ Note: this is in the alpha stage of the software release cycle
 
 = Documentation =
 == Installation ==
-####Google Chrome 
+=== Google Chrome ===
   # From Google Chrome, click [https://github.com/collectiveintel/cif-client-chrome/raw/master/CIF%20Chrome%20Extension.crx here] for the plugin
   # Install the plug-in. 
    * (_Note: You will receive a warning that the plugin as access to your data on all websites. This is due to the fact that the plugin needs to be able to contact custom servers that you specify. The browsing activity warning is because of the 'tabs' permission, which is required to switch to an existing query tab.)_
@@ -31,7 +31,7 @@ Note: this is in the alpha stage of the software release cycle
    * (_Note: If you are using a self-signed certificate, you will need to open the URL in a separate tab to accept the certificate before this will succeed._)
   # Click *Save* and close the settings page.
 
-####Firefox 
+=== Firefox ===
   # From Firefox, click [https://github.com/collectiveintel/cif-client-chrome/blob/master/CIF-FFExtension.xpi?raw=true here] to download the plugin. Drag the downloaded file into the browser to install it.
   # Right click CIF button (in the top right) -> *Settings*
   # Fill out *Nickname* (e.g. _CIF-West_)
