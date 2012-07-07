@@ -22,9 +22,9 @@ disabled_feeds = hash,rir,asn,countrycode,malware
 
 == Common Parameters ==
 || Parameter Name || Values || Description || Required ||
-|| maxrecords || <int> || xxx || xxx ||
-|| severity_feeds || <string> || xxx || xxx ||
-|| confidence_feeds || <int> || xxx || xxx ||
+|| maxrecords || <int> || Maximum number of records in the feed || xxx ||
+|| severity_feeds || <string> || The severity levels you want to generate feeds for || xxx ||
+|| confidence_feeds || <int> || The confidence levels you want to generate feeds for || xxx ||
 || apikeys || <string> || xxx || xxx ||
-|| max_days || <int> || xxx || xxx ||
+|| max_days || <int> || How many days you want an observation to stay in a feed || xxx ||
 || disabled_feeds || <string> || xxx || xxx ||
