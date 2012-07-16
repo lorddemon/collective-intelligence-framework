@@ -237,7 +237,7 @@ The "feed" structure embeds the IODEF objects as entries.
 *( object )*
   description
 
- * *name (string)* - description
+ * *name (string)* - This is a sha1 uuid hash of the value of source defined in FeedConfig.
  * *purpose (string)* - description
  * *restriction (string)* - description
 
