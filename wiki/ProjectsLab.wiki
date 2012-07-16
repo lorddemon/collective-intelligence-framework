@@ -13,6 +13,7 @@ This is a collection of projects and ideas based on CIF. Here you'll find two th
 
 = Idea List =
 == Guides ==
+ * [UserInterfaceIdeas UI Integration Ideas]
  * SnortGuide
  * BroGuide
  * ElsaGuide
