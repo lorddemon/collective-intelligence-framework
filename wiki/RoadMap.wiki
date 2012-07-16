@@ -7,6 +7,7 @@ The current issue list can be found [http://code.google.com/p/collective-intelli
 = Summer 2012 - v1  =
  
  * see [http://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall_v1#Changes current ChangeLog]
+ * inter-federation docs, templates and tools
 
 = Winter 2013 - v1.1 =
 
@@ -20,10 +21,11 @@ The current issue list can be found [http://code.google.com/p/collective-intelli
 
 = Fall 2013 - v2.1 =
  
- * data warehouse scaling support (hbase)
+ * data warehouse scaling support (hbase, zeromq)
  * passive dns integration
 
 = Winter 2014 - v3 =
 
  * advanced correlation
+ * advanced analytics
  * machine learning algo's
