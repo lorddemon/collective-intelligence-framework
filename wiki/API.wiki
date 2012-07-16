@@ -230,9 +230,16 @@ The "feed" structure embeds the IODEF objects as entries.
 *( object )*
   description
 
+ * *AdditionalData (AdditionalData object)* - description
+ * *Flow (Flow object)* - description
+
 *IncidentID*
 *( object )*
   description
+
+ * *name (string)* - description
+ * *purpose (string)* - description
+ * *restriction (string)* - description
 
 *Confidence*
 *( object )*
@@ -241,6 +248,17 @@ The "feed" structure embeds the IODEF objects as entries.
 *Impact*
 *( object )*
   description
+
+*AdditionalData*
+*( object )*
+  description
+
+*Flow*
+*( object )*
+  description
+
+
+
 
 == Feed Queries ==
 Feed query responses are a little different. When feeds are generated, they tend to be larger than most query responses. To that end, cif_feeds compresses and base64 encodes the cached feed to the database. When the API replies to a feed query (eg: cif -q domain/malware -s medium -c 85) with a slightly different response:
