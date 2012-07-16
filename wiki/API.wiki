@@ -202,7 +202,7 @@ The "feed" structure embeds the IODEF objects as entries.
 *( object )*
   description
 
- * *AdditionalData (AdditionalData object)* - description
+ * *AdditionalData (AdditionalIncidentData object)* - description
  * *Assessment (Assessment object)* - description
  * *Description (string)* - description
  * *DetectTime (string)* - description
@@ -211,7 +211,7 @@ The "feed" structure embeds the IODEF objects as entries.
  * *purpose (string)* - description
  * *restriction (string)* - description
 
-*_incident_ AdditionalData*
+*AdditionalIncidentData*
 *( object )*
   description
 
@@ -230,7 +230,7 @@ The "feed" structure embeds the IODEF objects as entries.
 *( object )*
   description
 
- * *Incident AdditionalData (Incident AdditionalData object)* - description
+ * *AdditionalData (AdditionalEventData object)* - description
  * *Flow (Flow object)* - description
 
 *IncidentID*
@@ -255,7 +255,7 @@ The "feed" structure embeds the IODEF objects as entries.
  * *content (string)* - description
  * *severity (string)* - description
 
-*_EventData_ AdditionalData*
+*AdditionalEventData*
 *( object )*
   description
 
@@ -273,10 +273,10 @@ The "feed" structure embeds the IODEF objects as entries.
 *( object )*
   description
 
- * *AdditionalData (AdditionalData object)* - description
+ * *AdditionalData (AdditionalSystemData object)* - description
  * *Node (Node Object)* - description
 
-*_System_ AdditionalData*
+*AdditionalSystemData*
 *( object )*
   description
 
