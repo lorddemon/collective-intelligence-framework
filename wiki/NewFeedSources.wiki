@@ -24,6 +24,7 @@ http://security-research.dyndns.org/pub/malware-feeds/ponmocup-botnet-domains.tx
 http://security-research.dyndns.org/pub/malware-feeds/ponmocup-botnet-ips.txt
 http://security-research.dyndns.org/pub/malware-feeds/ponmocup-malware-domains.txt
 http://security-research.dyndns.org/pub/malware-feeds/ponmocup-malware-ips.txt
+http://malwareint.com
 }}}
 
 = References =
