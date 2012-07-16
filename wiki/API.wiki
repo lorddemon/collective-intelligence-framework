@@ -163,7 +163,7 @@ For example, retrieving a malicious domain address may result in a response like
 }}}
 The "feed" structure embeds the IODEF objects as entries.
 
-==Types==
+== Types ==
 
 *Result*
 *( object )*
