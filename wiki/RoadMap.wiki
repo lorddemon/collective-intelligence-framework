@@ -4,26 +4,26 @@
 
 The current issue list can be found [http://code.google.com/p/collective-intelligence-framework/issues/list here]
 
-= v1 Summer 2012 =
+= Summer 2012 - v1  =
  
  * see [http://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall_v1#Changes current ChangeLog]
 
-= v1.1 Winter 2013 =
+= Winter 2013 - v1.1 =
 
  * enhanced malware support
  * integration of human conversations
 
-= v2 Summer 2013 =
+= Summer 2013 - v2 =
 
  * integration with responder tools
  * add bgp data support
 
-= v2.2 Fall 2013 =
+= Fall 2013 - v2.1 =
  
  * data warehouse scaling support (hbase)
  * passive dns integration
 
-= v3 Winter 2014 =
+= Winter 2014 - v3 =
 
  * advanced correlation
  * machine learning algo's
