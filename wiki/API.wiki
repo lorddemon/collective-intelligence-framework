@@ -163,6 +163,64 @@ For example, retrieving a malicious domain address may result in a response like
 }}}
 The "feed" structure embeds the IODEF objects as entries.
 
+==Types==
+
+*Result*
+*( object )*
+  An object encapsulating a response from the server
+
+ * *data* *(feed object)* - The feed object for the query
+ * *message (string)*
+ * *status ( integer )* - HTTP response code
+		
+*Feed*
+*( object )*
+   An object containg a query result
+	
+ * *description (string)* - description
+ * *detectime (string)* - description
+ * *entry (single entry object or array of entry objects)* - description
+ * *group_map (group map object)* - description
+ * *restriction (string)* - description
+ * *source (string)* - description
+	
+*Entry*
+*( object )*
+  description
+
+ * *uuid (string)* - description
+ * *version (string)* - description
+ * *xmlns:xsi (string)* - description
+ * *xsi:schemaLocation (string)* - description
+ * *incident (incident object)* - description
+
+*group map*
+*( object )*
+
+*incident*
+*( object )*
+
+ * *AdditionalData (AdditionalData object)* - description
+ * *Assessment (Assessment object)* - description
+ * *Description (string)* - description
+ * *DetectTime (string)* - description
+ * *EventData (EventData object)* - description
+ * *IncidentID (IncidentID object)* - description
+ * *purpose (string)* - description
+ * *restriction (string)* - description
+
+*AdditionalData*
+*( object )*
+
+*Assessment*
+*( object )*
+
+*EventData*
+*( object )*
+
+*IncidentID*
+*( object )*
+
 == Feed Queries ==
 Feed query responses are a little different. When feeds are generated, they tend to be larger than most query responses. To that end, cif_feeds compresses and base64 encodes the cached feed to the database. When the API replies to a feed query (eg: cif -q domain/malware -s medium -c 85) with a slightly different response:
 {{{
