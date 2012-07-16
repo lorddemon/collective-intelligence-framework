@@ -194,7 +194,7 @@ The "feed" structure embeds the IODEF objects as entries.
  * *xsi:schemaLocation (string)* - description
  * *incident (incident object)* - description
 
-*group map*
+*group_map*
 *( object )*
   description
 
