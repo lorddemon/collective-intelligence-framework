@@ -226,7 +226,7 @@ while (<$fh>) {
         my @splitsecondtolast = split(' ', $fromhalves[scalar(@fromhalves)-1]);
         my $offendingip = $splitsecondtolast[0];
         if (exists($offenders{$offendingip})){
-                push($offenders{$offendingip},$eventdate);
+                push(@{$offenders{$offendingip}},$eventdate);
         } else {
                 my @timestamps = ($eventdate);
                 $offenders{$offendingip} = \@timestamps;
@@ -251,7 +251,7 @@ foreach my $offender (keys %offenders){
                         if (($_ - $basetime)>60){ next;}
                         $ctr++;
                 }
-                if ($ctr > $threshold){ $willblacklist = 1;}
+                if ($ctr >= $threshold){ $willblacklist = 1;}
                 if ($basetime > $lastseen){ $lastseen = $basetime;}
         }
         if ($willblacklist){
