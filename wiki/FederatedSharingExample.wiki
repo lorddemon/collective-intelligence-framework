@@ -275,7 +275,7 @@ On the CIF server, create a new config file in */opt/cif/etc/* to pull in the SS
 {{{
 severity = 'high'
 confidence = 95
-restriction = 'restricted'
+restriction = 'private'
 alternativeid_restriction = 'public'
 delimiter = '\|\|\|'
 values = 'source,address,detecttime,null'
