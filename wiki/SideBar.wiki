@@ -9,9 +9,6 @@
    * [ClientSetupRedhat5 Redhat]
    * [ClientSetupFreeBSD FreeBSD]
    * ClientExamples
-  * Toolbars
-   * [FirefoxToolbar Firefox]
-   * [ChromeToolbar Chrome]
   * [BrowserPlugins Browser Plug-ins]
  * [ServerInstall Server]
   * [ServerBackup Backup]
