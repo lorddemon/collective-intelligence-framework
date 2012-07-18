@@ -23,7 +23,7 @@ sub process {
 
     if($rec->{'address'} && $rec->{'address'} =~ /^$RE{'URI'}/){
         # we do this here so ::Plugin::Hash will pick it up
-        $rec->{'address'} = uri_escape($rec->{'address'},'\x00-\x1f\x7f-\xff');
+        $rec->{'address'} = uri_escape_utf8($rec->{'address'},'\x00-\x1f\x7f-\xff');
         $rec->{'address'} = lc($rec->{'address'});
         $rec->{'md5'} = md5_hex($rec->{'address'});
         $rec->{'sha1'} = sha1_hex($rec->{'address'});
