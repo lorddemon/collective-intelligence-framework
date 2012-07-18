@@ -16,8 +16,8 @@ RESTRICTED |        |example.com|     |    |2011-01-20 15:00:00+00|search exampl
 }}}
 
 = Browser Plugins =
- # FirefoxToolbar
- # ChromeToolbar
+ # [BrowserPlugins Google Chrome and Firefox Plugins]
+
 
 = Client Libraries =
  # PerlClient
