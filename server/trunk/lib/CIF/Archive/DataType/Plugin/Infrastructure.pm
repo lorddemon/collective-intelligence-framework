@@ -67,7 +67,10 @@ sub prepare {
 sub isPrivateAddress {
     my $addr = shift;
     return(undef) unless($addr && $addr =~ /^$RE{'net'}{'IPv4'}/);
+
+    # guard against non ip-hostnames
     return if($addr =~ /^$RE{'URI'}/);
+    return if($addr =~ /^[a-zA-Z0-9.-]+\.[a-z]{2,6}$/);
 
     ## Net::Patricia this
     ## store the list in the database?
