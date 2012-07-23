@@ -101,7 +101,7 @@ sub parse {
                 $return = CIF::FeedParser::ParseJson::parse($f,$content);
             }
         ## TODO -- fix this; double check it
-        } elsif($content =~ /^#?\s?"\S+","\S+"/){
+        } elsif($content =~ /^#?\s?"\S+","\S+"/ && !$f->{'regex'}){
             require CIF::FeedParser::ParseCsv;
             $return = CIF::FeedParser::ParseCsv::parse($f,$content);
         } else {
