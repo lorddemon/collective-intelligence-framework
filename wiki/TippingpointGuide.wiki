@@ -1,5 +1,12 @@
 #summary inputting cif feeds into tipping point firewalls
 
+= Introduction =
+ * Works well when you cron it to run once per hour.
+ * If you're cron-ing as a different user, make sure that user has a ~/.cif config in their home directory
+   * Also, search and replace ~root/ with ~newuser/ in this script
+
+= Details =
+
 {{{
 #!/bin/sh
 
