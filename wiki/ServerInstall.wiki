@@ -182,6 +182,7 @@ apikeys = role_everyone_feed
 max_days = 2
 disabled_feeds = hash,rir,asn,countrycode,malware
 }}}
+ # DO NOT CHANGE 'disabled_feeds' unless you know what you're doing, you *will* get errors.
  # add this to /opt/cif/whitelist_infrastructure, make sure the file has the cif:cif permissions:
 {{{
 0.0.0.0/8
