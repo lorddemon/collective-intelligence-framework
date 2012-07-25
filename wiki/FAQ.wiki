@@ -69,3 +69,15 @@ Sometimes, usually with the CleanMX feed you might see something like:
 This is normal and should be ignored. CleanMX doesn't appear to be producing valid XML from time to time. It's something that needs to be addressed, but have no control over at the moment. See:
 
 https://groups.google.com/forum/?hl=en&fromgroups#!topic/ci-framework/jCgvMZkTOVs
+
+== cif_feed JSON errors ==
+
+This is usually due to a ~/.cif mis-config make sure your [cif_feeds] section has this line in it:
+
+{{{
+[cif_feeds]
+...
+disabled_feeds = hash,rir,asn,countrycode,malware
+}}}
+
+discussion list [https://groups.google.com/d/msg/ci-framework/6ugUQuYnWNw/omavkCYPAI0J reference]
