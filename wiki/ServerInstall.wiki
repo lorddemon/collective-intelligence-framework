@@ -66,9 +66,9 @@ $ sudo adduser --disabled-password --gecos '' cif
  # if you're upgrading, make sure you've backed up /opt/cif/etc appropriately (if you've modified anything inside it)
  # install the core server interface
 {{{
-$ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.01.tar.gz
-$ tar -zxvf cif-0.01.tar.gz
-$ cd cif-0.01
+$ wget http://collective-intelligence-framework.googlecode.com/files/cif-0.02.tar.gz
+$ tar -zxvf cif-0.02.tar.gz
+$ cd cif-0.02
 $ ./configure
 $ make testdeps
 $ make fixdeps
