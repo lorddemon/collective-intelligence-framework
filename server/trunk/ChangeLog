@@ -1,6 +1,9 @@
 Collective Intelligence Framework
 =================================
 
+0.02    2012-07-25
+    - minor utf8 bugfixes to cif_feedparser
+
 0.01    2012-03-16
     - adjusted a few of the confidence values in zeustracker and malware domains
     - added a "mirror" option to the cif_feeparser configs
