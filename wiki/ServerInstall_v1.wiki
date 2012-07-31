@@ -57,8 +57,12 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  # PostgresInstall
 
 == System Deps ==
-=== Stable ===
-=== Unstable ===
+=== Non Standard Deps ===
+ # [InstallZeroMQ]
+
+=== Standard Deps ===
+==== Stable ====
+==== Unstable ====
  # [ServerInstall_v1_Squeeze Debian Squeeze]
  # [ServerInstall_v1_Ubuntu Ubuntu]
  # [ServerInstall_v1_Generic From Source]
