@@ -8,11 +8,19 @@
 
 = Preamble =
 == Changes==
-=== 0.99.01 to 0.99.02 ===
+=== beta3 ===
+ * re-architected cif-smrt for better memory + thread support via ZeroMQ
+ * merged cif_analytics into cif-smrt as "postprocessors", disabled by default
+ * improved feed generation support
+ * removed direct "dbi" database integration, now uses submission support in cif-client and cif-router
+ * added submission support to cif-router
+ * added key expiration to cif-router / cif-apikeys
+
+=== beta2 ===
  * re-architected how feeds are generated (enabled only)
  * re-architected how ip-addresses are index'd (removed strict postgres dep)
 
-=== 0.01 to 0.99.01 ==
+=== beta1 ==
  * Moved from JSON to Google Protocol Buffers (protobuf)
  * added compression (compress-snappy)
  * enabled remote database connectivity
