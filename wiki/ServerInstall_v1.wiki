@@ -87,10 +87,10 @@ $ sudo adduser --disabled-password --gecos '' cif
 $ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-b3.tar
 $ tar -xvf cif-v1-b3.tar
 cif-perl-v0.99.03-4-gab00244.tar.gz
-cif-client-perl-v0.99.05-4-g2f807c6.tar.gz
-cif-dbi-perl-v0.99.02-5-g816d9d6.tar.gz
+cif-client-perl-v0.99.05-5-gd9170bf.tar.gz
+cif-dbi-perl-v0.99.04-11-g9e1986b.tar.gz
 cif-protocol-perl-v0.00.02-15-ga229cf2.tar.gz
-cif-router-perl-v0.99.04-2-g3fdb9a0.tar.gz
+cif-router-perl-v0.99.04-3-ga898213.tar.gz
 cif-smrt-perl-v0.99.05-9-gd137562.tar.gz
 }}}
 === Core CIF Utility Library ===
