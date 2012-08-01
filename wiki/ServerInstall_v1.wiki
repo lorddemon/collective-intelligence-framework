@@ -169,8 +169,8 @@ $ source ~/.profile
  # generate your initial apikey
 {{{
 $ cif_apikeys -u myuser@mydomain.com -a -g everyone -G everyone
-userid              key                                  description guid                                 default_guid access write revoked created                     
-myuser@mydomain.com 4c3b44b2-8196-4af9-a77c-afb182793544             8c864306-d21a-37b1-8705-746a786719bf true         all                  2011-10-25 11:40:58.81532+00
+userid              key                                  description guid                                 default_guid access write revoked expires created                      
+myuser@mydomain.com 249cd5fd-04e3-46ad-bf0f-c02030cc864a             8c864306-d21a-37b1-8705-746a786719bf true         all                          2012-08-01 11:50:15.969724+00
 }}}
  # check to make sure your 'guid' has _*8c864306-d21a-37b1-8705-746a786719bf*_ in it. If it doesn't you won't be able to see all the default, public data that's permissioned to the 'everyone' group in your system
  # to list all of your apikeys:
@@ -188,10 +188,14 @@ $ vi ~/.cif
 {{{
 [cif_feeds]
 limit = 100000
-confidence = 65,85,95
+confidence = 85,95
 roles = everyone
-limit_days = 3
-enabled = infrastructure,domain,url,email
+limit_days = 7
+enabled = infrastructure,domain,url
+
+[cif_smrt]
+name = example.com
+instance = cif.example.com
 
 [client]
 apikey = XXXXXX-XXX-XXXX
@@ -200,10 +204,26 @@ apikey = XXXXXX-XXX-XXXX
 host = https://localhost:443/api
 verify_tls = 0
 
+#[client_zeromq]
+#host = tcp://localhost:5555
+
+#[router_zeromq]
+#host = tcp://localhost:5555
+
 [restriction_map]
 #public = limited
 #need-to-know = amber
 #private = red
+
+[db]
+host = 127.0.0.1
+user = postgres
+password =
+database = cif
+
+# csv delimited
+[groups]
+groups = everyone,staff,partners
 
 }}}
 === Apache2 ===
@@ -257,8 +277,8 @@ $ sudo adduser www-data cif
 {{{
 $ sudo su - cif
 $ cd /opt/cif
-$ time ./bin/cif_crontool -d
-$ time ./bin/cif_crontool -p hourly -d
+$ time ./bin/cif_crontool -d -P
+$ time ./bin/cif_crontool -p hourly -d -P
 }}}
  # check your database for data
 {{{
