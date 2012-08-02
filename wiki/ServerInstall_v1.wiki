@@ -276,13 +276,13 @@ $ sudo adduser www-data cif
 == Initial Data Load ==
  # create your custom.cfg config if you're not upgrading from a previous version:
 {{{
+$ sudo su - cif
 $ cd /opt/cif/etc
 $ cp custom.cfg.example custom.cfg
 $ chmod 660 custom.cfg
 }}}
  # sudo into the cif user and run the cif_crontool
 {{{
-$ sudo su - cif
 $ cd /opt/cif
 $ time ./bin/cif_crontool -d -P
 $ time ./bin/cif_crontool -p hourly -d -P
