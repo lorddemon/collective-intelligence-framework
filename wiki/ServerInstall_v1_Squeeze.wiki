@@ -6,9 +6,9 @@ $ sudo aptitude install rng-tools postgresql apache2 apache2-threaded-dev gcc g+
 }}}
  # Install the remaining CPAN modules
 {{{
-$ sudo perl -MCPAN -e 'install Net::Abuse::Utils,DateTime::Format::DateParse, Regexp::Common::net::CIDR,Text::Table,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb,Iodef::Pb::Simple,Iodef::Pb::Format,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus'
+$ sudo perl -MCPAN -e 'install Net::Abuse::Utils,DateTime::Format::DateParse,Regexp::Common::net::CIDR,Text::Table,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb,Iodef::Pb::Simple,Iodef::Pb::Format,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::Patricia'
 }}}
  and answer yes to all prompts (there will be a lot of them). To force an automatic "yes" to prompts, run
 {{{
-sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,DateTime::Format::DateParse, Regexp::Common::net::CIDR,Text::Table,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb,Iodef::Pb::Simple,Iodef::Pb::Format,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus'
+sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,DateTime::Format::DateParse,Regexp::Common::net::CIDR,Text::Table,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb,Iodef::Pb::Simple,Iodef::Pb::Format,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::Patricia'
 }}}
