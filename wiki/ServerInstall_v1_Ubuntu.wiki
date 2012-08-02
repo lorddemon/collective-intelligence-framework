@@ -10,5 +10,5 @@ $ sudo aptitude install rng-tools postgresql apache2 apache2-threaded-dev gcc g+
 }}}
  # Install the remaining CPAN modules
 {{{
-$ sudo perl -MCPAN -e 'install Net::Abuse::Utils,DateTime::Format::DateParse, Regexp::Common::net::CIDR,Text::Table,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb,Iodef::Pb::Simple,Iodef::Pb::Format,Compress::Snappy,Digest::SHA1,Time::HiRes,Net::Abuse::Utils::Spamhaus'
+$ sudo perl -MCPAN -e 'install Net::Abuse::Utils,DateTime::Format::DateParse,Regexp::Common::net::CIDR,Text::Table,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb,Iodef::Pb::Simple,Iodef::Pb::Format,Compress::Snappy,Digest::SHA1,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::Patricia'
 }}}
