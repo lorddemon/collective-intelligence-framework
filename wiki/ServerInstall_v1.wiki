@@ -195,6 +195,7 @@ limit_days = 7
 enabled = infrastructure,domain,url
 
 [cif_smrt]
+# change example.com to your local domain and hostname respectively
 name = example.com
 instance = cif.example.com
 
