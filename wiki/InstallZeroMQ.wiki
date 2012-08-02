@@ -12,6 +12,7 @@ $ wget http://download.zeromq.org/zeromq-2.2.0.tar.gz
 $ tar -zxvf zeromq-2.2.0.tar.gz
 $ cd zeromq-2.2.0
 $ ./configure && make && sudo make install
+$ sudo ldconfig
 }}}
 
 == Perl XS Interface ==
