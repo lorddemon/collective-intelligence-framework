@@ -64,6 +64,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 
 === Configuration ===
  # PostgresInstall
+ # These scripts do a lot of dns queries. You're gonna wanna install bind and configure it to use forwarders. Maybe something like google public dns to help mask your queries. Then point your resolv.conf to 127.0.0.1
  # BindSetup
  # be sure to reload bind when you're done:
 {{{
