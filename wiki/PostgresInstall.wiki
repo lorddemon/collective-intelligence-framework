@@ -53,7 +53,7 @@ postgres=#\l
 {{{
 wal_buffers = 16MB
 work_mem = 1GB # 25% of total ram
-shared_buffers = 1GB # 25% of total ra,
+shared_buffers = 1GB # 25% of total ram
 checkpoint_segments = 32 # every 512meg, switch to 64, every 1G if you're using more than just public data
 effective_cache_size = 1GB    # whatever you set shmmax to
 }}}
