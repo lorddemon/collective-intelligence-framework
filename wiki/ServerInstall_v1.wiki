@@ -274,6 +274,12 @@ $ sudo adduser www-data cif
 }}}
  # restart apache2
 == Initial Data Load ==
+ # create your custom.cfg config if you're not upgrading from a previous version:
+{{{
+$ cd /opt/cif/etc
+$ cp custom.cfg.example custom.cfg
+$ chmod 660 custom.cfg
+}}}
  # sudo into the cif user and run the cif_crontool
 {{{
 $ sudo su - cif
@@ -281,10 +287,32 @@ $ cd /opt/cif
 $ time ./bin/cif_crontool -d -P
 $ time ./bin/cif_crontool -p hourly -d -P
 }}}
- # check your database for data
+ * when that's finished, run your first batch of feeds (could take anywhere from 20min to 2 hours depending on system, data load, etc)
 {{{
-$ psql -U postgres -d cif
-psql> select * from archive order by id desc limit 5;
-psql> select * from infrastructure order by id desc limit 5;
-psql> select * from domain order by id desc limit 5;
+$ time /opt/cif/bin/cif_feeds -d
+}}}
+== Finishing up ==
+ # log into the cif user (sudo su - cif) and modify it's cron tab (crontab -e)
+{{{
+# set the path
+PATH=/bin:/usr/local/bin:/opt/cif/bin
+
+# pull feed data
+05     *       * * * /opt/cif/bin/cif_crontool -p hourly -P &> /dev/null
+30     00      * * * /opt/cif/bin/cif_crontool -p daily -P &> /dev/null
+
+# update the feeds
+45     *       * * * /opt/cif/bin/cif_feeds &> /dev/null
+}}}
+ # or if you want to setup logging (as an example)
+{{{
+# set the path
+PATH=/bin:/usr/local/bin:/opt/cif/bin
+
+# pull feed data
+05     *       * * * /opt/cif/bin/cif_crontool -p hourly -P -d >> /home/cif/crontool_hourly.log 2>&1
+30     00      * * * /opt/cif/bin/cif_crontool -p daily -P -d >> /home/cif/crontool_daily.log 2>&1
+
+# update the feeds
+45     *       * * * /opt/cif/bin/cif_feeds -d >> /home/cif/feeds.log 2>&1
 }}}
