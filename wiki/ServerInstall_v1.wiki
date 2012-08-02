@@ -85,7 +85,7 @@ $ sudo adduser --disabled-password --gecos '' cif
 == Install ==
  # the latest packages can be pulled from [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=cif-v1-b3.tar here]
 {{{
-$ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-b3.tar
+$ wget http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=cif-v1-b3.tar -O cif-v1-b3.tar
 $ tar -xvf cif-v1-b3.tar
 cif-perl-v0.99.03-4-gab00244.tar.gz
 cif-client-perl-v0.99.05-5-gd9170bf.tar.gz
