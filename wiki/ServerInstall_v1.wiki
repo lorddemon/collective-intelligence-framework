@@ -65,6 +65,10 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 === Configuration ===
  # PostgresInstall
  # BindSetup
+ # be sure to reload bind when you're done:
+{{{
+$ sudo /etc/init.d/bind9 restart
+}}}
 
 = Server =
 == Disk Layout ==
