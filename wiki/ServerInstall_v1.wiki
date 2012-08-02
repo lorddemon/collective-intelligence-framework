@@ -142,7 +142,7 @@ sudo make install
 }}}
 
 === Client ===
- # we'll install this locally to the default $PREFIX for now in the beta, you'll find it under /opt/cif/bin/cif to test with
+ # cif-client-perl - we'll install this locally to the default $PREFIX for now in the beta, you'll find it under /opt/cif/bin/cif to test with
 {{{
 ./configure
 make testdeps
