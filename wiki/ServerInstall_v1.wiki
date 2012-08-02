@@ -10,7 +10,7 @@
 == Changes==
 === beta3 ===
  * re-architected cif-smrt for better memory + thread support via ZeroMQ
- * merged cif_analytics into cif-smrt as "postprocessors", disabled by default
+ * merged cif_analytics into cif-smrt as "postprocessors", disabled by default, enabled by use of the '-P' flag in cif_smrt
  * improved feed generation support
  * removed direct "dbi" database integration, now uses submission support in cif-client and cif-router
  * added submission support to cif-router
