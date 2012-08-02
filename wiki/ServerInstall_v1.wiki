@@ -64,6 +64,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 
 === Configuration ===
  # PostgresInstall
+ # BindSetup
 
 = Server =
 == Disk Layout ==
