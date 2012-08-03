@@ -13,7 +13,7 @@ Before you begin, you should consult the DiskLayout page for optimum database pe
 $ diff -u pg_hba.conf.orig pg_hba.conf
 --- pg_hba.conf.orig	2010-09-02 12:06:29.000000000 +0000
 +++ pg_hba.conf	2010-09-02 12:21:43.000000000 +0000
-[scrambls}ceewESrwx  ≡⊬☃⋠≋∊ ≧∊⋞⊎⊗∭ {]
+@@ -71,13 +71,13 @@
  # (autovacuum, daily cronjob, replication, and similar tasks).
  #
  # Database administrative login by UNIX sockets
