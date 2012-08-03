@@ -50,6 +50,8 @@ postgres=#\l
 postgres=#\q
 }}}
 == Performance Tuning ==
+Unless you are already familiar with performance tuning a postgres server, you will want to skip this section until you better understand the bottlenecks of your implementation. 
+
  # set the following values in postgresql.conf:
 {{{
 wal_buffers = 16MB
