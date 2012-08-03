@@ -82,5 +82,5 @@ disabled_feeds = hash,rir,asn,countrycode,malware
 
 discussion list [https://groups.google.com/d/msg/ci-framework/6ugUQuYnWNw/omavkCYPAI0J reference]
 
-=== Threads Crash with "Too many open files" ===
+== Threads Crash with "Too many open files" ==
 here's the [http://blog.thecodingmachine.com/content/solving-too-many-open-files-exception-red5-or-any-other-application fix]
