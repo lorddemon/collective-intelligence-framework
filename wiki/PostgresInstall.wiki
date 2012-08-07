@@ -50,21 +50,6 @@ postgres=#\l
 postgres=#\q
 }}}
 == Performance Tuning ==
-Unless you are already familiar with performance tuning a postgres server, you will want to skip this section until you better understand the bottlenecks of your configuration. 
-
- # set the following values in postgresql.conf:
-{{{
-wal_buffers = 16MB
-work_mem = 1GB # 25% of total ram
-shared_buffers = 1GB # 25% of total ram
-checkpoint_segments = 32 # For more write-heavy systems, values from 32 (checkpoint every 512MB) to 256 (every 4GB) are popular nowadays. see: http://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server for more info
-effective_cache_size = 1GB    # whatever you set shmmax to
-}}}
- # restart postgres
-{{{
-$ sudo /etc/init.d/postgresql restart
-}}}
- # *ONLY IF THIS IS A DEDICATED DATABASE SERVER AND APACHE IS SOMEWHERE ELSE!* o/w, skip the rest of this.
  # create shmsetup.sh to configure your shared memory  (to about 1/2 - 2/3 the amount of system ram:
 {{{
 #!/bin/bash
@@ -88,6 +73,20 @@ $ sudo echo vm.swappiness = 0 >> /etc/sysctl.conf
 {{{
 $ sudo sysctp -p
 }}}
+ # set the following values in postgresql.conf:
+{{{
+wal_buffers = 16MB
+work_mem = 1GB # 25% of total ram
+shared_buffers = 1GB # 25% of total ram
+checkpoint_segments = 32 # For more write-heavy systems, values from 32 (checkpoint every 512MB) to 256 (every 4GB) are popular nowadays. see: http://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server for more info
+effective_cache_size = 1GB    # whatever you set shmmax to
+}}}
+ # restart postgres
+{{{
+$ sudo /etc/init.d/postgresql restart
+}}}
+
+== Optional Tweaks ==
  # *EXPERIMENTAL* check your blockdev setting in rc.local:
 {{{
 /sbin/blockdev --setra 4096 /dev/mapper/ses--qa1-archive
