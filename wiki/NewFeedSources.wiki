@@ -5,6 +5,7 @@ These are a list of interesting new feed sources for CIF. They have not been vet
 
 = Sources =
 {{{
+http://www.malwaredomainlist.com/forums/index.php?topic=3270.0
 http://denyhosts.sourceforge.net/
 http://contagiodump.blogspot.com/2010/11/links-and-resources-for-malware-samples.html
 http://zeltser.com/combating-malicious-software/malware-sample-sources.html
