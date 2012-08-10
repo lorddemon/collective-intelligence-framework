@@ -41,6 +41,7 @@ CIF comes with a variety of pre-built feed configurations, with that there are w
 || severity || <string> || see TaxonomySeverity || no ||
 || source || <string> || source of the feed, usually the domain where the feed is from (eg: example.com) || no ||
 || zip_filename || <string> || when the feed is a zip file, this should identify what the zip header is || no ||
+|| disabled || <string> || true, false || no ||
 
 === Comma Delimited Text Files ===
 The [http://code.google.com/p/collective-intelligence-framework/source/browse/server/trunk/lib/CIF/FeedParser.pm Feed Parser] will automagically detect and parse comma delimited text files using [http://code.google.com/p/collective-intelligence-framework/source/browse/server/trunk/lib/CIF/FeedParser/ParseCsv.pm Text::CSV]. 
