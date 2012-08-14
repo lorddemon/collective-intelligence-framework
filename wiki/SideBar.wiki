@@ -1,15 +1,16 @@
  * Help
   * [FAQ]
   * [http://groups.google.com/group/ci-framework Discussion Group]
- * [ClientSetup Client]
-  * OS Clients
-   * [ClientSetupDebianLenny Debian Lenny]
-   * [ClientSetupDebianSqueeze Debian Squeeze]
-   * [ClientSetupUbuntu Ubuntu]
-   * [ClientSetupRedhat5 Redhat]
-   * [ClientSetupFreeBSD FreeBSD]
-   * ClientExamples
-  * [BrowserPlugins Browser Plug-ins]
+ * [.01]
+  * [ClientSetup Client]
+   * OS Clients
+    * [ClientSetupDebianLenny Debian Lenny]
+    * [ClientSetupDebianSqueeze Debian Squeeze]
+    * [ClientSetupUbuntu Ubuntu]
+    * [ClientSetupRedhat5 Redhat]
+    * [ClientSetupFreeBSD FreeBSD]
+    * ClientExamples
+   * [BrowserPlugins Browser Plug-ins]
  * [ServerInstall Server]
   * [ServerBackup Backup]
   * [GroupSupport Group Support]
