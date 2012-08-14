@@ -30,7 +30,10 @@ CIF comes with a variety of pre-built feed configurations, with that there are w
 || description || <string> || short (1-2 space delimited word) description of the activity (eg: tdss spyeye) || no ||
 || detection || <string> || hourly/daily: what to "fuzz" the detection string to || no ||
 || detecttime || <string> || Most common timestamp formats are valid || no ||
-|| feed || <uri><filename> || path to the feed || no ||
+|| disabled || <string> || true, false || no ||
+|| feed || <uri><filename> || {{{http://example.com/feed.csv}}} or /tmp/feed.csv || no ||
+|| feed_user || <string> || username (Basic authentication) || no ||
+|| feed_password || <string> || password (Basic authentication) || no ||
 || guid || <string> || default: 'everyone' unless you know what you're doing || no ||
 || impact || <string> || see TaxonomyImpact || no ||
 || malware_md5 || <string> || MD5sum of malicious file || no ||
@@ -42,7 +45,6 @@ CIF comes with a variety of pre-built feed configurations, with that there are w
 || severity || <string> || see TaxonomySeverity || no ||
 || source || <string> || source of the feed, usually the domain where the feed is from (eg: example.com) || no ||
 || zip_filename || <string> || when the feed is a zip file, this should identify what the zip header is || no ||
-|| disabled || <string> || true, false || no ||
 
 === Comma Delimited Text Files ===
 The [http://code.google.com/p/collective-intelligence-framework/source/browse/server/trunk/lib/CIF/FeedParser.pm Feed Parser] will automagically detect and parse comma delimited text files using [http://code.google.com/p/collective-intelligence-framework/source/browse/server/trunk/lib/CIF/FeedParser/ParseCsv.pm Text::CSV]. 
