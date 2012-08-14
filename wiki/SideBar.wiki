@@ -4,7 +4,7 @@
  * v.01
   * [ServerInstall Server]
  * v1.0
-  * ServerInstall_v1
+  * [ServerInstall_v1]
  * [ClientSetup Client]
   * OS Clients
    * [ClientSetupDebianLenny Debian Lenny]
