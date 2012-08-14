@@ -1,7 +1,7 @@
  * Help
   * [FAQ]
   * [http://groups.google.com/group/ci-framework Discussion Group]
- * [.01]
+ * [v.01]
   * [ClientSetup Client]
    * OS Clients
     * [ClientSetupDebianLenny Debian Lenny]
