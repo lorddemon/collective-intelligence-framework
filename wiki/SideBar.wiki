@@ -2,7 +2,9 @@
   * [FAQ]
   * [http://groups.google.com/group/ci-framework Discussion Group]
  * .01
+  * [ServerInstall Server]
  * 1.0
+  * ServerInstall_v1
  * [ClientSetup Client]
   * OS Clients
    * [ClientSetupDebianLenny Debian Lenny]
