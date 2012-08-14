@@ -1,10 +1,10 @@
  * Help
   * [FAQ]
   * [http://groups.google.com/group/ci-framework Discussion Group]
- * v1.0 (Development)
-  * [ServerInstall_v1 Server Install v1.0]
- * v.01 (Production)
+ * v0 (Production)
   * [ServerInstall_v01 Server Install v.01]
+ * v1 (Development)
+  * [ServerInstall_v1 Server Install v1.0]
  * [ClientSetup Client]
   * OS Clients
    * [ClientSetupDebianLenny Debian Lenny]
