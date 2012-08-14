@@ -2,7 +2,7 @@
   * [FAQ]
   * [http://groups.google.com/group/ci-framework Discussion Group]
  * v0 (Production)
-  * [ServerInstall_v01 Server Install v0]
+  * [ServerInstall_v0 Server Install v0]
  * v1 (Development)
   * [ServerInstall_v1 Server Install v1]
  * [ClientSetup Client]
