@@ -50,7 +50,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  # at-least 100GB of free (after OS install) disk space, which will last you about 6-9 months.
 
 = Prerequisites =
- # DiskLayout
+ # [DiskLayout_v1]
 == System Deps ==
 === Standard Deps ===
 ==== Stable ====
