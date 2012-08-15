@@ -60,7 +60,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  # [ServerInstall_v1_Generic From Source]
 
 === Non Standard Deps ===
- # [InstallZeroMQ]
+ # [InstallZeroMQ_v1 InstallZeroMQ]
 
 === Configuration ===
  # [PostgresInstall_v1 PostgresInstall]
