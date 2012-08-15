@@ -1,3 +1,5 @@
+#summary ubuntu install doc (v1)
+
 Ubuntu Install
 
 = Known Issues =
