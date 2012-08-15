@@ -1,4 +1,4 @@
-#Summary lenny install doc (v0)
+#summary lenny install doc (v0)
 
 Lenny Server Install
 
