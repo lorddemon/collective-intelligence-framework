@@ -1,4 +1,5 @@
 #summary guide to configuring postgres (v1)
+#labels Version-1
 <wiki:toc max_depth="3" />
 = Introduction =
 
