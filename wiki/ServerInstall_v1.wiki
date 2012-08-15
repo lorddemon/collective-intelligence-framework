@@ -8,6 +8,18 @@
 
 = Preamble =
 == Changes==
+=== RC1 ===
+ * renamed cif-perl to libcif
+ * renamed cif-dbi-perl to libcif-dbi
+ * merged cif-client to libcif
+ * libcif now provides (implements) cif-protocol
+ * libcif now provides HTTP transport
+ * renamed cif-router-perl to cif-router
+ * renamed cif-smrt-perl to cif-smrt
+ * misc bugfixes to cif-smrt
+ * migrated Iodef::Pb to be auto-generated and implemented in Iodef::Pb::Simple
+ * added simple access control to feed data-types (eg: domain, infrastructure, malware) based on apikey (eg: key can only access one of the feeds if you allow it, no query)
+
 === beta3 ===
  * re-architected cif-smrt for better memory + thread support via ZeroMQ
  * merged cif_analytics into cif-smrt as "postprocessors", disabled by default, enabled by use of the '-P' flag in cif_smrt
@@ -90,25 +102,15 @@ $ sudo adduser --disabled-password --gecos '' cif
 == Install ==
  # the latest packages can be pulled from [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=cif-v1-b3.tar here]
 {{{
-$ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-b3.tar
-$ tar -xvf cif-v1-b3.tar
-cif-perl-v0.99.03-4-gab00244.tar.gz
-cif-client-perl-v0.99.05-5-gd9170bf.tar.gz
-cif-dbi-perl-v0.99.04-11-g9e1986b.tar.gz
-cif-protocol-perl-v0.00.02-15-ga229cf2.tar.gz
-cif-router-perl-v0.99.04-3-ga898213.tar.gz
-cif-smrt-perl-v0.99.05-9-gd137562.tar.gz
+$ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-rc1.tar
+$ tar -xvf cif-v1-rc1.tar
+libcif-v0.99.03-20-g535aa10.tar.gz
+libcif-dbi-v0.99.04-22-gc86cc63.tar.gz
+cif-smrt-v0.99.05-31-ge30ca20.tar.gz
+cif-router-v0.99.04-8-g0d2d764.tar.gz
 }}}
 === Core CIF Utility Library ===
- # cif-perl used to normalize timestamps and generate uuids
-{{{
-./configure
-make testdeps
-sudo make fixdeps
-sudo make install
-}}}
-=== Core Message Protocol ===
- # cif-protocol-perl is the core protocol used to access the api
+ # libcif used to normalize timestamps and generate uuids, peer with cif-router
 {{{
 ./configure
 make testdeps
@@ -116,7 +118,7 @@ sudo make fixdeps
 sudo make install
 }}}
 === Database Interface ===
- # cif-dbi-perl is the database driver, mostly used by CIF::Router and CIF::Smrt
+ # libcif-dbi is the database driver, mostly used by cif-router
 {{{
 ./configure
 make testdeps
@@ -130,7 +132,7 @@ make tables
 NOTICE:  table "archive" does not exist, skipping
 }}}
 === Router ===
- # cif-router-perl provides a pluggable transport layer (Apache2, ZeroMQ) for the core protocol, it also provides read/write authorization support to the interfaces
+ # cif-router provides a pluggable transport layer (HTTP, ZeroMQ) for the core protocol, it also provides read/write authorization support to the interfaces
 {{{
 ./configure
 make testdeps
@@ -138,16 +140,7 @@ sudo make fixdeps
 sudo make install
 }}}
 === Smrt Parser ===
- # cif-smrt-perl is the former cif_feedparser, processes feeds and active lists into IODEF
-{{{
-./configure
-make testdeps
-sudo make fixdeps
-sudo make install
-}}}
-
-=== Client ===
- # cif-client-perl - we'll install this locally to the default $PREFIX for now in the beta, you'll find it under /opt/cif/bin/cif to test with
+ # cif-smrt is the former cif_feedparser, processes feeds and active lists into normalized formats (eg: IODEF)
 {{{
 ./configure
 make testdeps
@@ -207,7 +200,7 @@ instance = cif.example.com
 [client]
 apikey = XXXXXX-XXX-XXXX
 
-[client_rest]
+[client_http]
 host = https://localhost:443/api
 verify_tls = 0
 
@@ -293,9 +286,9 @@ $ cd /opt/cif
 $ time ./bin/cif_crontool -d -P
 $ time ./bin/cif_crontool -p hourly -d -P
 }}}
- * when that's finished, run your first batch of feeds (could take anywhere from 20min to 2 hours depending on system, data load, etc)
+ * when that's finished, run your first batch of feeds
 {{{
-$ time /opt/cif/bin/cif_feed -d
+$ time /opt/cif/bin/cif_feed -d -S infrastructure,domain,url
 }}}
 == Finishing up ==
  # log into the cif user (sudo su - cif) and modify it's cron tab (crontab -e)
@@ -308,7 +301,7 @@ PATH=/bin:/usr/local/bin:/opt/cif/bin
 30     00      * * * /opt/cif/bin/cif_crontool -p daily -P &> /dev/null
 
 # update the feeds
-45     *       * * * /opt/cif/bin/cif_feed &> /dev/null
+45     *       * * * /opt/cif/bin/cif_feed -S infrastructure,domain,url &> /dev/null
 }}}
  # or if you want to setup logging (as an example)
 {{{
@@ -320,5 +313,5 @@ PATH=/bin:/usr/local/bin:/opt/cif/bin
 30     00      * * * /opt/cif/bin/cif_crontool -p daily -P -d >> /home/cif/crontool_daily.log 2>&1
 
 # update the feeds
-45     *       * * * /opt/cif/bin/cif_feed -d >> /home/cif/feeds.log 2>&1
+45     *       * * * /opt/cif/bin/cif_feed -d -S infrastructure,domain,url >> /home/cif/feeds.log 2>&1
 }}}
