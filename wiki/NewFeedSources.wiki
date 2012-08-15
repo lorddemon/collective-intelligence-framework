@@ -5,9 +5,8 @@ These are a list of interesting new feed sources for CIF. They have not been vet
 
 = Sources =
 {{{
+http://zeltser.com/combating-malicious-software/malicious-ip-blocklists.html
 http://contagiodump.blogspot.com/2010/11/links-and-resources-for-malware-samples.html
-http://zeltser.com/combating-malicious-software/malware-sample-sources.html
-http://isc.sans.edu/tools/suspicious_domains.html
 http://urlquery.net/index.php
 http://www3.malekal.com/malwares/
 http://jsunpack.jeek.org/dec/go?list=1
