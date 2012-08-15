@@ -1,4 +1,5 @@
 #summary Ubuntu10 Install (v0)
+#labels Version-0
 
 = Known Issues =
  1. there's an issue with Ubuntu where Crypt::SSLeay might not install properly on some systems, if it fails, check out this [http://colinnewell.wordpress.com/2011/10/24/cryptssleay-and-ubuntu-11-10/ thread]
