@@ -1,4 +1,5 @@
 #summary lenny install doc (v0)
+#labels Version-0
 
 Lenny Server Install
 
