@@ -1,4 +1,4 @@
-#summary the Server Installation
+#summary the Server Installation (v0)
 #labels Phase-Implementation
 
 <wiki:toc max_depth="3" />
