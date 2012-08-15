@@ -6,6 +6,7 @@
    * [ServerInstall_v0 Server Install]
    * [ServerBackup_v0 Backup]
    * [GroupSupport_v0 Group Support]
+   * [RTCIFMinimal_v0 RT Plugin]
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
