@@ -1,4 +1,5 @@
 #summary how to setup CIFMinimal (v0)
+#labels Deprecated
 
 = Introduction =
 
