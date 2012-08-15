@@ -73,7 +73,7 @@ $ sudo /etc/init.d/bind9 restart
 
 = Server =
 == Disk Layout ==
- # create the index / archive table spaces if you haven't via DiskLayout already (it's OK if you don't want to use LVM, these directories can exist on your root volume if you choose, but performance will increase if these are spread out across many disks):
+ # create the index / archive table spaces if you haven't via [DiskLayout_v1] already (it's OK if you don't want to use LVM, these directories can exist on your root volume if you choose, but performance will increase if these are spread out across many disks):
 {{{
 $ sudo mkdir /mnt/archive
 $ sudo mkdir /mnt/index
