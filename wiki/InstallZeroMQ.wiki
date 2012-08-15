@@ -1,4 +1,5 @@
 #summary describes how to install libzmq
+#labels Deprecated
 
 = Introduction =
 
