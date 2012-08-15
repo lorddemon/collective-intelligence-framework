@@ -19,10 +19,6 @@
    * [ClientSetupFreeBSD FreeBSD]
    * ClientExamples
   * [BrowserPlugins Browser Plug-ins]
- * [ServerInstall Server]
-  * [ServerBackup Backup]
-  * [GroupSupport Group Support]
-  * [RTCIFMinimal RT Plugin]
  * [API]
   * PerlExample
   * PythonExample
