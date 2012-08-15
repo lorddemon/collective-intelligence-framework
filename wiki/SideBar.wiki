@@ -3,10 +3,10 @@
   * [http://groups.google.com/group/ci-framework Discussion Group]
  * v0 (Stable)
   * Server
-   * [ServerInstall_v0 Server Install v0]
+   * [ServerInstall_v0 Server Install]
  * v1 (Development)
   * Server
-   * [ServerInstall_v1 Server Install v1]
+   * [ServerInstall_v1 Server Install]
  * [ClientSetup Client]
   * OS Clients
    * [ClientSetupDebianLenny Debian Lenny]
