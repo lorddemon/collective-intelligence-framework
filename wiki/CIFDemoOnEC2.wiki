@@ -28,7 +28,7 @@ $ ssh -i EC2PrivKey.pem ubuntu@ec2-xx-xx-xx-xx.compute-1.amazonaws.com
 
 Once the instance starts up, a few changes need to be made before it will start working. 
 
-For more details on what these commands do, refer to the full server install guide [http://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall here].
+For more details on what these commands do, refer to the full server install guide [ServerInstall_v0 here].
 
 
  # Switch to the cif user.
@@ -80,7 +80,7 @@ Logging has not been setup and analytics has been disabled. To enable analytics,
 {{{
 #*/5 * * * * /opt/cif/bin/cif_analytic -t 4 -m 4000 &> /dev/null
 }}}
-To enable logging, follow the 2nd step of *Finishing up* in the server install [http://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall#Finishing_up guide].
+To enable logging, follow the 2nd step of *Finishing up* in the server install [ServerInstall_v0#Finishing_up guide].
 
 = Expand Storage Space = 
 The CIF data is stored on an LVM volume mounted to */mnt*. By default it only has 8 GBs of space, which will fill up if the instance is run for more than a few days. Use the following guide to add more space. 
