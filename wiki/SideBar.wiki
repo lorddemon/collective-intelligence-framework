@@ -1,7 +1,7 @@
  * Help
   * [FAQ]
   * [http://groups.google.com/group/ci-framework Discussion Group]
- * v0 (Production)
+ * v0 (Stable)
   * Server
    * [ServerInstall_v0 Server Install v0]
  * v1 (Development)
