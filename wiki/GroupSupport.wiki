@@ -1,4 +1,4 @@
-#summary how group support works within CIF
+#summary how group support works within CIF (v0)
 
 = Introduction =
 
