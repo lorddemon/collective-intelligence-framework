@@ -1,3 +1,5 @@
+#Summary lenny install doc (v0)
+
 Lenny Server Install
 
  # Install the base deps
