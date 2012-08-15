@@ -1,6 +1,6 @@
-#summary the Server Installation v1
+#summary the Server Installation (v1)
 = Before you Begin =
- * If you've never used CIF before, *STOP RIGHT HERE*, please see [ServerInstall_v0] for v0.02 which is considered stable
+ * If you've never used CIF before, *STOP RIGHT HERE*, please see [ServerInstall_v0 ServerInstall v0] for v0.02 which is considered stable
  * From this point on, ignore all other doc (including any client side doc), this page includes all the doc required to test v1 and it could conflict with other doc creating confusion, pain and potential alcohol abuse..
 
 = Table of Contents =
@@ -35,7 +35,7 @@
  * less "index" tables to swap in and out of memory, faster lookups, ip-addr's will follow in upcoming beta's
 
 == Known Issues ==
-  * *DO NOT USE THIS IF YOU'VE NEVER USED CIF BEFORE* please test out CIF-0.02 over at [ServerInstall_v0] 
+  * *DO NOT USE THIS IF YOU'VE NEVER USED CIF BEFORE* please test out CIF-0.02 over at [ServerInstall_v0 ServerInstall v0] 
  * You *cannot run this beta on the same box as CIF 0.02*, it will break stuff, you will loose your data, you will be angry with me.
  * You *must drop* your cifv1 database before installing this beta
 
@@ -50,7 +50,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  # at-least 100GB of free (after OS install) disk space, which will last you about 6-9 months.
 
 = Prerequisites =
- # [DiskLayout_v1]
+ # [DiskLayout_v1 DiskLayout]
 == System Deps ==
 === Standard Deps ===
 ==== Stable ====
@@ -63,7 +63,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  # [InstallZeroMQ]
 
 === Configuration ===
- # [PostgresInstall_v1]
+ # [PostgresInstall_v1 PostgresInstall]
  # These scripts do a lot of dns queries. You're gonna wanna install bind and configure it to use forwarders. Maybe something like google public dns to help mask your queries. Then point your resolv.conf to 127.0.0.1
  # BindSetup
  # be sure to reload bind when you're done:
@@ -73,7 +73,7 @@ $ sudo /etc/init.d/bind9 restart
 
 = Server =
 == Disk Layout ==
- # create the index / archive table spaces if you haven't via [DiskLayout_v1] already (it's OK if you don't want to use LVM, these directories can exist on your root volume if you choose, but performance will increase if these are spread out across many disks):
+ # create the index / archive table spaces if you haven't via [DiskLayout_v1 DiskLayout] already (it's OK if you don't want to use LVM, these directories can exist on your root volume if you choose, but performance will increase if these are spread out across many disks):
 {{{
 $ sudo mkdir /mnt/archive
 $ sudo mkdir /mnt/index
