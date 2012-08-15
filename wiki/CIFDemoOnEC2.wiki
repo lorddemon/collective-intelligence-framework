@@ -1,4 +1,5 @@
 #summary Trying out CIF on Amazon's EC2 (v0)
+#Labels v0
 
 = Introduction =
 
