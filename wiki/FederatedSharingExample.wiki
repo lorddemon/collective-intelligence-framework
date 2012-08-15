@@ -110,11 +110,11 @@ verify_tls = 0
 }}}
 You can then test it by running `cif -C cifclient_west.cfg -q infrastructure`, which should either return feed data or nothing (i.e. no errors).
 
-Then setup a script as a [https://help.ubuntu.com/community/CronHowto cron] job to run the client hourly and save the output as JSON to a file. The following script is an example that saves the output to /home/cif/WEST_infrastructure.json:
+Then setup a script as a [https://help.ubuntu.com/community/CronHowto cron] job to run the client hourly and save the output as JSON to a file. The following script is an example that saves medium severity feeds of any confidence to /home/cif/WEST_infrastructure.json:
 {{{
 #!/bin/bash
 cd /home/cif/
-/usr/local/bin/cif -C cifclient_west.cfg -q infrastructure -p raw > WEST_infrastructure.json
+/usr/local/bin/cif -C cifclient_west.cfg -q infrastructure -p raw -s medium -c 1 > WEST_infrastructure.json
 }}}
 
 Now that the data is being saved to a file, it can be added like a regular feed for the CIF server to parse. Create a feed config (e.g. _/opt/cif/etc/cifwest.cfg_) and enter the following options:
