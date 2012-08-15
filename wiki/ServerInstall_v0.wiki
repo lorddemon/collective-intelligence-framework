@@ -1,4 +1,5 @@
 #summary the Server Installation (v0)
+#labels Version-0
 
 <wiki:toc max_depth="3" />
 
