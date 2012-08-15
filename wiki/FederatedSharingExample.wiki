@@ -1,4 +1,4 @@
-#summary Federated Sharing Example
+#summary Federated Sharing Example (v0)
 
 =Table Of Contents=
 <wiki:toc max_depth="2" />
