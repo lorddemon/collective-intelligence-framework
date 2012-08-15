@@ -1,4 +1,5 @@
 #summary ubuntu install doc (v1)
+#labels Version-1
 
 Ubuntu Install
 
