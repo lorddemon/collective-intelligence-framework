@@ -122,6 +122,15 @@ sudo make install
 }}}
 === Database Interface ===
  # libcif-dbi is the database driver, mostly used by cif-router
+ # run the ./configure:
+{{{
+$ ./configure
+}}}
+ # if you are running v1-b3 of CIF, make sure you drop the previous database:
+{{{
+$ sudo make dropdb
+}}}
+ # then re-init the database
 {{{
 ./configure
 make testdeps
