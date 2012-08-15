@@ -27,7 +27,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 = Prerequisites =
 == Required Services ==
  # Join the [http://groups.google.com/group/ci-framework mailing list] -- we like to archive the Q & A there. When you ask questions directly, we will usually Cc our responses.
- # DiskLayout
+ # DiskLayout_v0
  # PostgresInstall
  # BindSetup
 
@@ -48,7 +48,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  # we're using postgres as an embedded db, these current configs assume your postgres instance is locked down from the outside world. This will be changed in future releases.
 
 == Server ==
- # create the index / archive table spaces if you haven't via DiskLayout already (it's OK if you don't want to use LVM, these directories can exist on your root volume if you choose, but performance will increase if these are spread out across many disks):
+ # create the index / archive table spaces if you haven't via DiskLayout_v0 already (it's OK if you don't want to use LVM, these directories can exist on your root volume if you choose, but performance will increase if these are spread out across many disks):
 {{{
 $ sudo mkdir /mnt/archive
 $ sudo mkdir /mnt/index
