@@ -1,4 +1,4 @@
-#summary the best layout for your system disk and data-warehouse v0
+#summary the best layout for your system disk and data-warehouse (v0)
 
 = Introduction =
 
