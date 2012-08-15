@@ -1,6 +1,9 @@
 #summary the Server Installation (v1)
+
+= WARNING -- UNDER CONSTRUCTION CHECK BACK AFTER RELEASE NOTE TO MAILING LIST =
+
 = Before you Begin =
- * If you've never used CIF before, *STOP RIGHT HERE*, please see [ServerInstall_v0 ServerInstall v0] for v0.02 which is considered stable
+ * If you've never used CIF before, *STOP RIGHT HERE*, please see [ServerInstall_v0 installer] for v0 which is considered stable
  * From this point on, ignore all other doc (including any client side doc), this page includes all the doc required to test v1 and it could conflict with other doc creating confusion, pain and potential alcohol abuse..
 
 = Table of Contents =
@@ -41,14 +44,14 @@
   * cif-dbi-perl (core database interface)
   * cif-smrt (formally cif_feedparser)
   * cif-router (formally CIF::WebAPI)
- * turned cif-router into a driver framework (eg: REST, ZeroMQ are just plugins and can be swapped out)
+ * turned cif-router into a driver framework (eg: HTTP, ZeroMQ are just plugins and can be swapped out)
  * simplified the CIF::Router api (removed severity and restriction from the api)
  * simplified the query data model, most things are now just sha1 hash lookups (with the exception of ipv4/6 addresses)
  * less "index" tables to swap in and out of memory, faster lookups, ip-addr's will follow in upcoming beta's
 
 == Known Issues ==
-  * *DO NOT USE THIS IF YOU'VE NEVER USED CIF BEFORE* please test out CIF-0.02 over at [ServerInstall_v0 ServerInstall v0] 
- * You *cannot run this beta on the same box as CIF 0.02*, it will break stuff, you will loose your data, you will be angry with me.
+  * *DO NOT USE THIS IF YOU'VE NEVER USED CIF BEFORE* please test out [ServerInstall_v0 v0]
+ * You *cannot run this beta on the same box as CIF v0, it will break stuff, you will loose your data, you will be angry with me.
  * You *must drop* your cifv1 database before installing this beta
 
 = System Requirements =
