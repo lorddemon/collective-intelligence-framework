@@ -126,8 +126,9 @@ sudo make install
 {{{
 $ ./configure
 }}}
- # if you are running v1-b3 of CIF, make sure you drop the previous database:
+ # if you are running v1-b3 of CIF, make sure you stop apache and drop the previous database:
 {{{
+$ sudo /etc/init.d/apache2 stop
 $ sudo make dropdb
 }}}
  # then re-init the database
