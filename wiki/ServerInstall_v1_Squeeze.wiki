@@ -1,4 +1,5 @@
 #summary squeeze install doc (v1)
+#labels Version-1
 
 Squeeze Server Install
 
