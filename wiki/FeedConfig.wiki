@@ -69,7 +69,7 @@ delimiter = '[\t|\f]'
 period = daily
 }}}
 || Parameter Name || Values || Description ||
-|| values || <csv-string> || a comma separated list of values ||
+|| values || <csv-string> || a comma separated list of parameters ||
 || delimiter || <string> || a sudo-regex that splits up the feed ||
 
 === NonDelimited Text Files ===
