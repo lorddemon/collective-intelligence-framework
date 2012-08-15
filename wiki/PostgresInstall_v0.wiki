@@ -2,7 +2,7 @@
 <wiki:toc max_depth="3" />
 = Introduction =
 
-This guide will show you how to setup an embedded instance of postgres using localhost. This config assumes you have trusted access to the instance from localhost. CIF v0.01 assumes this to be an embedded database and there is no way to access a database outside of the localhost. This will be addressed in future versions (v1.00).
+This guide will show you how to setup an embedded instance of postgres using localhost. This config assumes you have trusted access to the instance from localhost. CIF v0.02 assumes this to be an embedded database and there is no way to access a database outside of the localhost. This will be addressed in future versions (v1).
 
 Before you begin, you should consult the [DiskLayout_v0] page for optimum database performance.
 
