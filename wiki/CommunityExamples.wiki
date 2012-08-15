@@ -1,4 +1,5 @@
 #summary a page of 3rd party community examples
+#labels Deprecated
 
 = Introductions =
  * https://overhack.wordpress.com/2012/05/07/introduction-to-the-collective-intelligence-framework
