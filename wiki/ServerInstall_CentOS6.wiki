@@ -1,4 +1,4 @@
-#summary centos 6 install doc
+#summary centos 6 install doc (v0)
 
 = Introduction =
 
