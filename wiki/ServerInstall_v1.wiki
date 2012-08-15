@@ -130,6 +130,7 @@ $ ./configure
 {{{
 $ sudo /etc/init.d/apache2 stop
 $ sudo make dropdb
+$ sudo /etc/init.d/apache2 start
 }}}
  # then re-init the database
 {{{
