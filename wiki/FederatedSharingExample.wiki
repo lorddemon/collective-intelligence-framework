@@ -17,7 +17,7 @@ In this use case scenario, there is an entity running CIF (CIF West) that we (CI
 
 This use case requires two CIF server installations - one for the entity that will be sharing data (CIF West), and another for the one that will import the data (CIF East).
 
-Use the following [http://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall guide] to setup the CIF servers.
+Use the following [ServerInstall_v0 ServerInstall guide] to setup the CIF servers.
 
 If you don't want to use all of the public feeds that are enabled by default, use the following commands to append .example to the end of all of the feed configs to disable them. 
 {{{
