@@ -1,5 +1,5 @@
 #summary the Server Installation (v0)
-#labels Phase-Implementation
+#labels Deprecated
 
 <wiki:toc max_depth="3" />
 
