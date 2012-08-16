@@ -286,7 +286,7 @@ $ sudo a2enmod ssl
 <Location /api>
     SetHandler perl-script
     PerlResponseHandler CIF::Router::HTTP
-    PerlSetVar CIFRouterHTTPConfig "/home/cif/.cif"
+    PerlSetVar CIFRouterConfig "/home/cif/.cif"
 </Location>
 
 }}}
