@@ -103,7 +103,7 @@ $ sudo chmod 770 /mnt/archive
 $ sudo adduser --disabled-password --gecos '' cif
 }}}
 == Install ==
- # the latest packages can be pulled from [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=cif-v1-b3.tar here]
+ # the latest packages can be pulled from [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=cif-v1-rc1.tar here]
 {{{
 $ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-rc1.tar
 $ tar -xvf cif-v1-rc1.tar
@@ -277,7 +277,7 @@ $ sudo a2enmod ssl
 {{{
 <IfModule mod_ssl.c>
 <VirtualHost _default_:443>
-+      PerlRequire /opt/cif/bin/rest_api.pl
++      PerlRequire /opt/cif/bin/http_api.pl
 +      Include /etc/apache2/cif.conf
 ....
 }}}
