@@ -103,14 +103,14 @@ $ sudo chmod 770 /mnt/archive
 $ sudo adduser --disabled-password --gecos '' cif
 }}}
 == Install ==
- # the latest packages can be pulled from [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=cif-v1-rc1.tar here]
+ # the latest packages can be pulled from [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=cif-v1-rc1-00.tar here]
 {{{
-$ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-rc1.tar
-$ tar -xvf cif-v1-rc1.tar
-libcif-v0.99.03-20-g535aa10.tar.gz
-libcif-dbi-v0.99.04-22-gc86cc63.tar.gz
-cif-smrt-v0.99.05-31-ge30ca20.tar.gz
-cif-router-v0.99.04-8-g0d2d764.tar.gz
+$ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-rc1-00.tar
+$ tar -xvf cif-v1-rc1-00.tar
+libcif-v0.99.03-22-ga942ee0.tar.gz
+libcif-dbi-v0.99.04-23-g1c2d8b2.tar.gz
+cif-smrt-v0.99.05-33-gcd574b8.tar.gz
+cif-router-v0.99.04-13-ge2456c7.tar.gz
 }}}
 === Core CIF Utility Library ===
  # libcif used to normalize timestamps and generate uuids, peer with cif-router
