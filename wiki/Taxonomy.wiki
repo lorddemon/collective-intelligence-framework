@@ -1,4 +1,5 @@
 #summary describes the various taxonomies used through the framework
+#labels Deprecated
 
 = Introduction =
 
