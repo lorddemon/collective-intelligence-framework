@@ -29,7 +29,7 @@
   * [Taxonomy_v0 Taxonomy]
    * [TaxonomyImpact_v0 Impact Definitions]
    * [TaxonomySeverity_v0 Severity Definitions]
-   * Confidence Definitions
+   * [TaxonomyConfidence_v0 Confidence Definitions]
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
