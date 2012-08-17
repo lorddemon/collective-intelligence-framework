@@ -35,6 +35,7 @@
    * [FeedsFAQ_v0 Feed FAQ]
    * Types
     * [FeedsBotnet_v0 Botnet]
+    * [FeedsMalware_v0 Malware]
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
