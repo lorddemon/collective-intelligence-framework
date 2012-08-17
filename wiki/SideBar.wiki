@@ -9,6 +9,7 @@
    * [RTCIFMinimal_v0 RT Plugin]
   * [Client_v0 Client]
    * CLI Client
+    * [CliClientExamples_v0 Client Examples]
     * Install
      * Perl
       * [ClientInstallSourcePerl_v0 Perl Client]
@@ -19,7 +20,6 @@
       * [CliClientSetupFreeBSD_v0 FreeBSD]
      * Python
       * [ClientInstallSourcePython_v0 Python Client]
-    * [CliClientExamples_v0 Client Examples]
    * Web Browser
     * Install
      * [BrowserPluginsInstall_v0 Web Browser]
