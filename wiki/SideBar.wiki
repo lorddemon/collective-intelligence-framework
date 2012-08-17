@@ -7,7 +7,7 @@
    * [ServerBackup_v0 Backup]
    * [GroupSupport_v0 Group Support]
    * [RTCIFMinimal_v0 RT Plugin]
-  * Client
+  * [Client_v0 Client]
    * CLI Client
     * Install
      * Perl
