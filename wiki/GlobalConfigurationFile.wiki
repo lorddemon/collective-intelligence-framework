@@ -1,4 +1,5 @@
 #summary initial setup of configuration file
+#labels Deprecated
 
 = Global Configuration File =
  1. create a configuration file: ~/.cif with the following:
