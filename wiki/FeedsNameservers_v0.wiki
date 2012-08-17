@@ -3,7 +3,7 @@
 <wiki:toc max_depth="2" />
 
 = Introduction =
-The [TaxonomyImpact#Nameserver suspicious name-server] assessment is typically a [TaxonomySeverity#Medium medium severity] feed depicting name-servers that are considered to be criminally negligent. Mitigation of these name-servers should reduce potential compromises / botnet communication.
+The [TaxonomyImpact_v0#Nameserver suspicious name-server] assessment is typically a [TaxonomySeverity_v0#Medium medium severity] feed depicting name-servers that are considered to be criminally negligent. Mitigation of these name-servers should reduce potential compromises / botnet communication.
 
 = Details =
 == Domains ==
