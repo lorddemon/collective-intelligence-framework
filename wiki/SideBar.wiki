@@ -15,6 +15,7 @@
       * [CliClientSetupDebianLenny_v0 Debian Lenny]
       * [CliClientSetupDebianSqueeze_v0 Debian Squeeze]
       * [CliClientSetupUbuntu_v0 Ubuntu]
+      * [CliClientSetupRedhat5_v0 RedHat 5]
      * Python
       * [ClientInstallSourcePython_v0 Python Client]
     * [CliClientExamples_v0 Client Examples]
