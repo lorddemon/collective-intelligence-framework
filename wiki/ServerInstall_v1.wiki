@@ -205,7 +205,7 @@ $ vi ~/.cif
 }}}
  # edit ~/.cif using this as a template:
 {{{
-[cif_feeds]
+[cif_feed]
 limit = 100000
 confidence = 85,95
 roles = everyone
