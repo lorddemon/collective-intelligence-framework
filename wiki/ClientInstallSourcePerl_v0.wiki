@@ -18,7 +18,7 @@
 {{{
 $ sudo perl -MCPAN -e 'install CIF::Client'
 }}}
- 1. setup your [GlobalConfigurationFile configuration file]
+ 1. setup your [CliGlobalConfigurationFile_v0 configuration file]
 
 = Known Issues =
  * BSD *Performance* p5-JSON-XS will solve some performance issues
