@@ -58,16 +58,6 @@
   * API
   * Taxonomy
   * Feeds
- * [CookBook]
-  * [AddingFeeds]
-  * [CIFDemoOnEC2]
-  * [CookBookNFSen NFSen]
-  * [DnsSinkhole]
-  * [ElsaGuide]
-  * [FederatedSharingExample]
-  * [MalwareDomains]
-  * [Tools_crontool]
-  * [Tools_cif_apikeys]
  * Other
   * [ProjectsLab]
   * [CommunityExamples]
