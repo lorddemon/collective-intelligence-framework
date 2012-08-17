@@ -33,10 +33,6 @@
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
- * [Taxonomy]
-  * [TaxonomyImpact Impact Definitions]
-  * [TaxonomySeverity Severity Definitions]
-  * [TaxonomyConfidence Confidence Definitions]
  * [Feeds]
   * [FeedsBotnet]
   * [FeedsMalware]
