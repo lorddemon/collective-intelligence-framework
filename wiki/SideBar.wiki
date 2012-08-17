@@ -36,6 +36,7 @@
    * Types
     * [FeedsBotnet_v0 Botnet]
     * [FeedsMalware_v0 Malware]
+    * [FeedsPhishing_0 Phishing]
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
