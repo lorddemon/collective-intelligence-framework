@@ -1,5 +1,5 @@
-#summary Trying out CIF on Amazon's EC2 (v0)
-#labels version-0
+#summary Trying out CIF on Amazon's EC2
+#labels Deprecated
 
 = Introduction =
 
