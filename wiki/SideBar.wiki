@@ -43,6 +43,7 @@
     * [FeedsSpam_v0 Spam]
   * [CookBook_v0 Cookbook]
    * [AddingFeeds_v0 Adding New Feeds]
+   * [CIFDemoOnEC2 CIF EC2 VMI]
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
