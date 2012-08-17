@@ -34,7 +34,7 @@
    * [FeedConfig_v0 Feed Config]
    * [FeedsFAQ_v0 Feed FAQ]
    * Types
-    * asdf
+    * [FeedsBotnet_v0 Botnet]
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
