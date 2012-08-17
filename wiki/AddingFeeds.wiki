@@ -1,4 +1,5 @@
 #summary Adding New Feeds
+#labels Deprecated
 
 = Introduction =
 
