@@ -1,4 +1,5 @@
 #summary scanner feeds page
+#labels Deprecated
 <wiki:toc max_depth="2" />
 
 = Introduction =
