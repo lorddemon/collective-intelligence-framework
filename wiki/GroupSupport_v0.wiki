@@ -3,7 +3,7 @@
 
 = Introduction =
 
-With the introduction of what we're calling "beta3", we've altered the database model a bit to support the use of "unix style permissions" against the records.
+CIF supports the use of "unix style permissions" per record. One nuisance of this is, if you wanted to tag the same indicator with three different groups, that essentially same record would be in the database three different times (one record per group). 
 
 The bullet points of this are:
  * enables multi-group and multi-federation support within the system
