@@ -1,5 +1,5 @@
 #summary how to get CIF working with ELSA
-#labels Phase-Implementation
+#labels Phase-Implementation,Deprecated
 
 = Introduction =
 
