@@ -8,7 +8,7 @@
    * [GroupSupport_v0 Group Support]
    * [RTCIFMinimal_v0 RT Plugin]
   * Client
-   * [ClientInfo_v0 CIF Client]
+   * [ClientInstallGeneric_v0 CIF Client]
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
