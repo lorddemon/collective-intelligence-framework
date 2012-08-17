@@ -1,5 +1,5 @@
 #summary initial setup of your client
-#labels Phase-Implementation,Phase-Deploy,Client
+#labels Phase-Implementation,Phase-Deploy,Client,Deprecated
 
 = Before you Begin =
 *BY DEFAULT, ALL QUERIES ARE ANONYMOUSLY LOGGED*
