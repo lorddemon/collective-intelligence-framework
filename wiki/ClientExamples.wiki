@@ -1,5 +1,5 @@
 #summary Example Client Commands and outputs
-#labels Phase-Implementation,Phase-Deploy,Client
+#labels Phase-Implementation,Phase-Deploy,Client,Deprecated
 
 <wiki:toc max_depth="3" />
 
