@@ -42,6 +42,7 @@
     * [FeedsScanners_v0 Scanners]
     * [FeedsSpam_v0 Spam]
   * [CookBook_v0 Cookbook]
+   * [AddingFeeds_v0 Adding New Feeds]
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
