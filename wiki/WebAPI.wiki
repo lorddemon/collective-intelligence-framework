@@ -1,5 +1,5 @@
 #summary Documentation of the Current CIF-WebAPI REST API
-#labels Phase-Implementation
+#labels Phase-Implementation,Deprecated
 
 <wiki:toc max_depth="3" />
 
