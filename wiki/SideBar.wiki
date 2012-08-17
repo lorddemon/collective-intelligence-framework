@@ -39,6 +39,7 @@
     * [FeedsPhishing_0 Phishing]
     * [FeedsNetworks_v0 Networks]
     * [FeedsNameservers_v0 Nameservers]
+    * [FeedsScanners_v0 Scanners]
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
