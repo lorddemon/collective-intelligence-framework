@@ -1,4 +1,5 @@
 #summary Trying out CIF on Amazon's EC2 (v0)
+#labels Version-0
 
 = Introduction =
 
@@ -67,7 +68,7 @@ $ time /opt/cif/bin/cif_crontool -f -d && /opt/cif/bin/cif_crontool -d -p daily 
 {{{
 $ time /opt/cif/bin/cif_feeds -d
 }}}
- # You should now be able to run queries against your server using the cif client. For details on feed queries, refer to the [http://code.google.com/p/collective-intelligence-framework/wiki/Feeds Feeds wiki].
+ # You should now be able to run queries against your server using the cif client. For details on feed queries, refer to the [Feeds_v0 Feeds wiki].
 Examples:
 {{{
 $ cif -q infrastructure/network -c 85 -s medium
@@ -86,7 +87,7 @@ To enable logging, follow the 2nd step of *Finishing up* in the server install [
 The CIF data is stored on an LVM volume mounted to */mnt*. By default it only has 8 GBs of space, which will fill up if the instance is run for more than a few days. Use the following guide to add more space. 
 
   # [http://docs.amazonwebservices.com/AWSEC2/latest/UserGuide/ebs-creating-volume.html Create a new volume in EC2] and [http://docs.amazonwebservices.com/AWSEC2/latest/UserGuide/ebs-attaching-volume.html attach it to your instance]. (_Note: The volume must be in the same availability zone as your instance or it won't be able to attach._) 
-   * For an idea of how much data CIF consumes daily, refer to the [http://code.google.com/p/collective-intelligence-framework/wiki/DiskLayout disk layout guide].
+   * For an idea of how much data CIF consumes daily, refer to the [DiskLayout_v0 disk layout guide].
   # Run *dmesg* to see what identifier is assigned to the new drive when it attaches. 
 {{{
 $ dmesg
