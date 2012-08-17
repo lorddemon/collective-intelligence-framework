@@ -1,4 +1,5 @@
 #summary installing the perl client on ubuntu
+#labels Deprecated
 
 = Installation =
 == Dependencies ==
