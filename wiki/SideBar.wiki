@@ -44,6 +44,10 @@
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
+  * Client
+  * API
+  * Taxonomy
+  * Feeds
  * [CookBook]
   * [AddingFeeds]
   * [CIFDemoOnEC2]
