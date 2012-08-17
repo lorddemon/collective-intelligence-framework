@@ -20,6 +20,7 @@
      * Python
       * [ClientInstallSourcePython_v0 Python Client]
     * [CliClientExamples_v0 Client Examples]
+  * [API_v0 API]
    * Web Browser
     * Install
      * [BrowserPluginsInstall_v0 Web Browser]
