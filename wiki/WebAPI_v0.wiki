@@ -5,7 +5,7 @@
 
 = Generating API Keys =
 
-See [Tools_cif_apikeys this] for information on generating API keys.
+See [Tools_cif_apikeys_v0 this] for information on generating API keys.
 
 = Feed Generation =
  1. for performance reasons, feeds are aggregated via cron
