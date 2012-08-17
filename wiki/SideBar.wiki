@@ -10,8 +10,10 @@
   * Client
    * CLI Client
     * Install
-     * [ClientInstallSourcePerl_v0 Perl Client]
-     * [ClientInstallSourcePython_v0 Python Client]
+     * Perl
+      * [ClientInstallSourcePerl_v0 Perl Client]
+     * Python
+      * [ClientInstallSourcePython_v0 Python Client]
    * Web Browser
     * Install
      * [BrowserPluginsInstall_v0 Web Browser]
