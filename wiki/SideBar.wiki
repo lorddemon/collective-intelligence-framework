@@ -31,7 +31,9 @@
    * [TaxonomySeverity_v0 Severity Definitions]
    * [TaxonomyConfidence_v0 Confidence Definitions]
   * [Feeds_v0 Feeds]
-   * asdf
+   * [FeedsFAQ_v0 Feed FAQ]
+   * Types
+    * asdf
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
