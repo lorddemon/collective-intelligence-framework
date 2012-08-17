@@ -26,15 +26,6 @@
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
- * [ClientSetup Client]
-  * OS Clients
-   * [ClientSetupDebianLenny Debian Lenny]
-   * [ClientSetupDebianSqueeze Debian Squeeze]
-   * [ClientSetupUbuntu Ubuntu]
-   * [ClientSetupRedhat5 Redhat]
-   * [ClientSetupFreeBSD FreeBSD]
-   * ClientExamples
-  * [BrowserPlugins Browser Plug-ins]
  * [API]
   * PerlExample
   * PythonExample
