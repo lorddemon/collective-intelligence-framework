@@ -3,7 +3,7 @@
 
 = Introduction =
 
-CIF supports the use of "unix style permissions" per record. One nuisance of this is, if you wanted to tag the same indicator with three different groups, that essentially same record would be in the database three different times (one record per group). 
+CIF supports the use of "unix style permissions" per record. 
 
 The bullet points of this are:
  * enables multi-group and multi-federation support within the system
