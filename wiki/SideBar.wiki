@@ -30,6 +30,7 @@
    * [TaxonomyImpact_v0 Impact Definitions]
    * [TaxonomySeverity_v0 Severity Definitions]
    * [TaxonomyConfidence_v0 Confidence Definitions]
+  * [Feeds_v0 Feeds]
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
