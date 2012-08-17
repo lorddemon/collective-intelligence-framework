@@ -3,11 +3,11 @@
 <wiki:toc max_depth="2" />
 
 = Introduction =
-The [TaxonomyImpact#Scanner scanner] assessment is typically a [TaxonomySeverity#Medium medium severity] feed depicting known malicious scanners brute-forcing the internet (ssh, portscanners, etc).
+The [TaxonomyImpac_v0t#Scanner scanner] assessment is typically a [TaxonomySeverity_v0#Medium medium severity] feed depicting known malicious scanners brute-forcing the internet (ssh, portscanners, etc).
 
 Typical examples might include items from: 
- * the [http://sshbl.org] list ([TaxonomyConfidence#41_-_74 medium] confidence)
- * the [http://dragonresearchgroup.org/insight/sshpwauth.txt DRG SSH] list ([TaxonomyConfidence#41_-_74 medium] confidence)
+ * the [http://sshbl.org] list ([TaxonomyConfidence_v0#41_-_74 medium] confidence)
+ * the [http://dragonresearchgroup.org/insight/sshpwauth.txt DRG SSH] list ([TaxonomyConfidence_v0#41_-_74 medium] confidence)
 
 = Details =
 == Infrastructure ==
