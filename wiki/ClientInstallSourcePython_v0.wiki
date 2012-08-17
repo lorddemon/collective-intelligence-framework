@@ -2,7 +2,7 @@
 #labels Version-0
 
 = Known Issues =
-the PythonClient is currently *[http://code.google.com/p/collective-intelligence-framework/issues/detail?id=82 UNSTABLE]* and being re-written, use at your own risk or switch to the PerlClient
+the [ClientInstallSourcePython_v0 PythonClient] is currently *[http://code.google.com/p/collective-intelligence-framework/issues/detail?id=82 UNSTABLE]* and being re-written, use at your own risk or switch to the [ClientInstallSourcePerl_v0 PerlClient]
  1. httplib2 TLS issues
  1. no plugin support
  1. no proxy support
