@@ -6,7 +6,7 @@
 
 = Installation =
 == Distro Helpers ==
- * [PerlClientBSD BSD]
+ * [CliPerlClientBSD_v0 BSD]
  * [PerlClientCygwin Cygwin]
 
 == From Source == 
