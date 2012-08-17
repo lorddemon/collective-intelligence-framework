@@ -1,4 +1,6 @@
-#labels Phase-Deploy
+#summary installing the perl client on freebsd
+#labels Phase-Deploy,Deprecated
+
 {{{
 --begin install script--
 #!/usr/local/bin/bash
