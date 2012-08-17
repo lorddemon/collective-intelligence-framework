@@ -1,4 +1,5 @@
 #summary example of running a dns sinkhole using CIF
+#labels Deprecated
 
 = Introduction =
  * This was tested on a Ubuntu 10.04.3 server
