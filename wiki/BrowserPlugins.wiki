@@ -1,4 +1,5 @@
 #summary CIF Client for Chrome/Firefox
+#labels Deprecated
 
 = Introduction =
 
