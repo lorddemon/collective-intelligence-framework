@@ -1,4 +1,5 @@
 #summary how to install the PerlClient on BSD
+#labels Deprecated
 
 = Introduction =
 
