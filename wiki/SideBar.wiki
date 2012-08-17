@@ -46,6 +46,7 @@
    * [CIFDemoOnEC2 CIF EC2 VMI]
    * [CookBookNFSen_v0 CIF + NFSen]
    * [DnsSinkhole_v0 DNS Sinkhole]
+   * [ElsaGuide_v0 ELSA Guide]
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
