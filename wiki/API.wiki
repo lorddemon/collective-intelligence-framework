@@ -1,4 +1,5 @@
 #summary introduction to the API
+#labels Deprecated
 
 <wiki:toc max_depth="4" />
 = Introduction =
