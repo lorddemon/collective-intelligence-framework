@@ -1,0 +1,47 @@
+#summary installing the perl client on debian squeeze (v0)
+#labels Version-0
+
+= CPAN =
+On a clean install of Debian Squeeze 6.0.4 you will need to do the following to get CPAN "configured properly". 
+
+ # Become root or use sudo if installed
+{{{
+su -
+}}}
+ # open cpan (Note: if this is your first time, accept all defaults)
+{{{
+cpan
+}}}
+ # Install the newest version of CPAN
+{{{
+install CPAN
+}}}
+ # Reload CPAN
+{{{
+reload CPAN
+}}}
+ # Exit CPAN
+{{{
+exit
+}}}
+
+= Installation =
+ # Become root or use sudo if installed
+{{{
+su -
+}}}
+ # make sure build-essential and libssl-dev is installed (for Crypt::SSleay and REST::Client)
+{{{
+$> apt-get install build-essential libssl-dev
+}}}
+ # install the client library (accept all defaults)
+{{{
+perl -MCPAN -e 'install CIF::Client'
+}}}
+
+= Configuration =
+ # As a standard user (non-root), create the .cif file on the home directory
+{{{
+nano /home/$user/.cif
+}}}
+ # setup your [GlobalConfigurationFile configuration file]
