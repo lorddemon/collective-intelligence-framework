@@ -320,7 +320,7 @@ Feed query responses are a little different. When feeds are generated, they tend
 }
 }}}
 
-The perl library auto-detects this behavior, decodes, decompresses the blob and re-fit's it into the hash response before handing you the response. If you aren't using the GET function within that library, you need to decode this blob yourself using something like zlib and a base64 decoder. This will result in a simple JSON IODEF array. The client libraries also simplify these IODEF documents into simple key-pair hashes. If you're writing your own lib, you'll need to do that too. use the PerlClient as a reference.
+The perl library auto-detects this behavior, decodes, decompresses the blob and re-fit's it into the hash response before handing you the response. If you aren't using the GET function within that library, you need to decode this blob yourself using something like zlib and a base64 decoder. This will result in a simple JSON IODEF array. The client libraries also simplify these IODEF documents into simple key-pair hashes. If you're writing your own lib, you'll need to do that too. use the [ClientInstallSourcePerl_v0 PerlClient] as a reference.
 == Common Parameters ==
  * [http://tools.ietf.org/html/rfc4287 ATOM]
  * [http://tools.ietf.org/html/rfc5070 IODEF]
