@@ -44,6 +44,7 @@
   * [CookBook_v0 Cookbook]
    * [AddingFeeds_v0 Adding New Feeds]
    * [CIFDemoOnEC2 CIF EC2 VMI]
+   * [CookBookNFSen_v0 CIF + NFSen]
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
