@@ -1,5 +1,5 @@
 #summary impact descriptions
-#labels Phase-Support
+#labels Phase-Support,Deprecated
 
 = Introduction =
 
