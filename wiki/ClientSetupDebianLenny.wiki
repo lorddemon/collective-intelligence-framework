@@ -1,4 +1,4 @@
-#labels Phase-Deploy
+#labels Phase-Deploy,Deprecated
 = CPAN =
 On a clean install of Debian Lenny 5.0.7 you will need to do the following to get CPAN "configured properly". 
 
