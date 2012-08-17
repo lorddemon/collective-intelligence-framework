@@ -1,5 +1,5 @@
-#summary Federated Sharing Example (v0)
-#labels Version-0
+#summary Federated Sharing Example
+#labels Deprecated
 
 =Table Of Contents=
 <wiki:toc max_depth="2" />
