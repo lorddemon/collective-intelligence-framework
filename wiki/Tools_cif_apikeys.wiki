@@ -1,4 +1,5 @@
 #summary this page describes the cif_apikeys
+#labels Deprecated
 
 = Generating API Keys =
 {{{
