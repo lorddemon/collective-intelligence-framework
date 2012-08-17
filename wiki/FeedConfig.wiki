@@ -1,4 +1,5 @@
 #summary designing your own custom.cfg feed parsing config
+#labels Deprecated
 
 = Introduction =
 
