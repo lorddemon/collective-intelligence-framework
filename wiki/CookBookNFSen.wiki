@@ -1,4 +1,5 @@
 #summary an NFSEN integration example
+#labels Deprecated
 
 {{{
 #!/usr/bin/perl -w
