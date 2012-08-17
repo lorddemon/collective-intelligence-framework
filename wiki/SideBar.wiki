@@ -44,16 +44,6 @@
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
- * [Feeds]
-  * [FeedsBotnet]
-  * [FeedsMalware]
-  * [FeedsPhishing]
-  * [FeedsNetworks]
-  * [FeedsNameservers]
-  * [FeedsScanners]
-  * [FeedsSpam]
-  * [FeedsFAQ]
-  * [FeedConfig]
  * [CookBook]
   * [AddingFeeds]
   * [CIFDemoOnEC2]
