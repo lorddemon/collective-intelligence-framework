@@ -2,7 +2,7 @@
   * [FAQ]
   * [http://groups.google.com/group/ci-framework Discussion Group]
  * v0 (Stable)
-  * Server
+  * [Server_v0 Server]
    * [ServerInstall_v0 Server Install]
    * [ServerBackup_v0 Backup]
    * [GroupSupport_v0 Group Support]
