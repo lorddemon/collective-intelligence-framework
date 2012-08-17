@@ -31,7 +31,7 @@
    * [TaxonomySeverity_v0 Severity Definitions]
    * [TaxonomyConfidence_v0 Confidence Definitions]
   * [Feeds_v0 Feeds]
-   * {FeedConfig_v0 Feed Config]
+   * [FeedConfig_v0 Feed Config]
    * [FeedsFAQ_v0 Feed FAQ]
    * Types
     * asdf
