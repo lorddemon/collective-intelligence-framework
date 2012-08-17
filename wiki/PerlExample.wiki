@@ -1,4 +1,5 @@
 #summary an example of how to use the CIF::Client perl library
+#labels Deprecated
 
 = Introduction =
 
