@@ -1,4 +1,6 @@
-#labels Phase-Deploy,Client
+#summary installing the perl client on redhat 5 (v0)
+#labels Phase-Deploy,Client,Deprecated
+
 Redhat 5 has an issue with Scalar::Util and Zlib
 
 = Install =
