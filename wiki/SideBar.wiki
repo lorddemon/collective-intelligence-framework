@@ -8,7 +8,10 @@
    * [GroupSupport_v0 Group Support]
    * [RTCIFMinimal_v0 RT Plugin]
   * Client
-   * [ClientInstallSourcePerl_v0 Generic install CIF Perl Client]
+   * CLI Client
+    * Install
+     * [ClientInstallSourcePerl_v0 Perl Client]
+   * Web Browser
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
