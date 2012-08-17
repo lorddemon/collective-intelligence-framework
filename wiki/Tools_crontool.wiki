@@ -1,4 +1,5 @@
 #summary this page describes the cif_croontool
+#labels Deprecated
 
 = Introduction =
 
