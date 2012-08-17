@@ -12,6 +12,7 @@
     * Install
      * Perl
       * [ClientInstallSourcePerl_v0 Perl Client]
+      * [CliClientSetupDebianLenny_v0 Debian Lenny]
      * Python
       * [ClientInstallSourcePython_v0 Python Client]
     * [CliClientExamples_v0 Client Examples]
