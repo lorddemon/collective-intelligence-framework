@@ -1,4 +1,5 @@
 #summary installing the perl client with cygwin
+#labels Deprecated
 
 = Prerequisites = 
  * To install the CIF Perl client under Cygwin, you need the following packages:
