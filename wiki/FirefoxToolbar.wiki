@@ -1,4 +1,5 @@
 #summary how to leverage CIF within FF
+#labels Deprecated
 
 = BEFORE YOU INSTALL =
 
