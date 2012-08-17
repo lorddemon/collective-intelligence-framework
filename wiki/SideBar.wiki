@@ -11,6 +11,7 @@
    * CLI Client
     * Install
      * [ClientInstallSourcePerl_v0 Perl Client]
+     * [ClientInstallSourcePython_v0 Python Client]
    * Web Browser
  * v1 (Development)
   * Server
