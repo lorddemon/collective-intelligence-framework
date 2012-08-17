@@ -3,10 +3,10 @@
 <wiki:toc max_depth="2" />
 
 = Introduction =
-The [TaxonomyImpact#Networks suspicious network] assessment is typically a [TaxonomySeverity#Medium medium severity] feed depicting things that probably have no business being seen on your network. Communications with these addresses will probably lead to a credential type theft, or compromise when combined with a [TaxonomyConfidence#85_-_94 high] confidence observation.
+The [TaxonomyImpact_v0#Networks suspicious network] assessment is typically a [TaxonomySeverity_v0#Medium medium severity] feed depicting things that probably have no business being seen on your network. Communications with these addresses will probably lead to a credential type theft, or compromise when combined with a [TaxonomyConfidence_v0#85_-_94 high] confidence observation.
 
 Typical examples might include items from: 
- * the [http://www.spamhaus.org/drop/ Spamhaus DROP] list ([TaxonomyConfidence#95_-_100 high] confidence)
+ * the [http://www.spamhaus.org/drop/ Spamhaus DROP] list ([TaxonomyConfidence_v0#95_-_100 high] confidence)
 
 = Details =
 == Infrastructure ==
