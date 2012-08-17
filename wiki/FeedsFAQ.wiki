@@ -1,4 +1,5 @@
 #summary FAQ about feeds
+#labels Deprecated
 
 Frequently Asked Questions about Feeds.
 <wiki:toc max_depth="3" />
