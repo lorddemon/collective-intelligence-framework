@@ -1,0 +1,29 @@
+#summary installing the perl client on debian lenny (v0)
+#labels Version-0
+
+= CPAN =
+On a clean install of Debian Lenny 5.0.7 you will need to do the following to get CPAN "configured properly". 
+
+ # open cpan (Note: if this is your first time, accept all defaults)
+{{{
+sudo cpan
+}}}
+
+ # Install the newest version of CPAN
+{{{
+install CPAN
+}}}
+ # Reload CPAN
+{{{
+reload CPAN
+}}}
+ # Exit CPAN
+{{{
+exit
+}}}
+
+= Installation =
+ # make sure build-essential and libssl-dev is installed (for Crypt::SSleay and REST::Client)
+{{{
+$> sudo apt-get install build-essential libssl-dev
+}}}
