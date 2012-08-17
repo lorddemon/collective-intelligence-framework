@@ -29,10 +29,6 @@
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
- * [API]
-  * PerlExample
-  * PythonExample
-  * [WebAPI]
  * [Taxonomy]
   * [TaxonomyImpact Impact Definitions]
   * [TaxonomySeverity Severity Definitions]
