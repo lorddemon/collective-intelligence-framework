@@ -3,7 +3,7 @@
 <wiki:toc max_depth="2" />
 
 = Introduction =
-The [TaxonomyImpact#Spam spam] assessment is typically a [TaxonomySeverity#Medium medium severity] feed depicting known malicious spam infrastructure.
+The [TaxonomyImpact_v0#Spam spam] assessment is typically a [TaxonomySeverity_v0#Medium medium severity] feed depicting known malicious spam infrastructure.
 
 = Details =
 == Infrastructure ==
