@@ -26,6 +26,10 @@
   * [API_v0 API]
    * [ApiPerlExample_v0 Perl Example]
    * [WebAPI_v0 Web API]
+  * [Taxonomy_v0 Taxonomy]
+   * Impact Definitions
+   * Severity Definitions
+   * Confidence Definitions
  * v1 (Development)
   * Server
    * [ServerInstall_v1 Server Install]
