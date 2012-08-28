@@ -306,8 +306,8 @@ $ chmod 660 custom.cfg
  # run the cif_crontool
 {{{
 $ cd /opt/cif
-$ time ./bin/cif_crontool -d -P
 $ time ./bin/cif_crontool -p hourly -d -P
+$ time ./bin/cif_crontool -d -P
 }}}
  * when that's finished, run your first batch of feeds
 {{{
