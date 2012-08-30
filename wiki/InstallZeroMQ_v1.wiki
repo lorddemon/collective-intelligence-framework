@@ -10,7 +10,7 @@
 
  # Install zeromq-2.2.0 from source
 
-There are two different tree's in the zeromq family, 2.x and 3.x, CIF v1 leverages the 2.x family right now. Future versions may be built against the CZMQ api and be built against either code base.
+There are two different tree's in the zeromq family, 2.x and 3.x, CIF v1 leverages the 2.x family right now. Future versions may be built against the CZMQ api and may be built against either code base.
 {{{
 $ wget http://download.zeromq.org/zeromq-2.2.0.tar.gz
 $ tar -zxvf zeromq-2.2.0.tar.gz
