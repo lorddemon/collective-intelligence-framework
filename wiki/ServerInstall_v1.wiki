@@ -207,7 +207,7 @@ $ vi ~/.cif
 {{{
 [cif_feed]
 limit = 100000
-confidence = 75,85,95
+confidence = 95,85,75,65
 roles = everyone
 limit_days = 7
 enabled = infrastructure,domain,url
