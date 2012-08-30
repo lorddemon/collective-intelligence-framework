@@ -103,10 +103,10 @@ $ sudo chmod 770 /mnt/archive
 $ sudo adduser --disabled-password --gecos '' cif
 }}}
 == Install ==
- # the latest packages can be pulled from [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=cif-v1-rc1-00.tar here]
+ # the latest packages can be pulled from [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=cif-v1-rc1-01.tar here]
 {{{
-$ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-rc1-00.tar
-$ tar -xvf cif-v1-rc1-00.tar
+$ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-rc1-01.tar
+$ tar -xvf cif-v1-rc1-01.tar
 libcif-v0.99.03-22-ga942ee0.tar.gz
 libcif-dbi-v0.99.04-23-g1c2d8b2.tar.gz
 cif-smrt-v0.99.05-33-gcd574b8.tar.gz
