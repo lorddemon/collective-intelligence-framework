@@ -321,8 +321,8 @@ $ time /opt/cif/bin/cif_feed -d
 PATH=/bin:/usr/local/bin:/opt/cif/bin
 
 # pull feed data
-05     *       * * * /opt/cif/bin/cif_crontool -p hourly -P -N -A root@localhost &> /dev/null
-30     00      * * * /opt/cif/bin/cif_crontool -p daily -P -N -A root@localhost &> /dev/null
+05     *       * * * /opt/cif/bin/cif_crontool -p hourly -P -N -A root &> /dev/null
+30     00      * * * /opt/cif/bin/cif_crontool -p daily -P -N -A root &> /dev/null
 
 # update the feeds
 45     *       * * * /opt/cif/bin/cif_feed &> /dev/null
@@ -333,8 +333,8 @@ PATH=/bin:/usr/local/bin:/opt/cif/bin
 PATH=/bin:/usr/local/bin:/opt/cif/bin
 
 # pull feed data
-05     *       * * * /opt/cif/bin/cif_crontool -p hourly -P -d -N -A root@localhost >> /home/cif/crontool_hourly.log 2>&1
-30     00      * * * /opt/cif/bin/cif_crontool -p daily -P -d -N -A root@localhost >> /home/cif/crontool_daily.log 2>&1
+05     *       * * * /opt/cif/bin/cif_crontool -p hourly -P -d -N -A root >> /home/cif/crontool_hourly.log 2>&1
+30     00      * * * /opt/cif/bin/cif_crontool -p daily -P -d -N -A root >> /home/cif/crontool_daily.log 2>&1
 
 # update the feeds
 45     *       * * * /opt/cif/bin/cif_feed -d >> /home/cif/feeds.log 2>&1
