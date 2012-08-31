@@ -23,12 +23,13 @@ Confidence details the degree of certainty of a given observation.
  * semi-vetted data by a security professional or trusted analytics process
  * data that has under-gone *some* either machine or human vetting (eg: checked against a whitelist automatically)
 
-== Not Confident (41 - 74) ==
+== Not Confident (50 - 74) ==
+ * searches (50)
  * machine generated data or enumerated data
  * some feeds might fall in the category if the author is lazy, or trying to cram too much into the feed
- * examples might include a domains list where the author is simply taking a botnet urls list and posting just the domains as a feed
+ * examples might include a domains list where the author is simply taking a botnet urls list and posting just the domains as a feed (65)
 
-== Unknown (0 - 39) ==
+== Unknown (0 - 49) ==
  * machine generated / enumerated data
  * examples include:
   * auto-enumerated name-servers from domains
