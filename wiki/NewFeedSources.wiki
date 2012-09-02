@@ -25,5 +25,26 @@ http://security-research.dyndns.org/pub/malware-feeds/ponmocup-malware-ips.txt
 http://malwareint.com
 }}}
 
+{{{
+http://rules.emergingthreats.net/open/suricata/rules/compromised-ips.txt
+http://rules.emergingthreats.net/open/suricata/rules/botcc.rules
+http://rules.emergingthreats.net/open/suricata/rules/rbn-ips.txt
+https://www.projecthoneypot.org/list_of_ips.php
+http://rules.emergingthreats.net/open/suricata/rules/tor.rules
+http://rules.emergingthreats.net/open/suricata/rules/compromised.rules
+http://www.malwaredomainlist.com/hostslist/ip.txt
+http://rules.emergingthreats.net/open/suricata/rules/rbn.rules
+http://www.mtc.sri.com/live_data/attackers/
+http://intel.martincyber.com/ip/
+https://reputation.alienvault.com/reputation.generic
+https://www.openbl.org/lists/base.txt
+http://www.blocklist.de/lists/ssh.txt
+https://palevotracker.abuse.ch/
+http://www.malwaregroup.com/ipaddresses
+http://www.ciarmy.com/list/ci-badguys.txt
+http://www.malware.com.br/cgi/submit?action=list
+http://www.autoshun.org/files/shunlist.html
+}}}
+
 = References =
  * http://lists.emergingthreats.net/pipermail/emerging-sigs/2011-July/015036.html
