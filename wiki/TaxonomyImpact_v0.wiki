@@ -47,7 +47,7 @@ See the official [http://tools.ietf.org/html/rfc5070#section-3.10.1 IODEF] Impac
  * typically [TaxonomySeverity_v0#Low low severity] in nature
 
 == Suspicious ==
- * Unknown type
+ * Unknown assessment
 
 == Whitelist ==
  * denotes that specific entity (usually an address) should be considered harmless in nature
