@@ -12,7 +12,7 @@ See the official [http://tools.ietf.org/html/rfc5070#section-3.10.1 IODEF] Impac
  * typically used to identify compromised hosts
  * typically [TaxonomySeverity_v0#High high severity] in nature
 
-== Malware / Exploit ==
+== Malware  ==
  * typically a host used to exploit and/or drop malware to a host for the first time
  * not a botnet C&C
  * typically used in preemptive blocking, alerts may not indicate infection was successful
