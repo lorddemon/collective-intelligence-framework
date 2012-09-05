@@ -46,6 +46,9 @@ See the official [http://tools.ietf.org/html/rfc5070#section-3.10.1 IODEF] Impac
  * identify's that someone searched for something of possible significance
  * typically [TaxonomySeverity_v0#Low low severity] in nature
 
+== Suspicious ==
+ * Unknown type
+
 == Whitelist ==
  * denotes that specific entity (usually an address) should be considered harmless in nature
  * denotes that blocking an entity would result in mass collateral damage (eg: yahoo virtually hosted services)
