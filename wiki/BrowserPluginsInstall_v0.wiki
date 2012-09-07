@@ -7,7 +7,7 @@ This extension for Google Chrome/Firefox allows you to query CIF servers and get
 
 *Download the Firefox plugin [https://github.com/downloads/collectiveintel/cif-client-chrome/CIF-FFExtension-latest.xpi here].*
 
-*Download the Chrome plugin [https://github.com/downloads/collectiveintel/cif-client-chrome/CIF-ChromeExtension-latest.crx here].*
+*Download the Chrome plugin [https://chrome.google.com/webstore/detail/bimiihlcdmbjjpbmnkiaaiolfneljdne here].*
 
 = Features = 
   * Right click to search any highlighted text
