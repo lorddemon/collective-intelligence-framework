@@ -6,14 +6,15 @@
  * http://holisticinfosec.org/toolsmith/pdf/july2012.pdf
 
 = SEM integration =
- * http://eyeis.net/2012/04/querying-cif-data-from-splunk/
+ * http://eyeis.net/2012/04/querying-cif-data-from-splunk
  * http://code.google.com/p/collective-intelligence-framework/wiki/ElsaGuide
  * http://dfirjournal.wordpress.com/2012/04/28/cif-integration-with-arcsight
- * http://dfirjournal.wordpress.com/2012/04/29/using-cif-to-create-content-for-arcsight-part-1/
- * http://dfirjournal.wordpress.com/2012/06/10/using-cif-to-create-content-for-arcsight-part-2/
+ * http://dfirjournal.wordpress.com/2012/04/29/using-cif-to-create-content-for-arcsight-part-1
+ * http://dfirjournal.wordpress.com/2012/06/10/using-cif-to-create-content-for-arcsight-part-2
  * http://ossectools.blogspot.com/2012/06/elsa-with-collective-intelligence.html
+ * http://eyeis.net/2012/09/more-advanced-querying-cif-data-with-splunk
 
 = Advanced Stuff =
  * http://ossectools.blogspot.com/2012/04/accelerating-cif-with-sphinx.html
  * http://scrapbook.zscaler.com/2012/06/cif-lite-customizing-cif-to-your-schema.html
- * http://threatthoughts.com/2012/09/06/far-pointers-threat-intel-concepts-and-cif-maltego-edition/
+ * http://threatthoughts.com/2012/09/06/far-pointers-threat-intel-concepts-and-cif-maltego-edition
