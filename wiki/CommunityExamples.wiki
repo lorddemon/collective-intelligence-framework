@@ -16,3 +16,4 @@
 = Advanced Stuff =
  * http://ossectools.blogspot.com/2012/04/accelerating-cif-with-sphinx.html
  * http://scrapbook.zscaler.com/2012/06/cif-lite-customizing-cif-to-your-schema.html
+ * http://threatthoughts.com/2012/09/06/far-pointers-threat-intel-concepts-and-cif-maltego-edition/
