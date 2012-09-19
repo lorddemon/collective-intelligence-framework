@@ -72,7 +72,7 @@ $ sudo echo vm.swappiness = 0 >> /etc/sysctl.conf
 }}}
  # reload the kernel settings
 {{{
-$ sudo sysctp -p
+$ sudo sysctl -p
 }}}
  # set the following values in postgresql.conf:
 {{{
