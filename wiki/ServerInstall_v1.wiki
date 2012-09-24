@@ -138,6 +138,9 @@ $ sudo /etc/init.d/apache2 start
 make testdeps
 sudo make fixdeps
 sudo make install
+}}}
+ # these next two steps can be skipped if you're installing libcif-dbi on anything other than the database server itself. if you're installing this on a different machine to access the database, skip to the Router section.
+{{{
 sudo make initdb
 make tables
 }}}
