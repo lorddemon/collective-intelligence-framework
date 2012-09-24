@@ -39,7 +39,7 @@ GET https://cif.example.com:443/api/domain/botnet?apikey=xxxxx
 || guid || <uuid> || filter by group uuid ||
 || nomap || <boolean> || don't map restriction to your local restriction map ||
 || nolog || <boolean> || don't log the query ||
-|| fmt || <enum> || return type, *json,table* ||
+|| fmt || <string> || return format type: *json,table* ||
 
 == Common Datatypes ==
 === Infrastructure ===
