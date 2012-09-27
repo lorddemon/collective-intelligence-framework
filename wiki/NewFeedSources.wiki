@@ -24,6 +24,7 @@ http://security-research.dyndns.org/pub/malware-feeds/ponmocup-malware-domains.t
 http://security-research.dyndns.org/pub/malware-feeds/ponmocup-malware-ips.txt
 http://malwareint.com
 http://www.senderbase.org/home/detail_virus_source
+http://callbackdomains.wordpress.com
 }}}
 
 {{{
