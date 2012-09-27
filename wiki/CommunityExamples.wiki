@@ -14,7 +14,10 @@
  * http://ossectools.blogspot.com/2012/06/elsa-with-collective-intelligence.html
  * http://eyeis.net/2012/09/more-advanced-querying-cif-data-with-splunk
 
+= Eye Candy =
+ * http://threatthoughts.com/2012/09/06/far-pointers-threat-intel-concepts-and-cif-maltego-edition
+ * https://github.com/divious1/cif_globe
+
 = Advanced Stuff =
  * http://ossectools.blogspot.com/2012/04/accelerating-cif-with-sphinx.html
  * http://scrapbook.zscaler.com/2012/06/cif-lite-customizing-cif-to-your-schema.html
- * http://threatthoughts.com/2012/09/06/far-pointers-threat-intel-concepts-and-cif-maltego-edition
