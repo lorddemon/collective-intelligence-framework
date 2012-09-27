@@ -23,6 +23,7 @@ http://security-research.dyndns.org/pub/malware-feeds/ponmocup-botnet-ips.txt
 http://security-research.dyndns.org/pub/malware-feeds/ponmocup-malware-domains.txt
 http://security-research.dyndns.org/pub/malware-feeds/ponmocup-malware-ips.txt
 http://malwareint.com
+http://www.senderbase.org/home/detail_virus_source
 }}}
 
 {{{
