@@ -300,13 +300,6 @@ $ sudo adduser www-data cif
 }}}
  # restart apache2
 == Initial Data Load ==
- # sudo into the cif user and create your custom.cfg config if you're not upgrading from a previous version:
-{{{
-$ sudo su - cif
-$ cd /opt/cif/etc
-$ cp custom.cfg.example custom.cfg
-$ chmod 660 custom.cfg
-}}}
  # run the cif_crontool
 {{{
 $ cd /opt/cif
