@@ -121,25 +121,27 @@ sudo make fixdeps
 sudo make install
 }}}
 === Database Interface ===
- # libcif-dbi is the database driver, mostly used by cif-router
- # run the ./configure:
-{{{
-$ ./configure
-}}}
+==== Upgrading ====
  # if you are running v1-b3 of CIF, make sure you stop apache and drop the previous database:
 {{{
 $ sudo /etc/init.d/apache2 stop
 $ sudo make dropdb
 $ sudo /etc/init.d/apache2 start
 }}}
- # then re-init the database
+==== Installing ====
+ # libcif-dbi is the database driver, mostly used by cif-router
+ # run the ./configure:
+{{{
+$ ./configure
+}}}
+ # then init the database
 {{{
 ./configure
 make testdeps
 sudo make fixdeps
 sudo make install
 }}}
- # these next two steps can be skipped if you're installing libcif-dbi on anything other than the database server itself. if you're installing this on a different machine to access the database, skip to the Router section.
+ # if you're installing this on your database-server, now initialize the database, if this is a secondary box that's meant to connect to your database server, skip to the cif-router section
 {{{
 sudo make initdb
 make tables
@@ -148,6 +150,7 @@ make tables
 {{{
 NOTICE:  table "archive" does not exist, skipping
 }}}
+==== Upgrading ====
 === Router ===
  # cif-router provides a pluggable transport layer (HTTP, ZeroMQ) for the core protocol, it also provides read/write authorization support to the interfaces
 {{{
