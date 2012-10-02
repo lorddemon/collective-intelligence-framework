@@ -129,7 +129,7 @@ $ sudo make dropdb
 $ sudo /etc/init.d/apache2 start
 }}}
 ==== Installing ====
- # libcif-dbi is the database driver, mostly used by cif-router
+ # *libcif-dbi* is the database driver, mostly used by cif-router
  # configure and install the package
 {{{
 ./configure
@@ -148,7 +148,7 @@ make tables
 NOTICE:  table "archive" does not exist, skipping
 }}}
 === Router ===
- # cif-router provides a pluggable transport layer (HTTP, ZeroMQ) for the core protocol, it also provides read/write authorization support to the interfaces
+ # *cif-router* provides a pluggable transport layer (HTTP, ZeroMQ) for the core protocol, it also provides read/write authorization support to the interfaces
 {{{
 ./configure
 make testdeps
@@ -156,7 +156,7 @@ sudo make fixdeps
 sudo make install
 }}}
 === Smrt Parser ===
- # cif-smrt is the former cif_feedparser, processes feeds and active lists into normalized formats (eg: IODEF)
+ # *cif-smrt* is the former cif_feedparser, processes feeds and active lists into normalized formats (eg: IODEF)
 {{{
 ./configure
 make testdeps
