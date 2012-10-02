@@ -63,12 +63,12 @@ echo kernel.shmall = $shmall
 }}}
  # run the script
 {{{
-$ sudo ./shmsetup.sh >> /etc/sysctl.conf
+$ /bin/bash shmsetup.sh | sudo tee -a /etc/sysctl.conf
 }}}
  # control virtual memory overcommit and swappiness
 {{{
-$ sudo echo vm.overcommit_memory = 2 >> /etc/sysctl.conf
-$ sudo echo vm.swappiness = 0 >> /etc/sysctl.conf
+$ echo "echo vm.overcommit_memory = 2" | sudo tee -a /etc/sysctl.conf
+$ echo "echo vm.swappiness = 0" | sudo tee -a /etc/sysctl.conf
 }}}
  # reload the kernel settings
 {{{
