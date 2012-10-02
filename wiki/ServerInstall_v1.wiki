@@ -141,7 +141,8 @@ make testdeps
 sudo make fixdeps
 sudo make install
 }}}
- # if you're installing this on your database-server, now initialize the database, if this is a secondary box that's meant to connect to your database server, skip to the cif-router section
+ # if you're installing this on your database-server, now initialize the database, if this is being installed on  a secondary box that's meant to connect to your main database server, skip this the next step (table setup) and proceed to the cif-router section
+ # setup the database and tables
 {{{
 sudo make initdb
 make tables
@@ -150,7 +151,6 @@ make tables
 {{{
 NOTICE:  table "archive" does not exist, skipping
 }}}
-==== Upgrading ====
 === Router ===
  # cif-router provides a pluggable transport layer (HTTP, ZeroMQ) for the core protocol, it also provides read/write authorization support to the interfaces
 {{{
