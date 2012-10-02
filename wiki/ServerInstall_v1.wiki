@@ -130,11 +130,7 @@ $ sudo /etc/init.d/apache2 start
 }}}
 ==== Installing ====
  # libcif-dbi is the database driver, mostly used by cif-router
- # run the ./configure:
-{{{
-$ ./configure
-}}}
- # then init the database
+ # configure and install the package
 {{{
 ./configure
 make testdeps
