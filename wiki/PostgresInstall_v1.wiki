@@ -89,16 +89,26 @@ page_size=`getconf PAGE_SIZE`
 phys_pages=`getconf _PHYS_PAGES`
 shmall=`expr $phys_pages / 2`
 shmmax=`expr $shmall \* $page_size`
-quarter_total_ram=`expr $page_size \* $phys_pages`
+shmmax_kb=`expr $shmmax / 1024`
+shmmax_mb=`expr $shmmax_kb / 1024`
+total_ram_b=`expr $page_size \* $phys_pages`
+total_ram_kb=`expr $total_ram_b / 1024`
+total_ram_mb=`expr $total_ram_kb / 1024`
+quarter_total_ram=`expr $total_ram_mb / 4`
 
+echo ""
+echo ""
+echo "#------------------------------------------------------------------------------"
+echo "# CIF Setup                                                                    "
+echo "#------------------------------------------------------------------------------"
 echo "# Rough estimates on how to configured postgres to work with large data sets"
 echo "# See the following URL for proper postgres performance tuning"
 echo "# http://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server"
 echo "wal_buffers = 16MB"
-echo "work_mem = $quarter_total_ram""kB" " # 25% of total ram"
-echo "shared_buffers = $quarter_total_ram""kB" "# 25% of total ram"
+echo "work_mem = $quarter_total_ram""MB" " # 25% of total ram"
+echo "shared_buffers = $quarter_total_ram""MB" "# 25% of total ram"
 echo "checkpoint_segments = 32" " # values from 32 (checkpoint every 512MB) to 256 (every 4GB) are common"
-echo "effective_cache_size = $shmmax""kB" " # shmmax"
+echo "effective_cache_size = $shmmax_mb""MB" " # shmmax"
 }}}
  # run the script
 {{{
