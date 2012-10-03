@@ -51,7 +51,7 @@ postgres=#\l
 postgres=#\q
 }}}
 == Performance Tuning ==
- # create shmsetup.sh to configure your shared memory  (to about 1/2 - 2/3 the amount of system ram:
+ # create shmsetup.sh to configure your shared memory  (to about 1/2 - 2/3 the amount of system ram):
 {{{
 #!/bin/bash
 page_size=`getconf PAGE_SIZE`
