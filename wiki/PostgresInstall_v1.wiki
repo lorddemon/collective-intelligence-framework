@@ -74,13 +74,27 @@ $ echo "vm.swappiness = 0" | sudo tee -a /etc/sysctl.conf
 {{{
 $ sudo sysctl -p
 }}}
- # set the following values in postgresql.conf:
+ # create postgressetup.sh to configure better defaults for your CIF installation
 {{{
-wal_buffers = 16MB
-work_mem = 1GB # 25% of total ram
-shared_buffers = 1GB # 25% of total ram
-checkpoint_segments = 32 # For more write-heavy systems, values from 32 (checkpoint every 512MB) to 256 (every 4GB) are popular nowadays. see: http://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server for more info
-effective_cache_size = 1GB    # whatever you set shmmax to
+#!/bin/bash
+page_size=`getconf PAGE_SIZE`
+phys_pages=`getconf _PHYS_PAGES`
+shmall=`expr $phys_pages / 2`
+shmmax=`expr $shmall \* $page_size`
+quarter_total_ram=`expr $page_size \* $phys_pages`
+
+echo "# Rough estimates on how to configured postgres to work with large data sets"
+echo "# See the following URL for proper postgres performance tuning"
+echo "# http://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server"
+echo "wal_buffers = 16MB"
+echo "work_mem = $quarter_total_ram""kB" " # 25% of total ram"
+echo "shared_buffers = $quarter_total_ram""kB" "# 25% of total ram"
+echo "checkpoint_segments = 32" " # values from 32 (checkpoint every 512MB) to 256 (every 4GB) are common"
+echo "effective_cache_size = $shmmax""kB" " # shmmax"
+}}}
+ # run the script
+{{{
+$ /bin/bash postgressetup.sh | sudo tee -a /etc/postgresql/8.4/main/postgresql.conf
 }}}
  # restart postgres
 {{{
