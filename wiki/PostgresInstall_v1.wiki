@@ -51,6 +51,11 @@ postgres=#\l
 postgres=#\q
 }}}
 == Performance Tuning ==
+ # Create backups of system files:
+{{{
+sudo cp /etc/sysctl.conf /etc/sysctl.conf.orig
+sudo cp /etc/postgresql/8.4/main/postgresql.conf /etc/postgresql/8.4/main/postgresql.conf.orig
+}}}
  # create shmsetup.sh to configure:  
   * shared memory  (to about 1/2 - 2/3 the amount of system ram)
   * control virtual memory overcommit and swappiness
