@@ -310,7 +310,7 @@ $ cd /opt/cif
 $ time ./bin/cif_crontool -p hourly -d -P
 $ time ./bin/cif_crontool -d -P
 }}}
- * when that's finished, run your first batch of feeds
+ # when that's finished, run your first batch of feeds
 {{{
 $ time /opt/cif/bin/cif_feed -d
 }}}
