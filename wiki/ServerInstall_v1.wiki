@@ -307,7 +307,6 @@ $ sudo adduser www-data cif
  # log into the cif user:
 {{{
 $ sudo su - cif
-$ vi ~/.cif
 }}}
  # run the cif_crontool
 {{{
