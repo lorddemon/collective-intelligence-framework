@@ -304,6 +304,11 @@ $ sudo adduser www-data cif
 }}}
  # restart apache2
 == Initial Data Load ==
+ # log into the cif user:
+{{{
+$ sudo su - cif
+$ vi ~/.cif
+}}}
  # run the cif_crontool
 {{{
 $ cd /opt/cif
