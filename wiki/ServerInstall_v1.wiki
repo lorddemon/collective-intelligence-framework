@@ -319,7 +319,9 @@ $ time ./bin/cif_crontool -d -P
 $ time /opt/cif/bin/cif_feed -d
 }}}
 == Finishing up ==
- # log into the cif user (sudo su - cif) and modify it's cron tab (crontab -e)
+
+=== Configuring Crontab ===
+log into the cif user (sudo su - cif) and modify it's cron tab (crontab -e)
 {{{
 # set the path
 PATH=/bin:/usr/local/bin:/opt/cif/bin
@@ -331,7 +333,9 @@ PATH=/bin:/usr/local/bin:/opt/cif/bin
 # update the feeds
 45     *       * * * /opt/cif/bin/cif_feed &> /dev/null
 }}}
- # or if you want to setup logging (as an example)
+
+=== Configuring Crontab with logging ===
+if you want to setup logging (as an example)
 {{{
 # set the path
 PATH=/bin:/usr/local/bin:/opt/cif/bin
