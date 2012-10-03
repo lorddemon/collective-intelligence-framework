@@ -51,6 +51,9 @@ postgres=#\l
 postgres=#\q
 }}}
 == Performance Tuning ==
+
+*NOTE:* These recommend numbers have been tested on a machine with 4 cores and 8 GB of ram. During testing we found that these values may be too high for a machine with 4 GB of ram. If you are testing this on a machine with less than 8 GB of ram, you may want to skip this section all together or reduce the numbers these shell script spit out. 
+
  # Create backups of system files:
 {{{
 sudo cp /etc/sysctl.conf /etc/sysctl.conf.orig
