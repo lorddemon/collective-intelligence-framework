@@ -69,10 +69,10 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 == System Deps ==
 === Standard Deps ===
 ==== Stable ====
+ * [ServerInstall_v1_Squeeze Debian Squeeze]
 ==== Unstable ====
- # [ServerInstall_v1_Squeeze Debian Squeeze]
- # [ServerInstall_v1_Ubuntu Ubuntu]
- # [ServerInstall_v1_Generic From Source]
+ * [ServerInstall_v1_Ubuntu Ubuntu]
+ * [ServerInstall_v1_Generic From Source]
 
 === Non Standard Deps ===
  # [InstallZeroMQ_v1 InstallZeroMQ]
