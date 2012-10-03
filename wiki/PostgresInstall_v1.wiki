@@ -78,6 +78,10 @@ $ /bin/bash shmsetup.sh | sudo tee -a /etc/sysctl.conf
 {{{
 $ sudo sysctl -p
 }}}
+ # Comment out existing shared_buffers setting so it can be set below
+{{{
+sudo sed -i 's/shared_buffers/#shared_buffers/' /etc/postgresql/8.4/main/postgresql.conf
+}}}
  # create postgressetup.sh to configure better defaults for your CIF installation
 {{{
 #!/bin/bash
