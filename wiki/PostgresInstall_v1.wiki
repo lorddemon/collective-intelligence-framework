@@ -51,7 +51,9 @@ postgres=#\l
 postgres=#\q
 }}}
 == Performance Tuning ==
- # create shmsetup.sh to configure your shared memory  (to about 1/2 - 2/3 the amount of system ram):
+ # create shmsetup.sh to configure:  
+  * shared memory  (to about 1/2 - 2/3 the amount of system ram)
+  * control virtual memory overcommit and swappiness
 {{{
 #!/bin/bash
 page_size=`getconf PAGE_SIZE`
@@ -60,15 +62,12 @@ shmall=`expr $phys_pages / 2`
 shmmax=`expr $shmall \* $page_size`
 echo kernel.shmmax = $shmmax
 echo kernel.shmall = $shmall
+echo vm.overcommit_memory = 2
+echo vm.swappiness = 0
 }}}
  # run the script
 {{{
 $ /bin/bash shmsetup.sh | sudo tee -a /etc/sysctl.conf
-}}}
- # control virtual memory overcommit and swappiness
-{{{
-$ echo "vm.overcommit_memory = 2" | sudo tee -a /etc/sysctl.conf
-$ echo "vm.swappiness = 0" | sudo tee -a /etc/sysctl.conf
 }}}
  # reload the kernel settings
 {{{
