@@ -50,7 +50,11 @@
  * less "index" tables to swap in and out of memory, faster lookups, ip-addr's will follow in upcoming beta's
 
 == Known Issues ==
-  * *DO NOT USE THIS IF YOU'VE NEVER USED CIF BEFORE* please test out [ServerInstall_v0 v0]
+ * *DO NOT USE THIS IF YOU'VE NEVER USED CIF BEFORE* please test out [ServerInstall_v0 v0]
+ * You may see the following warning when querying the with the perl client. 
+{{{
+Premature padding of base64 data at /opt/cif/bin/../lib/CIF/Client.pm line 164.
+}}}
  * You *cannot run this beta on the same box as CIF v0, it will break stuff, you will loose your data, you will be angry with me.
  * You *must drop* your cifv1 database before installing this beta
 
