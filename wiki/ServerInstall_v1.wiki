@@ -56,8 +56,8 @@
 Premature padding of base64 data at /opt/cif/bin/../lib/CIF/Client.pm line 164.
 }}}
  * If you are installing on a machine with less than 8 GB of ram you need to read the "note:" section under Postgres Setup Performance Tuning. 
- * You *cannot run this beta on the same box as CIF v0, it will break stuff, you will loose your data, you will be angry with me.
- * You *must drop* your cifv1 database before installing this beta
+ * You *cannot* run this beta on the same box as CIF v0, it will break stuff, you will loose your data, you will be angry with me.
+ * If you are installing on top of any of the previous CIF v1 releases, you *must drop* your cifv1 database before installing this beta
 
 = System Requirements =
 These requirements will handle everything on the same box pretty well with the default open source data-sets. The more (bigger) data-sets you add, the more ram / disk space you'll need. The more cores you add, the more threads that can "batch out" the feed parsers (thus, resulting in faster data consumption).
