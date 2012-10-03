@@ -13,8 +13,7 @@ This doc shows an example of how to proxy your resolution requests through googl
  * http://www.bind9.net/BIND-FAQ
 
 == Example ==
-/etc/bind/named.conf.options
-
+ # Configure Bind (/etc/bind/named.conf.options)
 {{{
 options {
     directory "/var/cache/bind";
@@ -55,4 +54,8 @@ zone "dbl.spamhaus.org" {
     type forward;
     forwarders { };
 };
+}}}
+ # be sure to reload bind when you're done:
+{{{
+$ sudo /etc/init.d/bind9 restart
 }}}
