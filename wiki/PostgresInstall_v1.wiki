@@ -108,7 +108,7 @@ echo "# Rough estimates on how to configured postgres to work with large data se
 echo "# See the following URL for proper postgres performance tuning"
 echo "# http://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server"
 echo "wal_buffers = 12MB" " # recommended range for this value is between 2-16MB"
-echo "work_mem = $work_mem""MB" " # # total available memory / (2 * max_connections)"
+echo "work_mem = $work_mem""MB" " # total available memory / (2 * max_connections)"
 echo "shared_buffers = $shared_buffers""MB" "# recommended range for this value is 10% on shared db server"
 echo "checkpoint_segments = 10" " # at least 10, 32 is a more common value on dedicated server class hardware"
 echo "effective_cache_size = $effective_cache_size""MB" " # recommended range for this value is between 60%-80% of your total available RAM"
