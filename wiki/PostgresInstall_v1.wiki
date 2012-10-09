@@ -72,6 +72,8 @@ echo kernel.shmmax = $shmmax
 echo kernel.shmall = $shmall
 echo vm.overcommit_memory = 2
 echo vm.swappiness = 0
+# testing
+#echo vm.overcommit_ratio = 100
 }}}
  # run the script
 {{{
