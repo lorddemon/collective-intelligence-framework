@@ -57,6 +57,7 @@
   * Client
   * API
   * Taxonomy
+   * [TaxonomyAssessment_v1 Assessment Definitions]
   * Feeds
  * Other
   * [ProjectsLab]
