@@ -62,3 +62,4 @@
  * Other
   * [ProjectsLab]
   * [CommunityExamples]
+  * [WhatisCIF What is CIF]
