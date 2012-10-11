@@ -11,10 +11,10 @@ $ sudo aptitude install rng-tools postgresql apache2 apache2-threaded-dev gcc g+
 === With prompts ===
 answer yes to all prompts (there will be a lot of them)
 {{{
-$ sudo perl -MCPAN -e 'install Net::Abuse::Utils,DateTime::Format::DateParse,Regexp::Common::net::CIDR,Text::Table,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::Patricia,Net::SSLeay,Net::DNS::Match'
+$ sudo perl -MCPAN -e 'install Net::Abuse::Utils,DateTime::Format::DateParse,Regexp::Common::net::CIDR,Text::Table,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::Patricia,Net::SSLeay,Net::DNS::Match,Log::Dispatch'
 }}}
 === Without prompts ===
 to force an automatic "yes" to prompts
 {{{
-sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,DateTime::Format::DateParse,Regexp::Common::net::CIDR,Text::Table,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::Patricia,Net::SSLeay,Net::DNS::Match'
+sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,DateTime::Format::DateParse,Regexp::Common::net::CIDR,Text::Table,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::Patricia,Net::SSLeay,Net::DNS::Match,Log::Dispatch'
 }}}
