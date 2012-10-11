@@ -1,0 +1,36 @@
+#summary Explanation of CIF
+
+= What is the Collective Intelligence Framework (CIF)?=
+
+CIF is a cyber threat intelligence repository. Common examples of threat intelligence are IP addresses, Domains and URLs that are observed to be related to malicious activity. 
+
+CIF helps you to aggregate, normalize, store, query, share and produce data sets of threat intelligence. 
+
+=== Aggregate ===
+
+CIF supports pulling in many different datasets of the same type; for example data sets or “feeds” of malicious domains. Each similar dataset can be marked with different attributes like source and confidence to name a few. 
+
+=== Normalize ===
+
+Data sets of threat intelligence often have subtle differences between them. CIF helps normalize these data sets which gives you a predictable experience when leveraging the threat intelligence repository. 
+
+=== Store ===
+
+CIF has a database schema that is highly optimized to store billions of records of threat intelligence.
+
+=== Query ===
+
+CIF has a database schema that is highly optimized to perform queries against a database of billions of records. 
+
+=== Share ===
+
+CIF supports users, groups and api keys. Each threat intelligence record can be tagged to be shared with specific group of users. This allows the sharing of threat intelligence among federations. 
+
+=== Produce ===
+
+CIF supports creating new data sets from the stored threat intelligence. These data sets can be created by type and confidence. CIF also supports whitelisting during the generation process.
+
+== Advanced Features ==
+
+ * API
+ * Distributed architecture
