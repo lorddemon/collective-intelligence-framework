@@ -46,3 +46,8 @@ Example: [Feeds_v0 Feeds]
  * [http://holisticinfosec.blogspot.com/2012/07/toolsmith-collective-intelligence.html toolsmith: Collective Intelligence Framework]
  * [http://www.ren-isac.net/ses/ SES - Security Event System]
  * [http://code.google.com/p/collective-intelligence-framework/wiki/CommunityExamples more]
+
+== Presentations ==
+
+ * [http://code.google.com/p/collective-intelligence-framework/#Recent_Presentations Recent]
+ * [http://code.google.com/p/collective-intelligence-framework/#Archived_Presentations More]
