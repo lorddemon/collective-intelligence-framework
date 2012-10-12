@@ -16,6 +16,8 @@ Example: [AddingFeeds_v0 Adding Data]
 
 Data sets of threat intelligence often have subtle differences between them. CIF helps normalize these data sets which gives you a predictable experience when leveraging the threat intelligence management system. 
 
+Example: [Taxonomy_v0 Taxonomy]
+
 === Store ===
 
 CIF has a database schema that is highly optimized to store billions of records of threat intelligence.
