@@ -38,7 +38,8 @@ Example: [FederatedSharingExample_v0 Sharing]
 
 CIF supports creating new data sets from the stored threat intelligence. These data sets can be created by type and confidence. CIF also supports whitelisting during the generation process.
 
+Example: [Feeds_v0 Feeds]
+
 == Advanced Features ==
 
- * API
  * Distributed architecture
