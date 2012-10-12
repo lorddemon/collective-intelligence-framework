@@ -40,6 +40,9 @@ CIF supports creating new data sets from the stored threat intelligence. These d
 
 Example: [Feeds_v0 Feeds]
 
-== Advanced Features ==
+== Community Examples ==
 
- * Distributed architecture
+ * [http://threatthoughts.com/2012/05/07/introduction-to-the-collective-intelligence-framework/ Introduction to the Collective Intelligence Framework]
+ * [http://holisticinfosec.blogspot.com/2012/07/toolsmith-collective-intelligence.html toolsmith: Collective Intelligence Framework]
+ * [http://www.ren-isac.net/ses/ SES - Security Event System]
+ * [http://code.google.com/p/collective-intelligence-framework/wiki/CommunityExamples more]
