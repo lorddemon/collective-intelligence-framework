@@ -24,7 +24,9 @@ CIF has a database schema that is highly optimized to store billions of records 
 
 === Query ===
 
-CIF has a database schema that is highly optimized to perform queries against a database of billions of records. 
+CIF can be queried via a web browser, CLI or API. CIF has a database schema that is highly optimized to perform queries against a database of billions of records. 
+
+Example: [BrowserPluginsInstall_v0 Web Browser], [CliClientExamples_v0 CLI], [API_v0 API]
 
 === Share ===
 
