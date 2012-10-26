@@ -3,7 +3,7 @@
 
 = Introduction =
 
-CentOS 6 Server Install
+CentOS 6 Server Install -- this doc considered unstable, although it should mostly work, it's not kept as up to date as the stable doc
 
 = Details =
  # install server deps
