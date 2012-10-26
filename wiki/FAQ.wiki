@@ -3,6 +3,9 @@
 
 <wiki:toc max_depth="3" />
 
+== Unstable Doc ==
+This typically means that the documentation isn't regularly tested with newer updates. Although it should basically work, it could be missing a few dependancies here as the underlying architecture changes.
+
 == Can't connect to my_ip_server:443 (certificate verify failed) ==
 If you're using a self-signed TLS/SSL certificate, you need to add the following to your ~/.cif config:
 {{{
