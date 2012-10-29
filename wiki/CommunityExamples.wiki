@@ -4,6 +4,7 @@
  * https://overhack.wordpress.com/2012/05/07/introduction-to-the-collective-intelligence-framework
  * http://holisticinfosec.blogspot.com/2012/07/toolsmith-collective-intelligence.html
  * http://holisticinfosec.org/toolsmith/pdf/july2012.pdf
+ * a public [http://www.josehelps.com/p/feeds.html instance]
 
 = SEM integration =
  * http://eyeis.net/2012/04/querying-cif-data-from-splunk
