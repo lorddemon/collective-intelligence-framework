@@ -70,9 +70,9 @@ $ sudo perl -MCPAN -e 'install Try::Tiny'
 }}}
  # install the core server interface
 {{{
-$ wget http://collective-intelligence-framework.googlecode.com/files/cif-v0.04.tar.gz
-$ tar -zxvf cif-v0.04.tar.gz
-$ cd cif-0.04
+$ wget http://collective-intelligence-framework.googlecode.com/files/cif-v0.05.tar.gz
+$ tar -zxvf cif-v0.05.tar.gz
+$ cd cif-0.05
 $ ./configure
 $ make testdeps
 $ make fixdeps
