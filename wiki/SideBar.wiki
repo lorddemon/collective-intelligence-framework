@@ -59,6 +59,7 @@
   * Taxonomy
    * [TaxonomyAssessment_v1 Assessment Definitions]
   * Feeds
+  * [FAQ_v1 FAQ]
  * Other
   * [ProjectsLab]
   * [CommunityExamples]
