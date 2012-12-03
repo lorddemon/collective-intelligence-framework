@@ -1,5 +1,5 @@
+#summary FAQ for CIFv1
 #labels v1
-#FAQ for CIFv1
 
 = Frequently Asked Questions =
 
