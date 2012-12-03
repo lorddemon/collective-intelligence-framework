@@ -4,7 +4,7 @@
 <wiki:toc max_depth="3" />
 
 == Unstable Doc ==
-This typically means that the documentation isn't regularly tested with newer updates. Although it should basically work, it could be missing a few dependancies here as the underlying architecture changes.
+This typically means that the documentation isn't regularly tested with newer updates. Although it should basically work, it could be missing a few dependencies here as the underlying architecture changes.
 
 == Is there an existing public instance where I can test things out? ==
 A 3rd-party contributed public instance can be found [http://www.josehelps.com/p/feeds.html here].
