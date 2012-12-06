@@ -93,4 +93,4 @@ here's the [http://blog.thecodingmachine.com/content/solving-too-many-open-files
 
 == /svn/trunk doesn't exist ==
 
-We've moved to: github.com/collectiveintel/cif-v0
+We've moved the repo's to [http://github.com/collectiveintel/cif-v0 github]
