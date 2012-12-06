@@ -94,3 +94,9 @@ here's the [http://blog.thecodingmachine.com/content/solving-too-many-open-files
 == /svn/trunk doesn't exist ==
 
 We've moved the repo's to [http://github.com/collectiveintel/cif-v0 github]
+
+== database connection password errors ==
+
+Can't insert new CIF::WebAPI::APIKey: DBI connect('database=cif;host=localhost','postgres',...) failed: fe_sendauth: no password supplied at /usr/local/share/perl/5.14.2/Ima/DBI.pm line 328.
+
+make sure you've read the postgres section of [http://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall_v0#Required_Services this]
