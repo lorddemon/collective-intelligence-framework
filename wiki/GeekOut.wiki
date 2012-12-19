@@ -4,3 +4,38 @@
 
 This is a page written for Geeks that want to know about the underpinnings of CIF 1.0
 
+== Database Schema == 
+
+CIF store schemaless data in SQL. Inspired by the blog post titled "How Friendfeed uses MySQL to store schema-less data". 
+
+More:
+
+Using a Relational Database for Schemaless Data - Best Practices<br>
+http://stackoverflow.com/questions/4189709/using-a-relational-database-for-schemaless-data-best-practices
+
+Quora Infrastructure: Why does Quora use MySQL as the data store instead of NoSQLs such as Cassandra, MongoDB, or CouchDB?<br>
+http://www.quora.com/Quora-Infrastructure/Why-does-Quora-use-MySQL-as-the-data-store-instead-of-NoSQLs-such-as-Cassandra-MongoDB-or-CouchDB
+
+== Architecture ==
+
+CIF 1.0 was written to be distributed among many hosts if the volume of data consumes a single host's resources. 
+
+cif-smrt<br>
+https://github.com/collectiveintel/cif-smrt
+
+cif-router<br>
+https://github.com/collectiveintel/cif-router
+
+libcif-dbi<br>
+https://github.com/collectiveintel/libcif-dbi
+
+== Technologies ==
+
+ZeroMQ<br>
+http://www.zeromq.org/
+
+Protocol Buffers<br>
+https://developers.google.com/protocol-buffers/
+
+Snappy<br>
+http://code.google.com/p/snappy/
