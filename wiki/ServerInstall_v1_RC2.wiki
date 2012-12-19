@@ -11,6 +11,7 @@
 == Changes==
 === RC2 === 
  * merged everything under the cif-v1 tree in github (cif-router, etc are all submodules)
+ * cleaned up the installer as one automake "meta installer"
  * [libcif-dbi] split out asn, cc and rir support as non-default options (save space)
  * [cif-router] added legacy JSON keypair query/submission support (on by default)
  * cleaned up some of the configs
@@ -61,14 +62,9 @@
  * less "index" tables to swap in and out of memory, faster lookups, ip-addr's will follow in upcoming beta's
 
 == Known Issues ==
- * *DO NOT USE THIS IF YOU'VE NEVER USED CIF BEFORE* please test out [ServerInstall_v0 v0]
- * You may see the following warning when querying the with the perl client. 
-{{{
-Premature padding of base64 data at /opt/cif/bin/../lib/CIF/Client.pm line 164.
-}}}
- * If you are installing on a machine with less than 8 GB of ram you need to read the "note:" section under Postgres Setup Performance Tuning. 
  * You *cannot* run this beta on the same box as CIF v0, it will break stuff, you will loose your data, you will be angry with me.
- * If you are installing on top of any of the previous CIF v1 releases, you *must drop* your cifv1 database before installing this beta
+ * If you are installing on top of any of the previous CIF v1 releases, you *must drop* your cif v1 database before installing this release candidate.
+ * If you are installing on a machine with less than 4 GB of ram you need to read the "note:" section under Postgres Setup Performance Tuning. 
 
 = System Requirements =
 These requirements will handle everything on the same box pretty well with the default open source data-sets. The more (bigger) data-sets you add, the more ram / disk space you'll need. The more cores you add, the more threads that can "batch out" the feed parsers (thus, resulting in faster data consumption).
@@ -76,9 +72,9 @@ These requirements will handle everything on the same box pretty well with the d
 These specs will handle around 10k feeds at once with minimal impact on memory usage. Past that you'll need to start doubling your specs. Virtual machine technology is great for prototyping your implementation and will give you a good baseline of what you'll need for production.
 
  # an x86-64bit platform
- # at-least 8GB ram
- # at-least 4 cores
- # at-least 100GB of free (after OS install) disk space, which will last you about 6-9 months.
+ # at-least 4GB ram
+ # at-least 2 cores
+ # at-least 100GB of free (after OS install) disk space, which should allow you to retain a years worth of data.
 
 = Prerequisites =
  # [DiskLayout_v1 DiskLayout]
@@ -120,65 +116,15 @@ $ sudo chmod 770 /mnt/archive
 $ sudo adduser --disabled-password --gecos '' cif
 }}}
 == Install ==
- # the latest packages can be pulled from [http://collective-intelligence-framework.googlecode.com/files/cif-v1-rc1-03.tar here]
+ # the latest packages can be pulled from [http://collective-intelligence-framework.googlecode.com/files/cif-v1-rc2.tar.gz here]
 {{{
-$ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-rc1-03.tar
-$ tar -xvf cif-v1-rc1-03.tar
-libcif-v0.99.03-32-g3094f74.tar.gz
-libcif-dbi-v0.99.04-37-g99e7cb0.tar.gz
-cif-smrt-v0.99.05-57-g6a8ea85.tar.gz
-cif-router-v0.99.04-16-ge34cf1d.tar.gz
-}}}
-=== Core CIF Utility Library ===
- # *libcif* used to normalize timestamps and generate uuids, peer with cif-router
-{{{
-./configure
-make testdeps
-sudo make fixdeps
-sudo make install
-}}}
-=== Database Interface ===
-==== Upgrading ====
- # if you are running v1-b3 of CIF, make sure you stop apache and drop the previous database:
-{{{
-$ sudo /etc/init.d/apache2 stop
-$ sudo make dropdb
-$ sudo /etc/init.d/apache2 start
-}}}
-==== Installing ====
- # *libcif-dbi* is the database driver, mostly used by cif-router
- # configure and install the package
-{{{
-./configure
-make testdeps
-sudo make fixdeps
-sudo make install
-}}}
- # if you're installing this on your database-server, now initialize the database, if this is being installed on  a secondary box that's meant to connect to your main database server, skip this the next step (table setup) and proceed to the cif-router section
- # setup the database and tables
-{{{
-sudo make initdb
-make tables
-}}}
- # these types of messages are considered normal:
-{{{
-NOTICE:  table "archive" does not exist, skipping
-}}}
-=== Router ===
- # *cif-router* provides a pluggable transport layer (HTTP, ZeroMQ) for the core protocol, it also provides read/write authorization support to the interfaces
-{{{
-./configure
-make testdeps
-sudo make fixdeps
-sudo make install
-}}}
-=== Smrt Parser ===
- # *cif-smrt* is the former cif_feedparser, processes feeds and active lists into normalized formats (eg: IODEF)
-{{{
-./configure
-make testdeps
-sudo make fixdeps
-sudo make install
+$ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-rc2.tar.gz
+$ tar -xvf cif-v1-rc2.tar.gz
+$ cd cif-v1-rc2
+$ ./configure && make testdeps
+$ sudo make install
+$ sudo make initdb
+$ sudo make tables
 }}}
 
 == Configuration ==
@@ -224,18 +170,24 @@ $ vi ~/.cif
 }}}
  # edit ~/.cif using this as a template:
 {{{
-[cif_feed]
-limit = 100000
-# keep this highest to lowest
-confidence = 95,85,75,65
-roles = everyone
-limit_days = 7
-enabled = infrastructure,domain,url
+# the simple stuff
+[cif_archive]
+datatypes = infrastructure,domain,url,email,search,malware
+
+# enable your own groups is you start doing data-sharing with various groups
+#groups = everyone,group1.example.com,group2.example.com,group3.example.com
+
+# enable this if you plan to generate feeds, other-wise it'll save you space
+# queries will still work with this disabled, you only need it if you leverage the cif_feed command
+#feeds = infrastructure,domain,url,email,search,malware
 
 [cif_smrt]
 # change example.com to your local domain and hostname respectively
+# this identifies the data in your instance and ties it to your specific instance in the event
+# that you start sharing with others
 name = example.com
 instance = cif.example.com
+
 # the apikey generated for cif_smrt
 apikey = XXXXXX-XXX-XXXX 
 
@@ -247,16 +199,7 @@ apikey = XXXXXX-XXX-XXXX
 host = https://localhost:443/api
 verify_tls = 0
 
-#[client_zeromq]
-#host = tcp://localhost:5555
-
-#[router_zeromq]
-#host = tcp://localhost:5555
-
-[restriction_map]
-#public = limited
-#need-to-know = amber
-#private = red
+# advanced stuff
 
 [db]
 host = 127.0.0.1
@@ -264,9 +207,25 @@ user = postgres
 password =
 database = cif
 
-# csv delimited
-[groups]
-groups = everyone,staff,partners
+# if you enable feed generation
+[cif_feed]
+# max size of any feed generated
+limit = 50000
+
+# each confidence level to generate
+confidence = 95,85,75,65
+
+# what 'role' keys to use to generate the feeds
+roles = everyone
+
+# how far back in time to generate the feeds from
+max_days = 7
+
+# if the normal IODEF restriction classes don't fit your needs
+[restriction_map]
+#public = limited
+#need-to-know = amber
+#private = red
 
 }}}
 === Apache2 ===
