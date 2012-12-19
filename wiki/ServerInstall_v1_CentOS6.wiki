@@ -1,4 +1,4 @@
-#summary centos 6 install doc (v0)
+#summary centos 6 install doc (v1)
 
 ** STOLEN FROM v0 DOC DO NOT USE YET **
 
