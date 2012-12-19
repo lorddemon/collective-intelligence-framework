@@ -9,6 +9,19 @@
 
 = Preamble =
 == Changes==
+=== RC2 === 
+ * merged everything under the cif-v1 tree in github (cif-router, etc are all submodules)
+ * [libcif-dbi] split out asn, cc and rir support as non-default options (save space)
+ * [cif-router] added legacy JSON keypair query/submission support (on by default)
+ * cleaned up some of the configs
+ * [cif-smrt] added proxy support
+ * [cif-smrt] re-mapped detecttime to reporttime (more accurate)
+ * [cif-test-framework] added to do basic i/o tests for new installations
+ * [libcif] re-factored the client a bit, more plugabble for various query / transport types
+ * [libcif] back-ported the 'advanced config' from cif-v0
+ * [libcif] re-factored and added to the debug / logging functions
+ * [rt-cifminimal] updated to work with cif-v1
+ * other various performance enhancements
 === RC1 ===
  * renamed cif-perl to libcif
  * renamed cif-dbi-perl to libcif-dbi
