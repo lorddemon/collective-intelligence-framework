@@ -2,9 +2,9 @@
 
 = What is the Collective Intelligence Framework (CIF)?=
 
-CIF is a cyber threat intelligence management system. CIF allows you to combine known malicious threat information from many sources and use that information for identification (incident response), detection (IDS) and mitigation (null route). The most common types of threat intelligence warehoused in CIF would be ip addresses, domains and urls that are observed to be related to malicious activity. 
+CIF is a cyber threat intelligence management system. CIF allows you to combine known malicious threat information from many sources and use that information for identification (incident response), detection (IDS) and mitigation (null route). The most common types of threat intelligence warehoused in CIF are IP addresses, domains and urls that are observed to be related to malicious activity. 
 
-CIF helps you to aggregate, normalize, store, query, share and produce data sets of threat intelligence. 
+CIF helps you to aggregate, normalize, store, post process, query, share and produce data sets of threat intelligence. 
 
 === Aggregate ===
 
@@ -14,13 +14,17 @@ Example: [AddingFeeds_v0 Adding Data]
 
 === Normalize ===
 
-Data sets of threat intelligence often have subtle differences between them. CIF helps normalize these data sets which gives you a predictable experience when leveraging the threat intelligence management system. 
+Data sets of threat intelligence often have subtle differences between them. CIF normalizes these data sets which gives you a predictable experience when leveraging the threat intelligence in other applications or processes. 
 
 Example: [Taxonomy_v0 Taxonomy]
 
 === Store ===
 
 CIF has a database schema that is highly optimized to store billions of records of threat intelligence.
+
+=== Post Process ===
+
+CIF has many post processors that derive additional intelligence from a single piece of threat intelligence. A simple example would be that a domain and an IP address can be derived from a URL ingested into CIF. 
 
 === Query ===
 
