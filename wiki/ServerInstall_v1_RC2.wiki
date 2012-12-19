@@ -84,6 +84,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  * [ServerInstall_v1_Squeeze Debian Squeeze]
 ==== Unstable ====
  * [ServerInstall_v1_Ubuntu Ubuntu]
+ * [ServerInstall_v1_CentOS6 CentOS 6]
  * [ServerInstall_v1_Generic From Source]
 
 === Non Standard Deps ===
