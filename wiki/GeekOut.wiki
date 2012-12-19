@@ -39,3 +39,7 @@ https://developers.google.com/protocol-buffers/
 
 Snappy<br>
 http://code.google.com/p/snappy/
+
+== Features ==
+
+ * Threading
