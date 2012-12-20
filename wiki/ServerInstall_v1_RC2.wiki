@@ -79,9 +79,11 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 = Prerequisites =
  # consult the [DiskLayout_v1 Disk Layout Guide] before setting up your operating system
 == System Deps ==
+
+Choose a distribution:
 === Stable ===
  * [ServerInstall_v1_Squeeze Debian Squeeze]
- * [ServerInstall_v1_Ubuntu Ubuntu]
+ * [ServerInstall_v1_Ubuntu Ubuntu 12.04 ]
 === Unstable ===
  * [ServerInstall_v1_CentOS6 CentOS 6]
  * [ServerInstall_v1_Generic From Source]
