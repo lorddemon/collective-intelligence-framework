@@ -20,13 +20,14 @@ These requirements will handle everything on the same box pretty well with the d
 
 These specs will handle around 10k feeds at once with minimal impact on memory usage. Past that you'll need to start doubling your specs. Virtual machine technology is great for prototyping your implementation and will give you a good baseline of what you'll need for production.
 
- # an x86-64bit platform
- # at-least 4GB ram
- # at-least 2 cores
- # at-least 100GB of free (after OS install) disk space, which should allow you to retain a years worth of data.
+ * an x86-64bit platform
+ * at-least 4GB ram
+ * at-least 2 cores
+ * at-least 100GB of free (after OS install) disk space, which should allow you to retain a years worth of data.
 
 = Prerequisites =
- # consult the [DiskLayout_v1 Disk Layout Guide] before setting up your operating system
+Consult the [DiskLayout_v1 Disk Layout Guide] before setting up your operating system
+
 == System Deps ==
 
 Choose a distribution:
