@@ -285,8 +285,8 @@ private    |everyone|search    |search example.com|50        |2012-12-20T15:18:3
 == Enabling Feed Generation ==
 To enable feed generation, which requires more space a few more options need to be ticked. If you only plan to leverage the system for "querying" (not putting feeds into something like a firewall, etc) then this section can be skipped.
 
-# modify the 'cif' user's ~/.cif config accordingly:
-# add the following to the [cif_archive] section:
+ # modify the 'cif' user's ~/.cif config accordingly:
+ # add the following to the \[cif_archive\] section:
 {{{
 [cif_archive]
 ...
@@ -308,20 +308,79 @@ roles = role_everyone
 # how far back in time to generate the feeds from
 max_days = 7
 }}}
- 
- # when that's finished, run your first batch of feeds
-{{{
-$ time cif_feed -d
-}}}
 
 == Initial Data Load ==
  # you should be logged in as the 'cif' user for this
  # run the cif_crontool
 {{{
 $ time cif_crontool -p hourly -d -P
-$ time cif_crontool -d -P
+$ time cif_crontool -p daily -d -P
 }}}
 
+== Testing ==
+=== Query Only ===
+If you've setup a query-only system (no feeds), you should be able to run the following to test for data:
+{{{
+cif@ubuntu:~$ cif -d -M -q google.com
+[DEBUG][2012-12-20T16:15:32Z]: generating query
+[DEBUG][2012-12-20T16:15:32Z]: query: google.com
+[DEBUG][2012-12-20T16:15:32Z]: sending query
+[DEBUG][2012-12-20T16:15:32Z]: decoding...
+[DEBUG][2012-12-20T16:15:32Z]: processing: 3 items
+[DEBUG][2012-12-20T16:15:32Z]: final results: 3
+[DEBUG][2012-12-20T16:15:32Z]: done processing
+[DEBUG][2012-12-20T16:15:32Z]: formatting as Table...
+WARNING: This table output not to be used for parsing, see "-p plugins" (via cif -h)
+WARNING: Turn off this warning by adding: 'table_nowarning = 1' to your ~/.cif config
+
+feed description:   search google.com
+feed reporttime:    2012-12-20T16:15:32Z
+feed uuid:          e7cd9386-cd14-4232-8998-2d89af47ad40
+feed guid:          everyone
+feed restriction:   private
+feed confidence:    0
+
+restriction |guid    |assessment|description      |confidence|detecttime          |reporttime          |address   |alternativeid_restriction|alternativeid                           
+need-to-know|everyone|whitelist |alexa #1         |95        |2012-12-20T16:00:00Z|2012-12-20T00:00:00Z|google.com|public                   |http://www.alexa.com/siteinfo/google.com
+private     |everyone|search    |search google.com|50        |2012-12-20T15:30:57Z|2012-12-20T15:30:57Z|google.com|                         |                                        
+
+[DEBUG][2012-12-20T16:15:32Z]: done
+}}}
+=== With Feeds ===
+ # if you've setup a system with feeds enabled, first run the cif_feed command to generate the first batch of feeds to test with:
+{{{
+$ time cif_feed -d
+}}}
+ # next query for one of the feeds:
+{{{
+$ time cif -M -d -q infrastructure/scan -c 85
+[DEBUG][2012-12-20T16:20:30Z]: generating query
+[DEBUG][2012-12-20T16:20:30Z]: query: infrastructure/scan
+[DEBUG][2012-12-20T16:20:30Z]: sending query
+[DEBUG][2012-12-20T16:20:30Z]: decoding...
+[DEBUG][2012-12-20T16:20:30Z]: processing: 475 items
+[DEBUG][2012-12-20T16:20:32Z]: final results: 475
+[DEBUG][2012-12-20T16:20:32Z]: done processing
+[DEBUG][2012-12-20T16:20:32Z]: formatting as Table...
+WARNING: This table output not to be used for parsing, see "-p plugins" (via cif -h)
+WARNING: Turn off this warning by adding: 'table_nowarning = 1' to your ~/.cif config
+
+feed description:   scan infrastructure feed
+feed reporttime:    2012-12-20T16:11:45Z
+feed uuid:          7f734f92-6ce5-4f1c-8acf-cca304800873
+feed guid:          everyone
+feed restriction:   private
+feed confidence:    85
+
+restriction |guid    |assessment|description|confidence|detecttime          |reporttime          |address        |prefix          |protocol|portlist |asn   |asn_desc                                                                                        |cc|rir    |alternativeid_restriction|alternativeid                                              
+need-to-know|everyone|scanner   |ssh        |85        |2012-12-20T16:00:00Z|2012-12-18T00:00:00Z|37.77.82.122   |37.77.80.0/20   |6       |22       | 57757|ENZUINC-EU Enzu Inc                                                                             |NL|RIPENCC|public                   |http://www.openbl.org/lists/date_all.txt                   
+need-to-know|everyone|scanner   |ssh        |85        |2012-12-20T16:00:00Z|2012-12-19T00:00:00Z|119.188.7.201  |119.176.0.0/12  |6       |22       |  4837|CHINA169-BACKBONE CNCGROUP China169 Backbone                                                    |CN|APNIC  |public                   |http://danger.rulez.sk/projects/bruteforceblocker/blist.php
+need-to-know|everyone|scanner   |ssh        |85        |2012-12-20T16:00:00Z|2012-12-19T00:00:00Z|111.74.82.33   |111.72.0.0/13   |6       |22       |  4134|CHINANET-BACKBONE No.31,Jin-rong Street                                                         |CN|APNIC  |public                   |http://www.openbl.org/lists/date_all.txt                   
+need-to-know|everyone|scanner   |ssh        |85        |2012-12-20T16:00:00Z|2012-12-19T00:00:00Z|63.137.144.85  |63.137.0.0/16   |6       |22       |  3561|SAVVIS Savvis                   
+...
+...
+...
+}}}
 === Configuring Crontab ===
  # log into the cif user (sudo su - cif) and modify it's cron tab (crontab -e)
 {{{
