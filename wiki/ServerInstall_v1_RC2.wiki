@@ -143,32 +143,13 @@ fi
 {{{
 $ source ~/.profile
 }}}
-=== APIKey ===
- # generate your initial apikey to be used by your client
-{{{
-$ cif_apikeys -u myuser@mydomain.com -a -g everyone -G everyone
-userid              key                                  description guid                                 default_guid access write revoked expires created                      
-myuser@mydomain.com 249cd5fd-04e3-46ad-bf0f-c02030cc864a             8c864306-d21a-37b1-8705-746a786719bf true         all                          2012-08-01 11:50:15.969724+00
-}}}
- # check to make sure your 'guid' has _*8c864306-d21a-37b1-8705-746a786719bf*_ in it. If it doesn't you won't be able to see all the default, public data that's permissioned to the 'everyone' group in your system
- # generate a cif-smrt key to be used by cif_smrt to submit data to the router:
-{{{
-$ cif_apikeys -u cif_smrt -G everyone -g everyone -a -w
-userid   key                                  description guid                                 default_guid restricted access write revoked expires created                      
-cif_smrt bf1e0a9f-9518-409d-8e67-bfcc36dc5f44             8c864306-d21a-37b1-8705-746a786719bf true         0                 1                     2012-08-15 17:37:18.53348+00 
-}}}
- # to list all of your apikeys:
-{{{
-$ cif_apikeys -l
-}}}
- # cif_apikeys -h will give you an example of how to use the tool
 === Basic Configuration ===
  # log into the cif user:
 {{{
 $ sudo su - cif
 $ vi ~/.cif
 }}}
- # edit ~/.cif using this as a template:
+ # edit ~/.cif using this as a template, the API KEYS will be generated in the next section, for now just use the XXX as the placeholders.
 {{{
 # the simple stuff
 [cif_archive]
@@ -188,11 +169,11 @@ datatypes = infrastructure,domain,url,email,search,malware
 name = example.com
 instance = cif.example.com
 
-# the apikey generated for cif_smrt
+# the apikey for cif_smrt
 apikey = XXXXXX-XXX-XXXX 
 
 [client]
-# the apikey you generated for your client
+# the apikey for your client
 apikey = XXXXXX-XXX-XXXX
 
 [client_http]
@@ -228,6 +209,26 @@ max_days = 7
 #private = red
 
 }}}
+=== APIKey ===
+ # generate your initial apikey to be used by your client
+{{{
+$ cif_apikeys -u myuser@mydomain.com -a -g everyone -G everyone
+userid              key                                  description guid                                 default_guid access write revoked expires created                      
+myuser@mydomain.com 249cd5fd-04e3-46ad-bf0f-c02030cc864a             8c864306-d21a-37b1-8705-746a786719bf true         all                          2012-08-01 11:50:15.969724+00
+}}}
+ # check to make sure your 'guid' has _*8c864306-d21a-37b1-8705-746a786719bf*_ in it. If it doesn't you won't be able to see all the default, public data that's permissioned to the 'everyone' group in your system
+ # generate a cif-smrt key to be used by cif_smrt to submit data to the router:
+{{{
+$ cif_apikeys -u cif_smrt -G everyone -g everyone -a -w
+userid   key                                  description guid                                 default_guid restricted access write revoked expires created                      
+cif_smrt bf1e0a9f-9518-409d-8e67-bfcc36dc5f44             8c864306-d21a-37b1-8705-746a786719bf true         0                 1                     2012-08-15 17:37:18.53348+00 
+}}}
+ # to list all of your apikeys:
+{{{
+$ cif_apikeys -l
+}}}
+ # cif_apikeys -h will give you an example of how to use the tool
+
 === Apache2 ===
  # enable the default-ssl site (debian):
 {{{
