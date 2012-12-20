@@ -77,36 +77,25 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  # at-least 100GB of free (after OS install) disk space, which should allow you to retain a years worth of data.
 
 = Prerequisites =
- # [DiskLayout_v1 DiskLayout]
 == System Deps ==
-=== Standard Deps ===
-==== Stable ====
+=== Stable ===
  * [ServerInstall_v1_Squeeze Debian Squeeze]
  * [ServerInstall_v1_Ubuntu Ubuntu]
-==== Unstable ====
+=== Unstable ===
  * [ServerInstall_v1_CentOS6 CentOS 6]
  * [ServerInstall_v1_Generic From Source]
 
-=== Configuration ===
-==== Postgres ====
+== Configuration ==
+=== Postgres ===
 Configure Postgres authentication and performance tuning
  # [PostgresInstall_v1 PostgresSetup]
 
-==== Bind ====
+=== Bind ===
 These scripts do a lot of dns queries. You're gonna wanna install bind and configure it to use forwarders. Maybe something like google public dns to help mask your queries. Then point your resolv.conf "nameserver" setting to 127.0.0.1 (in ubuntu this could be in /etc/resolvconf/resolv.conf.d/base)
  # BindSetup
 
-= Server =
-== Disk Layout ==
- # create the index / archive table spaces if you haven't via [DiskLayout_v1 DiskLayout] already (it's OK if you don't want to use LVM, these directories can exist on your root volume if you choose, but performance will increase if these are spread out across many disks):
-{{{
-$ sudo mkdir /mnt/archive
-$ sudo mkdir /mnt/index
-$ sudo chown postgres:postgres /mnt/index
-$ sudo chown postgres:postgres /mnt/archive
-$ sudo chmod 770 /mnt/index
-$ sudo chmod 770 /mnt/archive
-}}}
+= Server Setup =
+
 == Default User ==
  # create your "cif" user/group (the configure script will default to this user "cif")
 {{{
