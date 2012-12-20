@@ -1,19 +1,13 @@
 #summary example configs for configuring bind
 
 = Introduction =
+----
 
 This doc shows an example of how to proxy your resolution requests through google dns while still filtering out specific spamhaus requests direction to spamhaus
 
-= Details =
-== References ==
- * http://www.spamhaus.org/zen/
- * http://www.spamhaus.org/dbl/
- * http://www.spamhaus.org/faq/answers.lasso?section=DNSBL%20Usage
- * http://www.team-cymru.org/Services/ip-to-asn.html
- * http://www.bind9.net/BIND-FAQ
-
-== Example ==
- # Configure Bind (/etc/bind/named.conf.options)
+== 1. Configure Bind ==
+----
+1. Configure Bind (/etc/bind/named.conf.options)
 {{{
 options {
     directory "/var/cache/bind";
@@ -55,7 +49,18 @@ zone "dbl.spamhaus.org" {
     forwarders { };
 };
 }}}
- # be sure to reload bind when you're done:
+
+= 2. Reload Bind = 
+----
+be sure to reload bind when you're done
 {{{
 $ sudo /etc/init.d/bind9 restart
 }}}
+
+== References ==
+----
+ * http://www.spamhaus.org/zen/
+ * http://www.spamhaus.org/dbl/
+ * http://www.spamhaus.org/faq/answers.lasso?section=DNSBL%20Usage
+ * http://www.team-cymru.org/Services/ip-to-asn.html
+ * http://www.bind9.net/BIND-FAQ
