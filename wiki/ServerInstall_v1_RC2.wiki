@@ -77,6 +77,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  # at-least 100GB of free (after OS install) disk space, which should allow you to retain a years worth of data.
 
 = Prerequisites =
+ # consult the [DiskLayout_v1 Disk Layout Guide] before setting up your operating system
 == System Deps ==
 === Stable ===
  * [ServerInstall_v1_Squeeze Debian Squeeze]
@@ -95,7 +96,16 @@ These scripts do a lot of dns queries. You're gonna wanna install bind and confi
  # BindSetup
 
 = Server Setup =
-
+== Disk Layout ==
+ # create the index / archive table spaces if you haven't via [DiskLayout_v1 DiskLayout] already (it's OK if you don't want to use LVM, these directories can exist on your root volume if you choose, but performance will increase if these are spread out across many disks):
+{{{
+$ sudo mkdir /mnt/archive
+$ sudo mkdir /mnt/index
+$ sudo chown postgres:postgres /mnt/index
+$ sudo chown postgres:postgres /mnt/archive
+$ sudo chmod 770 /mnt/index
+$ sudo chmod 770 /mnt/archive
+}}}
 == Default User ==
  # create your "cif" user/group (the configure script will default to this user "cif")
 {{{
