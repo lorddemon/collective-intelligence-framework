@@ -289,7 +289,7 @@ To enable feed generation, which requires more space a few more options need to 
 feeds = infrastructure,domain,url,email,search,malware
 }}}
 
-# add this section to the config
+ # add this section to the config
 {{{
 [cif_feed]
 # max size of any feed generated
