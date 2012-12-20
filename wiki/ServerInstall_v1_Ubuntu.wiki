@@ -1,16 +1,15 @@
 #summary ubuntu install doc (v1)
 #labels Version-1
 
-Ubuntu Install
+= Ubuntu Install 12 Install =
+This assumes a clean install of Ubuntu 12 with all base system updates applied
 
 = Instructions =
  # Install the base deps
 {{{
-$ sudo aptitude install rng-tools postgresql apache2 apache2-threaded-dev gcc g++ make libexpat1-dev libapache2-mod-perl2 libclass-dbi-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev rsync libunicode-string-perl libconfig-simple-perl libmodule-pluggable-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libapr1-dbg libhtml-table-perl libdate-manip-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl libextutils-parsexs-perl
+$ sudo aptitude install rng-tools postgresql apache2 apache2-threaded-dev gcc g++ make libexpat1-dev libapache2-mod-perl2 libclass-dbi-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev rsync libunicode-string-perl libconfig-simple-perl libmodule-pluggable-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libapr1-dbg libhtml-table-perl libdate-manip-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl perl-modules libdigest-sha-perl libsnappy-dev libdatetime-format-dateparse-perl liblwp-protocol-https-perl libtime-hires-perl libnet-patricia-perl libnet-ssleay-perl liblog-dispatch-perl libregexp-common-net-cidr-perl libtext-table-perl libmodule-install-perl libclass-accessor-perl libdatetime-perl
 }}}
- # Install the remaining CPAN modules
-=== With prompts ===
-answer yes to all prompts (there will be a lot of them)
+ # CPAN modules (answer yes to all prompts)
 {{{
-$ sudo perl -MCPAN -e 'install Net::Abuse::Utils,DateTime::Format::DateParse,Regexp::Common::net::CIDR,Text::Table,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Digest::SHA1,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::Patricia,Net::SSLeay,Net::DNS::Match,Log::Dispatch'
+$ sudo perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,'
 }}}
