@@ -58,7 +58,7 @@ $ sudo /etc/init.d/bind9 restart
 }}}
 
 = 3.Continue with installation = 
-1. Continue with installing [ServerInstall_v1_RC2#3._Installing_CIF CIF]
+1. Continue with [ServerInstall_v1_RC2#3._Installing_CIF installing CIF]
 
 == References ==
 ----
