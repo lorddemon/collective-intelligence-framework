@@ -207,7 +207,6 @@ max_days = 7
 #public = limited
 #need-to-know = amber
 #private = red
-
 }}}
 === APIKey ===
  # generate your initial apikey to be used by your client
@@ -228,6 +227,7 @@ cif_smrt bf1e0a9f-9518-409d-8e67-bfcc36dc5f44             8c864306-d21a-37b1-870
 $ cif_apikeys -l
 }}}
  # cif_apikeys -h will give you an example of how to use the tool
+ # log out of the cif user into your regular user (that has sudo access)
 
 === Apache2 ===
  # enable the default-ssl site (debian):
@@ -275,11 +275,33 @@ $ sudo a2enmod ssl
 $ sudo adduser www-data cif
 }}}
  # restart apache2
-== Initial Data Load ==
- # log into the cif user:
+ # re-login as the cif user and test your connectivity to the router:
 {{{
 $ sudo su - cif
+$ cif -d -q example.com
+[DEBUG][2012-12-20T15:18:34Z]: generating query
+[DEBUG][2012-12-20T15:18:34Z]: query: example.com
+[DEBUG][2012-12-20T15:18:34Z]: sending query
+[DEBUG][2012-12-20T15:18:35Z]: decoding...
+[DEBUG][2012-12-20T15:18:35Z]: processing: 2 items
+[DEBUG][2012-12-20T15:18:35Z]: final results: 2
+[DEBUG][2012-12-20T15:18:35Z]: done processing
+[DEBUG][2012-12-20T15:18:35Z]: formatting as Table...
+WARNING: This table output not to be used for parsing, see "-p plugins" (via cif -h)
+WARNING: Turn off this warning by adding: 'table_nowarning = 1' to your ~/.cif config
+
+feed description:   search example.com
+feed reporttime:    2012-12-20T15:18:35Z
+feed uuid:          fa843602-4f62-49b5-99c0-010d4c873ee3
+feed guid:          everyone
+feed restriction:   private
+feed confidence:    0
+
+restriction|guid    |assessment|description       |confidence|detecttime          |reporttime          |address    |alternativeid_restriction|alternativeid
+private    |everyone|search    |search example.com|50        |2012-12-20T15:18:35Z|2012-12-20T15:18:35Z|example.com|                         |             
 }}}
+== Initial Data Load ==
+ # you should be logged in as the 'cif' user for this
  # run the cif_crontool
 {{{
 $ cd /opt/cif
