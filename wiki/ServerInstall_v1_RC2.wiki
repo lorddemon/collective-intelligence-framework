@@ -157,10 +157,6 @@ datatypes = infrastructure,domain,url,email,search,malware
 # enable your own groups is you start doing data-sharing with various groups
 #groups = everyone,group1.example.com,group2.example.com,group3.example.com
 
-# enable this if you plan to generate feeds, other-wise it'll save you space
-# queries will still work with this disabled, you only need it if you leverage the cif_feed command
-#feeds = infrastructure,domain,url,email,search,malware
-
 [cif_smrt]
 # change example.com to your local domain and hostname respectively
 # this identifies the data in your instance and ties it to your specific instance in the event
@@ -186,20 +182,6 @@ host = 127.0.0.1
 user = postgres
 password =
 database = cif
-
-# if you enable feed generation
-[cif_feed]
-# max size of any feed generated
-limit = 50000
-
-# each confidence level to generate
-confidence = 95,85,75,65
-
-# what 'role' keys to use to generate the feeds
-roles = everyone
-
-# how far back in time to generate the feeds from
-max_days = 7
 
 # if the normal IODEF restriction classes don't fit your needs
 [restriction_map]
@@ -299,14 +281,47 @@ feed confidence:    0
 restriction|guid    |assessment|description       |confidence|detecttime          |reporttime          |address    |alternativeid_restriction|alternativeid
 private    |everyone|search    |search example.com|50        |2012-12-20T15:18:35Z|2012-12-20T15:18:35Z|example.com|                         |             
 }}}
+
+== Enabling Feed Generation ==
+To enable feed generation, which requires more space a few more options need to be ticked. If you only plan to leverage the system for "querying" (not putting feeds into something like a firewall, etc) then this section can be skipped.
+
+# modify the 'cif' user's ~/.cif config accordingly:
+# add the following to the [cif_archive] section:
+{{{
+[cif_archive]
+...
+feeds = infrastructure,domain,url,email,search,malware
+}}}
+
+# add this section to the config
+{{{
+[cif_feed]
+# max size of any feed generated
+limit = 50000
+
+# each confidence level to generate
+confidence = 95,85,75,65
+
+# what 'role' keys to use to generate the feeds
+roles = role_everyone
+
+# how far back in time to generate the feeds from
+max_days = 7
+}}}
+ 
+ # when that's finished, run your first batch of feeds
+{{{
+$ time cif_feed -d
+}}}
+
 == Initial Data Load ==
  # you should be logged in as the 'cif' user for this
  # run the cif_crontool
 {{{
-$ cd /opt/cif
-$ time ./bin/cif_crontool -p hourly -d -P
-$ time ./bin/cif_crontool -d -P
+$ time cif_crontool -p hourly -d -P
+$ time cif_crontool -d -P
 }}}
+
 === Configuring Crontab ===
  # log into the cif user (sudo su - cif) and modify it's cron tab (crontab -e)
 {{{
@@ -315,7 +330,10 @@ PATH=/bin:/usr/local/bin:/opt/cif/bin
 
 # pull feed data
 05     *       * * * /opt/cif/bin/cif_crontool -p hourly -P -N -A root &> /dev/null
-30     00      * * * /opt/cif/bin/cif_crontool -p daily -P -N -A root &> /dev/null
+30     00     * * * /opt/cif/bin/cif_crontool -p daily -P -N -A root &> /dev/null
+
+# if you've enabled feed generation in your config
+45     *       * * * /opt/cif/bin/cif_feed &> /dev/null
 }}}
 
 === Configuring Crontab with logging ===
@@ -326,12 +344,7 @@ PATH=/bin:/usr/local/bin:/opt/cif/bin
 # pull feed data
 05     *       * * * /opt/cif/bin/cif_crontool -p hourly -P -d -N -A root >> /home/cif/crontool_hourly.log 2>&1
 30     00      * * * /opt/cif/bin/cif_crontool -p daily -P -d -N -A root >> /home/cif/crontool_daily.log 2>&1
-}}}
 
-== Enabling Feed Generation ==
-To enable feed generation, which requires more space a few more options need to be ticked. If you only plan to leverage the system for "querying" (not putting feeds into something like a firewall, etc) then this can be skipped.
- 
- # when that's finished, run your first batch of feeds
-{{{
-$ time /opt/cif/bin/cif_feed -d
+# if you've enabled feed generation in your config
+45     *       * * * /opt/cif/bin/cif_feed -d >> /home/cif/cif_feed.log 2>&1
 }}}
