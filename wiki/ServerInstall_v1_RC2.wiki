@@ -96,9 +96,8 @@ fi
 $ source ~/.profile
 }}}
 === Basic Configuration ===
- # log into the cif user:
+ # as the cif user: (sudo su - cif)
 {{{
-$ sudo su - cif
 $ vi ~/.cif
 }}}
  # edit ~/.cif using this as a template, the API KEYS will be generated in the next section, for now just use the XXX as the placeholders.
