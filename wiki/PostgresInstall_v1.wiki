@@ -2,13 +2,14 @@
 #labels Version-1
 <wiki:toc max_depth="3" />
 = Introduction =
+----
 
 This guide will show you how to setup an embedded instance of postgres using localhost. This config assumes you have trusted access to the instance from localhost. 
 
 Before you begin, you should consult the [DiskLayout_v1] page for optimum database performance.
 
-= Details =
-== Setup ==
+== 1. Postgres Setup ==
+----
  # Modify your postgres config
 {{{
 $ diff -u pg_hba.conf.orig pg_hba.conf
@@ -50,7 +51,9 @@ postgres=#\l
 (3 rows)
 postgres=#\q
 }}}
-== Performance Tuning ==
+
+== 2. Performance Tuning ==
+----
 
 *NOTE:* These recommend numbers have been tested on a machine with 4 cores and 8 GB of ram. During testing we found that these values may be too high for a machine with 4 GB of ram. If you are testing this on a machine with less than 8 GB of ram, you may want to skip this section all together or reduce the numbers these shell script spit out. 
 
@@ -126,7 +129,8 @@ $ /bin/bash postgressetup.sh | sudo tee -a /etc/postgresql/9.1/main/postgresql.c
 $ sudo /etc/init.d/postgresql restart
 }}}
 
-== Optional Tweaks ==
+== 3. Optional Tweaks ==
+----
  # *EXPERIMENTAL* check your blockdev setting in rc.local:
 {{{
 /sbin/blockdev --setra 4096 /dev/mapper/ses--qa1-archive
@@ -134,7 +138,12 @@ $ sudo /etc/init.d/postgresql restart
 /sbin/blockdev --setra 4096 /dev/mapper/ses--qa1-dbsystem
 }}}
 
+== 4. Continue with configuration ==
+----
+1. Continue with the [ServerInstall_v1_RC2#Bind Bind configuration]
+
 == References ==
+----
  # http://www.amazon.com/PostgreSQL-High-Performance-Gregory-Smith/dp/184951030X/ref=sr_1_1?ie=UTF8&qid=1321356392&sr=8-1
  # http://developer.postgresql.org/pgdocs/postgres/kernel-resources.html
  # http://momjian.us/main/writings/pgsql/hw_performance/
