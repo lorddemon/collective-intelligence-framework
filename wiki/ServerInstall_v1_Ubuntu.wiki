@@ -2,7 +2,7 @@
 #labels Version-1
 
 = Ubuntu 12.04 =
-This assumes a clean install of Ubuntu 12.04 with all base system updates applied. There are some duplicates between the system wide deps and CPAN, this can be ignored. In some cases we need an upgraded version of the module and by installing the system-wide dependency first, it installs some of the other deps via that mechanism too, simplifying the install. Sometimes it's easier to get bugs fixes into CPAN faster than the more stable Debian tree.
+This assumes a clean install of Ubuntu 12.04 with all base system updates applied. There are some duplicates between the system wide deps and CPAN, this can be ignored. In some cases we need an upgraded version of the module and by installing the system-wide dependency first, it installs some of the other deps via that mechanism too, simplifying the install. Sometimes it's easier to get bugs fixes into CPAN faster than the more stable Debian/Ubuntu tree.
 
 == 1. Install the base deps ==
 ----
