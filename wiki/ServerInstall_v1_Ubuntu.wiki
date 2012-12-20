@@ -2,7 +2,7 @@
 #labels Version-1
 
 = Ubuntu Install 12 Install =
-This assumes a clean install of Ubuntu 12 with all base system updates applied
+This assumes a clean install of Ubuntu 12 with all base system updates applied. There are some duplicates between the system wide deps and CPAN, this can be ignored. In some cases we need an upgraded version of the module and by installing the system-wide dependency first, it installs some of the other deps via that mechanism too, simplifying the install. Sometimes it's easier to get bugs fixes into CPAN faster than the more stable Debian tree.
 
 = Instructions =
  # Install the base deps
@@ -11,5 +11,5 @@ $ sudo aptitude install rng-tools postgresql apache2 apache2-threaded-dev gcc g+
 }}}
  # CPAN modules (answer yes to all prompts)
 {{{
-$ sudo perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range'
+$ sudo perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,Net::SSLeay,ZeroMQ'
 }}}
