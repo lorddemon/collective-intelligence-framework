@@ -4,18 +4,23 @@
 = Ubuntu Install 12.04 Install =
 This assumes a clean install of Ubuntu 12.04 with all base system updates applied. There are some duplicates between the system wide deps and CPAN, this can be ignored. In some cases we need an upgraded version of the module and by installing the system-wide dependency first, it installs some of the other deps via that mechanism too, simplifying the install. Sometimes it's easier to get bugs fixes into CPAN faster than the more stable Debian tree.
 
-= 1. Install the base deps =
+== 1. Install the base deps ==
 ----
+
+Install the base dependencies from the Ubuntu repositories 
 {{{
 $ sudo aptitude install rng-tools postgresql apache2 apache2-threaded-dev gcc g++ make libexpat1-dev libapache2-mod-perl2 libclass-dbi-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev rsync libunicode-string-perl libconfig-simple-perl libmodule-pluggable-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libapr1-dbg libhtml-table-perl libdate-manip-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl perl-modules libdigest-sha-perl libsnappy-dev libdatetime-format-dateparse-perl liblwp-protocol-https-perl libtime-hires-perl libnet-patricia-perl libnet-ssleay-perl liblog-dispatch-perl libregexp-common-net-cidr-perl libtext-table-perl libmodule-install-perl libclass-accessor-perl libdatetime-perl libencode-perl libjson-xs-perl libmime-base64-perl libhtml-table-perl libzmq-dev libzmq1 libzeromq-perl
 }}}
 
-= 2. CPAN modules (answer yes to all prompts) =
+== 2. CPAN modules (answer yes to all prompts) ==
 ----
+
+Install the remaining perl dependencies from CPAN
 {{{
 $ sudo perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,Net::SSLeay,ZeroMQ,Sys::MemInfo'
 }}}
 
-= 3. Continue with configuration = 
+== 3. Continue with configuration ==
 ----
-[ServerInstall_v1_RC2#2._Post_OS_install_configuration Post OS configuration]
+
+Continue with [ServerInstall_v1_RC2#2._Post_OS_install_configuration Post OS configuration]
