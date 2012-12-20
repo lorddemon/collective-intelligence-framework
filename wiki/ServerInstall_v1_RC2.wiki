@@ -35,8 +35,8 @@ Consult the [DiskLayout_v1 Disk Layout Guide] before setting up your operating s
 ----
 Choose a distribution as your base install. These install instructions assume you are starting with a clean installation. 
 
- * [ServerInstall_v1_Squeeze Debian Squeeze] (stable)
- * [ServerInstall_v1_Ubuntu Ubuntu 12.04 ] (stable)
+ * [ServerInstall_v1_Squeeze Debian Squeeze] (unstable)
+ * [ServerInstall_v1_Ubuntu Ubuntu 12.04 ] (unstable)
  * [ServerInstall_v1_CentOS6 CentOS 6] (unstable)
  * [ServerInstall_v1_Generic From Source] (unstable)
 
