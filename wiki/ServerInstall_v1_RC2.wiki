@@ -126,7 +126,6 @@ $ ./configure && make testdeps
 $ sudo make install
 $ sudo make initdb
 }}}
-
 == Configuration ==
 === Profile ===
  # log in as the cif user:
@@ -308,13 +307,8 @@ $ cd /opt/cif
 $ time ./bin/cif_crontool -p hourly -d -P
 $ time ./bin/cif_crontool -d -P
 }}}
- # when that's finished, run your first batch of feeds
-{{{
-$ time /opt/cif/bin/cif_feed -d
-}}}
-== Finishing up ==
- # log into the cif user (sudo su - cif) and modify it's cron tab (crontab -e)
 === Configuring Crontab ===
+ # log into the cif user (sudo su - cif) and modify it's cron tab (crontab -e)
 {{{
 # set the path
 PATH=/bin:/usr/local/bin:/opt/cif/bin
@@ -322,9 +316,6 @@ PATH=/bin:/usr/local/bin:/opt/cif/bin
 # pull feed data
 05     *       * * * /opt/cif/bin/cif_crontool -p hourly -P -N -A root &> /dev/null
 30     00      * * * /opt/cif/bin/cif_crontool -p daily -P -N -A root &> /dev/null
-
-# update the feeds
-45     *       * * * /opt/cif/bin/cif_feed &> /dev/null
 }}}
 
 === Configuring Crontab with logging ===
@@ -335,7 +326,12 @@ PATH=/bin:/usr/local/bin:/opt/cif/bin
 # pull feed data
 05     *       * * * /opt/cif/bin/cif_crontool -p hourly -P -d -N -A root >> /home/cif/crontool_hourly.log 2>&1
 30     00      * * * /opt/cif/bin/cif_crontool -p daily -P -d -N -A root >> /home/cif/crontool_daily.log 2>&1
+}}}
 
-# update the feeds
-45     *       * * * /opt/cif/bin/cif_feed -d >> /home/cif/feeds.log 2>&1
+== Enabling Feed Generation ==
+To enable feed generation, which requires more space a few more options need to be ticked. If you only plan to leverage the system for "querying" (not putting feeds into something like a firewall, etc) then this can be skipped.
+ 
+ # when that's finished, run your first batch of feeds
+{{{
+$ time /opt/cif/bin/cif_feed -d
 }}}
