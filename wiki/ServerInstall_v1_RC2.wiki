@@ -125,7 +125,6 @@ $ cd cif-v1-rc2
 $ ./configure && make testdeps
 $ sudo make install
 $ sudo make initdb
-$ sudo make tables
 }}}
 
 == Configuration ==
