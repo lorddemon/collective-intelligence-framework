@@ -59,7 +59,12 @@ zone "dbl.spamhaus.org" {
 
 = Reload Bind = 
 ----
-be sure to reload bind when you're done
+ # Restart Bind
+  * Ubuntu 12.04
+{{{
+sudo service bind9 restart
+}}}
+  * Debian 6.0.x
 {{{
 $ sudo /etc/init.d/bind9 restart
 }}}
