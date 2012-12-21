@@ -1,8 +1,8 @@
 #summary the best layout for your system disk and data-warehouse (v1)
 #labels Version-1
 
-* Introduction * 
-
+= Introduction = 
+----
 Disk layout is important, all the way down to the way you raid out your physical drives. In addition to that, LVM should be used where-ever possible in the event that the system runs low on disk space. By default, the best bang for your buck is RAID5, as it will give you a good combination of performance and redundancy. 
 
 * Table of Contents *
