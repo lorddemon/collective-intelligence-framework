@@ -24,4 +24,4 @@ $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cp
 == 3. Continue with configuration ==
 ----
 
-1. Continue with [ServerInstall_v1_RC2#Postgres_and_Bind_configuration Postgres and Bind configuration]
+1. Continue with [ServerInstall_v1_RC2#Postgres Postgres configuration]
