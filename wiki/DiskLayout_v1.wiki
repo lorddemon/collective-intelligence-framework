@@ -19,7 +19,7 @@ $ sudo chmod 770 /mnt/index
 $ sudo chmod 770 /mnt/archive
 }}}
  
-Continue onto the [ServerInstall_v1#Setup Setup Guide]
+Continue with  [ServerInstall_v1_RC2#Required_applications_and_dependencies Required applications and dependencies]
 
 == Large Install ==
 This includes bare-metal instances where large data-sets, in-addition to the default publicly available data is being used.
@@ -85,4 +85,4 @@ tmpfs                 2.0G     0  2.0G   0% /dev/shm
 /dev/mapper/vg02-index 550G   1G  549G  1% /mnt/index
 }}}
 
-Continue onto the [ServerInstall_v1#Setup Setup Guide]
+Continue with  [ServerInstall_v1_RC2#Required_applications_and_dependencies Required applications and dependencies]
