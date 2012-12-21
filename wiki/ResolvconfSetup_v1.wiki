@@ -1,0 +1,5 @@
+#summary configured resolveconf for localhost
+
+= Introduction =
+
+Configure resolveconf to use the localhost for DNS resolution. 
