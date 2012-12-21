@@ -100,7 +100,7 @@ $ sudo su - cif
 }}}
  # open the cif users .profile
 {{{
-vim ~/.profile
+$ vim ~/.profile
 }}}
  # add the following
 {{{
@@ -112,7 +112,11 @@ fi
 {{{
 $ source ~/.profile
 }}}
- # edit ~/.cif using this as a template, the API KEYS will be generated in the next section, for now just use the XXX as the placeholders.
+ # create a ~/.cif
+{{{
+$ vim ~/.cif
+}}}
+ # add the following as a template, the API KEYS will be generated in the next section, for now just use the XXX as the placeholders.
 {{{
 # the simple stuff
 [cif_archive]
