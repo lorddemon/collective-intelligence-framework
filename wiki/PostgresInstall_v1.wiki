@@ -11,10 +11,19 @@ This guide will show you how to setup an embedded instance of postgres using loc
 = Required Setup =
 == Permission Configuration ==
 ----
- # Set the appropriate permissions on the /mnt/archive and /mnt/index directories, if you've used LVM to create these partitions, ensure they are mounted before setting the permissions:
+=== Small Install ===
+ # Set the appropriate permissions:
 {{{
 $ sudo chown postgres:postgres /mnt/archive
 $ sudo chown postgres:postgres /mnt/index
+}}}
+=== Large Install ===
+ # Set the appropriate permissions and link the pg_xlog directory:
+{{{
+$ sudo chown postgres:postgres /mnt/archive
+$ sudo chown postgres:postgres /mnt/index
+$ sudo chown postgres:postgres pg_xlog
+sudo ln -sf /mnt/pg_xlog /var/lib/postgresql/9.1/main/pg_xlog
 }}}
  # Modify your postgres config accordingly (note the 'trust' setting, make sure your iptables are up to date!):
 {{{
