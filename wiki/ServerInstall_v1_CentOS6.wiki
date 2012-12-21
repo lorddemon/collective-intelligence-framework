@@ -22,8 +22,7 @@ $ wget http://download.fedora.redhat.com/pub/epel/6/x86_64/libapreq2-devel-2.13-
 $ wget http://download.fedora.redhat.com/pub/epel/6/x86_64/perl-libapreq2-2.13-1.el6.x86_64.rpm
 $ sudo rpm -i libapreq2-2.13-1.el6.x86_64.rpm libapreq2-devel-2.13-1.el6.x86_64.rpm perl-libapreq2-2.13-1.el6.x86_64.rpm
 }}}
- # install the remaining CPAN modules (follow all the deps)
-  # via perl -MCPAN -e
+ # install the remaining CPAN modules
 {{{
-$ sudo perl -MCPAN -e 'install Class::DBI, Net::CIDR, Apache2::Request, Regexp::Common, File::Type, Text::CSV, HTML::Table, APR::Table, Net::Abuse::Utils, Linux::Cpuinfo, XML::IODEF,Try::Tiny'
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,Net::SSLeay,ZeroMQ,Sys::MemInfo'
 }}}
