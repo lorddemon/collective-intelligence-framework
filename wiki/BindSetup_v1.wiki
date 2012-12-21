@@ -5,9 +5,16 @@
 
 This doc shows an example of how to proxy your resolution requests through google dns while still filtering out specific spamhaus requests direction to spamhaus
 
-== 1. Configure Bind ==
+== Configure Bind ==
 ----
-Configure Bind (/etc/bind/named.conf.options)
+Configure Bind (named.conf)
+
+ # Open named.conf
+  * Ubuntu 12.04
+{{{
+$ sudo vim /etc/bind/named.conf.options
+}}}
+ # Configure the file to look something like this:
 {{{
 options {
     directory "/var/cache/bind";
