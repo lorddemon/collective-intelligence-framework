@@ -160,6 +160,10 @@ postgres=#\q
 /sbin/blockdev --setra 4096 /dev/mapper/ses--qa1-dbsystem
 }}}
 
+= Continue with configuration =
+----
+Continue with the [ServerInstall_v1_RC2#Bind Bind configuration]
+
 = Helpful References =
 ----
  # http://www.amazon.com/PostgreSQL-High-Performance-Gregory-Smith/dp/184951030X/ref=sr_1_1?ie=UTF8&qid=1321356392&sr=8-1
@@ -170,7 +174,3 @@ postgres=#\q
  # http://wiki.postgresql.org/wiki/FAQ
  # http://www.thegeekstuff.com/2009/05/15-advanced-postgresql-commands-with-examples/
  # http://wiki.postgresql.org/wiki/Disk_Usage
-
-= Continue with configuration =
-----
-Continue with the [ServerInstall_v1_RC2#Bind Bind configuration]
