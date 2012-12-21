@@ -75,7 +75,6 @@ Configure Bind to use Google public DNS servers to abstract your CIF instance.
 === Resolvconf ===
 
 Configure resolvconf to use the localhost for DNS resolution.
-
  # [ResolvconfSetup_v1 ResolvconfSetup]
 
 == Installing CIF ==
