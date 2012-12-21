@@ -84,7 +84,7 @@ $ sudo adduser --disabled-password --gecos '' cif
  # install the latest package
 {{{
 $ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-rc2-00-16-gab18761.tar.gz
-$ tar -xzvf cif-v1-XXXX.tar.gz
+$ tar -xzvf cif-v1-rc2-XXXX.tar.gz
 $ cd cif-v1-rc2-XXXX
 $ ./configure && make testdeps
 $ sudo make install
