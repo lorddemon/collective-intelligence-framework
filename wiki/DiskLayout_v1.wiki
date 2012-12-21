@@ -18,7 +18,8 @@ $ sudo mkdir /mnt/index
 $ sudo chmod 770 /mnt/index
 $ sudo chmod 770 /mnt/archive
 }}}
- # Continue onto the [ServerInstall_v1#Setup Setup Guide]
+ 
+Continue onto the [ServerInstall_v1#Setup Setup Guide]
 
 == Large Install ==
 This includes bare-metal instances where large data-sets, in-addition to the default publicly available data is being used.
@@ -33,9 +34,9 @@ Where possible, you should:
  # give /var at-least 10-20GB of disk space for database logs
 
 === Partition Mapping ===
- 1. your database system space should be about 5-10G on the lower end
+ 1. your database system space should be about 10-20G on the lower end
  1. the index partition should grow at about the same rate (maybe more) as your archive partition
- 1. starting out; each logical volume (archive/index) should share your free space 40/60.
+ 1. starting out; each logical volume (index/archive) should share your free space 60/40.
  1. for 1TB of free space:
   * 400GB for the archive
   * 600GB for the index
@@ -83,3 +84,5 @@ tmpfs                 2.0G     0  2.0G   0% /dev/shm
 /dev/mapper/vg01-archive 350G   1G  349G  1% /mnt/archive
 /dev/mapper/vg02-index 550G   1G  549G  1% /mnt/index
 }}}
+
+Continue onto the [ServerInstall_v1#Setup Setup Guide]
