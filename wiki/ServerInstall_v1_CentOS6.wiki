@@ -8,15 +8,11 @@ CentOS 6 Server Install -- this doc considered unstable, although it should most
 
 = Details =
  # make sure you have sudo installed
- # install server deps
+ # install server dependencies
 {{{
 $ sudo yum install rng-tools postgresql-server httpd httpd-devel mod_ssl gcc make expat expat-devel mod_perl mod_perl-devel perl-Digest-SHA perl-Digest-SHA libxml2 libxml2-devel perl-XML-LibXML uuid-perl perl-DBD-Pg bind perl-XML-RSS perl-JSON rsync perl-Unicode-String perl-Config-Simple perl-Module-Pluggable perl-MIME-Lite perl-CPAN perl-Class-Accessor perl-YAML perl-XML-Parser uuid uuid-devel uuid-perl perl-Text-Table perl-Net-DNS perl-DateTime-Format-DateParse perl-IO-Socket-INET6 perl-Regexp-Common-net openssl-devel perl-Module-Install htop wget
 }}}
- # if you have the epel repo installed:
-{{{
-$ sudo yum install libapreq2 libapreq2-devel perl-libapreq2
-}}}
- # if you don't have that repo (see [http://www.centos.org/modules/newbb/viewtopic.php?topic_id=18264 this] for more info):
+ # install some 3rd party dependencies
 {{{
 $ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/libapreq2-2.13-1.el6.x86_64.rpm
 $ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/libapreq2-devel-2.13-1.el6.x86_64.rpm
