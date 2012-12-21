@@ -59,7 +59,7 @@ $ sudo /etc/init.d/bind9 restart
 
 = Continue with installation =
 ----
-1. Continue with [ServerInstall_v1_RC2#ResolvconfSetup_v1 ResolvconfSetup]
+1. Continue with [ServerInstall_v1_RC2#Resolvconf ResolvconfSetup]
 
 == References ==
 ----
