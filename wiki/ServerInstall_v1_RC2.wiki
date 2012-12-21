@@ -41,7 +41,7 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 ----
 Debian is the operating system in which CIF is developed against and is the most commonly used. A RHEL derivative is the second most common platform used by the community. 
 
-In theory any current Unix/Linux operating should be able to run CIF. The challenge may be installing the required applications and dependencies.
+In theory any current Unix/Linux operating system should be able to run CIF. The challenge may be installing the required applications and dependencies.
 
 == Disk Layout ==
 ----
