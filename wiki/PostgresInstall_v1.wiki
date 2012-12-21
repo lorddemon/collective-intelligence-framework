@@ -30,6 +30,9 @@ $ sudo ln -sf /mnt/pg_xlog /var/lib/postgresql/9.1/main/pg_xlog
 ----
  # Modify your postgres config accordingly (note the 'trust' setting, make sure your iptables are up to date!):
 {{{
+sudo vim /etc/postgresql/9.1/main/pg_hba.conf
+}}}
+{{{
  # (autovacuum, daily cronjob, replication, and similar tasks).
  #
  # Database administrative login by UNIX sockets
