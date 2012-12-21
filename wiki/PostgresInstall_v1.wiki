@@ -9,7 +9,7 @@ This guide will show you how to setup an embedded instance of postgres using loc
 <wiki:toc max_depth="2" />
 
 = Required Setup =
-== Permission Configuration ==
+== Directory Permission Configuration ==
 ----
 === Small Install ===
  # Set the appropriate permissions:
@@ -25,6 +25,9 @@ $ sudo chown postgres:postgres /mnt/index
 $ sudo chown postgres:postgres pg_xlog
 $ sudo ln -sf /mnt/pg_xlog /var/lib/postgresql/9.1/main/pg_xlog
 }}}
+
+== Postgres Authentication Configuration ==
+----
  # Modify your postgres config accordingly (note the 'trust' setting, make sure your iptables are up to date!):
 {{{
  # (autovacuum, daily cronjob, replication, and similar tasks).
