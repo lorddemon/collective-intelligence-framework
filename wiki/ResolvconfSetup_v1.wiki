@@ -4,3 +4,8 @@
 ----
 
 Configure resolveconf to use the localhost for DNS resolution. 
+
+* Table of Contents *
+<wiki:toc max_depth="2" />
+
+== Ubuntu 12.04 ==
