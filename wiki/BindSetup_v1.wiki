@@ -7,7 +7,7 @@ This doc shows an example of how to proxy your resolution requests through googl
 
 == 1. Configure Bind ==
 ----
-1. Configure Bind (/etc/bind/named.conf.options)
+Configure Bind (/etc/bind/named.conf.options)
 {{{
 options {
     directory "/var/cache/bind";
@@ -50,14 +50,15 @@ zone "dbl.spamhaus.org" {
 };
 }}}
 
-= 2. Reload Bind = 
+= Reload Bind = 
 ----
 be sure to reload bind when you're done
 {{{
 $ sudo /etc/init.d/bind9 restart
 }}}
 
-= 3.Continue with installation = 
+= Continue with installation =
+----
 1. Continue with [ServerInstall_v1_RC2#3._Installing_CIF installing CIF]
 
 == References ==
