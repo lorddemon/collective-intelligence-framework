@@ -8,6 +8,8 @@ Configure resolveconf to use the localhost for DNS resolution.
 * Table of Contents *
 <wiki:toc max_depth="2" />
 
+= Configure resolveconf =
+----
 == Ubuntu 12.04 ==
 
 1. Delete the resolveconf information entered at setup
@@ -29,3 +31,6 @@ $ sudo resolvconf -u
 }}}
 
 == Debian 6.0.x ==
+
+= Continue with installation =
+----
