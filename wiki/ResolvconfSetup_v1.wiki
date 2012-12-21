@@ -20,7 +20,7 @@ $ sudo resolvconf -d eth0.inet
 {{{
 $ sudo vim /etc/resolvconf/resolv.conf.d/base
 }}}
-add:
+ # add:
 {{{
 nameserver 127.0.0.1
 }}}
