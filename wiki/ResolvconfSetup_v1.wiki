@@ -42,3 +42,5 @@ nameserver 127.0.0.1
 
 = Continue with installation =
 ----
+
+ # Continue with [ServerInstall_v1_RC2#Installing_CIF Installing CIF]
