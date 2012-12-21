@@ -3,18 +3,32 @@
 
 = Introduction =
 
-Disk layout is important, all the way down to the way you raid out your physical drives. On top of that, you should use LVM where-ever possible in case you run out of space. By default, the best bang for your buck is RAID5, as it will give you a good combination of performance and redundancy. The known current growth rate (levering the default public data avail in etc/) is about 321,000 records per gig (this includes index + archive).
+Disk layout is important, all the way down to the way you raid out your physical drives. In addition to that, LVM should be used where-ever possible in the event that the system runs low on disk space. By default, the best bang for your buck is RAID5, as it will give you a good combination of performance and redundancy. 
+
+= Details =
+== Small Install ==
+This includes instances where only the default publicly available data is being used, and/or running on a vm, etc. Should read/write performance become an issue, adapting your instance to the large install will help.
+
+ # setup the archive and index data directories, the permissions will be set later in the install.
+{{{
+$ sudo mkdir /mnt/archive
+$ sudo mkdir /mnt/index
+$ sudo chmod 770 /mnt/index
+$ sudo chmod 770 /mnt/archive
+}}}
+
+== Large Install ==
+This includes bare-metal instances where large data-sets, in-addition to the default publicly available data is being used.
 
 Where possible, you should:
 
  # mirror the main OS on it's own set of disks
  # mirror the postgresql directory (/var/lib/postgres) on it's own set of disks
  # mirror or RAID5 main archive table space on it's own set of disks
- # RAID5 or even RAID0 the index table space (it can be rebuilt from the archive if the disks fail, a trade-off for speed)
- # the WAL logs (pg_xlog) should be on it's own set of disks due to the constant sequential writes (raid 1 at the least)
- # give /var at-least 5-10GB of disk space for database logs
+ # RAID5 or even RAID0 the index table space (it can be rebuilt from the archive if the disks fail, a trade-off for size and speed)
+ # the WAL logs (pg_xlog) should be on it's own set of disks due to the constant sequential writes (raid+1 if possible)
+ # give /var at-least 10-20GB of disk space for database logs
 
-= Details =
 == Partition Mapping ==
  1. your database system space should be about 5-10G on the lower end
  1. the index partition should grow at about the same rate (maybe more) as your archive partition
