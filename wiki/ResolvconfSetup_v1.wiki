@@ -9,3 +9,5 @@ Configure resolveconf to use the localhost for DNS resolution.
 <wiki:toc max_depth="2" />
 
 == Ubuntu 12.04 ==
+
+== Debian 6.0.x ==
