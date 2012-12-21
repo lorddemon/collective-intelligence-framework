@@ -53,7 +53,7 @@ Consult the Disk Layout Guide before setting up your operating system. There are
 
 == Required applications and dependencies ==
 ----
-Choose the distribution you used as your base install and install the required applications and dependencies.
+Choose the distribution you used as your base operating system and install the required applications and dependencies.
 
  * [ServerInstall_v1_Squeeze Debian Squeeze] (unstable)
  * [ServerInstall_v1_Ubuntu Ubuntu 12.04 ] (unstable)
