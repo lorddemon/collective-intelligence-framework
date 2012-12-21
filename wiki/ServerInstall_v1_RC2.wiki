@@ -49,7 +49,7 @@ In theory any current Unix/Linux operating should be able to run CIF. The challe
 ----
 Consult the Disk Layout Guide before setting up your operating system. There are implications as to how this is done based on which type of install is opted for. Larger install's with LVM require a bit more configuration than a small install.
 
-1. [DiskLayout_v1 Disk Layout Guide]
+ # [DiskLayout_v1 Disk Layout Guide]
 
 == Required applications and dependencies ==
 ----
@@ -72,7 +72,7 @@ Configure Postgres authentication and performance tuning
 Configure Bind to use Google public DNS servers to abstract your CIF instance. 
  # [BindSetup_v1 BindSetup]
 
-=== resolvconf ===
+=== Resolvconf ===
 
 Configure resolvconf to use the localhost for DNS resolution.
 
