@@ -9,6 +9,7 @@ Disk layout is important, all the way down to the way you raid out your physical
 <wiki:toc max_depth="2" />
 
 == Small Install ==
+----
 This includes instances where only the default publicly available data is being used, and/or running on a vm, etc. Should read/write performance become an issue, adapting your instance to the large install will help.
 
  # setup the archive and index data directories, the permissions will be set later in the install.
@@ -22,6 +23,7 @@ $ sudo chmod 770 /mnt/archive
 Continue with  [ServerInstall_v1_RC2#Required_applications_and_dependencies Required applications and dependencies]
 
 == Large Install ==
+----
 This includes bare-metal instances where large data-sets, in-addition to the default publicly available data is being used.
 
 Where possible, you should:
