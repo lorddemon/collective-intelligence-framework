@@ -60,7 +60,7 @@ Choose the distribution you used as your base operating system and install the r
  * [ServerInstall_v1_CentOS6 CentOS 6] (unstable)
  * [ServerInstall_v1_Generic From Source] (unstable)
 
-== Postgres and Bind configuration ==
+== Postgres, Bind and Resolvconf configuration ==
 ----
 === Postgres ===
 
