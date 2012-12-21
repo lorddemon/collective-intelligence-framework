@@ -17,7 +17,6 @@ A semi-complete [ChangeLog_v1 ChangeLog] of v1
  * If you are installing on a machine with less than 4 GB of ram you need to read the "note:" section under Postgres Setup Performance Tuning. 
 
 == System Requirements ==
-----
 These requirements will handle everything on the same box pretty well with the default open source data-sets. The more (bigger) data-sets you add, the more ram / disk space you'll need. The more cores you add, the more threads that can "batch out" the feed parsers (thus, resulting in faster data consumption).
 
 These specs will handle around 10k feeds at once with minimal impact on memory usage. Past that you'll need to start doubling your specs. Virtual machine technology is great for prototyping your implementation and will give you a good baseline of what you'll need for production.
@@ -40,7 +39,6 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
 = Setup =
 ----
 == Choose an operating system ==
-----
 Debian is the operating system in which CIF is developed against and is the most commonly used. A RHEL derivative is the second most common platform used by the community. 
 
 In theory any current Unix/Linux operating should be able to run CIF. The challenge may be installing the required applications and dependencies.
