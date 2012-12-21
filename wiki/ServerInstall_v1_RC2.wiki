@@ -69,8 +69,14 @@ Configure Postgres authentication and performance tuning
 
 === Bind ===
 
-Configure Bind to use Google public DNS servers to abstract your CIF instance. Point your resolv.conf "nameserver" setting to 127.0.0.1 (in ubuntu this could be in /etc/resolvconf/resolv.conf.d/base)
+Configure Bind to use Google public DNS servers to abstract your CIF instance. 
  # [BindSetup_v1 BindSetup]
+
+=== resolvconf ===
+
+Configure resolvconf to use the localhost for DNS resolution.
+
+ # [ResolvconfSetup_v1 ResolvconfSetup]
 
 == Installing CIF ==
 ----
