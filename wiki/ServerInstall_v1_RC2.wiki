@@ -98,7 +98,11 @@ $ sudo make initdb
 {{{
 $ sudo su - cif
 }}}
- # modify your local path, vi ~/.profile
+ # open the cif users .profile
+{{{
+vim ~/.profile
+}}}
+ # add the following
 {{{
 if [ -d "/opt/cif/bin" ]; then
     PATH="/opt/cif/bin:$PATH"
