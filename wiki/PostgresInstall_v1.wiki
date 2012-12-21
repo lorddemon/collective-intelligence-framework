@@ -135,6 +135,8 @@ $ /bin/bash postgressetup.sh | sudo tee -a /etc/postgresql/9.1/main/postgresql.c
  # make sure your user can log in:
 {{{
 $> psql -U postgres
+}}}
+{{{
 postgres=#
 postgres=#\l
                                  List of databases
