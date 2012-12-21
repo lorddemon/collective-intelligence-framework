@@ -10,4 +10,22 @@ Configure resolveconf to use the localhost for DNS resolution.
 
 == Ubuntu 12.04 ==
 
+1. Delete the resolveconf information entered at setup
+{{{
+$ sudo resolvconf -d eth0.inet
+}}}
+
+2. Add localhost information
+{{{
+$ sudo vim /etc/resolvconf/resolv.conf.d/base
+}}}
+{{{
+nameserver 127.0.0.1
+}}}
+
+3. Update resolvconf
+{{{
+$ sudo resolvconf -u
+}}}
+
 == Debian 6.0.x ==
