@@ -37,15 +37,15 @@ These specs will handle around 10k feeds at once with minimal impact on memory u
  * at-least 500GB of free (after OS install) disk space, which should allow you to retain a years worth of data.
  * RAID + LVM knowledge
 
-=== Disk Layout ===
+= Setup =
+
+== Disk Layout ==
 ----
 Consult the [DiskLayout_v1 Disk Layout Guide] before setting up your operating system. There are implications as to how this is done based on which type of install is opted for. Larger install's with LVM require a bit more configuration than a small install.
 
-= Setup =
-
-== Choose a distribution ==
+== Required applications and dependencies ==
 ----
-Choose a distribution as your base install and install the required dependencies.
+Choose a distribution as your base install and install the required applications and dependencies.
 
  * [ServerInstall_v1_Squeeze Debian Squeeze] (unstable)
  * [ServerInstall_v1_Ubuntu Ubuntu 12.04 ] (unstable)
