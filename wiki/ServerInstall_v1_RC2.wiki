@@ -60,20 +60,13 @@ Choose the distribution you used as your base operating system and install the r
 
 == Postgres, Bind and Resolvconf configuration ==
 ----
-=== Postgres ===
-
-Configure Postgres authentication and performance tuning
- # [PostgresInstall_v1 PostgresSetup]
-
 === Bind ===
-
 Configure Bind to use Google public DNS servers to abstract your CIF instance. 
  # [BindSetup_v1 BindSetup]
 
-=== Resolvconf ===
-
-Configure resolvconf to use the localhost for DNS resolution.
- # [ResolvconfSetup_v1 ResolvconfSetup]
+=== Postgres ===
+Configure Postgres authentication and performance tuning
+ # [PostgresInstall_v1 PostgresSetup]
 
 == Installing CIF ==
 ----
