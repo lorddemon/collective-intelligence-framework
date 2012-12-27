@@ -53,7 +53,7 @@ Create your "cif" user/group (the configure script will default to this user "ci
 $ sudo adduser --disabled-password --gecos '' cif
 }}}
 
-=== Apache Configuration ===
+=== CIF Router Configuration (Apache) ===
 ----
 Some of the "CIF" values will be created later in the doc, for now just follow the config as is, don't worry about creating things like "/home/cif" etc.
  # enable the default-ssl site (debian):
