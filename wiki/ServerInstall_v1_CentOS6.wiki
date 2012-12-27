@@ -80,38 +80,27 @@ $ sudo adduser cif
 === CIF Router Configuration (Apache) ===
 ----
 Some of the "CIF" values will be created later in the doc, for now just follow the config as is, don't worry about creating things like "/home/cif" etc.
- # enable the default-ssl site (debian):
+ # if you need help generating your own certificates, follow the directions [http://wiki.centos.org/HowTos/Https here]
+ # unless you know what you're doing with virtual hosts, comment out the port-80 stuff in /etc/httpd/conf/httpd.conf (line 130 or so)
 {{{
-$ sudo a2ensite default-ssl
-$ sudo a2enmod apreq
-$ sudo a2enmod ssl
-}}}
- # unless you know what you're doing with virtual hosts, comment out the port-80 stuff in /etc/apache2/ports.conf
-{{{
-# If you just change the port or add more ports here, you will likely also
-# have to change the VirtualHost statement in
-# /etc/apache2/sites-enabled/000-default
-# This is also true if you have upgraded from before 2.2.9-3 (i.e. from
-# Debian etch). See /usr/share/doc/apache2.2-common/NEWS.Debian.gz and
-# README.Debian.gz
-
-+ #NameVirtualHost *:80
+# Listen: Allows you to bind Apache to specific IP addresses and/or
+# ports, in addition to the default. See also the <VirtualHost>
+# directive.
+#
+# Change this to Listen on specific IP addresses as shown below to
+# prevent Apache from glomming onto all bound IP addresses (0.0.0.0)
+#
+#Listen 12.34.56.78:80
 + #Listen 80
-
-<IfModule mod_ssl.c>
-    # If you add NameVirtualHost *:443 here, you will also have to change
-    # the VirtualHost statement in /etc/apache2/sites-available/default-ssl
-    ...
 }}}
- # configure apache2, add this line to your default-ssl site (or default if you're not using TLS)
+ # configure httpd, add these lines to your /etc/httpd/ssl.conf config (line 74 or so)
 {{{
-<IfModule mod_ssl.c>
 <VirtualHost _default_:443>
 +      PerlRequire /opt/cif/bin/http_api.pl
-+      Include /etc/apache2/cif.conf
++      Include /etc/httpd/cif.conf
 ....
 }}}
- # create your config at /etc/apache2/cif.conf, which should look like:
+ # create your config at /etc/httpd/conf.d/cif.conf, which should look like:
 {{{
 <Location /api>
     SetHandler perl-script
