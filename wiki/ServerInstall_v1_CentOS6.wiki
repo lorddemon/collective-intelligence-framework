@@ -30,6 +30,13 @@ $ cd Net-SSLeay-1.49
 $ perl Makefile.PL
 $ sudo make install
 }}}
+ # IO::Socket::INET6 needs to be installed manually [with force]
+{{{
+$ wget http://search.cpan.org/CPAN/authors/id/S/SH/SHLOMIF/IO-Socket-INET6-2.69.tar.gz
+$ tar -zxvf IO-Socket-INET6-2.69.tar.gz
+$ cd IO-Socket-INET6-2.69
+$ perl Makefile.PL && sudo make install
+}}}
 {{{
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,ZeroMQ,Sys::MemInfo, JSON::XS,File::Type,LWP::UserAgent,Class::Trigger,LWP::Protocol::https,Class::DBI,Net::Patricia'
 }}}
