@@ -1,10 +1,8 @@
 #summary centos 6 install doc (v1)
 
-** STOLEN FROM v0 DOC DO NOT USE YET **
-
 = Introduction =
 
-CentOS 6 Server Install -- this doc considered unstable, although it should mostly work, it's not kept as up to date as the stable doc
+This doc assumes a base CentOS6 x64 minimal base install.
 
 = Details =
  # make sure you have sudo installed
@@ -30,13 +28,14 @@ $ cd Net-SSLeay-1.49
 $ perl Makefile.PL
 $ sudo make install
 }}}
- # IO::Socket::INET6 needs to be installed manually [with force]
+ # IO::Socket::INET6 needs to be installed manually (with force)
 {{{
 $ wget http://search.cpan.org/CPAN/authors/id/S/SH/SHLOMIF/IO-Socket-INET6-2.69.tar.gz
 $ tar -zxvf IO-Socket-INET6-2.69.tar.gz
 $ cd IO-Socket-INET6-2.69
 $ perl Makefile.PL && sudo make install
 }}}
+ # the rest should install no problem
 {{{
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,ZeroMQ,Sys::MemInfo, JSON::XS,File::Type,LWP::UserAgent,Class::Trigger,LWP::Protocol::https,Class::DBI,Net::Patricia'
 }}}
