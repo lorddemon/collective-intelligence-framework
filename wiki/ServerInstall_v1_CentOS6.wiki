@@ -109,10 +109,11 @@ Some of the "CIF" values will be created later in the doc, for now just follow t
 </Location>
 
 }}}
- # add your "www-data" user (whoever apache is set to run under) to the group "cif" (/etc/group):
+ # add your "apache" user to the group "cif" (this modifies /etc/group):
 {{{
-$ sudo adduser www-data cif
+$ sudo usermod -a -G cif apache
 }}}
+ # we'll restart apache later in the doc after we install the core CIF code
 
 == Continue with configuration ==
 ----
