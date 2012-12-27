@@ -200,6 +200,18 @@ feed confidence:    0
 restriction|guid    |assessment|description       |confidence|detecttime          |reporttime          |address    |alternativeid_restriction|alternativeid
 private    |everyone|search    |search example.com|50        |2012-12-20T15:18:35Z|2012-12-20T15:18:35Z|example.com|                         |             
 }}}
+ # the following warning is a (harmless) known issue and is being addressed
+{{{
+*******************************************************************
+ Using the default of SSL_verify_mode of SSL_VERIFY_NONE for client
+ is depreciated! Please set SSL_verify_mode to SSL_VERIFY_PEER
+ together with SSL_ca_file|SSL_ca_path for verification.
+ If you really don't want to verify the certificate and keep the
+ connection open to Man-In-The-Middle attacks please set
+ SSL_verify_mode explicitly to SSL_VERIFY_NONE in your application.
+*******************************************************************
+  at /usr/local/share/perl5/LWP/Protocol/http.pm line 31
+}}}
 
 == Enabling Feed Generation ==
 To enable feed generation, which requires more space a few more options need to be ticked. If you only plan to leverage the system for "querying" (not putting feeds into something like a firewall, etc) then this section can be skipped.
