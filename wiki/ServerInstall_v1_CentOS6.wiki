@@ -70,6 +70,13 @@ $ sudo ln -sf /var/lib/pgsql/data/postgresql.conf /etc/postgresql/8.4/main/postg
 $ sudo ln -sf /var/lib/pgsql/data/pg_hba.conf /etc/postgresql/8.4/main/pg_hba.conf
 }}}
 
+=== Default CIF user ===
+----
+Create your "cif" user/group (the configure script will default to this user "cif")
+{{{
+$ sudo adduser cif
+}}}
+
 == Continue with configuration ==
 ----
 Continue with [ServerInstall_v1_RC2#BindSetup_v1 Nameserver configuration]
