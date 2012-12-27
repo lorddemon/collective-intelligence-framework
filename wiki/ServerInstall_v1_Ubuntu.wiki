@@ -47,4 +47,4 @@ nameserver 127.0.0.1
 }}}
 == Continue ==
 ----
-Continue with [ServerInstall_v1_RC2#Postgres Postgres configuration]
+Continue with [ServerInstall_v1_RC2#BindSetup_v1 Nameserver configuration]
