@@ -91,9 +91,9 @@ $ sudo make initdb
 {{{
 $ sudo su - cif
 }}}
- # open the cif users .profile
+ # open the cif users .profile (or .bash_profile for RHEL environments)
 {{{
-$ vim ~/.profile
+$ vi ~/.profile
 }}}
  # add the following
 {{{
@@ -107,7 +107,7 @@ $ source ~/.profile
 }}}
  # create a ~/.cif
 {{{
-$ vim ~/.cif
+$ vi ~/.cif
 }}}
  # add the following as a template, the API KEYS will be generated in the next section, for now just use the XXX as the placeholders.
 {{{
