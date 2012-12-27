@@ -6,6 +6,7 @@ This doc assumes a base CentOS6 x64 minimal base install.
 
 = Details =
 == Dependencies Installation ==
+----
  # make sure you have sudo installed
  # install server dependencies
 {{{
@@ -41,8 +42,13 @@ $ perl Makefile.PL && sudo make install
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,ZeroMQ,Sys::MemInfo, JSON::XS,File::Type,LWP::UserAgent,Class::Trigger,LWP::Protocol::https,Class::DBI,Net::Patricia'
 }}}
 == System Setup ==
+----
 === Postgres ===
-The default installation of Postgres is a little out of sync with the rest of the doc, we need to do some symlinking
+ # init the main cluster
+{{{
+$ sudo service postgresql initdb
+}}}
+ # The default installation of Postgres is a little out of sync with the rest of the doc, we need to do some symlinking
 {{{
 $ sudo mkdir -p /etc/postgresql/8.4/main
 $ sudo chown -R postgres:postgres /etc/postgresql
@@ -50,3 +56,8 @@ $ sudo chmod 760 -R /etc/postgresql
 $ sudo ln -sf /var/lib/pgsql/data/postgresql.conf /etc/postgresql/8.4/main/postgresql.conf
 $ sudo ln -sf /var/lib/pgsql/data/pg_hba.conf /etc/postgresql/8.4/main/pg_hba.conf
 }}}
+
+== Continue with configuration ==
+----
+
+1. Continue with [ServerInstall_v1_RC2#Postgres Postgres configuration]
