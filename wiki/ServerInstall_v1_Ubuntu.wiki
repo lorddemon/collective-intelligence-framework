@@ -1,10 +1,11 @@
 #summary ubuntu install doc (v1)
 #labels Version-1
 
-= Ubuntu 12.04 =
+= Introduction =
 This assumes a clean install of Ubuntu 12.04 with all base system updates applied. There are some duplicates between the system wide deps and CPAN, this can be ignored. In some cases we need an upgraded version of the module and by installing the system-wide dependency first, it installs some of the other deps via that mechanism too, simplifying the install. Sometimes it's easier to get bugs fixes into CPAN faster than the more stable Debian/Ubuntu tree.
 
-= System Deps =
+= Details =
+== Dependencies Installation ==
 ----
  # Install the base dependencies from the Ubuntu repositories 
 {{{
@@ -16,7 +17,7 @@ $ sudo aptitude install rng-tools postgresql apache2 apache2-threaded-dev gcc g+
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,Net::SSLeay,ZeroMQ,Sys::MemInfo'
 }}}
 
-= System Configuration =
+= System Setup =
 ----
 == Resolveconf ==
  # Delete the resolveconf information entered at setup
