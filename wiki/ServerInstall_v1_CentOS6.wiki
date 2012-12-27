@@ -43,6 +43,19 @@ $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cp
 }}}
 == System Setup ==
 ----
+=== Resolve Config ===
+We need to point our dns resoultion to the our local nameserver instance.
+ # modify /etc/sysconfig/network-scripts/ifcfg-eth0 with the following DNS1="127.0.0.1" line
+{{{
+DEVICE="eth0"
+...
+DNS1=127.0.0.1
+}}}
+ # restart networking
+{{{
+$ sudo /etc/init.d/network restart
+}}}
+
 === Postgres ===
  # init the main cluster
 {{{
@@ -59,5 +72,4 @@ $ sudo ln -sf /var/lib/pgsql/data/pg_hba.conf /etc/postgresql/8.4/main/pg_hba.co
 
 == Continue with configuration ==
 ----
-
-1. Continue with [ServerInstall_v1_RC2#Postgres Postgres configuration]
+Continue with [ServerInstall_v1_RC2#BindSetup_v1 Nameserver configuration]
