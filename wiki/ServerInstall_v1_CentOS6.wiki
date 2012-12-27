@@ -72,9 +72,13 @@ $ sudo ln -sf /var/lib/pgsql/data/pg_hba.conf /etc/postgresql/8.4/main/pg_hba.co
 
 === Default CIF user ===
 ----
-Create your "cif" user/group (the configure script will default to this user "cif")
+ # create your "cif" user/group (the configure script will default to this user "cif")
 {{{
 $ sudo adduser cif
+}}}
+ # change the default home permissions
+{{{
+$ sudo chmod 770 /home/cif
 }}}
 
 === CIF Router Configuration (Apache) ===
