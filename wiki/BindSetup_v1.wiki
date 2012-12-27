@@ -7,17 +7,20 @@ This doc shows an example of how to proxy your resolution requests through googl
 
 == Configure Bind ==
 ----
-Configure Bind (named.conf)
-
- # Open named.conf
-  * Ubuntu 12.04
+ # modify the config file
+  * RHEL based (RHEL, CentOS, etc): /etc/named.conf
+  * Debian based (Debian, Ubuntu, etc): /etc/bind/named.conf.options
 {{{
-$ sudo vim /etc/bind/named.conf.options
+$ sudo vi /etc/bind/named.conf.options
+
+or
+
+$ sudo vi /etc/named.conf
 }}}
  # Configure the file to look something like this:
 {{{
 options {
-    directory "/var/cache/bind";
+    ...   
 
     // If there is a firewall between you and nameservers you want
     // to talk to, you may need to fix the firewall to allow multiple
@@ -56,19 +59,18 @@ zone "dbl.spamhaus.org" {
     forwarders { };
 };
 }}}
-
-= Reload Bind = 
-----
- # Restart Bind
-  * Ubuntu 12.04
-{{{
-sudo service bind9 restart
-}}}
-  * Debian 6.0.x
+ # reload bind
 {{{
 $ sudo /etc/init.d/bind9 restart
-}}}
 
+or
+
+$ sudo service restart bind9
+
+or
+
+$ sudo /etc/init.d/named restart
+}}}
 = Continue with installation =
 ----
 1. Continue with [ServerInstall_v1_RC2#Resolvconf ResolvconfSetup]
