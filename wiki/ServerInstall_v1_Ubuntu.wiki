@@ -19,7 +19,7 @@ $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cp
 
 = System Setup =
 ----
-== Resolveconf ==
+== Resolver Config ==
  # Delete the resolveconf information entered at setup
 {{{
 $ sudo resolvconf -d eth0.inet
