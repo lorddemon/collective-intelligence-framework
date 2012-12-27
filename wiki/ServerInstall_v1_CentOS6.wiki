@@ -97,7 +97,7 @@ Some of the "CIF" values will be created later in the doc, for now just follow t
 {{{
 <VirtualHost _default_:443>
 +      PerlRequire /opt/cif/bin/http_api.pl
-+      Include /etc/httpd/cif.conf
++      Include /etc/httpd/conf.d/cif.conf
 ....
 }}}
  # create your config at /etc/httpd/conf.d/cif.conf, which should look like:
