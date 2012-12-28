@@ -205,7 +205,7 @@ feed confidence:    0
 
 restriction|guid    |assessment|description       |confidence|detecttime          |reporttime          |address    |alternativeid_restriction|alternativeid
 private    |everyone|search    |search example.com|50        |2012-12-20T15:18:35Z|2012-12-20T15:18:35Z|example.com|                         |             
-[DEBUG][2012-12-28T19:02:20Z]: done
+[DEBUG][2012-12-20T15:18:35Z]: done
 }}}
  # the following warning is a (harmless) known issue and is being addressed
 {{{
