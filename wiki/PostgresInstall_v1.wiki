@@ -30,7 +30,7 @@ $ sudo ln -sf /mnt/pg_xlog /var/lib/postgresql/X.X/main/pg_xlog
 ----
  # Modify your postgres config accordingly (note the 'trust' setting, make sure your iptables are up to date!):
 {{{
-sudo vim /etc/postgresql/X.X/main/pg_hba.conf
+sudo vi /etc/postgresql/X.X/main/pg_hba.conf
 }}}
 {{{
  # (autovacuum, daily cronjob, replication, and similar tasks).
@@ -65,7 +65,7 @@ sudo cp /etc/postgresql/X.X/main/postgresql.conf /etc/postgresql/X.X/main/postgr
   * shared memory  (to about 1/2 - 2/3 the amount of system ram)
   * control virtual memory overcommit and swappiness
 {{{
-$ vim shmsetup.sh
+$ vi shmsetup.sh
 }}}
 {{{
 #!/bin/bash
@@ -95,7 +95,7 @@ sudo sed -i 's/max_connections/#max_connections/' /etc/postgresql/X.X/main/postg
 }}}
  # create postgressetup.sh to configure better defaults for your CIF installation
 {{{
-$ vim postgressetup.sh
+$ vi postgressetup.sh
 }}}
 {{{
 #!/bin/bash
