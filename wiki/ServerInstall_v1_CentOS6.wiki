@@ -4,6 +4,9 @@
 
 This doc assumes a base CentOS6 x64 minimal base install.
 
+* Table of Contents *
+<wiki:toc max_depth="3" />
+
 = Details =
 == Dependencies Installation ==
 ----
@@ -119,6 +122,7 @@ $ sudo usermod -a -G cif apache
 }}}
  # we'll restart apache later in the doc after we install the core CIF code
 === Random Number Generator ===
+----
 The "rngd' service [https://www.centos.org/modules/newbb/viewtopic.php?topic_id=36209 helps] with random number generation (mainly used for generating security certificates in bind and apache, speeds up the entropy process).
  # modify /etc/sysconfig/rngd to use /dev/urandom as the seed
 {{{
@@ -130,6 +134,4 @@ EXTRAOPTIONS="-r /dev/urandom"
 $ sudo service rngd restart
 }}}
 
-== Continue with configuration ==
-----
-Continue with [ServerInstall_v1_RC2#Bind Nameserver configuration]
+*Continue with [ServerInstall_v1_RC2#Bind Nameserver configuration]*
