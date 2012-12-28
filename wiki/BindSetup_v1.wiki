@@ -8,14 +8,13 @@ This doc shows an example of how to proxy your resolution requests through googl
 == Configure Bind ==
 ----
  # modify the config file
-  * RHEL based (RHEL, CentOS, etc): /etc/named.conf
   * Debian based (Debian, Ubuntu, etc): /etc/bind/named.conf.options
 {{{
-$ sudo vi /etc/bind/named.conf.options
-
-or
-
-$ sudo vi /etc/named.conf
+$ sudo vim /etc/bind/named.conf.options
+}}}
+  * RHEL based (RHEL, CentOS, etc): /etc/named.conf
+{{{
+$ sudo vim /etc/named.conf
 }}}
  # Configure the file to look something like this:
 {{{
@@ -60,15 +59,16 @@ zone "dbl.spamhaus.org" {
 };
 }}}
  # reload bind
+  * Debian
 {{{
 $ sudo /etc/init.d/bind9 restart
-
-or
-
+}}}
+  * Ubuntu
+{{{
 $ sudo service restart bind9
-
-or
-
+}}}
+  * RHEL
+{{{
 $ sudo /etc/init.d/named restart
 }}}
 = Continue with installation =
