@@ -39,7 +39,7 @@ $ sudo rpm -i libapreq2-2.13-1.el6.x86_64.rpm libapreq2-devel-2.13-1.el6.x86_64.
 }}}
  # install the remaining CPAN modules (PERL_MM_USE_DEFAULT=1 will auto "yes" to the prompts)
 {{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,ZeroMQ,Sys::MemInfo, JSON::XS,File::Type,LWP::UserAgent,Class::Trigger,LWP::Protocol::https,Class::DBI,Net::Patricia,Text::Table,Regexp::Common::net, Regexp::Common::net::CIDR'
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,ZeroMQ,Sys::MemInfo, JSON::XS,File::Type,LWP::UserAgent,Class::Trigger,LWP::Protocol::https,Class::DBI,Net::Patricia,Text::Table'
 }}}
  # Net-SSLeay > 1.49 has some build issues and perl-Net-SSLeay that comes with CentOS6 is too old, therefore we must install 1.49 manually:
 {{{
