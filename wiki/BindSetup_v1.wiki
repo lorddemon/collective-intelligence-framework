@@ -65,7 +65,7 @@ $ sudo /etc/init.d/bind9 restart
 }}}
   * Ubuntu
 {{{
-$ sudo service restart bind9
+$ sudo service bind9 restart
 }}}
   * RHEL
 {{{
