@@ -67,7 +67,7 @@ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install LWP::Protocol::https'
 We need to point our dns resoultion to the our local nameserver instance.
  # modify /etc/sysconfig/network-scripts/ifcfg-eth0 with the following DNS1="127.0.0.1" line
 {{{
-echo "DNS1=127.0.01" >> /etc/sysconfig/network-scripts/ifcfg-eth0
+echo "DNS1=127.0.0.1" >> /etc/sysconfig/network-scripts/ifcfg-eth0
 }}}
  # restart networking
 {{{
