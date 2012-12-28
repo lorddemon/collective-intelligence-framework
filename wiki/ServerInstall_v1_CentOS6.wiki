@@ -63,9 +63,7 @@ $ perl Makefile.PL && sudo make install
 We need to point our dns resoultion to the our local nameserver instance.
  # modify /etc/sysconfig/network-scripts/ifcfg-eth0 with the following DNS1="127.0.0.1" line
 {{{
-DEVICE="eth0"
-...
-DNS1=127.0.0.1
+echo "DNS1=127.0.01" >> /etc/sysconfig/network-scripts/ifcfg-eth0
 }}}
  # restart networking
 {{{
