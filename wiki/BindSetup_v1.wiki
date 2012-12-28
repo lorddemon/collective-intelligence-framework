@@ -10,11 +10,11 @@ This doc shows an example of how to proxy your resolution requests through googl
  # modify the config file
   * Debian based (Debian, Ubuntu, etc): /etc/bind/named.conf.options
 {{{
-$ sudo vim /etc/bind/named.conf.options
+$ sudo vi /etc/bind/named.conf.options
 }}}
   * RHEL based (RHEL, CentOS, etc): /etc/named.conf
 {{{
-$ sudo vim /etc/named.conf
+$ sudo vi /etc/named.conf
 }}}
  # Configure the file to look something like this:
 {{{
