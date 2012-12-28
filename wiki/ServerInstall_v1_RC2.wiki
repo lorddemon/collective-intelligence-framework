@@ -70,10 +70,6 @@ Configure Postgres authentication and performance tuning
 
 == Installing CIF ==
 ----
- # create your "cif" user/group (the configure script will default to this user "cif")
-{{{
-$ sudo adduser --disabled-password --gecos '' cif
-}}}
  # install the latest package
 {{{
 $ wget http://collective-intelligence-framework.googlecode.com/files/cif-v1-rc2-00-16-gab18761.tar.gz
