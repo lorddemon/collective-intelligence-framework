@@ -118,6 +118,17 @@ Some of the "CIF" values will be created later in the doc, for now just follow t
 $ sudo usermod -a -G cif apache
 }}}
  # we'll restart apache later in the doc after we install the core CIF code
+=== Random Number Generator ===
+The "rngd' service [https://www.centos.org/modules/newbb/viewtopic.php?topic_id=36209 helps] with random number generation (mainly used for generating security certificates in bind and apache, speeds up the entropy process).
+ # modify /etc/sysconfig/rngd to use /dev/urandom as the seed
+{{{
+# Add extra options here
+EXTRAOPTIONS="-r /dev/urandom"
+}}}
+ # restart rngd
+{{{
+$ sudo service rngd restart
+}}}
 
 == Continue with configuration ==
 ----
