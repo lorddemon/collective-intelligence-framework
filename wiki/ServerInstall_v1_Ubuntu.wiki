@@ -84,6 +84,9 @@ $ sudo vim /etc/apache2/ports.conf
 }}}
  # configure apache2, add this line to your default-ssl site (or default if you're not using TLS)
 {{{
+$ sudo vim /etc/apache2/sites-available/default-ssl
+}}}
+{{{
 <IfModule mod_ssl.c>
 <VirtualHost _default_:443>
 +      PerlRequire /opt/cif/bin/http_api.pl
