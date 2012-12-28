@@ -59,11 +59,11 @@ zone "dbl.spamhaus.org" {
 };
 }}}
  # reload bind
-  * Debian
+  * Debian 6.0.x
 {{{
 $ sudo /etc/init.d/bind9 restart
 }}}
-  * Ubuntu
+  * Ubuntu 12.04
 {{{
 $ sudo service bind9 restart
 }}}
