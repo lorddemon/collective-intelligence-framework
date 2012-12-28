@@ -22,6 +22,9 @@ $ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/zeromq-devel-2.1.9-1.el6.x8
 $ sudo rpm -i libapreq2-2.13-1.el6.x86_64.rpm libapreq2-devel-2.13-1.el6.x86_64.rpm perl-libapreq2-2.13-1.el6.x86_64.rpm zeromq-2.1.9-1.el6.x86_64.rpm zeromq-devel-2.1.9-1.el6.x86_64.rpm
 }}}
  # install the remaining CPAN modules
+{{{
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,ZeroMQ,Sys::MemInfo, JSON::XS,File::Type,LWP::UserAgent,Class::Trigger,LWP::Protocol::https,Class::DBI,Net::Patricia'
+}}}
  # Net-SSLeay > 1.49 has some build issues and perl-Net-SSLeay that comes with CentOS6 is too old, therefore we must install 1.49 manually:
 {{{
 $ wget http://search.cpan.org/CPAN/authors/id/M/MI/MIKEM/Net-SSLeay-1.49.tar.gz
@@ -37,10 +40,7 @@ $ tar -zxvf IO-Socket-INET6-2.69.tar.gz
 $ cd IO-Socket-INET6-2.69
 $ perl Makefile.PL && sudo make install
 }}}
- # the rest should install no problem
-{{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,ZeroMQ,Sys::MemInfo, JSON::XS,File::Type,LWP::UserAgent,Class::Trigger,LWP::Protocol::https,Class::DBI,Net::Patricia'
-}}}
+
 == System Setup ==
 ----
 === Resolve Config ===
