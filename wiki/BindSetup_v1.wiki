@@ -73,7 +73,7 @@ $ sudo /etc/init.d/named restart
 }}}
 = Continue with installation =
 ----
-1. Continue with [ServerInstall_v1_RC2#Resolvconf ResolvconfSetup]
+1. Continue with [ServerInstall_v1_RC2#Postgres Postgres Configuration]
 
 == References ==
 ----
