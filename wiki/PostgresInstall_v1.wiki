@@ -132,7 +132,6 @@ $ /bin/bash postgressetup.sh | sudo tee -a /etc/postgresql/X.X/main/postgresql.c
 == Testing ==
 ----
  # restart postgres
-  * Ubuntu 12.04
 {{{
 $ sudo service postgresql restart
 }}}
