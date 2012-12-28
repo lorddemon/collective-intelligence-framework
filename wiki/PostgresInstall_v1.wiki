@@ -30,7 +30,7 @@ $ sudo ln -sf /mnt/pg_xlog /var/lib/postgresql/X.X/main/pg_xlog
 ----
  # Modify your postgres config accordingly (note the 'trust' setting, make sure your iptables are up to date!):
 {{{
-sudo vi /etc/postgresql/X.X/main/pg_hba.conf
+$ sudo vi /etc/postgresql/X.X/main/pg_hba.conf
 }}}
 {{{
  # (autovacuum, daily cronjob, replication, and similar tasks).
