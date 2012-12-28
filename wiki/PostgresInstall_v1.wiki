@@ -23,14 +23,14 @@ $ sudo chown postgres:postgres /mnt/index
 $ sudo chown postgres:postgres /mnt/archive
 $ sudo chown postgres:postgres /mnt/index
 $ sudo chown postgres:postgres pg_xlog
-$ sudo ln -sf /mnt/pg_xlog /var/lib/postgresql/9.1/main/pg_xlog
+$ sudo ln -sf /mnt/pg_xlog /var/lib/postgresql/X.X/main/pg_xlog
 }}}
 
 == Postgres Authentication Configuration ==
 ----
  # Modify your postgres config accordingly (note the 'trust' setting, make sure your iptables are up to date!):
 {{{
-sudo vim /etc/postgresql/9.1/main/pg_hba.conf
+sudo vim /etc/postgresql/X.X/main/pg_hba.conf
 }}}
 {{{
  # (autovacuum, daily cronjob, replication, and similar tasks).
@@ -59,7 +59,7 @@ sudo vim /etc/postgresql/9.1/main/pg_hba.conf
  # Create backups of system files:
 {{{
 sudo cp /etc/sysctl.conf /etc/sysctl.conf.orig
-sudo cp /etc/postgresql/9.1/main/postgresql.conf /etc/postgresql/9.1/main/postgresql.conf.orig
+sudo cp /etc/postgresql/X.X/main/postgresql.conf /etc/postgresql/X.X/main/postgresql.conf.orig
 }}}
  # create shmsetup.sh to configure:  
   * shared memory  (to about 1/2 - 2/3 the amount of system ram)
@@ -90,8 +90,8 @@ $ sudo sysctl -p
 }}}
  # Comment out existing shared_buffers and max_connections settings so it can be set below
 {{{
-sudo sed -i 's/shared_buffers/#shared_buffers/' /etc/postgresql/9.1/main/postgresql.conf
-sudo sed -i 's/max_connections/#max_connections/' /etc/postgresql/9.1/main/postgresql.conf
+sudo sed -i 's/shared_buffers/#shared_buffers/' /etc/postgresql/X.X/main/postgresql.conf
+sudo sed -i 's/max_connections/#max_connections/' /etc/postgresql/X.X/main/postgresql.conf
 }}}
  # create postgressetup.sh to configure better defaults for your CIF installation
 {{{
@@ -127,7 +127,7 @@ echo "max_connections = 8" " # limiting to 8 due to high work_mem value"
 }}}
  # run the script
 {{{
-$ /bin/bash postgressetup.sh | sudo tee -a /etc/postgresql/9.1/main/postgresql.conf
+$ /bin/bash postgressetup.sh | sudo tee -a /etc/postgresql/X.X/main/postgresql.conf
 }}}
 == Testing ==
 ----
