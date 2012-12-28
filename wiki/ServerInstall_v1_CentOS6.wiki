@@ -97,7 +97,7 @@ Some of the "CIF" values will be created later in the doc, for now just follow t
 #Listen 12.34.56.78:80
 + #Listen 80
 }}}
- # configure httpd, add these lines to your /etc/httpd/ssl.conf config (line 74 or so)
+ # configure httpd, add these lines to your /etc/httpd/conf.d/ssl.conf config (line 74 or so)
 {{{
 <VirtualHost _default_:443>
 +      PerlRequire /opt/cif/bin/http_api.pl
