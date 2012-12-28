@@ -95,6 +95,9 @@ $ sudo vim /etc/apache2/sites-available/default-ssl
 }}}
  # create your config at /etc/apache2/cif.conf, which should look like:
 {{{
+$ sudo vim /etc/apache2/cif.conf
+}}}
+{{{
 <Location /api>
     SetHandler perl-script
     PerlResponseHandler CIF::Router::HTTP
