@@ -61,7 +61,7 @@ Choose the distribution you used as your base operating system and install the r
 == Postgres, Bind and Resolvconf configuration ==
 ----
 === Bind ===
-Configure Bind to use Google public DNS servers to abstract your CIF instance. 
+Configure Bind to use Google public DNS servers to push domain name resolution upstream.
  # [BindSetup_v1 BindSetup]
 
 === Postgres ===
