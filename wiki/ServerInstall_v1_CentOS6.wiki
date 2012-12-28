@@ -156,6 +156,7 @@ $ sudo service rngd restart
 $ sudo chkconfig --levels 345 postgresql on
 $ sudo chkconfig --levels 345 named on
 $ sudo chkconfig --levels 345 rngd on
+$ sudo chkconfig --levels 345 httpd on
 }}}
 
 *Continue with [ServerInstall_v1_RC2#Bind Nameserver configuration]*
