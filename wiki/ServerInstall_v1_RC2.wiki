@@ -173,6 +173,9 @@ $ cif_apikeys -l
 }}}
  # cif_apikeys -h will give you an example of how to use the tool
  # replace the "apikey = XXXX" in your config with the client and cif_smrt keys respectively
+{{{
+$ vi ~/.cif
+}}}
  # log out of the cif user into your regular user (that has sudo access)
 
 == Router Setup ==
