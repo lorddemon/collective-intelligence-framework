@@ -8,6 +8,19 @@ This doc assumes a base CentOS6 x64 minimal base install.
 <wiki:toc max_depth="3" />
 
 = Details =
+== SELINUX ==
+Selinux either needs to be disabled or a [http://wiki.centos.org/HowTos/SELinux policy] needs to be written allowing postgres r/w access to /mnt/archive and /mnt/index
+ # disable selinux via /etc/selinux/config
+{{{
+# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#     enforcing - SELinux security policy is enforced.
+#     permissive - SELinux prints warnings instead of enforcing.
+#     disabled - No SELinux policy is loaded.
+SELINUX=permissive
+}}}
+ # restart the server for the kernel changes to take effect
+
 == Dependencies Installation ==
 ----
  # make sure you have sudo installed
@@ -135,6 +148,14 @@ EXTRAOPTIONS="-r /dev/urandom"
  # restart rngd
 {{{
 $ sudo service rngd restart
+}}}
+=== Finishing Up ===
+----
+ # enable services at startup
+{{{
+$ sudo chkconfig --levels 345 postgresql on
+$ sudo chkconfig --levels 345 named on
+$ sudo chkconfig --levels 345 rngd on
 }}}
 
 *Continue with [ServerInstall_v1_RC2#Bind Nameserver configuration]*
