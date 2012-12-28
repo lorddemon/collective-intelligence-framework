@@ -112,4 +112,4 @@ $ sudo adduser www-data cif
 
 == Continue ==
 ----
-Continue with [ServerInstall_v1_RC2#BindSetup_v1 Nameserver configuration]
+Continue with [ServerInstall_v1_RC2#Bind Bind configuration]
