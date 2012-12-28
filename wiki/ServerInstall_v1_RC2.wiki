@@ -149,6 +149,7 @@ database = cif
 #private = red
 
 # logging
+# values 0-5
 [router]
 debug = 0
 }}}
