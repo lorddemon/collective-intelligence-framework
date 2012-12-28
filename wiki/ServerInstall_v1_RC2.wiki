@@ -224,7 +224,6 @@ $ vi /home/cif/.cif
 ...
 feeds = infrastructure,domain,url,email,search,malware
 }}}
-
  # add this section to the config
 {{{
 [cif_feed]
