@@ -147,6 +147,10 @@ database = cif
 #public = limited
 #need-to-know = amber
 #private = red
+
+# logging
+[router]
+debug = 0
 }}}
 === APIKey ===
  # generate your initial apikey to be used by your client
