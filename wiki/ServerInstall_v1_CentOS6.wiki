@@ -72,7 +72,10 @@ $ sudo chmod 760 -R /etc/postgresql
 $ sudo ln -sf /var/lib/pgsql/data/postgresql.conf /etc/postgresql/8.4/main/postgresql.conf
 $ sudo ln -sf /var/lib/pgsql/data/pg_hba.conf /etc/postgresql/8.4/main/pg_hba.conf
 }}}
-
+ # start up the cluster
+{{{
+$ sudo service postgresql start
+}}}
 === Default CIF user ===
 ----
  # create your "cif" user/group (the configure script will default to this user "cif")
