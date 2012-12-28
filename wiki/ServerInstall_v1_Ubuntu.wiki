@@ -26,7 +26,7 @@ $ sudo resolvconf -d eth0.inet
 }}}
  # Add localhost information
 {{{
-$ sudo vim /etc/resolvconf/resolv.conf.d/base
+$ sudo vi /etc/resolvconf/resolv.conf.d/base
 }}}
  # add:
 {{{
@@ -64,7 +64,7 @@ $ sudo a2enmod ssl
 }}}
  # unless you know what you're doing with virtual hosts, comment out the port-80 stuff in /etc/apache2/ports.conf
 {{{
-$ sudo vim /etc/apache2/ports.conf
+$ sudo vi /etc/apache2/ports.conf
 }}}
 {{{
 # If you just change the port or add more ports here, you will likely also
@@ -84,7 +84,7 @@ $ sudo vim /etc/apache2/ports.conf
 }}}
  # configure apache2, add this line to your default-ssl site (or default if you're not using TLS)
 {{{
-$ sudo vim /etc/apache2/sites-available/default-ssl
+$ sudo vi /etc/apache2/sites-available/default-ssl
 }}}
 {{{
 <IfModule mod_ssl.c>
@@ -95,7 +95,7 @@ $ sudo vim /etc/apache2/sites-available/default-ssl
 }}}
  # create your config at /etc/apache2/cif.conf, which should look like:
 {{{
-$ sudo vim /etc/apache2/cif.conf
+$ sudo vi /etc/apache2/cif.conf
 }}}
 {{{
 <Location /api>
