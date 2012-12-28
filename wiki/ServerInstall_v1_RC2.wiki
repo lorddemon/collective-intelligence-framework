@@ -258,6 +258,9 @@ $ cif_apikeys -u role_everyone -G everyone -g everyone -a
 ----
 == Load Data ==
  # you should be logged in as the 'cif' user for this
+{{{
+$ sudo su - cif
+}}}
  # run the cif_crontool
 {{{
 $ time cif_crontool -p hourly -d -P
