@@ -248,6 +248,7 @@ max_days = 7
 {{{
 $ cif_apikeys -u role_everyone -G everyone -g everyone -a
 }}}
+ # restart apache
 
 = Initialization =
 ----
