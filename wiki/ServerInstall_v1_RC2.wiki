@@ -323,6 +323,7 @@ need-to-know|everyone|scanner   |ssh        |85        |2012-12-20T16:00:00Z|201
 
 == Configuring Crontab ==
  # log into the cif user (sudo su - cif) and modify it's cron tab (crontab -e)
+  * no logging
 {{{
 # set the path
 PATH=/bin:/usr/local/bin:/opt/cif/bin
@@ -334,8 +335,7 @@ PATH=/bin:/usr/local/bin:/opt/cif/bin
 # if you've enabled feed generation in your config
 45     *       * * * /opt/cif/bin/cif_feed &> /dev/null
 }}}
-
-== Configuring Crontab with logging ==
+  * with logging
 {{{
 # set the path
 PATH=/bin:/usr/local/bin:/opt/cif/bin
