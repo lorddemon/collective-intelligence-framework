@@ -43,7 +43,6 @@ $ sudo rpm -i libapreq2-2.13-1.el6.x86_64.rpm libapreq2-devel-2.13-1.el6.x86_64.
 {{{
 $ sudo yum install mod_perl mod_perl-devel perl-Digest-SHA perl-Digest-SHA libxml2 libxml2-devel perl-XML-LibXML uuid-perl perl-DBD-Pg perl-XML-RSS perl-JSON perl-Unicode-String perl-Config-Simple perl-Module-Pluggable perl-MIME-Lite perl-CPAN perl-Class-Accessor perl-YAML perl-XML-Parser  uuid-perl perl-Net-DNS perl-DateTime-Format-DateParse perl-IO-Socket-INET6 openssl-devel perl-Module-Install perl-Net-SSLeay perl-Class-Trigger perl-Date-Manip perl-IO-Socket-SSL
 }}}
-}}}
  # install the remaining CPAN modules (PERL_MM_USE_DEFAULT=1 will auto "yes" to the prompts)
 {{{
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,ZeroMQ,Sys::MemInfo,JSON::XS,File::Type,LWP::UserAgent,Class::Trigger,Class::DBI,Net::Patricia,Text::Table,Mozilla::CA,IO::Socket::SSL,IO::Socket::INET6,LWP::Protocol::https'
