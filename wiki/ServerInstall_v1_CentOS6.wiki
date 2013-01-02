@@ -8,6 +8,8 @@ This doc assumes a base CentOS6 x64 minimal base install.
 <wiki:toc max_depth="3" />
 
 = Details =
+== IPv6 ==
+There are some weird issues with the way RHEL (and therefor CentOS) handle the ipv6 driver module, and how some perl modules react to this. If you've left the ipv6 defaults (or leverage ipv6 for routing) you'll probably be OK. If you've "disabled" ipv6, you might run into some build testing issues. If you do, try to force install the modules, gather the testing output (and your ipv6 configurations, etc) and log a bug report.
 == SELINUX ==
 Selinux either needs to be disabled or a [http://wiki.centos.org/HowTos/SELinux policy] needs to be written allowing postgres r/w access to /mnt/archive and /mnt/index
  # disable selinux via /etc/selinux/config
