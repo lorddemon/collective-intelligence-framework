@@ -55,17 +55,6 @@ $ cd Net-SSLeay-1.49
 $ perl Makefile.PL
 $ sudo make install
 }}}
- # IO::Socket::INET6 needs to be installed manually (with force)
-{{{
-$ wget http://search.cpan.org/CPAN/authors/id/S/SH/SHLOMIF/IO-Socket-INET6-2.69.tar.gz
-$ tar -zxvf IO-Socket-INET6-2.69.tar.gz
-$ cd IO-Socket-INET6-2.69
-$ perl Makefile.PL && sudo make install
-}}}
- # install LWP::Protocol::https by itself (it needs the INET6 update to install properly at the moment)
-{{{
-sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install LWP::Protocol::https'
-}}}
 
 == System Setup ==
 ----
