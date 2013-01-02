@@ -28,7 +28,11 @@ SELINUX=permissive
  # make sure you have sudo installed
  # install base server dependencies (as root) first
 {{{
-$ yum install sudo rng-tools postgresql-server httpd httpd-devel mod_ssl gcc make expat expat-devel uuid uuid uuid-devel wget bind rsync libuuid-devel mod_perl mod_perl-devel
+$ yum install sudo rng-tools postgresql-server httpd httpd-devel mod_ssl gcc make expat expat-devel uuid uuid uuid-devel wget bind rsync libuuid-devel mod_perl mod_perl-devel ntpdate
+}}}
+ # make sure your clock is up to date
+{{{
+$ sudo ntpdate -u pool.ntp.org
 }}}
  # install some 3rd party dependencies
 {{{
