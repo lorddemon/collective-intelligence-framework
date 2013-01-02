@@ -38,6 +38,7 @@ $ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/perl-libapreq2-2.13-1.el6.x
 $ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/zeromq-2.1.9-1.el6.x86_64.rpm
 $ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/zeromq-devel-2.1.9-1.el6.x86_64.rpm
 $ sudo rpm -i libapreq2-2.13-1.el6.x86_64.rpm libapreq2-devel-2.13-1.el6.x86_64.rpm perl-libapreq2-2.13-1.el6.x86_64.rpm zeromq-2.1.9-1.el6.x86_64.rpm zeromq-devel-2.1.9-1.el6.x86_64.rpm
+}}}
  # install the baseline perl modules
 {{{
 $ sudo yum install mod_perl mod_perl-devel perl-Digest-SHA perl-Digest-SHA libxml2 libxml2-devel perl-XML-LibXML uuid-perl perl-DBD-Pg perl-XML-RSS perl-JSON perl-Unicode-String perl-Config-Simple perl-Module-Pluggable perl-MIME-Lite perl-CPAN perl-Class-Accessor perl-YAML perl-XML-Parser  uuid-perl perl-Net-DNS perl-DateTime-Format-DateParse perl-IO-Socket-INET6 openssl-devel perl-Module-Install perl-Net-SSLeay perl-Class-Trigger perl-Date-Manip perl-IO-Socket-SSL
