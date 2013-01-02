@@ -40,6 +40,7 @@ options {
     listen-on { 127.0.0.1; };
 };
 
+// bi-pass the google pub servers
 zone "cymru.com" {
     forward only;
     type forward;
