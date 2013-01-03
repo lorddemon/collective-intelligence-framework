@@ -19,6 +19,15 @@ $ sudo mkdir /mnt/index
 $ sudo chmod 770 /mnt/index
 $ sudo chmod 770 /mnt/archive
 }}}
+ # should look like
+{{{
+$ ls -l /mnt/
+}}}
+{{{
+total 8
+drwxrwx--- 2 root root 4096 Jan  3 18:02 archive
+drwxrwx--- 2 root root 4096 Jan  3 18:02 index
+}}}
  
 Continue with  [ServerInstall_v1_RC2#Required_applications_and_dependencies Required applications and dependencies]
 
