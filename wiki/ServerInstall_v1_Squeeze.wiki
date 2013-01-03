@@ -11,9 +11,17 @@ Squeeze Server Install assumes you're using Debian Squeeze (v6).
 {{{
 $ sudo aptitude install rng-tools postgresql apache2 apache2-threaded-dev gcc g++ make libexpat-dev libapache2-mod-perl2 libclass-dbi-perl libdigest-sha1-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev rsync libunicode-string-perl libconfig-simple-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libapr1-dbg libhtml-table-perl libdate-manip-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl libextutils-parsexs-perl
 }}}
+ # Install zeromq-2.2.0 from source
+{{{
+$ wget http://download.zeromq.org/zeromq-2.2.0.tar.gz
+$ tar -zxvf zeromq-2.2.0.tar.gz
+$ cd zeromq-2.2.0
+$ ./configure && make && sudo make install
+$ sudo ldconfig
+}}}
  # Install the remaining CPAN modules
 {{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,DateTime::Format::DateParse,Regexp::Common::net::CIDR,Text::Table,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::Patricia,Net::SSLeay,Net::DNS::Match,Log::Dispatch'
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,DateTime::Format::DateParse,Regexp::Common::net::CIDR,Text::Table,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::Patricia,Net::SSLeay,Net::DNS::Match,Log::Dispatch,ZeroMQ'
 }}}
 
 == System Setup ==
