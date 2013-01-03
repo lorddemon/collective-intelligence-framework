@@ -20,21 +20,19 @@ $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cp
 == System Setup ==
 ----
 === Resolver Config ===
- # Delete the resolveconf information entered at setup
+Configure the static interface to use 127.0.0.1 as the nameserver. Bind will be configured next. 
+
+ # edit /etc/network/interfaces
 {{{
-$ sudo resolvconf -d eth0.inet
+$ sudo vi /etc/network/interfaces
 }}}
- # Add localhost information
+ # replace dns-nameservers with
 {{{
-$ sudo vi /etc/resolvconf/resolv.conf.d/base
+dns-nameservers 127.0.0.1
 }}}
- # add:
+ # Restart networking
 {{{
-nameserver 127.0.0.1
-}}}
- # Update resolvconf
-{{{
-$ sudo resolvconf -u
+$ sudo service networking restart
 }}}
  # Verify resolveconf
 {{{
