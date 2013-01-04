@@ -8,6 +8,10 @@ This assumes a clean install of Ubuntu 12.04 with all base system updates applie
 <wiki:toc max_depth="3" />
 
 = Details =
+== Caveats ==
+=== Static Address ===
+Make sure your instance has a static v4 address
+
 == Dependencies Installation ==
 ----
  # Install the base dependencies from the Ubuntu repositories 
@@ -29,9 +33,11 @@ Configure the static interface to use 127.0.0.1 as the nameserver. Bind will be 
 {{{
 $ sudo vi /etc/network/interfaces
 }}}
- # replace dns-nameservers with
+ # replace (or add) dns-nameservers with 127.0.0.1
 {{{
-dns-nameservers 127.0.0.1
+# The primary network interface
+iface eth0 inet
+        dns-nameservers 127.0.0.1
 }}}
  # Restart networking
 {{{
