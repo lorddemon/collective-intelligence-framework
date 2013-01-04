@@ -19,9 +19,9 @@ Newer versions of Perl / CPAN have made some [http://sipb.mit.edu/doc/cpan/ chan
 {{{
 $ sudo su - root
 $ mkdir -p /root/.cpan/CPAN
-$ touch /root/.cpan/CPAN/MyConfig.pm
+$ vi /root/.cpan/CPAN/MyConfig.pm
 }}}
- # copy / paste the following into MyConfig.pm
+ # copy / paste the following into {{{MyConfig.pm}}}
 {{{
 $CPAN::Config = {
   'applypatch' => q[],
