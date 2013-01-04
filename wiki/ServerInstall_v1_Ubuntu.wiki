@@ -202,7 +202,7 @@ $ sudo adduser www-data cif
 The "rng-tools' service helps with random number generation (mainly used for generating security certificates in bind and apache, speeds up the entropy process).
  # modify /etc/default/rng-tools to use /dev/urandom as the seed
 {{{
-$ sudo echo 'HRNGDEVICE=/dev/urandom' >> /etc/default/rng-tools
+$ echo 'HRNGDEVICE=/dev/urandom' | sudo tee -a /etc/default/rng-tools
 }}}
  # restart rng-tools
 {{{
