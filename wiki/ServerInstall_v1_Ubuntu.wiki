@@ -12,7 +12,7 @@ This assumes a clean install of Ubuntu 12.04 with all base system updates applie
 === Static Address ===
 Make sure your instance has a static v4 address
 === Perl 5.14 CPAN ===
-Perl / CPAN have made some newer changes that affect how packages are installed. If you're not familiar with customizing CPAN, you'll need to start out by boot-strapping your own config.
+Newer versions of Perl / CPAN have made some changes to their configuration defaults that affect how packages are installed. If you're not familiar with customizing CPAN, you'll need to start out by boot-strapping your own config. This way it'll install dependencies system wide by default instead of to a local home directory. CIF may be adapted to this in the future, but this is a work-around for now.
  # boot-strap the default CPAN config
 {{{
 $ sudo su - root
@@ -87,20 +87,21 @@ $CPAN::Config = {
 1;
 __END__
 }}}
- # re-run cpan to auto-generate a list of local CPAN mirrors (still as root)
-{{{
-$ PERL_MM_USE_DEFAULT=1 cpan
-}}}
+ # when you run the first "perl -MCPAN install ..." command, it will auto-configure a list of local CPAN mirrors for you
 == Dependencies Installation ==
 ----
+ # login as root, although sudo will work for the aptitude installer, it will break the CPAN installer unless you boot-strap $HOME/.cpan/CPAN/MyConfig.pm under your local user too
+{{{
+$ sudo su - root
+}}}
  # Install the base dependencies from the Ubuntu repositories 
 {{{
 $ sudo aptitude install rng-tools postgresql apache2 apache2-threaded-dev gcc g++ make libexpat1-dev libapache2-mod-perl2 libclass-dbi-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev rsync libunicode-string-perl libconfig-simple-perl libmodule-pluggable-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libapr1-dbg libhtml-table-perl libdate-manip-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl perl-modules libdigest-sha-perl libsnappy-dev libdatetime-format-dateparse-perl liblwp-protocol-https-perl libtime-hires-perl libnet-patricia-perl libnet-ssleay-perl liblog-dispatch-perl libregexp-common-net-cidr-perl libtext-table-perl libmodule-install-perl libclass-accessor-perl libdatetime-perl libencode-perl libjson-xs-perl libmime-base64-perl libhtml-table-perl libzmq-dev libzmq1 libzeromq-perl
 }}}
 
- # Install the remaining perl dependencies from CPAN
+ # Install the remaining perl dependencies from CPAN (as root)
 {{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,Net::SSLeay,ZeroMQ,Sys::MemInfo'
+$ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,Net::SSLeay,ZeroMQ,Sys::MemInfo'
 }}}
 
 == System Setup ==
