@@ -92,7 +92,7 @@ __END__
  # when you run the first "perl -MCPAN install ..." command, it will auto-configure a list of local CPAN mirrors for you
 == Dependencies Installation ==
 ----
- # login as root, although sudo will work for the aptitude installer, it will break the CPAN installer unless you boot-strap $HOME/.cpan/CPAN/MyConfig.pm under your local user too
+ # login as root, although sudo will work for the aptitude installer, it will break the CPAN installer unless you boot-strap {{{$HOME/.cpan/CPAN/MyConfig.pm}}} under your local user too
 {{{
 $ sudo su - root
 }}}
