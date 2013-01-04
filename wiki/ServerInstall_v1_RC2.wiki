@@ -13,6 +13,7 @@ A semi-complete [ChangeLog_v1 ChangeLog] of v1
 
 == Known Issues ==
  * You *cannot* run this beta on the same box as CIF v0, it will break stuff, you will loose your data, you will be angry with me.
+ * If you try to run CIF v1 while watching [http://www.jibjab.com/view/coepggrUTQOmCSW6FZrBSg?mt=1 this], it might not install correctly.
  * If you are installing on top of any of the previous CIF v1 releases, you *must drop* your cif v1 database before installing this release candidate.
  * If you are installing on a machine with less than 4 GB of ram you need to read the "note:" section under Postgres Setup Performance Tuning. 
 
