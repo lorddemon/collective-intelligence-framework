@@ -53,7 +53,7 @@
    * [Tools_cif_apikeys_v0 CIF Apikeys]
  * v1 (Development -- UNSTABLE)
   * Server
-   * [ServerInstall_v1_RC2 Server Install v1_RC2]
+   * [ServerInstall_v1 Server Install v1]
   * Client
   * API
   * Taxonomy
