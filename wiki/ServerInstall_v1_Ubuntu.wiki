@@ -11,6 +11,8 @@ This assumes a clean install of Ubuntu 12.04 with all base system updates applie
 == Caveats ==
 === Static Address ===
 Make sure your instance has a static v4 address
+=== ZeroMQ 2.x ===
+There are two different tree's in the zeromq family, 2.x and 3.x, CIF v1 leverages the 2.x family right now. Future versions may be built against the CZMQ api and may be built against either code base. The instructions below will take care of the installation.
 === Perl 5.14 CPAN ===
 Newer versions of Perl / CPAN have made some [http://sipb.mit.edu/doc/cpan/ changes] to their configuration defaults that affect how packages are installed. If you're not familiar with customizing CPAN, you'll need to start out by boot-strapping your own config. This way it'll install dependencies system wide by default instead of to a local home directory. CIF may be adapted to this in the future, but this is a work-around for now.
  # boot-strap the default CPAN config
