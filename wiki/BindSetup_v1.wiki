@@ -72,6 +72,13 @@ $ sudo service bind9 restart
 {{{
 $ sudo /etc/init.d/named restart
 }}}
+ # verify bind is working
+{{{
+$ dig ns1.google.com +short
+}}}
+{{{
+216.239.32.10
+}}}
 = Continue with installation =
 ----
 1. Continue with [ServerInstall_v1_RC2#Postgres Postgres Configuration]
