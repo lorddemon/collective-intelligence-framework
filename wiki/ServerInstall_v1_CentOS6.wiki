@@ -28,7 +28,6 @@ SELINUX=permissive
 
 == Dependencies Installation ==
 ----
- # make sure you have sudo installed
  # install base server dependencies (as root) first
 {{{
 $ yum -y install sudo rng-tools postgresql-server httpd httpd-devel mod_ssl gcc make expat expat-devel uuid uuid uuid-devel wget bind rsync libuuid-devel mod_perl mod_perl-devel ntpdate
