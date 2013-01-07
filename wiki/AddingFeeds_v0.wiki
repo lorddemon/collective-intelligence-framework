@@ -65,7 +65,7 @@ description = 'urlblacklist.com malware urls'
   * *zip_filename* specifies the path inside of a compressed archive to the data source.
   * *regex* specifies the regular expression used to extract the values from the data. The urlblacklist source just has one URL per line so nothing special is required. However, the dshield source has comment lines that start with a # and a column title of "Site" that we have to ignore. You should test your regular expressions using a regex tester like the one from [http://www.gskinner.com/RegExr/ gskinner.com] or with a perl one liner.
 {{{
-perl -ne 'if (/^((?!Site)[^#]\S+)/) { print "$1\n" }' suspiciousdomains_Low.txt
+perl -ne '/^((?!Site)[^#]\S+)/ and print "$1\n"' suspiciousdomains_Low.txt
 }}}
   * *regex_values* specifies what the extracted values from the regex correspond to. Both of these sources only provide the URL/Domain and no other information like detect time.
   * *source* specifies the source of the feed. This is usually just the domain name. 
