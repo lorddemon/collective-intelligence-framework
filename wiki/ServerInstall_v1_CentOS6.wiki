@@ -162,5 +162,6 @@ $ sudo chkconfig --levels 345 named on
 $ sudo chkconfig --levels 345 rngd on
 $ sudo chkconfig --levels 345 httpd on
 }}}
-
-*Continue with [ServerInstall_v1_RC2#Bind Nameserver configuration]*
+=== Continue with installation ===
+----
+1. Continue with [ServerInstall_v1_RC2#Bind Nameserver configuration]
