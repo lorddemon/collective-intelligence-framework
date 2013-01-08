@@ -132,7 +132,7 @@ $ echo 'HRNGDEVICE=/dev/urandom' | sudo tee -a /etc/default/rng-tools
 }}}
  # restart rng-tools
 {{{
-$ sudo service rng-tools restart
+$ sudo /etc/init.d/rng-tools restart
 }}}
 == Continue ==
 ----
