@@ -2,7 +2,7 @@
 #labels Version-1
 
 = Introduction =
-Squeeze Server Install assumes you're using Debian Squeeze (v6).
+This assumes a clean install of Debian Squeeze (v6.0.x) with all base system updates applied.
 
 * Table of Contents *
 <wiki:toc max_depth="3" />
