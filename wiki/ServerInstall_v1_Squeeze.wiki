@@ -4,7 +4,15 @@
 = Introduction =
 Squeeze Server Install assumes you're using Debian Squeeze (v6).
 
+* Table of Contents *
+<wiki:toc max_depth="3" />
+
 = Details =
+== Caveats ==
+=== Static Address ===
+Make sure your instance has a static v4 address
+=== ZeroMQ 2.x ===
+There are two different tree's in the zeromq family, 2.x and 3.x, CIF v1 leverages the 2.x family right now. Future versions may be built against the CZMQ api and may be built against either code base. The instructions below will take care of the installation.
 == Dependencies Installation ==
 ----
  # Install the base deps
