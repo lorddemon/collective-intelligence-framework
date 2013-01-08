@@ -78,6 +78,9 @@ $ sudo a2enmod ssl
 }}}
  # unless you know what you're doing with virtual hosts, comment out the port-80 stuff in /etc/apache2/ports.conf
 {{{
+$ sudo vi /etc/apache2/ports.conf
+}}}
+{{{
 # If you just change the port or add more ports here, you will likely also
 # have to change the VirtualHost statement in
 # /etc/apache2/sites-enabled/000-default
@@ -95,6 +98,9 @@ $ sudo a2enmod ssl
 }}}
  # configure apache2, add this line to your default-ssl site (or default if you're not using TLS)
 {{{
+$ sudo vi /etc/apache2/sites-available/default-ssl
+}}}
+{{{
 <IfModule mod_ssl.c>
 <VirtualHost _default_:443>
 +      PerlRequire /opt/cif/bin/http_api.pl
@@ -102,6 +108,9 @@ $ sudo a2enmod ssl
 ....
 }}}
  # create your config at /etc/apache2/cif.conf, which should look like:
+{{{
+sudo vi /etc/apache2/cif.conf
+}}}
 {{{
 <Location /api>
     SetHandler perl-script
