@@ -123,7 +123,17 @@ sudo vi /etc/apache2/cif.conf
 {{{
 $ sudo adduser www-data cif
 }}}
-
+=== Random Number Generator ===
+----
+The "rng-tools' service helps with random number generation (mainly used for generating security certificates in bind and apache, speeds up the entropy process).
+ # modify /etc/default/rng-tools to use /dev/urandom as the seed
+{{{
+$ echo 'HRNGDEVICE=/dev/urandom' | sudo tee -a /etc/default/rng-tools
+}}}
+ # restart rng-tools
+{{{
+$ sudo service rng-tools restart
+}}}
 == Continue ==
 ----
-Continue with [ServerInstall_v1_RC2#BindSetup_v1 Nameserver configuration]
+Continue with [ServerInstall_v1_RC2#Bind Bind configuration]
