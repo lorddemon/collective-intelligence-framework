@@ -49,7 +49,7 @@ iface eth0 inet
 }}}
  # edit /etc/resolv.conf
 {{{
-$ vi /etc/resolv.conf
+$ sudo vi /etc/resolv.conf
 }}}
  # replace (or add) nameserver with 127.0.0.1
 {{{
