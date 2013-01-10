@@ -74,10 +74,13 @@ $ sudo /etc/init.d/named restart
 }}}
  # verify bind is working
 {{{
-$ dig ns1.google.com +short
+$ dig ns1.google.com
 }}}
 {{{
-216.239.32.10
+...
+ns1.google.com.         21588   IN      A       216.239.32.10
+...
+;; SERVER: 127.0.0.1#53(127.0.0.1)
 }}}
 = Continue with installation =
 ----
