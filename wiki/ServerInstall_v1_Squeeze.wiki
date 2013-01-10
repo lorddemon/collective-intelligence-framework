@@ -49,7 +49,7 @@ iface eth0 inet
 }}}
  # Restart networking
 {{{
-$ /etc/init.d/networking restart
+$ sudo ifdown eth0 && sudo ifup eth0
 }}}
  # Verify resolveconf
 {{{
