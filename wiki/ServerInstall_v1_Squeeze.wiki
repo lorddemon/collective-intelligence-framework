@@ -2,7 +2,7 @@
 #labels Version-1
 
 = Introduction =
-This assumes a clean install of Debian Squeeze (v6.0.x) with all base system updates applied.
+This assumes a clean install of Debian Squeeze (v6.0.x) with sudo and all base system updates applied.
 
 * Table of Contents *
 <wiki:toc max_depth="3" />
