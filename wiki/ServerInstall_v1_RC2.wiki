@@ -18,8 +18,6 @@ A semi-complete [ChangeLog_v1 ChangeLog] of v1
  * If you try to run CIF v1 while watching [http://www.jibjab.com/view/coepggrUTQOmCSW6FZrBSg?mt=1 this], it might not install correctly.
 === Upgrading ===
  * If you are installing on top of any of the previous CIF v1 releases, you *must drop* your cif v1 database before installing this release candidate.
-=== Performance Issues ===
- * If you are installing on a machine with less than 4 GB of ram you need to read the "note:" section under Postgres Setup Performance Tuning. 
 
 == System Requirements ==
 These requirements will handle everything on the same box pretty well with the default open source data-sets. The more (bigger) data-sets you add, the more ram / disk space you'll need. The more cores you add, the more threads that can "batch out" the feed parsers (thus, resulting in faster data consumption).
