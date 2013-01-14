@@ -8,11 +8,11 @@ This doc shows an example of how to proxy your resolution requests through googl
 == Configure Bind ==
 ----
  # modify the config file
-  * Debian based (Debian, Ubuntu, etc): /etc/bind/named.conf.options
+  * *Debian Based* (Debian, Ubuntu, etc)
 {{{
 $ sudo vi /etc/bind/named.conf.options
 }}}
-  * RHEL based (RHEL, CentOS, etc): /etc/named.conf
+  * *RHEL Based* (RHEL, CentOS, etc)
 {{{
 $ sudo vi /etc/named.conf
 }}}
