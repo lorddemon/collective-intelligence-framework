@@ -240,11 +240,12 @@ roles = role_everyone
 # how far back in time to generate the feeds from
 max_days = 7
 }}}
- # generate a "role key" for generating feeds everyone (with an apikey) in the system can query for. They apikey generated can be ignored as it's just a placeholder for the system.
+ # as the cif user, generate a "role key" for generating feeds everyone (with an apikey) in the system can query for. They apikey generated can be ignored as it's just a placeholder for the system.
 {{{
+$ sudo su - cif
 $ cif_apikeys -u role_everyone -G everyone -g everyone -a
 }}}
- # restart apache
+ # log out of the cif user and restart apache
 
 = Initialization =
 ----
