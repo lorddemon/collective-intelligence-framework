@@ -8,7 +8,7 @@ This guide will show you how to setup an embedded instance of postgres using loc
 * Table of Contents *
 <wiki:toc max_depth="2" />
 = Caveats =
-Be sure to replace "X.X" with your version number of postgres. Debian 6.x and RHEL/CentOS 6 tend to run version 8.4 of postgres, Ubuntu will tend to come with version 9.x.
+Be sure to replace "X.X" with your version number of postgres in the example commands below. Debian 6.x and RHEL/CentOS 6 tend to run version 8.4 of postgres, Ubuntu will tend to come with version 9.x.
 = Required Setup =
 == Directory Permission Configuration ==
 ----
