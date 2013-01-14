@@ -154,7 +154,8 @@ database = cif
 # logging
 # values 0-4
 [router]
-debug = 0
+# set to 0 if it's too noisy and reload the cif-router (apache), only on for RC2
+debug = 1
 }}}
 === APIKey ===
  # generate your initial apikey to be used by your client
