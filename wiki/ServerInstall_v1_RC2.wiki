@@ -206,6 +206,7 @@ feed uuid:          fa843602-4f62-49b5-99c0-010d4c873ee3
 feed guid:          everyone
 feed restriction:   private
 feed confidence:    0
+feed limit:              50
 
 restriction|guid    |assessment|description       |confidence|detecttime          |reporttime          |address    |alternativeid_restriction|alternativeid
 private    |everyone|search    |search example.com|50        |2012-12-20T15:18:35Z|2012-12-20T15:18:35Z|example.com|                         |             
@@ -283,6 +284,7 @@ feed uuid:          e7cd9386-cd14-4232-8998-2d89af47ad40
 feed guid:          everyone
 feed restriction:   private
 feed confidence:    0
+feed limit:              50
 
 restriction |guid    |assessment|description      |confidence|detecttime          |reporttime          |address   |alternativeid_restriction|alternativeid                           
 need-to-know|everyone|whitelist |alexa #1         |95        |2012-12-20T16:00:00Z|2012-12-20T00:00:00Z|google.com|public                   |http://www.alexa.com/siteinfo/google.com
@@ -315,6 +317,7 @@ feed uuid:          7f734f92-6ce5-4f1c-8acf-cca304800873
 feed guid:          everyone
 feed restriction:   private
 feed confidence:    85
+feed limit:              0
 
 restriction |guid    |assessment|description|confidence|detecttime          |reporttime          |address        |prefix          |protocol|portlist |asn   |asn_desc                                                                                        |cc|rir    |alternativeid_restriction|alternativeid                                              
 need-to-know|everyone|scanner   |ssh        |85        |2012-12-20T16:00:00Z|2012-12-18T00:00:00Z|37.77.82.122   |37.77.80.0/20   |6       |22       | 57757|ENZUINC-EU Enzu Inc                                                                             |NL|RIPENCC|public                   |http://www.openbl.org/lists/date_all.txt                   
