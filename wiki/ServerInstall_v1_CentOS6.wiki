@@ -76,7 +76,7 @@ echo "DNS1=127.0.0.1" | sudo tee -a /etc/sysconfig/network-scripts/ifcfg-eth0
 }}}
  # restart networking
 {{{
-$ sudo /etc/init.d/network restart
+$ sudo ifdown eth0 && sudo ifup eth0
 }}}
  # Verify resolveconf
 {{{
