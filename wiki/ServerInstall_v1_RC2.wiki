@@ -90,19 +90,19 @@ $ sudo make initdb
 {{{
 $ sudo su - cif
 }}}
- # open the cif users .profile (or .bash_profile for RHEL environments)
-{{{
-$ vi ~/.profile
-}}}
- # add the following
+ # setup your environment $PATH
+  * RHEL:     /home/cif/.bash_profile
+  * DEBIAN: /home/cif/.profile
+ # add the following to the bottom of your environment settings file
 {{{
 if [ -d "/opt/cif/bin" ]; then
     PATH="/opt/cif/bin:$PATH"
 fi
 }}}
- # reload your env
+ # reload your environment by logging out and then back into the cif user
 {{{
-$ source ~/.profile
+$ logout
+$ sudo su - cif
 }}}
  # create a ~/.cif
 {{{
