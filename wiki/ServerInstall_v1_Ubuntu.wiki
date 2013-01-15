@@ -118,7 +118,7 @@ iface eth0 inet
 }}}
  # Restart networking
 {{{
-$ sudo service network-interface restart INTERFACE=eth0
+$ sudo ifdown eth0 && sudo ifup eth0
 }}}
  # Verify resolveconf
 {{{
