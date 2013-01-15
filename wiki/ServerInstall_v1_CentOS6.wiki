@@ -36,6 +36,10 @@ $ yum -y install sudo rng-tools postgresql-server httpd httpd-devel mod_ssl gcc 
 {{{
 $ sudo ntpdate -u pool.ntp.org
 }}}
+ # import the fedoraproject EPEL-6 gpg key
+{{{
+$ sudo rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
+}}}
  # install some 3rd party dependencies
 {{{
 $ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/libapreq2-2.13-1.el6.x86_64.rpm
