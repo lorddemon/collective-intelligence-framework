@@ -11,12 +11,13 @@
 ----
 A semi-complete [ChangeLog_v1 ChangeLog] of v1
 
-== Known Issues ==
-=== v0 Compatibility ==
+A list of known [KnownIssues_v1 issues] for v1
+
+== v0 Compatibility ==
  * You *cannot* run this beta on the same box as CIF v0, it will break stuff, you will loose your data, you will be angry with me.
  * older cif clients (v0, v1_RC1) will not work with this current versions of CIF, this release assumes you're testing an instance where the cif client and the server are on the same hardware. we're working on packaging of the libcif library (the client) to be an independent install for the next release.
  * If you try to run CIF v1 while watching [http://www.jibjab.com/view/coepggrUTQOmCSW6FZrBSg?mt=1 this], it might not install correctly.
-=== Upgrading ===
+== Upgrading ==
  * If you are installing on top of any of the previous CIF v1 releases, you *must drop* your cif v1 database before installing this release candidate.
 
 == System Requirements ==
@@ -56,9 +57,9 @@ Consult the Disk Layout Guide before setting up your operating system. There are
 ----
 Choose the distribution you used as your base operating system and install the required applications and dependencies.
 
- * [ServerInstall_v1_Squeeze Debian Squeeze] (unstable)
- * [ServerInstall_v1_Ubuntu Ubuntu 12.04 ] (testing)
- * [ServerInstall_v1_CentOS6 CentOS 6] (testing)
+ * [ServerInstall_v1_Squeeze Debian Squeeze] (stable)
+ * [ServerInstall_v1_Ubuntu Ubuntu 12.04 ] (stable)
+ * [ServerInstall_v1_CentOS6 CentOS 6] (stable)
 
 == Postgres, Bind and Resolvconf configuration ==
 ----
