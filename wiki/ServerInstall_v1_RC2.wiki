@@ -91,9 +91,8 @@ $ sudo make initdb
 $ sudo su - cif
 }}}
  # setup your environment $PATH
-  * RHEL:     /home/cif/.bash_profile
-  * DEBIAN: /home/cif/.profile
- # add the following to the bottom of your environment settings file
+  * DEBIAN /home/cif/.profile
+  * RHEL /home/cif/.bash_profile
 {{{
 if [ -d "/opt/cif/bin" ]; then
     PATH="/opt/cif/bin:$PATH"
