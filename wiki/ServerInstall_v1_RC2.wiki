@@ -217,7 +217,7 @@ To enable feed generation, which requires more space a few more options need to 
 
  # modify the 'cif' user's ~/.cif config accordingly:
 {{{
-$ vi /home/cif/.cif
+$ vi ~/.cif
 }}}
  # add the following to the cif_archive section:
 {{{
@@ -240,9 +240,8 @@ roles = role_everyone
 # how far back in time to generate the feeds from
 max_days = 7
 }}}
- # as the cif user, generate a "role key" for generating feeds everyone (with an apikey) in the system can query for. They apikey generated can be ignored as it's just a placeholder for the system.
+ # generate a "role key" for generating feeds everyone (with an apikey) in the system can query for. They apikey generated can be ignored as it's just a placeholder for the system.
 {{{
-$ sudo su - cif
 $ cif_apikeys -u role_everyone -G everyone -g everyone -a
 }}}
  # log out of the cif user and restart apache
