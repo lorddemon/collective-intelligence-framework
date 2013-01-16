@@ -68,11 +68,10 @@ $ sudo adduser --disabled-password --gecos '' cif
 {{{
 $ sudo perl -MCPAN -e 'install Try::Tiny'
 }}}
- # install the core server interface
+ # install the [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:v0 latest] core instance
 {{{
-$ wget http://collective-intelligence-framework.googlecode.com/files/cif-v0.05.tar.gz
-$ tar -zxvf cif-v0.05.tar.gz
-$ cd cif-0.05
+$ tar -zxvf cif-v0.XX.tar.gz
+$ cd cif-0.XX
 $ ./configure
 $ make testdeps
 $ make fixdeps
