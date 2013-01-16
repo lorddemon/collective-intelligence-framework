@@ -54,6 +54,7 @@
  * v1 (Development -- UNSTABLE)
   * Server
    * [ServerInstall_v1 Server Install v1]
+   * [ServerInstall_v1_MigrateApikeys API key migration]
   * Client
   * API
   * Taxonomy
