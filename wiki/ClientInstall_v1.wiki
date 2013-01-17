@@ -1,0 +1,38 @@
+#summary the v1 client installation
+
+* Before you Begin *
+
+* Table of Contents *
+<wiki:toc max_depth="2" />
+
+= Preamble =
+----
+A semi-complete [ChangeLog_v1 ChangeLog] of v1
+
+A list of known [KnownIssues_v1 issues] for v1
+
+== Backwards Compatibility ==
+ * as of v1, the 'CIF-Client' is now part of the client side library 'libcif'
+ * the deprecated "CIF::Client" (via CPAN) cannot be used with a v1 instance
+
+== Caveats ==
+ * libcif cannot be installed via CPAN at this time
+ * libcif provides:
+  * CIF::Client library to build [perl] applications against
+  * the 'cif' command
+  * by default, is installed to '/opt/cif', can be changed with the '--prefix' flag when running './configure'
+
+= Installation =
+== Required Dependencies ==
+ * [InstallClient_Debian_v1 Debian Squeeze] (testing)
+ * [InstallClient_Ubuntu_v1 Ubuntu] (testing)
+ * [InstallClient_CentOS_v1 CentOS] (testing)
+== Package ==
+ # download the latest [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:v1+libcif package]
+{{{
+$ tar -xzvf libcif-v1-XXX.tar.gz
+$ cd libcif-v1-XXX
+$ ./configure && make testdeps
+}}}
+== Configuration ==
+ * [InstallClient_OSX_v1 OS X] (testing)
