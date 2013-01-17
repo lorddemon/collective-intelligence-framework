@@ -1,0 +1,15 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+ # install latest version of xcode from the app store
+ # make sure the command line tools are installed via preferences
+ # make sure the command line tools know about it
+{{{
+sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer/
+}}}
+ # re-install perl5 if you're using mac ports (or homebrew) so they know where the new compiler is
+
+= Details =
+
+ # http://www.stormacq.com/using-macports-with-xcode-4-3-x/
