@@ -18,7 +18,7 @@ $ sudo port install p5-uuid
 }}}
  # install the CPAN modules
 {{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'Net::SSLeay, Compress::Snappy, Net::Patricia, Log::Dispatch, Iodef::Pb::Simple, DateTime::Format::DateParse, Config::Simple'
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::SSLeay, Compress::Snappy, Net::Patricia, Log::Dispatch, Iodef::Pb::Simple, DateTime::Format::DateParse, Config::Simple'
 }}}
 = References =
 
