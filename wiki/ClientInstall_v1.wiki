@@ -18,15 +18,17 @@ A list of known [KnownIssues_v1 issues] for v1
 == Caveats ==
  * libcif cannot be installed via CPAN at this time
  * libcif provides:
-  * CIF::Client library to build [perl] applications against
+  * CIF::Client library to build (perl) applications against
   * the 'cif' command
   * by default, is installed to '/opt/cif', can be changed with the '--prefix' flag when running './configure'
+ * to build applications in other languages, simply pipe the 'cif' command with '-p json' which will pipe stripped down (non-iodef) json key-pairs to your application
 
 = Installation =
 == Required Dependencies ==
- * [InstallClient_Debian_v1 Debian Squeeze] (testing)
- * [InstallClient_Ubuntu_v1 Ubuntu] (testing)
- * [InstallClient_CentOS_v1 CentOS] (testing)
+ * (testing) [InstallClient_Debian_v1 Debian Squeeze] 
+ * (testing) [InstallClient_Ubuntu_v1 Ubuntu] 
+ * (testing) [InstallClient_CentOS_v1 CentOS] 
+ * (testing) [InstallClient_OSX_v1 OS X] 
 == Package ==
  # download the latest [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:v1+libcif package]
 {{{
@@ -35,4 +37,19 @@ $ cd libcif-v1-XXX
 $ ./configure && make testdeps
 }}}
 == Configuration ==
- * [InstallClient_OSX_v1 OS X] (testing)
+== Environment ==
+ # create a default configuration file
+{{{
+$ vi ~/.cif
+}}}
+ # add the following as a template
+{{{
+# the simple stuff
+[client]
+# the apikey for your client
+apikey = XXXXXX-XXX-XXXX
+
+[client_http]
+host = https://localhost:443/api
+verify_tls = 0
+}}}
