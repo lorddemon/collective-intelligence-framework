@@ -1,7 +1,8 @@
 #summary One-sentence summary of this page.
 
 = Introduction =
-
+ # this assumes you're using macports (could be adapted for homebrew)
+ # make sure macports (or homebrew) is up to date
  # install latest version of xcode from the app store
  # make sure the command line tools are installed (via preferences, ... downloads, ... components)
  # make sure the command line tools know about it
@@ -10,6 +11,15 @@ sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer/
 }}}
  # re-install perl5 if you're using mac ports (or homebrew) so they know where the new compiler is
 
+= Details =
+ # install some of the base deps
+{{{
+$ sudo port install p5-uuid
+}}}
+ # install the CPAN modules
+{{{
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'Net::SSLeay, Compress::Snappy, Net::Patricia, Log::Dispatch, Iodef::Pb::Simple, DateTime::Format::DateParse, Config::Simple'
+}}}
 = References =
 
  # http://www.bynkii.com/archives/2012/07/this_package_requires_a_c_comp.html
