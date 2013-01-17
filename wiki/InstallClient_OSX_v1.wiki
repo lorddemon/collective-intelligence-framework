@@ -10,6 +10,7 @@ sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer/
 }}}
  # re-install perl5 if you're using mac ports (or homebrew) so they know where the new compiler is
 
-= Details =
+= References =
 
+ # http://www.bynkii.com/archives/2012/07/this_package_requires_a_c_comp.html
  # http://www.stormacq.com/using-macports-with-xcode-4-3-x/
