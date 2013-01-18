@@ -42,6 +42,12 @@ $ perl -e 'use OSSP::uuid'
 {{{
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::SSLeay, Compress::Snappy, Net::Patricia, Iodef::Pb::Simple, DateTime::Format::DateParse, Config::Simple'
 }}}
+ # update config-simple-perl manually (something's wrong where 4.59 won't update on OS X)
+{{{
+$ wget http://search.cpan.org/CPAN/authors/id/S/SH/SHERZODR/Config-Simple-4.59.tar.gz
+$ tar -zxvf Config-Simple-4.59.tar.gz
+$ cd Config-Simple-4.59 && perl Makefile.PL && make && sudo make install
+}}}
 == Environment ==
 ----
  # set up your user's environment (typically ~/.profile)
