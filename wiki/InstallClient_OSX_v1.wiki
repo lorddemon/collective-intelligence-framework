@@ -1,8 +1,17 @@
-#summary One-sentence summary of this page.
+#summary OS X client install doc (v1)
 
 = Introduction =
- # this assumes you're using macports (could be adapted for homebrew)
+This assumes you're using macports (could be adapted for homebrew)
+
+* Table of Contents *
+<wiki:toc max_depth="2" />
+
+= Details =
+== Caveats ==
+----
+=== MacPorts ===
  # make sure macports (or homebrew) is up to date
+=== Xcode ===
  # install latest version of xcode from the app store
  # make sure the command line tools are installed (via preferences, ... downloads, ... components)
  # make sure the command line tools know about it
@@ -10,17 +19,29 @@
 sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer/
 }}}
  # re-install perl5 if you're using mac ports (or homebrew) so they know where the new compiler is
-
-= Details =
  # install some of the base deps
 {{{
-$ sudo port install p5-uuid
+$ sudo port install p5-uuid p5-digest-sha p5-digest-sha1 p5-log-dispatch
 }}}
  # install the CPAN modules
 {{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::SSLeay, Compress::Snappy, Net::Patricia, Log::Dispatch, Iodef::Pb::Simple, DateTime::Format::DateParse, Config::Simple'
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::SSLeay, Compress::Snappy, Net::Patricia, Iodef::Pb::Simple, DateTime::Format::DateParse, Config::Simple'
 }}}
-= References =
+== Environment ==
+----
+ # set up your user's environment (typically ~/.profile)
+{{{
+if [ -d "/opt/cif/bin" ]; then
+    PATH="/opt/cif/bin:$PATH"
+fi
+}}}
+ # reload your environment
+{{{
+$ source ~/.profile
+}}}
 
+Continue with the libcif [ClientInstall_v1#Package installation]
+= References =
+----
  # http://www.bynkii.com/archives/2012/07/this_package_requires_a_c_comp.html
  # http://www.stormacq.com/using-macports-with-xcode-4-3-x/
