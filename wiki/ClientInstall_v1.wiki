@@ -36,6 +36,7 @@ A list of known [KnownIssues_v1 issues] for v1
 $ tar -xzvf libcif-v1-XXX.tar.gz
 $ cd libcif-v1-XXX
 $ ./configure && make testdeps
+$ sudo make install
 }}}
 == Configuration ==
 == Environment ==
