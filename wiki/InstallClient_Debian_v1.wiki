@@ -17,11 +17,11 @@ $ yum install sudo vim
 ----
  # Install the base deps
 {{{
-$ sudo aptitude -y install build-essential libdigest-sha1-perl libnet-cidr-perl libossp-uuid-perl libmodule-install-perl libregexp-common-perl libunicode-string-perl libconfig-simple-perl  libhtml-table-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl libextutils-parsexs-perl libdatetime-format-dateparse-perl libnet-patricia-perl libdatetime-perl libtext-table-perl
+$ sudo aptitude -y install build-essential libdigest-sha1-perl libnet-cidr-perl libossp-uuid-perl libmodule-install-perl libregexp-common-perl libunicode-string-perl libconfig-simple-perl  libhtml-table-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl libextutils-parsexs-perl libdatetime-format-dateparse-perl libnet-patricia-perl libdatetime-perl libtext-table-perl libssl-dev
 }}}
  # Install the remaining CPAN modules
 {{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Regexp::Common::net::CIDR,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Log::Dispatch'
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Regexp::Common::net::CIDR,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Log::Dispatch,Net::SSLeay'
 }}}
 
 Continue with the libcif [ClientInstall_v1#Package installation]
