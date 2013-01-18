@@ -9,8 +9,7 @@ This assumes a clean install of Debian Squeeze (v6.0.x) with sudo and all base s
 = Details =
 == Caveats ==
 ----
-=== Minimal Debian ===
-Minimal Debian does not come with sudo or the normal version of vim. If you used the net boot version of the debian installer, you'll need to install these (as root):
+ * debian-minimal does not come with sudo or the normal version of vim. If you used the net boot version of the debian installer, you'll need to install these (as root):
 {{{
 $ yum install sudo vim
 }}}
@@ -23,6 +22,18 @@ $ sudo aptitude -y install build-essential libdigest-sha1-perl libnet-cidr-perl 
  # Install the remaining CPAN modules
 {{{
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Regexp::Common::net::CIDR,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Log::Dispatch,Net::SSLeay'
+}}}
+== Environment ==
+----
+ # set up your user's environment (typically ~/.profile)
+{{{
+if [ -d "/opt/cif/bin" ]; then
+    PATH="/opt/cif/bin:$PATH"
+fi
+}}}
+ # reload your environment
+{{{
+$ source ~/.profile
 }}}
 
 Continue with the libcif [ClientInstall_v1#Package installation]
