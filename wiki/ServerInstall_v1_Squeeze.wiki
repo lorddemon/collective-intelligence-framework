@@ -12,7 +12,7 @@ This assumes a clean install of Debian Squeeze (v6.0.x) with sudo and all base s
 === Minimal Debian ===
 Minimal Debian does not come with sudo or the normal version of vim. If you used the net boot version of the debian installer, you'll need to install these as root:
 {{{
-$ yum install sudo vim
+$ aptitude install sudo vim
 }}}
 === Static Address ===
 Make sure your instance has a static v4 address
