@@ -30,7 +30,7 @@ A list of known [KnownIssues_v1 issues] for v1
  * (testing) [InstallClient_Debian_v1 Debian Squeeze] 
  * (testing) [InstallClient_Ubuntu_v1 Ubuntu] 
  * (testing) [InstallClient_CentOS_v1 CentOS] 
- * (testing) [InstallClient_OSX_v1 OS X] 
+ * (unstable) [InstallClient_OSX_v1 OS X] 
 == Package ==
  # download the latest [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:v1+libcif package]
 {{{
