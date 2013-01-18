@@ -26,7 +26,7 @@ $ sudo yum -y install perl-Digest-SHA uuid-perl perl-JSON perl-Unicode-String pe
 }}}
  # install the remaining CPAN modules (PERL_MM_USE_DEFAULT=1 will auto "yes" to the prompts)
 {{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Log::Dispatch,ZeroMQ,JSON::XS,LWP::UserAgent,Net::Patricia,Text::Table,Mozilla::CA,IO::Socket::SSL,IO::Socket::INET6,LWP::Protocol::https'
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Log::Dispatch,JSON::XS,LWP::UserAgent,Net::Patricia,Text::Table,Mozilla::CA,IO::Socket::SSL,IO::Socket::INET6,LWP::Protocol::https'
 }}}
  # Net-SSLeay > 1.49 has some build issues and perl-Net-SSLeay that comes with CentOS6 is too old, therefore we must install 1.49 manually:
 {{{
