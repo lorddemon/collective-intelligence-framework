@@ -1,0 +1,52 @@
+#summary RHEL/CentOS client install doc (v1)
+
+= Introduction =
+This assumes a clean install of RHEL/CentOS6 with sudo and all base system updates applied.
+
+* Table of Contents *
+<wiki:toc max_depth="2" />
+
+= Details =
+== Caveats ==
+----
+None known
+== Dependencies ==
+----
+ # install base server dependencies (as root)
+{{{
+$ yum -y install sudo gcc make uuid uuid uuid-devel wget libuuid-devel ntpdate
+}}}
+ # make sure your clock is up to date (some packages might not install if it's too far skewed)
+{{{
+$ sudo ntpdate -u pool.ntp.org
+}}}
+ # install the baseline perl modules
+{{{
+$ sudo yum -y install perl-Digest-SHA uuid-perl perl-JSON perl-Unicode-String perl-Config-Simple perl-Module-Pluggable perl-MIME-Lite perl-CPAN perl-Class-Accessor perl-YAML uuid-perl perl-DateTime-Format-DateParse openssl-devel perl-Module-Install perl-Net-SSLeay
+}}}
+ # install the remaining CPAN modules (PERL_MM_USE_DEFAULT=1 will auto "yes" to the prompts)
+{{{
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Log::Dispatch,ZeroMQ,JSON::XS,LWP::UserAgent,Net::Patricia,Text::Table,Mozilla::CA,IO::Socket::SSL,IO::Socket::INET6,LWP::Protocol::https'
+}}}
+ # Net-SSLeay > 1.49 has some build issues and perl-Net-SSLeay that comes with CentOS6 is too old, therefore we must install 1.49 manually:
+{{{
+$ wget http://search.cpan.org/CPAN/authors/id/M/MI/MIKEM/Net-SSLeay-1.49.tar.gz
+$ tar -zxvf Net-SSLeay-1.49.tar.gz
+$ cd Net-SSLeay-1.49
+$ perl Makefile.PL
+$ sudo make install
+}}}
+== Environment ==
+----
+ # set up your user's environment (typically ~/.base_profile)
+{{{
+if [ -d "/opt/cif/bin" ]; then
+    PATH="/opt/cif/bin:$PATH"
+fi
+}}}
+ # reload your environment
+{{{
+$ source ~/.bash_profile
+}}}
+
+Continue with the libcif [ClientInstall_v1#Package installation]
