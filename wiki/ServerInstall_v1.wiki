@@ -18,7 +18,7 @@ A list of known [KnownIssues_v1 issues] for v1
  * older cif clients (v0, v1_RC1) will not work with this current versions of CIF
 == v1 Client ==
  * this release assumes you're testing an instance where the cif client and the server are on the same hardware.
- * check out the v1 client [ClientInstall_v1 installer] to install the client seperately
+ * check out the v1 client [ClientInstall_v1 installer] to install the libcif client libraries (which provides the 'cif' command) on a separate host
  * If you try to run CIF v1 while watching [http://www.jibjab.com/view/coepggrUTQOmCSW6FZrBSg?mt=1 this], it might not install correctly.
 
 == Upgrading ==
