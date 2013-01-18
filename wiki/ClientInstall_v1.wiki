@@ -22,6 +22,7 @@ A list of known [KnownIssues_v1 issues] for v1
   * the 'cif' command
   * by default, is installed to '/opt/cif', can be changed with the '--prefix' flag when running './configure'
  * to build applications in other languages, simply pipe the 'cif' command with '-p json' which will pipe stripped down (non-iodef) json key-pairs to your application
+ * future versions of libcif will be written in C and provide high level language bindings
 
 = Installation =
 == Required Dependencies ==
