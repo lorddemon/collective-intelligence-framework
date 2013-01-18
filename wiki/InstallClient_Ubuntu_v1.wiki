@@ -96,4 +96,16 @@ $ aptitude -y install build-essential libossp-uuid-perl libmodule-install-perl l
 {{{
 $ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Log::Dispatch,Net::SSLeay,LWP::Protocol::https'
 }}}
+== Environment ==
+----
+ # set up your user's environment (typically ~/.profile)
+{{{
+if [ -d "/opt/cif/bin" ]; then
+    PATH="/opt/cif/bin:$PATH"
+fi
+}}}
+ # reload your environment
+{{{
+$ source ~/.profile
+}}}
 Continue with the libcif [ClientInstall_v1#Package installation]
