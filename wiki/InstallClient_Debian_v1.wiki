@@ -9,7 +9,7 @@ This assumes a clean install of Debian Squeeze (v6.0.x) with sudo and all base s
 = Details =
 == Caveats ==
 === Minimal Debian ===
-Minimal Debian does not come with sudo or the normal version of vim. If you used the net boot version of the debian installer, you'll need to install these as root:
+Minimal Debian does not come with sudo or the normal version of vim. If you used the net boot version of the debian installer, you'll need to install these (as root):
 {{{
 $ yum install sudo vim
 }}}
@@ -17,7 +17,7 @@ $ yum install sudo vim
 ----
  # Install the base deps
 {{{
-$ sudo aptitude -y install build-essentials libdigest-sha1-perl libnet-cidr-perl libossp-uuid-perl libmodule-install-perl libregexp-common-perl libunicode-string-perl libconfig-simple-perl  libhtml-table-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl libextutils-parsexs-perl libdatetime-format-dateparse-perl libnet-patricia-perl libdatetime-perl libtext-table-perl
+$ sudo aptitude -y install build-essential libdigest-sha1-perl libnet-cidr-perl libossp-uuid-perl libmodule-install-perl libregexp-common-perl libunicode-string-perl libconfig-simple-perl  libhtml-table-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl libextutils-parsexs-perl libdatetime-format-dateparse-perl libnet-patricia-perl libdatetime-perl libtext-table-perl
 }}}
  # Install the remaining CPAN modules
 {{{
