@@ -15,8 +15,12 @@ A list of known [KnownIssues_v1 issues] for v1
 
 == v0 Compatibility ==
  * You *cannot* run this beta on the same box as CIF v0, it will break stuff, you will loose your data, you will be angry with me.
- * older cif clients (v0, v1_RC1) will not work with this current versions of CIF, this release assumes you're testing an instance where the cif client and the server are on the same hardware. we're working on packaging of the libcif library (the client) to be an independent install for the next release.
+ * older cif clients (v0, v1_RC1) will not work with this current versions of CIF
+== v1 Client ==
+ * this release assumes you're testing an instance where the cif client and the server are on the same hardware.
+ * check out the v1 client [ClientInstall_v1 installer] to install the client seperately
  * If you try to run CIF v1 while watching [http://www.jibjab.com/view/coepggrUTQOmCSW6FZrBSg?mt=1 this], it might not install correctly.
+
 == Upgrading ==
  * If you are installing on top of any of the previous CIF v1 releases, you *must drop* your cif v1 database before installing this release candidate.
 
