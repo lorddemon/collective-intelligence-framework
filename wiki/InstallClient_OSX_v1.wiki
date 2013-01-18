@@ -19,9 +19,20 @@ This assumes you're using macports (could be adapted for homebrew)
 sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer/
 }}}
  # re-install perl5 if you're using mac ports (or homebrew) so they know where the new compiler is
+== Dependencies ==
+----
  # install some of the base deps
 {{{
 $ sudo port install p5-uuid p5-digest-sha p5-digest-sha1 p5-log-dispatch p5-list-moreutils
+}}}
+ # the perl OSSP::uuid bindings must be installed from source
+{{{
+$ wget ftp://ftp.ossp.org/pkg/lib/uuid/uuid-1.6.2.tar.gz
+$ tar -zxvf uuid-1.6.2.tar.gz
+$ cd uuid-1.6.2
+$ ./configure --with-perl
+$ make
+$ sudo make install
 }}}
  # install the CPAN modules
 {{{
