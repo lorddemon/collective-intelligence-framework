@@ -9,7 +9,7 @@ This assumes you're using macports (could be adapted for homebrew)
 = Details =
 == Caveats ==
 ----
-=== MacPorts ===
+=== Mac Ports ===
  # make sure macports (or homebrew) is up to date
 === Xcode ===
  # install latest version of xcode from the app store
@@ -21,7 +21,7 @@ sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer/
  # re-install perl5 if you're using mac ports (or homebrew) so they know where the new compiler is
  # install some of the base deps
 {{{
-$ sudo port install p5-uuid p5-digest-sha p5-digest-sha1 p5-log-dispatch
+$ sudo port install p5-uuid p5-digest-sha p5-digest-sha1 p5-log-dispatch p5-list-moreutils
 }}}
  # install the CPAN modules
 {{{
