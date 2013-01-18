@@ -21,7 +21,7 @@ $ sudo aptitude -y install build-essential libdigest-sha1-perl libnet-cidr-perl 
 }}}
  # Install the remaining CPAN modules
 {{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Regexp::Common::net::CIDR,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Net::SSLeay,Log::Dispatch'
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Regexp::Common::net::CIDR,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Log::Dispatch'
 }}}
 
 Continue with the libcif [ClientInstall_v1#Package installation]
