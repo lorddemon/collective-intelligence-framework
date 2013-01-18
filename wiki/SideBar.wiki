@@ -55,7 +55,7 @@
   * Server
    * [ServerInstall_v1 Server Install v1]
    * [ServerInstall_v1_MigrateApikeys API key migration]
-  * Client
+  * [ClientInstall_v1 Client v1]
   * API
   * Taxonomy
    * [TaxonomyAssessment_v1 Assessment Definitions]
