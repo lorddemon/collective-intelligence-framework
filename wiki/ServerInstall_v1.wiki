@@ -14,7 +14,7 @@ A semi-complete [ChangeLog_v1 ChangeLog] of v1
 A list of known [KnownIssues_v1 issues] for v1
 
 == v0 Compatibility ==
- * You *cannot* run this beta on the same box as CIF v0, it will break stuff, you will loose your data, you will be angry with me.
+ * You *cannot* run this beta on the same box as CIF v0, it will break stuff, you will lose your data, you will be angry with me.
  * older cif clients (v0, v1_RC1) will not work with this current versions of CIF
 == v1 Client ==
  * this release assumes you're testing an instance where the cif client and the server are on the same hardware.
