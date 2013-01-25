@@ -23,7 +23,7 @@ $ sudo chown postgres:postgres /mnt/index
 {{{
 $ sudo chown postgres:postgres /mnt/archive
 $ sudo chown postgres:postgres /mnt/index
-$ sudo chown postgres:postgres pg_xlog
+$ sudo chown postgres:postgres /mnt/pg_xlog
 $ sudo ln -sf /mnt/pg_xlog /var/lib/postgresql/X.X/main/pg_xlog
 }}}
 
