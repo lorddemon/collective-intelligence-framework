@@ -3,7 +3,7 @@
 = Introduction =
 ----
 
-This doc shows an example of how to proxy your resolution requests through google dns while still filtering out specific spamhaus requests direction to spamhaus
+This doc shows an example of how to proxy your resolution requests through Google dns while still filtering out specific Spamhaus requests direction to Spamhaus
 
 == Configure Bind ==
 ----
@@ -40,7 +40,7 @@ options {
     listen-on { 127.0.0.1; };
 };
 
-// bi-pass the google pub servers
+// bypass the Google public servers
 zone "cymru.com" {
     forward only;
     type forward;
