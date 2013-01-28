@@ -165,7 +165,7 @@ postgres=#\q
 
 = Continue with configuration =
 ----
-Continue with the [ServerInstall_v1_RC2#Installing_CIF Installing CIF]
+Continue with the [ServerInstall_v1#Installing_CIF Installing CIF]
 
 = Helpful References =
 ----
