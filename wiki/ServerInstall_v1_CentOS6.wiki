@@ -177,4 +177,4 @@ $ sudo chkconfig --levels 345 httpd on
 }}}
 === Continue with installation ===
 ----
-1. Continue with [ServerInstall_v1_RC2#Bind Nameserver configuration]
+1. Continue with [ServerInstall_v1#Bind Nameserver configuration]
