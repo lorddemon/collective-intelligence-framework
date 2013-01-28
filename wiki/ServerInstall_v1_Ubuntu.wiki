@@ -206,4 +206,4 @@ $ sudo service rng-tools restart
 }}}
 == Continue ==
 ----
-Continue with [ServerInstall_v1_RC2#Bind Bind configuration]
+Continue with [ServerInstall_v1#Bind Bind configuration]
