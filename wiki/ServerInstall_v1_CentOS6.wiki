@@ -69,7 +69,7 @@ $ sudo make install
 == System Setup ==
 ----
 === Resolve Config ===
-We need to point our dns resoultion to the our local nameserver instance.
+We need to point our dns resoultion to the local nameserver instance.
  # modify /etc/sysconfig/network-scripts/ifcfg-eth0 with the following DNS1="127.0.0.1" line
 {{{
 echo "DNS1=127.0.0.1" | sudo tee -a /etc/sysconfig/network-scripts/ifcfg-eth0
