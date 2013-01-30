@@ -4,9 +4,9 @@
 
 CIF is a cyber threat intelligence management system. CIF allows you to combine known malicious threat information from many sources and use that information for identification (incident response), detection (IDS) and mitigation (null route). The most common types of threat intelligence warehoused in CIF are IP addresses, domains and urls that are observed to be related to malicious activity. 
 
-CIF helps you to aggregate, normalize, store, post process, query, share and produce data sets of threat intelligence. 
+CIF helps you to parse, normalize, store, post process, query, share and produce data sets of threat intelligence. 
 
-=== Aggregate ===
+=== Parse ===
 
 CIF supports ingesting many different sources of data of the same type; for example data sets or “feeds” of malicious domains. Each similar dataset can be marked with different attributes like source and confidence to name a few.
 
