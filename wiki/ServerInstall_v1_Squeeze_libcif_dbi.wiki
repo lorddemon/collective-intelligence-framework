@@ -49,7 +49,7 @@ In order for an application to leverage the CIF libraries, the '/opt/cif/lib' pa
 
 use strict;
 
-# fix lib paths, some may be relative
+# fix lib paths
 BEGIN {
         unshift @INC, "/opt/cif/lib";
 }
