@@ -15,7 +15,7 @@ $ aptitude install sudo vim
 }}}
 == Dependencies Installation ==
 ----
- # install the [InstallClient_v1 client]
+ # install the [ClientInstall_v1 client]
  # install the base deps
 {{{
 $ sudo aptitude -y install postgresql libclass-dbi-perl libdbd-pg-perl
