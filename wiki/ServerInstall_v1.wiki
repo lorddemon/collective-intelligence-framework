@@ -61,9 +61,9 @@ Consult the Disk Layout Guide before setting up your operating system. There are
 ----
 Choose the distribution you used as your base operating system and install the required applications and dependencies.
 
- * (testing) [ServerInstall_v1_Squeeze Debian Squeeze] 
- * (testing) [ServerInstall_v1_Ubuntu Ubuntu 12.04 ] 
- * (testing) [ServerInstall_v1_CentOS6 CentOS 6] 
+ * (testing) [ServerInstall_DebianSqueeze_v1 Debian Squeeze] 
+ * (testing) [ServerInstall_Ubuntu12_v1 Ubuntu 12.04 ] 
+ * (testing) [ServerInstall_CentOS6_v1 CentOS 6] 
 
 == Postgres, Bind and Resolvconf configuration ==
 ----
