@@ -1,7 +1,9 @@
 #summary squeeze libcif-dbi install doc (v1)
 
 = Introduction =
-This assumes a clean install of Debian Squeeze (v6.0.x) with sudo and all base system updates applied.
+This doc provides for the installation of a remote database client (eg: the router, or an apikeys interface manager). This doc assumes:
+ * a clean install of Debian Squeeze (v6.0.x) with sudo and all base system updates applied.
+ * the database instance (physical data) is located on a different set of resources
 
 * Table of Contents *
 <wiki:toc max_depth="3" />
@@ -18,7 +20,7 @@ $ aptitude install sudo vim
  # install the [ClientInstall_v1 client]
  # install the base deps
 {{{
-$ sudo aptitude -y install postgresql libclass-dbi-perl libdbd-pg-perl
+$ sudo aptitude -y install postgresql-client libclass-dbi-perl libdbd-pg-perl
 }}}
  # Install the remaining CPAN modules
 {{{
