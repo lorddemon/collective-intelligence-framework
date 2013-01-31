@@ -1,4 +1,5 @@
 #summary RHEL/CentOS client install doc (v1)
+#labels v1,Client
 
 = Introduction =
 This assumes a clean install of RHEL/CentOS6 with sudo and all base system updates applied.
