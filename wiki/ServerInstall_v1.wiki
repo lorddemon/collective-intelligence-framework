@@ -77,7 +77,7 @@ Configure Postgres authentication and performance tuning
 
 == Installing CIF ==
 ----
-This release assumes that the client is on the same hardware as the backend server/router components. The final release will include an independent "libcif" (the client libraries) package. This release is for *testing purposes only*... you have been warned...
+This release assumes that the client is on the same hardware as the backend server/router components. The final release will include an independent "libcif" (the client libraries) package. This release is for *testing purposes only*... 
 
  # install the latest CIF [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:RC2 package]
 {{{
