@@ -11,7 +11,7 @@ These are our best projections as of the last 'wiki edit' date, subject to chang
  * inter-federation docs, templates and tools
  * see current [http://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall_v1#Changes ChangeLog]
 
-= Spring 2013 - v2 =
+= Spring 2014 - v2 =
 
  * integration with responder tools
  * add bgp data support
