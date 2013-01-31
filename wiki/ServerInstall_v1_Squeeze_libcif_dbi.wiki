@@ -28,7 +28,7 @@ $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::DNS::Match'
 -----
 === Default CIF user ===
 ----
-Create your "cif" user/group (the configure script will default to this user "cif")
+Create your "cif" user/group (the configure script will default to this user "cif") that will own the application (/opt/cif).
 {{{
 $ sudo adduser --disabled-password --gecos '' cif
 }}}
