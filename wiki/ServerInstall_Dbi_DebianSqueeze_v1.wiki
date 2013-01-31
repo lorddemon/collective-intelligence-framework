@@ -53,7 +53,7 @@ password =
 database = cif
 }}}
 === Paths ===
-In order for an application to leverage the CIF libraries, the '/opt/cif/lib' path must be added to the application. Other examples can be found by reviewing the perl application in /opt/cif/bin (cif, cif_apikeys, etc..).
+In order for an application to leverage the CIF libraries, the '/opt/cif/lib' path must be added to the application.
 {{{
 #!/usr/bin/perl
 
