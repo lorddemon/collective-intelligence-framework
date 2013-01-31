@@ -28,7 +28,7 @@ A list of known [KnownIssues_v1 issues] for v1
 = Installation =
 == Required Dependencies ==
  * (testing) [ClientInstall_DebianSqueeze_v1 Debian Squeeze] 
- * (testing) [InstallClient_Ubuntu_v1 Ubuntu] 
+ * (testing) [ClientInstall_Ubuntu12_v1 Ubuntu 12] 
  * (testing) [InstallClient_CentOS_v1 CentOS] 
  * (unstable) [InstallClient_OSX_v1 OS X] 
 == Package ==
