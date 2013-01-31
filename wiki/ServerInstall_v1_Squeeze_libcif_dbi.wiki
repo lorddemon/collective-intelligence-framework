@@ -1,0 +1,42 @@
+#summary squeeze libcif-dbi install doc (v1)
+
+= Introduction =
+This assumes a clean install of Debian Squeeze (v6.0.x) with sudo and all base system updates applied.
+
+* Table of Contents *
+<wiki:toc max_depth="3" />
+
+= Details =
+== Caveats ==
+=== Minimal Debian ===
+Minimal Debian does not come with sudo or the normal version of vim. If you used the net boot version of the debian installer, you'll need to install these as root:
+{{{
+$ aptitude install sudo vim
+}}}
+== Dependencies Installation ==
+----
+ # install the [InstallClient_v1 client]
+ # install the base deps
+{{{
+$ sudo aptitude -y install postgresql libclass-dbi-perl libdbd-pg-perl
+}}}
+ # Install the remaining CPAN modules
+{{{
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::DNS::Match'
+}}}
+== System Setup ==
+-----
+=== Default CIF user ===
+----
+Create your "cif" user/group (the configure script will default to this user "cif")
+{{{
+$ sudo adduser --disabled-password --gecos '' cif
+}}}
+=== Install Library ===
+ # download the latest libcif-dbi [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:v1+libcif-dbi package]
+{{{
+$ tar -xzvf libcif-v1-XXX.tar.gz
+$ cd libcif-v1-XXX
+$ ./configure && make testdeps
+$ sudo make install
+}}}
