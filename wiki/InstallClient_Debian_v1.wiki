@@ -12,7 +12,7 @@ This assumes a clean install of Debian Squeeze (v6.0.x) with sudo and all base s
 === Debian Minimal ===
 debian-minimal does not come with sudo or the normal version of vim. If you used the net boot version of the debian installer, you'll need to install these (as root):
 {{{
-$ aptitude install sudo vim
+$ aptitude -y install sudo vim
 }}}
 == Dependencies ==
 ----
