@@ -43,7 +43,7 @@ $ sudo make install
 }}}
 == Examples ==
 -----
-In order for an application to leverage the CIF libraries, the '/opt/cif/lib' path must be added to the application. Other examples can be found by reviewing the perl application in /opt/cif/bin (cif, cif_apikeys, etc..).
+ * In order for an application to leverage the CIF libraries, the '/opt/cif/lib' path must be added to the application. Other examples can be found by reviewing the perl application in /opt/cif/bin (cif, cif_apikeys, etc..).
 {{{
 #!/usr/bin/perl
 
@@ -59,4 +59,12 @@ use CIF::Client;
 my $cli = CIF::Client->new();
 
 ...
+}}}
+ * the application user must have a a cif config it can read, for example if it's a web application, a /etc/apache/cif.conf could be created with the following:
+{{{
+[db]
+host = 127.0.0.1
+user = postgres
+password =
+database = cif
 }}}
