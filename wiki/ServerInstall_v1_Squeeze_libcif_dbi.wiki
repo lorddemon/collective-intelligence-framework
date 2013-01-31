@@ -53,4 +53,10 @@ use strict;
 BEGIN {
         unshift @INC, "/opt/cif/lib";
 }
+
+use CIF::Client;
+
+my $cli = CIF::Client->new();
+
+...
 }}}
