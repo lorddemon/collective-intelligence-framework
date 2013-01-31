@@ -11,7 +11,7 @@ These are our best projections as of the last 'wiki edit' date, subject to chang
  * inter-federation docs, templates and tools
  * see current [http://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall_v1#Changes ChangeLog]
 
-= Fall 2013 - v2 =
+= Spring 2013 - v2 =
 
  * integration with responder tools
  * add bgp data support
@@ -21,9 +21,6 @@ These are our best projections as of the last 'wiki edit' date, subject to chang
  * data warehouse scaling support (hbase, zeromq)
  * passive dns integration
  * [http://code.google.com/p/collective-intelligence-framework/issues/list?q=Milestone=v2&sort=priority+id complete list]
-
-= Summer 2014 - v3 =
-
  * advanced correlation
  * advanced analytics
  * machine learning algo's
