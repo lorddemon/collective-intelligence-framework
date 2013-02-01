@@ -57,7 +57,7 @@ You may notice that postgresql could become the ultimate bottleneck when dealing
 <table border="0" cellspacing="25" valign="center">
 <tbody>
 <tr>
-<td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_six_servers_02.png" width="600"></img></td>
+<td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_six_servers_03.png" width="600"></img></td>
 </tr>
 
 </tbody>
