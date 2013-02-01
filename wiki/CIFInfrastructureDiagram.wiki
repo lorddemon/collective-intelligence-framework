@@ -20,16 +20,34 @@
 ==== postgresql ====
  * data store
 
+== One server ==
+
+With one server every component is installed on the same host and must share resources (cpu and i/o) with the other components. 
+
 <table border="0" cellspacing="25" valign="center">
 <tbody>
 <tr>
 <td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_one_server.png" width="400"></img></td>
 </tr>
+</tbody>
+</table>
 
+== Two servers ==
+
+When you hit resource constraints with one server, it is likely the first component you would split out is the postgresql database.
+
+<table border="0" cellspacing="25" valign="center">
+<tbody>
 <tr>
 <td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_two_servers.png" width="500"></img></td>
 </tr>
+</tbody>
+</table>
 
+== Six servers ==
+
+<table border="0" cellspacing="25" valign="center">
+<tbody>
 <tr>
 <td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_six_servers.png" width="600"></img></td>
 </tr>
