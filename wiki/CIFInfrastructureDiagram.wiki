@@ -11,11 +11,11 @@ Hello world
 </tr>
 
 <tr>
-<td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_two_servers.png" width="400"></img></td>
+<td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_two_servers.png" width="500"></img></td>
 </tr>
 
 <tr>
-<td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_six_servers.png" width="500"></img></td>
+<td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_six_servers.png" width="600"></img></td>
 </tr>
 
 </tbody>
