@@ -4,6 +4,8 @@
 
 Hello world
 
+<table border="0" cellspacing="25" valign="center">
+<tbody>
 <tr>
 <td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_one_server.png" width="300"></img></td>
 </tr>
@@ -11,3 +13,5 @@ Hello world
 <tr>
 <td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_two_servers.png" width="300"></img></td>
 </tr>
+</tbody>
+</table>
