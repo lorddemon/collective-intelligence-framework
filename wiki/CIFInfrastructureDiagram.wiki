@@ -13,5 +13,10 @@ Hello world
 <tr>
 <td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_two_servers.png" width="300"></img></td>
 </tr>
+
+<tr>
+<td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_six_servers.png" width="300"></img></td>
+</tr>
+
 </tbody>
 </table>
