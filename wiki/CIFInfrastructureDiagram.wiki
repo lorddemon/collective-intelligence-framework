@@ -46,7 +46,7 @@ When you hit resource constraints with one server, it is likely the first compon
 
 == Six servers ==
 
-With six or more servers you can dedicate servers per component. This allows you to add additional servers as needed. 
+With three or more servers you can dedicate servers per component. This allows you to add additional servers as needed. 
 
 This also gives high availability capabilities as demonstrated below with DNS round robin between two cif-routers and a postgresql in a master / slave configuration. 
 
