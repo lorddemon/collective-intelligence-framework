@@ -2,7 +2,23 @@
 
 = Introduction =
 
-Hello world
+=== Key ===
+
+==== cif-client ====
+ *  query cif
+ * submit data to cif
+ * get feeds from cif
+
+==== cif-smart ====
+ * parse data sets
+ * run post processors on parsed data sets
+
+==== cif-router ====
+ * ?
+ * ?
+
+==== postgresql ====
+ * data store
 
 <table border="0" cellspacing="25" valign="center">
 <tbody>
