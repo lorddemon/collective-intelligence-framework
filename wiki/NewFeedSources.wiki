@@ -5,6 +5,11 @@ These are a list of interesting new feed sources for CIF. They have not been vet
 
 = Sources =
 {{{
+http://honeytarg.cert.br/honeypots/
+http://exposure.iseclab.org/
+http://arakis.pl/en/index.html
+http://www.spamcop.net/
+http://honeytarg.cert.br/spampots/
 http://zeltser.com/combating-malicious-software/malicious-ip-blocklists.html
 http://contagiodump.blogspot.com/2010/11/links-and-resources-for-malware-samples.html
 http://urlquery.net/index.php
