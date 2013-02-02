@@ -1,7 +1,7 @@
 #summary OS X client install doc (v1)
-
+* UNSTABLE *
 = Introduction =
-This assumes you're using macports (could be adapted for homebrew)
+* due to the osx implementation of perl, ossp::uuid doesn't install properly on os x, please use the browser plugin *
 
 * Table of Contents *
 <wiki:toc max_depth="2" />
@@ -33,7 +33,7 @@ $ perl -e 'use OSSP::uuid'
 }}}
  # install the CPAN modules
 {{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::SSLeay, Compress::Snappy, Net::Patricia, Iodef::Pb::Simple, DateTime::Format::DateParse,Digest::SHA,Log::Dispatch,List::MoreUtils,DateTime'
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::SSLeay,Compress::Snappy,Net::Patricia, Iodef::Pb::Simple,DateTime::Format::DateParse,Digest::SHA,Log::Dispatch,List::MoreUtils,DateTime'
 }}}
  # update config-simple-perl manually (something's wrong where 4.59 won't update on OS X)
 {{{
