@@ -1,7 +1,6 @@
 #summary the Server Installation (v1)
 
 * Before you Begin *
- * If you've never used CIF before, *STOP RIGHT HERE*, please see the [ServerInstall_v0 v0 installer] which is considered stable
  * From this point on, ignore all other doc (including any client side doc), this page includes all the doc required to test v1 and it could conflict with other doc creating confusion, pain and potential alcohol abuse..
 
 * Table of Contents *
