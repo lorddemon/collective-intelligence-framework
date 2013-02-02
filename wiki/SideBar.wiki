@@ -51,7 +51,7 @@
    * [MalwareDomains_v0 Malware Domains]
    * [Tools_crontool_v0 CIF Crontool]
    * [Tools_cif_apikeys_v0 CIF Apikeys]
- * v1 (Development -- UNSTABLE)
+ * v1 (Development -- testing)
   * Server
    * [ServerInstall_v1 Server Install v1]
    * [ServerInstall_v1_MigrateApikeys API key migration]
