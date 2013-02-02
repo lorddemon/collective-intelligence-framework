@@ -3,6 +3,16 @@
 
 <wiki:toc max_depth="3" />
 
+== Net::DNS UNIX issue ==
+{{{
+I got an error that it couldn't find Net::DNS::Resolver::Linux.pm... I 
+linked Unix.pm to linux.pm and now I get this: 
+
+Can't locate object method "init" via package "Net::DNS::Resolver" at 
+/usr/local/lib/perl/5.14.2/Net/DNS/Resolver.pm line 44. 
+}}}
+see: https://groups.google.com/d/topic/ci-framework/3LNLcKfMelI/discussion
+
 == Unstable Doc ==
 This typically means that the documentation isn't regularly tested with newer updates. Although it should basically work, it could be missing a few dependencies here as the underlying architecture changes.
 
