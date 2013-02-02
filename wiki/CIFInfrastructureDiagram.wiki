@@ -14,10 +14,15 @@ cif v1 is architected in a way that allows it's major components to be distribut
 ==== cif-smart ====
  * parse data sets
  * run post processors on parsed data sets
+  * dns resolution
+  * bgp resolution
+  * domain resolution from urls
+  * malware resolution from TC MW hash reg
+  * bgp prefix whitelisting
 
 ==== cif-router ====
- * ?
- * ?
+ * peers with clients giving access to data-warehouse
+ * peers with other routers
 
 ==== postgresql ====
  * data store
