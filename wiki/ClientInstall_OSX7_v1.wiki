@@ -1,5 +1,5 @@
 #summary OS X client install doc (v1)
-* UNSTABLE *
+* UNSTABLE / DOES NOT WORK ATM *
 = Introduction =
 * due to the osx implementation of perl, ossp::uuid doesn't install properly on os x, please use the browser plugin *
 
