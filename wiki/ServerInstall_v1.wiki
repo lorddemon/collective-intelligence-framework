@@ -12,6 +12,10 @@ A semi-complete [ChangeLog_v1 ChangeLog] of v1
 
 A list of known [KnownIssues_v1 issues] for v1
 
+The v1 FAQ can be found [Faq_v1 here]
+
+Issues being discussed on the mailing list can be found [https://groups.google.com/forum/?hl=en&fromgroups=#!tags/ci-framework/v1 here]
+
 == v0 Compatibility ==
  * You *cannot* run this beta on the same box as CIF v0, it will break stuff. See the client v0 [ClientRemoval_v0 removal guide]
  * older cif clients (v0, v1_RC1) will not work with this current versions of CIF
