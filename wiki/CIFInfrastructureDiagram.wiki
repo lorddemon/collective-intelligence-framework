@@ -29,7 +29,7 @@ cif v1 is architected in a way that allows it's major components to be distribut
 
 == One server ==
 
-With one server every component is installed on the same host and must share resources (cpu and i/o) with the other components. 
+With a single server every component is installed on the same host and must share resources (cpu and i/o) with the other components. 
 
 <table border="0" cellspacing="25" valign="center">
 <tbody>
