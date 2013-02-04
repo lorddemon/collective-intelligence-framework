@@ -88,7 +88,8 @@ $CPAN::Config = {
 1;
 __END__
 }}}
- # when you run the first "perl -MCPAN install ..." command, it will auto-configure a list of local CPAN mirrors for you
+
+Note: when you run the first "perl -MCPAN install ..." command, it will auto-configure a list of local CPAN mirrors for you
 == Dependencies Installation ==
 ----
  # Install the base dependencies from the Ubuntu repositories (as root)
