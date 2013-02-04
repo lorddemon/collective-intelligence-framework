@@ -10,6 +10,7 @@ In testing with the default data sets, 23 million records used 6GB in the archiv
 
 == Too many open files (signaler.cpp:330) ==
 === Ubuntu 12 ===
+----
 Edit /etc/security/limits.conf and add:
  * soft nofile 20000
  * hard nofile 30000
