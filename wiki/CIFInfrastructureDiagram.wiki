@@ -6,8 +6,8 @@ cif v1 is architected in a way that allows it's major components to be distribut
 
 === Key ===
 
-==== cif-client ====
- *  query cif
+==== libcif ====
+ * query cif
  * submit data to cif
  * get feeds from cif
 
