@@ -57,7 +57,7 @@ With three or more servers you can dedicate one or more servers per component. T
 
 This also gives high availability capabilities as demonstrated below with a load balancer in front of the two cif-routers and a postgresql in a master-slave configuration. 
 
-You may notice that postgresql could become the ultimate bottleneck when dealing with big data. In cif v2, HBase will be a optional data store; stay tuned! 
+You may notice that postgresql could become the ultimate bottleneck when dealing with big data. In cif v2, [http://hbase.apache.org HBase] will be a optional data store; stay tuned! 
 
 <table border="0" cellspacing="25" valign="center">
 <tbody>
