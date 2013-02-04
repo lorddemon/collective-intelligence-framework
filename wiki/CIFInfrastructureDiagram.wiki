@@ -46,7 +46,7 @@ When you hit resource constraints with one server, it is likely the first compon
 <table border="0" cellspacing="25" valign="center">
 <tbody>
 <tr>
-<td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_two_servers_02.png" width="500"></img></td>
+<td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_two_servers_03.png" width="500"></img></td>
 </tr>
 </tbody>
 </table>
