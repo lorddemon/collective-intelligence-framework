@@ -29,7 +29,7 @@ drwxrwx--- 2 root root 4096 Jan  3 18:02 archive
 drwxrwx--- 2 root root 4096 Jan  3 18:02 index
 }}}
  
-Continue with  [ServerInstall_v1_RC2#Required_applications_and_dependencies Required applications and dependencies]
+Continue with [ServerInstall_v1#Required_applications_and_dependencies Required applications and dependencies]
 
 == Large Install ==
 ----
@@ -96,4 +96,4 @@ tmpfs                 2.0G     0  2.0G   0% /dev/shm
 /dev/mapper/vg02-index 550G   1G  549G  1% /mnt/index
 }}}
 
-Continue with  [ServerInstall_v1#Required_applications_and_dependencies Required applications and dependencies]
+Continue with [ServerInstall_v1#Required_applications_and_dependencies Required applications and dependencies]
