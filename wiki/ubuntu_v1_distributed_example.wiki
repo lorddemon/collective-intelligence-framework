@@ -516,7 +516,7 @@ debug = 1
 The link below goes to the CIF APIKeys generation and setup. Continue through to the end of the document to complete the CIF installation
  * [http://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall_v1#APIKey APIKey generation and remainder of CIF setup]
 
-= Phase 2 - Bring up a secondary Postgresql server for HA/DR =
+= Section 2 - Bring up a secondary Postgresql server for HA/DR =
 This builds upon the previous section and adds a secondary Postgresql server that can be used as a failover in case the primary DB server fails.
 
 For reference, the replication technologies implemented in this section are:
