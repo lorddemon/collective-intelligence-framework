@@ -34,7 +34,7 @@ With one server every component is installed on the same host and must share res
 <table border="0" cellspacing="25" valign="center">
 <tbody>
 <tr>
-<td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_one_server_05.png" width="400"></img></td>
+<td align="center"><img src="http://collective-intelligence-framework.googlecode.com/files/cifv1_one_server_06.png" width="400"></img></td>
 </tr>
 </tbody>
 </table>
