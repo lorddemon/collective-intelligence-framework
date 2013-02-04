@@ -9,8 +9,9 @@
 In testing with the default data sets, 23 million records used 6GB in the archive table and 12GB in the index table. That averages out to roughly 1.3 million records per GB. You can reduce disk space over time be pruning the index tables. 
 
 == Too many open files (signaler.cpp:330) ==
-To fix it, edit /etc/security/limits.conf and add:
+=== Ubuntu ===
+Edit /etc/security/limits.conf and add:
  * soft nofile 20000
- *  hard nofile 30000
+ * hard nofile 30000
 
 reference: https://groups.google.com/d/topic/ci-framework/LDNSJnf6BZg/discussion
