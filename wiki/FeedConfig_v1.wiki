@@ -127,4 +127,4 @@ alternativeid_restriction = 'public'
 || field_map ||  <csv-string> || a comma separated list of the fields ||
 
 === More examples ===
-Additional example config files can be found [http://code.google.com/p/collective-intelligence-framework/source/browse/server/trunk/etc/ here].
+Additional example config files can be found [https://github.com/collectiveintel/cif-smrt/tree/master/etc here].
