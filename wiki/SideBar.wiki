@@ -64,6 +64,7 @@
   * API
   * [Taxonomy_v1 Taxonomy]
    * [TaxonomyAssessment_v1 Assessment Definitions]
+   * [TaxonomyConfidence_v1 Confidence Definitions]
   * Feeds
   * [FAQ_v1 FAQ]
  * Other
