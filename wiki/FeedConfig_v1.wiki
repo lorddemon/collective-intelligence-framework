@@ -39,7 +39,7 @@ CIF comes with a variety of pre-built feed configurations, with that there are m
 || feed || <uri><filename> || {{{http://example.com/feed.csv}}} or /tmp/feed.csv || yes ||
 || feed_user || <string> || username (Basic authentication) || no ||
 || feed_password || <string> || password (Basic authentication) || no ||
-|| guid || <string> || default: 'everyone' unless you know what you're doing || no ||
+|| guid || <string> || default: 'everyone' unless you know what you're doing || yes ||
 || assessment || <string> || see [TaxonomyAssessment_v1 Assessment] || no ||
 || malware_md5 || <string> || MD5sum of malicious file || no ||
 || malware_sha1 || <string> || SHA1sum of malicious file || no ||
