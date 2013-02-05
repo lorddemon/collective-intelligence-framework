@@ -15,15 +15,7 @@ This doc provides for the installation of a remote database client (eg: the rout
  # install the [ClientInstall_v1 client]
  # install the dependencies (as root)
 {{{
-$ yum -y install rng-tools postgresql wget ntpdate
-}}}
- # Install the remaining CPAN modules
-{{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::DNS::Match'
-}}}
- # make sure your clock is up to date (some packages might not install if it's too far skewed)
-{{{
-$ sudo ntpdate -u pool.ntp.org
+$ yum -y install postgresql
 }}}
 == System Setup ==
 -----
