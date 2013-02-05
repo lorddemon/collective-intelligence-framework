@@ -31,6 +31,7 @@ CIF comes with a variety of pre-built feed configurations, with that there are m
 || address || <string> || This is usually a IP address, URI or domain that are found in feeds of data but is not limited to those data types|| yes ||
 || alternativeid || <string> || usually a url pointing to the original data point (as a reference id) || no ||
 || alternativeid_restriction || <string> || public, default, need-to-know,private || no ||
+|| assessment || <string> || see [TaxonomyAssessment_v1 Assessment] || no ||
 || confidence || <int> || see [TaxonomyConfidence_v1 Confidence] || no ||
 || description || <string> || short (1-2 space delimited word) description of the activity (eg: tdss spyeye) || no ||
 || detection || <string> || hourly/daily: what to "fuzz" the detection string to || no ||
@@ -40,7 +41,6 @@ CIF comes with a variety of pre-built feed configurations, with that there are m
 || feed_user || <string> || username (Basic authentication) || no ||
 || feed_password || <string> || password (Basic authentication) || no ||
 || guid || <string> || default: 'everyone' unless you know what you're doing || yes ||
-|| assessment || <string> || see [TaxonomyAssessment_v1 Assessment] || no ||
 || malware_md5 || <string> || MD5sum of malicious file || no ||
 || malware_sha1 || <string> || SHA1sum of malicious file || no ||
 || mirror || <string> || file path (eg: mirror = '/tmp'), allows for testing to see if the downloaded feed has changed before re-downloading || no ||
