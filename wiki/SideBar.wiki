@@ -65,6 +65,7 @@
   * [Taxonomy_v1 Taxonomy]
    * [TaxonomyAssessment_v1 Assessment Definitions]
    * [TaxonomyConfidence_v1 Confidence Definitions]
+   * [TaxonomySeverity_v1 Severity Definitions]
   * Feeds
   * [FAQ_v1 FAQ]
  * Other
