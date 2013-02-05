@@ -1,5 +1,10 @@
 #summary FAQ about feeds (v1)
 
+<font color="red">
+= Unstable =
+ * Link to a yet to be created feed type page
+</font>
+
 Frequently Asked Questions about Feeds.
 <wiki:toc max_depth="3" />
 
