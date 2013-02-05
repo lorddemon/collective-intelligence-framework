@@ -111,17 +111,13 @@ description = 'urlblacklist.com malware urls'
 
 == Testing a Feed ==
 
-A feed can be tested by running *cif_feedparser* in debug mode with a specific feed and config file. The following example tests the *dshield_suspiciousdomains* feed in the */opt/cif/etc/custommalware.cfg* config.
+A feed can be tested by running *cif_smrt* in debug mode with a specific feed and config file. The following example tests the *dshield_suspiciousdomains* feed in the */opt/cif/etc/custommalware.cfg* config.
 {{{
-~$ /opt/cif/bin/cif_feedparser -c /opt/cif/etc/custommalware.cfg -f dshield_suspiciousdomains -T low -d
-isc.sans.edu -- d9a4bff9-229b-543a-8372-b43cb95b3fc6 -- malware dshield low false positive list -- 01n02n4cx00.com...
-isc.sans.edu -- 1c03e2c9-8cd8-56ef-a52f-ece9b50715de -- malware dshield low false positive list -- 02c20c8.netsolhost.com...
-...[output omitted]...
-isc.sans.edu -- 699e0dc9-fe35-5ed4-913f-eadd142f4e7b -- malware dshield low false positive list -- zya.com...
-isc.sans.edu -- 7c811c9b-83dc-5de5-8c2c-ee61dd5ec30c -- malware dshield low false positive list -- zz87lhfda88.com...
-~$
+~$ /opt/cif/bin/cif_smrt -d -r /opt/cif/etc/custommalware.cfg -f dshield_suspiciousdomains -T low
+
+<output here>
 }}}
-The feedparser should output a line for each item in the data source. If  nothing comes back, verify that the URL to the feed is correct.
+cif_smrt should output a line for each item in the data source. If  nothing comes back, verify that the URL to the feed is correct.
 
 == Generate Feeds ==
 
@@ -134,5 +130,5 @@ Generate feeds using this command
 
 Run this command to display a feed of domains
 {{{
-~$ cif -q domain -s medium -c 85
+~$ cif -q domain -c 85
 }}}
