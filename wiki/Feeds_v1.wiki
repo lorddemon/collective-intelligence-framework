@@ -12,7 +12,7 @@ This describes the various dynamically generated data-sets within the framework.
  * firewall rules
  * and more...
 
-Before you begin, make sure you review the [Taxonomy_v1] page. This will help with measuring your risk tolerance and which feed combinations you should use.
+Before you begin, make sure you review the [Taxonomy_v1 Taxonomy] page. This will help with measuring your risk tolerance and which feed combinations you should use.
 
 The simplest feed to get started with is the [FeedsBotnet#Infrastructure botnet Infrastructure] feed. Typically botnet infrastructure is tagged with a severity of [TaxonomySeverity_v0#High high], meaning, if you combine this with a [TaxonomyConfidence_v0#85_-_94 high confidence] (85-100) observation, it's likely that you're dealing with a compromised host.
 = Output Plugins =
