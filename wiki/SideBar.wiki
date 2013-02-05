@@ -59,7 +59,7 @@
    * [GroupSupport_v1 Group Support]
    * [RTCIFMinimal_v1 RT Plugin]
    * [ServerInstall_v1_MigrateApikeys API key migration]
-  * Client
+  * [Client_v1 Client]
    * [ClientInstall_v1 Client Install]
   * API
   * Taxonomy
