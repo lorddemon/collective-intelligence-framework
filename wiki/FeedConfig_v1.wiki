@@ -7,7 +7,7 @@
 
 = Introduction =
 
-CIF comes with a variety of pre-built feed configurations, with that there are ways to create your own configs for various custom feeds.
+CIF comes with a variety of pre-built feed configurations, with that there are many ways to create your own configs for various custom feeds.
 
 = Details =
 
