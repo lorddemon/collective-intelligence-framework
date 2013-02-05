@@ -1,9 +1,11 @@
 #summary how to backup your data (v1)
 #labels Version-1
 
+= <font color="red">Unstable</font> =
+
 = Introduction =
 
-Here we'll use the existing pg_dump tool to backup your apikeys, apikeys_groups and archive table. Note that this example does NOT include the index tables / tablespaces. These don't need to be backed up, they can be re-created using the /opt/cif/bin/cif_indexer tool.
+Here we'll use the existing pg_dump tool to backup your apikeys, apikeys_groups and archive table. Note that this example does NOT include the index tables / tablespaces. <font color="red">These don't need to be backed up, they can be re-created using the /opt/cif/bin/cif_indexer tool.</font>
 
 = Backup =
  * using the DROP TABLE option
