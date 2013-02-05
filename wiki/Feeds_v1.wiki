@@ -68,15 +68,11 @@ $ cif -q infrastructure/botnet -c 85
 === Mitigation ===
  * mitigation against infection (exploit pages, etc, should use domain or url based where possible)
 {{{
-$ cif -q infrastructure/malware -c 85 -s medium
+$ cif -q infrastructure/malware -c 85
 }}}
  * mitigation against brute-force and/or network scanner-based threats
 {{{
-$ cif -q infrastructure/scan -s medium -c 85
-}}}
- * mitigation against suspicious networks (known criminal hosting, could lead to infection)
-{{{
-$ cif -q infrastructure/network -s medium -c 85
+$ cif -q infrastructure/scan -c 85
 }}}
 
 == Domains ==
