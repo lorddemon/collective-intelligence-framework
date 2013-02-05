@@ -1,0 +1,17 @@
+#summary describes the various taxonomies used through the framework (v1)
+#labels Version-1
+
+= Introduction =
+
+Throughout this framework, assessment, confidence, and severity are used to describe our observations. The combination of all three help to define how the data should be treated and what should be done operationally. These taxonomies are important in defining your risk tolerance and the balance between "false positives" and pre-emptive mitigation.
+
+= Details =
+
+== Assessment ==
+[TaxonomyAssessment_v1 Assessment] describes the profile of actor we're dealing with (botnet infrastructure, phishing domain, etc)
+
+== Confidence ==
+[TaxonomyConfidence_v1 Confidence] describes how confidence we are in our observation (0-100, 0-low, 100-high).
+
+== Severity ==
+[TaxonomySeverity_v1 Severity] describes the seriousness of an observation. A sort of "pain scale".
