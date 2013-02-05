@@ -76,7 +76,7 @@ perl -ne '/^((?!Site)[^#]\S+)/ and print "$1\n"' suspiciousdomains_Low.txt
   * *alternativeid* is usually the URL or location of the original data point for future reference because the value of *feed* is not returned with queries or feeds.
   * *description* is a few words describing what the data point is.
 
-Most of these configuration values can also be extracted directly from the feed if the relevant data is included. For more examples, visit the [FeedConfig_v0 FeedConfig] page.
+Most of these configuration values can also be extracted directly from the feed if the relevant data is included. For more examples, visit the [FeedConfig_v1 FeedConfig] page.
 
 == Final Configuration ==
 */opt/cif/etc/custommalware.cfg*
