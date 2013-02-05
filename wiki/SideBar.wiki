@@ -62,7 +62,7 @@
   * [Client_v1 Client]
    * [ClientInstall_v1 Client Install]
   * API
-  * Taxonomy
+  * [Taxonomy_v1 Taxonomy]
    * [TaxonomyAssessment_v1 Assessment Definitions]
   * Feeds
   * [FAQ_v1 FAQ]
