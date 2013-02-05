@@ -1,6 +1,12 @@
 #summary confidence descriptions (v1)
 #labels Version-1
 
+<font color="red">
+= Unstable =
+ * add language to 85 and 95 describing that you can alert or drop with some level confidence without false positives
+</font>
+
+
 = Introduction =
 
 Confidence details the degree of certainty of a given observation.
