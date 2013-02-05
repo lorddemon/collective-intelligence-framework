@@ -54,9 +54,10 @@
  * v1 (Development -- testing)
   * [WhatisCIF Server]
    * [ServerInstall_v1 Server Install v1]
-   * [ServerInstall_v1_MigrateApikeys API key migration]
-   * [ServerBackup_v1 Backup]
    * [CIFInfrastructureDiagram CIF Infrastructure Diagram]
+   * [ServerBackup_v1 Backup]
+   * [GroupSupport_v1 Group Support]
+   * [ServerInstall_v1_MigrateApikeys API key migration]
   * [ClientInstall_v1 Client Install]
   * API
   * Taxonomy
