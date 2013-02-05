@@ -3,6 +3,7 @@
 
 <font color="red">
 = Unstable =
+ * paste output from cif_smrt -d
 </font>
 
 = Introduction =
