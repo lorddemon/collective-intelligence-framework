@@ -4,7 +4,7 @@
 <font color="red">
 
 = Unstable = 
- * update section under details
+ * update "details"
 
 </font>
 
