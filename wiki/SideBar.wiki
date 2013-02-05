@@ -67,7 +67,7 @@
    * [TaxonomyConfidence_v1 Confidence Definitions]
    * [TaxonomySeverity_v1 Severity Definitions]
   * [Feeds_v1 Feeds]
-   * [FeedsFAQ_v0 Feed FAQ]
+   * [FeedsFAQ_v1 Feed FAQ]
   * [FAQ_v1 FAQ]
  * Other
   * [ProjectsLab]
