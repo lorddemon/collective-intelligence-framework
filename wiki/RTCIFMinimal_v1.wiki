@@ -1,0 +1,12 @@
+#summary how to setup CIFMinimal (v1)
+#labels Version-1
+
+= <font color="red">Unstable</font> =
+
+= Introduction =
+
+This add-on provides a simple yet effective [http://groups.google.com/group/ci-framework/msg/907392a85a24ffd8 WebUI] to the CIF WebAPI
+
+= Details =
+ # download and install the <font color="red">plugin</font>
+ # follow the directions in the README
