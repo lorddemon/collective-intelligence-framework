@@ -19,7 +19,7 @@ This describes the various dynamically generated data-sets within the framework.
 
 Before you begin, make sure you review the [Taxonomy_v1 Taxonomy] page. This will help with measuring your risk tolerance and which feed combinations you should use.
 
-The simplest feed to get started with is the [FeedsBotnet#Infrastructure botnet Infrastructure] feed. 
+The simplest feed to get started with is the [FeedsBotnet_v1#Infrastructure botnet Infrastructure] feed. 
 
 = Output Plugins =
 The perl-client has a number of "output plugins" available:
