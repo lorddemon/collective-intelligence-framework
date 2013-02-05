@@ -69,6 +69,8 @@
   * [Feeds_v1 Feeds]
    * [FeedConfig_v1 Feed Config]
    * [FeedsFAQ_v1 Feed FAQ]
+  * Cookbook
+   * [AddingFeeds_v1 Adding New Feeds]
   * [FAQ_v1 FAQ]
  * Other
   * [ProjectsLab]
