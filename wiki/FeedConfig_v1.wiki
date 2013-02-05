@@ -1,0 +1,126 @@
+#summary designing your own custom.cfg feed parsing config (v1)
+#labels Version-0
+
+= Introduction =
+
+CIF comes with a variety of pre-built feed configurations, with that there are ways to create your own configs for various custom feeds.
+
+= Details =
+
+== File Format ==
+{{{
+#Global Parameters
+<parameter> = <value>
+<parameter> = <value>
+<parameter> = <value>
+
+#Feed Parameters
+[feed_name]
+<parameter> = <value>
+<parameter> = <value>
+<parameter> = <value>
+}}}
+
+
+== Common Parameters ==
+|| Parameter Name || Values || Description || Required ||
+|| address || <string> || This is usually a IP address, URI or domain that are found in feeds of data but is not limited to those data types|| yes ||
+|| alternativeid || <string> || usually a url pointing to the original data point (as a reference id) || no ||
+|| alternativeid_restriction || <string> || public, default, need-to-know,private || no ||
+|| confidence || <int> || see [TaxonomyConfidence_v0 Confidence] || no ||
+|| description || <string> || short (1-2 space delimited word) description of the activity (eg: tdss spyeye) || no ||
+|| detection || <string> || hourly/daily: what to "fuzz" the detection string to || no ||
+|| detecttime || <string> || Most common timestamp formats are valid || no ||
+|| disabled || <string> || true, false || no ||
+|| feed || <uri><filename> || {{{http://example.com/feed.csv}}} or /tmp/feed.csv || no ||
+|| feed_user || <string> || username (Basic authentication) || no ||
+|| feed_password || <string> || password (Basic authentication) || no ||
+|| guid || <string> || default: 'everyone' unless you know what you're doing || no ||
+|| impact || <string> || see [TaxonomyImpact_v0 Impact] || no ||
+|| malware_md5 || <string> || MD5sum of malicious file || no ||
+|| malware_sha1 || <string> || SHA1sum of malicious file || no ||
+|| mirror || <string> || file path (eg: mirror = '/tmp'), allows for testing to see if the downloaded feed has changed before re-downloading || no ||
+|| null || n/a || Use the null value for columns of data you want to ignore || no ||
+|| period || <string> || hourly/daily: how often the cif_crontool should pick up this feed (when in doubt, use daily) || no ||
+|| protocol || <int><string> || 6 or tcp, 17 or udp || no ||
+|| portlist || <int> || 22,25,80 || no ||
+|| restriction || <string> || public, default, need-to-know, private || no ||
+|| severity || <string> || see [TaxonomySeverity_v0 Severity] || no ||
+|| source || <string> || source of the feed, usually the domain where the feed is from (eg: example.com) || no ||
+|| zip_filename || <string> || when the feed is a zip file, this should identify what the zip header is || no ||
+
+=== Comma Delimited Text Files ===
+The [http://code.google.com/p/collective-intelligence-framework/source/browse/server/trunk/lib/CIF/FeedParser.pm Feed Parser] will automagically detect and parse comma delimited text files using [http://code.google.com/p/collective-intelligence-framework/source/browse/server/trunk/lib/CIF/FeedParser/ParseCsv.pm Text::CSV]. 
+
+=== Delimited Text Files ===
+{{{
+severity = medium
+confidence = 65
+detection = daily
+feed = "http://mirror1.malwaredomains.com/files/domains.txt"
+impact = 'malicious domain'
+source = 'malwaredomains.com'
+restriction = need-to-know
+alternativeid_restriction = public
+guid = everyone
+
+[domains]
+values = 'null,null,address,description,alternativeid,null'
+delimiter = '[\t|\f]'
+period = daily
+}}}
+|| Parameter Name || Values || Description ||
+|| values || <csv-string> || a comma separated list of parameters ||
+|| delimiter || <string> || a sudo-regex that splits up the feed ||
+
+=== NonDelimited Text Files ===
+{{{
+[sbl]
+regex = '^\t\t(\S+)\t(\S+)\t(www.spamhaus.org/sbl/sbl.lasso\?query=sbl\d+)'
+regex_values = 'address,description,alternativeid'
+confidence = 85
+period = daily
+}}}
+|| Parameter Name || Values || Description ||
+|| regex || <string> || a regex string that splits up a line feed ||
+|| regex_values || <csv-string> || a csv list that maps to the regex extracted values ||
+
+=== XML Files ===
+{{{
+[cleanmx]
+feed = 'http://support.clean-mx.de/clean-mx/xmlviruses.php?'
+impact = 'malware url'
+source = 'clean-mx.de'
+node = entry
+elements = 'id,first,md5,virusname,url'
+elements_map = 'id,detecttime,malware_md5,description,address'
+alternativeid = 'http://support.clean-mx.de/clean-mx/viruses.php?id=<id>'
+period = daily
+}}}
+|| Parameter Name || Values || Description ||
+|| node || <string> || what xml node we should use as the key node ||
+|| elements || <csv-string> || what elements within <node> we should map out ||
+|| elements_map || <csv-string> || what values we map the <elements> to ||
+
+=== JSON Files ===
+{{{
+[phishtank]
+guid = everyone
+feed = http://data.phishtank.com/data/online-valid.json.gz
+impact = 'phishing url'
+source = 'phishtank.com'
+fields = 'url,target,phish_detail_url'
+fields_map = 'address,description,alternativeid'
+detection = daily
+severity = 'medium'
+confidence = 85
+restriction = 'need-to-know'
+alternativeid_restriction = 'public'
+}}}
+
+|| Parameter Name || Values || Description ||
+|| fields || <csv-string> || a comma separated list of the fields ||
+|| field_map ||  <csv-string> || a comma separated list of the fields ||
+
+=== More examples ===
+Additional example config files can be found [http://code.google.com/p/collective-intelligence-framework/source/browse/server/trunk/etc/ here].
