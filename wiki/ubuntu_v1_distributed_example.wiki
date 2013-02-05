@@ -1,3 +1,8 @@
+<font color="red">
+= Unstable =
+ * Should be factually correct, needs readability work done
+</font>
+
 = Preamble =
 
 The individual components of CIF can be separated out to provide better scalability, redundancy, etc. In this example, the database will be separated out from the rest of the CIF components, and a second database will be added for redundancy. This is the [http://code.google.com/p/collective-intelligence-framework/wiki/CIFInfrastructureDiagram#Two_servers Two Servers diagram], with an additional Postgresql server.
