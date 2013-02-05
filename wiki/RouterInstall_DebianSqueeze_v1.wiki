@@ -16,25 +16,9 @@ $ aptitude -y install sudo vim
 }}}
 == Dependencies ==
 ----
- # Install the base deps
+ # follow the [ServerInstall_Dbi_DebianSqueeze_v1 libcif-dbi] install instructions
+ # Install the following dependencies
 {{{
-$ sudo aptitude -y install build-essential libdigest-sha1-perl libnet-cidr-perl libossp-uuid-perl libmodule-install-perl libregexp-common-perl libunicode-string-perl libconfig-simple-perl  libhtml-table-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl libextutils-parsexs-perl libdatetime-format-dateparse-perl libnet-patricia-perl libdatetime-perl libtext-table-perl libssl-dev
+$ sudo aptitude -y install apache2 apache2-threaded-dev libapache2-mod-perl2 libapache2-request-perl libapache2-mod-gnutls libapreq2-dev libapr1-dbg
 }}}
- # Install the remaining CPAN modules
-{{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Regexp::Common::net::CIDR,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Log::Dispatch,Net::SSLeay'
-}}}
-== Environment ==
-----
- # set up your user's environment (typically ~/.profile)
-{{{
-if [ -d "/opt/cif/bin" ]; then
-    PATH="/opt/cif/bin:$PATH"
-fi
-}}}
- # reload your environment
-{{{
-$ source ~/.profile
-}}}
-
-Continue with the cif-router [RouterInstall_v1#Package installation]
+ # Continue with the cif-router [RouterInstall_v1#Package installation]
