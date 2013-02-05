@@ -1,6 +1,10 @@
 #summary designing your own custom.cfg feed parsing config (v1)
 #labels Version-0
 
+<font color="red">
+= Unstable =
+</font>
+
 = Introduction =
 
 CIF comes with a variety of pre-built feed configurations, with that there are ways to create your own configs for various custom feeds.
