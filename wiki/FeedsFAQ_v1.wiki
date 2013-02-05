@@ -11,7 +11,7 @@ Frequently Asked Questions about Feeds.
 === When I try to pull a feed, no data is returned? ===
 
  1. Ensure you are using valid [FeedTypes_v1 feed syntax]
- 1. Ensure you have [ServerInstall_v1#Enabling_Feed_Generation Enabled Feed Generation]
+ 1. Ensure you have [ServerInstall_v1#Enabling_Feed_Generation enabled feed generation]
  1. Ensure you have [ServerInstall_v1#With_Feeds generated the first batch of feeds]
  1. Ensure you have enabled [ServerInstall_v1#Finishing_Up cif_feed in crontab]
  1. What is the debug output of the `-q infrastructure/suspicious -c 95` feed?
