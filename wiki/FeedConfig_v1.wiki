@@ -77,7 +77,7 @@ period = daily
 || values || <csv-string> || a comma separated list of parameters ||
 || delimiter || <string> || a sudo-regex that splits up the feed ||
 
-=== NonDelimited Text Files ===
+=== Non-Delimited Text Files ===
 {{{
 [sbl]
 regex = '^\t\t(\S+)\t(\S+)\t(www.spamhaus.org/sbl/sbl.lasso\?query=sbl\d+)'
