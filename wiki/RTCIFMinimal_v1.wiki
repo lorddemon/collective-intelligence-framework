@@ -1,7 +1,12 @@
 #summary how to setup CIFMinimal (v1)
 #labels Version-1
 
-= <font color="red">Unstable</font> =
+<font color="red">
+
+= Unstable= 
+ * link to v1 plugin
+
+</font>
 
 = Introduction =
 
