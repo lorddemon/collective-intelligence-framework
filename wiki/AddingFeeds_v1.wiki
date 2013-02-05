@@ -117,7 +117,7 @@ A feed can be tested by running *cif_smrt* in debug mode with a specific feed an
 
 <output here>
 }}}
-cif_smrt should output a line for each item in the data source. If  nothing comes back, verify that the URL to the feed is correct.
+cif_smrt should output a line for each item in the data source. If  nothing comes back, verify that the regex and URL to the feed is correct.
 
 == Generate Feeds ==
 
