@@ -38,6 +38,16 @@ $ perl Makefile.PL
 $ sudo make install
 }}}
 == Environment ==
+=== Default CIF user ===
+----
+ # create your "cif" user/group (the configure script will default to this user "cif") that will own /opt/cif
+{{{
+$ sudo adduser cif
+}}}
+ # change the default home permissions
+{{{
+$ sudo chmod 770 /home/cif
+}}}
 ----
  # set up your user's environment (typically ~/.base_profile)
 {{{
