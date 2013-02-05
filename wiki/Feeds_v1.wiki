@@ -90,7 +90,7 @@ cif -q domain/botnet -c 85
 === Mitigation ===
  * mitigating against infections (exploit pages, etc):
 {{{
-cif -q domain/malware -c 85 -s medium
+cif -q domain/malware -c 85
 }}}
 == Urls ==
 URL-based threats
@@ -102,9 +102,9 @@ cif -q url/botnet -c 85
 === Mitigation ===
  * mitigation against infection (exploit pages, etc):
 {{{
-cif -q url/malware -s medium -c 85
+cif -q url/malware -c 85
 }}}
  * mitigation against phishing url lures
 {{{
-cif -q url/phishing -s medium -c 85
+cif -q url/phishing -c 85
 }}}
