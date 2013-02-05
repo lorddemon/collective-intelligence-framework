@@ -62,7 +62,7 @@ severity = medium
 confidence = 65
 detection = daily
 feed = "http://mirror1.malwaredomains.com/files/domains.txt"
-impact = 'malicious domain'
+assessment = 'malicious domain'
 source = 'malwaredomains.com'
 restriction = need-to-know
 alternativeid_restriction = public
@@ -93,7 +93,7 @@ period = daily
 {{{
 [cleanmx]
 feed = 'http://support.clean-mx.de/clean-mx/xmlviruses.php?'
-impact = 'malware url'
+assessment = 'malware url'
 source = 'clean-mx.de'
 node = entry
 elements = 'id,first,md5,virusname,url'
@@ -111,7 +111,7 @@ period = daily
 [phishtank]
 guid = everyone
 feed = http://data.phishtank.com/data/online-valid.json.gz
-impact = 'phishing url'
+assessment = 'phishing url'
 source = 'phishtank.com'
 fields = 'url,target,phish_detail_url'
 fields_map = 'address,description,alternativeid'
