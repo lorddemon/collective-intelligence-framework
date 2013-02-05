@@ -24,7 +24,7 @@ CIF has many post processors that derive additional intelligence from a single p
 
 === Store ===
 
-CIF has a database schema that is highly optimized to store billions of records of threat intelligence.
+CIF has a database schema that is highly optimized to store billions of records of threat intelligence. CIF v1 uses a [http://backchannel.org/blog/friendfeed-schemaless-mysql "schema-less"] storage system on top of a RDBMS. 
 
 === Query ===
 
