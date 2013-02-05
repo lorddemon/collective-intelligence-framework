@@ -36,11 +36,16 @@ This functionality allows feeds to be written out in other formats removing the 
 If another format is required, please let us know. These plugins are typically 10-20 lines of code and are easy to write. All that's required is a sample of the format (eg: example rules, etc). For devices that have the ability to incorporate perl/python code into their operation (eg: NFSEN, bro, etc..), we are writing code that will hook directly into the API allowing these tools to pull the data in directly, rather than having to write them out to rules, re-parse, etc...
 
 {{{
-$ cif -q infrastructure/network -s medium -p snort
-alert ip any any -> 2.56.0.0/14 any ( msg:"need-to-know - malicious network hijacked"; threshold:type limit,track by_src,count 1,seconds 3600; sid:1; reference:http://www.spamhaus.org/sbl/sbl.lasso?query=SBL102988; priority:5; )
-alert ip any any -> 31.11.43.0/24 any ( msg:"need-to-know - malicious network hijacked"; threshold:type limit,track by_src,count 1,seconds 3600; sid:2; reference:http://www.spamhaus.org/sbl/sbl.lasso?query=SBL113323; priority:5; )
-alert ip any any -> 31.222.200.0/21 any ( msg:"need-to-know - malicious network hijacked"; threshold:type limit,track by_src,count 1,seconds 3600; sid:3; reference:http://www.spamhaus.org/sbl/sbl.lasso?query=SBL111681; priority:5; )
-alert ip any any -> 41.221.112.0/20 any ( msg:"need-to-know - malicious network hijacked"; threshold:type limit,track by_src,count 1,seconds 3600; sid:4; reference:http://www.spamhaus.org/sbl/sbl.lasso?query=SBL73618; priority:5; )
+$ /opt/cif/bin/cif -q infrastructure/suspicious -c 85 -p snort
+
+# 193.178.120.0/22 [ip address only / not url / not domain rule]
+alert ip any any -> 193.178.120.0/22 any ( msg:"need-to-know - suspicious hijacked prefix"; threshold:type limit,track by_src,count 1,seconds 3600; sid:5000000; reference:url,www.spamhaus.org/sbl/sbl.lasso?query=SBL165502; priority:5; )
+
+# 94.63.147.0/24 [ip address only / not url / not domain rule]
+alert ip any any -> 94.63.147.0/24 any ( msg:"need-to-know - suspicious hijacked prefix"; threshold:type limit,track by_src,count 1,seconds 3600; sid:5000001; reference:url,www.spamhaus.org/sbl/sbl.lasso?query=SBL127815; priority:5; )
+
+# 176.112.80.0/21 [ip address only / not url / not domain rule]
+alert ip any any -> 176.112.80.0/21 any ( msg:"need-to-know - suspicious hijacked prefix"; threshold:type limit,track by_src,count 1,seconds 3600; sid:5000002; reference:url,www.spamhaus.org/sbl/sbl.lasso?query=SBL137006; priority:5; )
 ...
 }}}
 
