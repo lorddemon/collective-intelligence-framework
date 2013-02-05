@@ -7,3 +7,4 @@ Frequently Asked Questions about Feeds.
 
  1. Ensure you have [ServerInstall_v1#Enabling_Feed_Generation Enabled Feed Generation]
  1. Ensure you have [ServerInstall_v1#With_Feeds generated the first batch of feeds]
+ 1. Ensure you have enabled [ServerInstall_v1#Finishing_Up cif_feed in crontab]
