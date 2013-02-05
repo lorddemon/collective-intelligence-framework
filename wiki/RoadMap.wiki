@@ -9,7 +9,7 @@ These are our best projections as of the last 'wiki edit' date, subject to chang
  * conversion from JSON to protocol buffers
  * split up components to cif-smrt, cif-router, cif-dbi, etc...
  * inter-federation docs, templates and tools
- * see [http://code.google.com/p/collective-intelligence-framework/wiki/ChangeLog_v1]
+ * see [http://code.google.com/p/collective-intelligence-framework/wiki/ChangeLog_v1 v1 Change log]
 
 = Spring 2014 - v2 =
 
