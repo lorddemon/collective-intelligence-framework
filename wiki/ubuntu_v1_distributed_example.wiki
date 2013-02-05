@@ -21,6 +21,7 @@ The two sections of this document are:
 == Disk Layout ==
     * Since the CIF node will not be hosting any data and uses relatively little disk I/O, a default disk layout is acceptable.
     * For the Postgresql server, follow recommendations in the [http://code.google.com/p/collective-intelligence-framework/wiki/DiskLayout_v1#Large_Install CIF Disk Layout guide for large installs].
+    * *NOTE:* If you will be doing replication between two databases, increase the size of the pg_xlog partition from 2GB to 5GB. This will allow for additional wal segments which allows for a greater amount of time that a secondary server can be turned off or disconnected and still automatically sync back up when connectivity is restored.
 
 == CIF prereq installation - cif1.example.com ==
 
