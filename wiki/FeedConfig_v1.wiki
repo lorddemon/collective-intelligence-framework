@@ -54,7 +54,7 @@ CIF comes with a variety of pre-built feed configurations, with that there are m
 || zip_filename || <string> || when the feed is a zip file, this should identify what the zip header is || no ||
 
 === Comma Delimited Text Files ===
-The [http://code.google.com/p/collective-intelligence-framework/source/browse/server/trunk/lib/CIF/FeedParser.pm Feed Parser] will automagically detect and parse comma delimited text files using [http://code.google.com/p/collective-intelligence-framework/source/browse/server/trunk/lib/CIF/FeedParser/ParseCsv.pm Text::CSV]. 
+The [https://github.com/collectiveintel/cif-smrt cif-smrt] will automagically detect and parse comma delimited text files using [https://github.com/collectiveintel/cif-smrt/blob/master/lib/CIF/Smrt/ParseCsv.pm Text::CSV].
 
 === Delimited Text Files ===
 {{{
