@@ -1,0 +1,40 @@
+#summary the v1 stand-alone router installation
+
+* Before you Begin *
+
+* Table of Contents *
+<wiki:toc max_depth="2" />
+
+= Preamble =
+----
+ * A semi-complete [ChangeLog_v1 ChangeLog] of v1
+ * A list of known [KnownIssues_v1 issues] for v1
+
+== Caveats ==
+= Installation =
+== Required Dependencies ==
+ * (unstable) [RouterInstall_DebianSqueeze_v1 Debian Squeeze] 
+ * (unstable) [RouterInstall_Ubuntu12_v1 Ubuntu 12] 
+ * (unstable) [RouterInstall_CentOS6_v1 CentOS 6] 
+== Package ==
+ # download the latest [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:v1+cif-router package]
+{{{
+$ tar -xzvf cif-router-v1-XXX.tar.gz
+$ cd cif-router-v1-XXX
+$ ./configure && make testdeps
+$ sudo make install
+}}}
+== Configuration ==
+== Environment ==
+ # create a default configuration file
+{{{
+$ vi ~/.cif
+}}}
+ # add the following as a template
+{{{
+# logging
+# values 0-4
+[router]
+# set to 0 if it's too noisy and reload the cif-router (apache), only on for RC2
+debug = 1
+}}}
