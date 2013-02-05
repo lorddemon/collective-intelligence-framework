@@ -7,7 +7,7 @@
 
 = Introduction =
 
-This is a walk-through of adding new feeds. It explains the commonly used configuration values and how they affect feed generation, etc. If you are already familiar with the feed configuration and just need details about all of the configuration values, see the [FeedConfig_v0 FeedConfig] page. 
+This is a walk-through of adding new feeds. It explains the commonly used configuration values and how they affect feed generation, etc. If you are already familiar with the feed configuration and just need details about all of the configuration values, see the [FeedConfig_v1 FeedConfig] page. 
 
 In this example, the following malware sources will be added:
   * http://isc.sans.edu/tools/suspicious_domains.html - Flags suspicious domains and has a low false positive category.
@@ -17,15 +17,15 @@ In this example, the following malware sources will be added:
 
 == Config Files == 
 
-All of the feeds are loaded from the files in */opt/cif/etc/* with the extension *.cfg*. Anything without the extension of *.cfg* is ignored.
+All of the feeds are loaded from the files in */opt/cif/etc/* with the extension *.cfg*. Any files without the extension of *.cfg* are ignored.
 
 Configuration files can contain multiple feeds, which provides a way to group related feeds and make use of global variables. However, it's better to create a new config for custom feeds to avoid the process of merging configs whenever CIF is updated. 
 
 == Add Global Variables ==
 
-Since all of these feeds will be related to malware, a few of the configuration values can be placed at the top of the config file. 
+Since all of these feeds will be related to malware, a few of the 'global' configuration values can be placed at the top of the config file. 
 {{{
-impact = 'malware'
+assessment = 'malware'
 severity = 'medium'
 detection = daily
 period = daily
@@ -33,8 +33,8 @@ mirror = '/tmp'
 guid = everyone
 }}}
 
-  * *impact* determines how the data will be classified. For a list of the possible impact values, see the [TaxonomyImpact_v0 Impact Taxonomy].
-  * *severity* depends on how your organization views the threat of what the feeds identify. If malware isn't a concern, it makes sense to keep the severity low. See the [TaxonomySeverity_v0 Severity Taxonomy] for more information.  
+  * *assessment* determines how the data will be classified. For a list of the possible assessment values, see the [TaxonomyAssessment_v1 Assessment Taxonomy].
+  * *severity* depends on how your organization views the threat of what the feeds identify. If malware isn't a concern, it makes sense to keep the severity low. See the [TaxonomySeverity_v1 Severity Taxonomy] for more information.  
   * *detection* determines the granularity of the detection time of the items in the feeds. If the data in the source doesn't provide a time stamp for each item, CIF has to assume the item was detected when it first appears in the source. Since these feeds are generated daily, the granularity can only be at the daily level. Possible values are either *hourly* or *daily*.
   * *period* is how often CIF will read the source. This can be done *hourly* or *daily*.
   * *mirror* is a location to cache a local copy of the feed to prevent repeated downloads if the file hasn't updated at the source.
@@ -81,7 +81,7 @@ Most of these configuration values can also be extracted directly from the feed 
 == Final Configuration ==
 */opt/cif/etc/custommalware.cfg*
 {{{
-impact = 'malware'
+assessment = 'malware'
 severity = 'medium'
 detection = daily
 period = daily
