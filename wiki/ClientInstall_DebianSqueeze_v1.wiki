@@ -25,13 +25,14 @@ $ sudo aptitude -y install build-essential libdigest-sha1-perl libnet-cidr-perl 
 {{{
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Regexp::Common::net::CIDR,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Log::Dispatch,Net::SSLeay'
 }}}
-== Environment ==
+== Default CIF user ==
 ----
-=== Default CIF user ===
 Create your "cif" user/group (the configure script will default to this user "cif") that will own the application (/opt/cif).
 {{{
 $ sudo adduser --disabled-password --gecos '' cif
 }}}
+== Environment ==
+----
  # set up your user's environment (typically ~/.profile)
 {{{
 if [ -d "/opt/cif/bin" ]; then
