@@ -27,7 +27,7 @@ $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Regexp::Common::net::CIDR,L
 }}}
 == Default CIF user ==
 ----
-Create your "cif" user/group (the configure script will default to this user "cif") that will own the application (/opt/cif).
+ # Create your "cif" user/group (the configure script will default to this user "cif") that will own the application (/opt/cif).
 {{{
 $ sudo adduser --disabled-password --gecos '' cif
 }}}
@@ -43,5 +43,4 @@ fi
 {{{
 $ source ~/.profile
 }}}
-
-Continue with the libcif [ClientInstall_v1#Package installation]
+ # Continue with the libcif [ClientInstall_v1#Package installation]
