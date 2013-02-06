@@ -69,6 +69,13 @@
   * [Feeds_v1 Feeds]
    * [FeedConfig_v1 Feed Config]
    * [FeedsFAQ_v1 Feed FAQ]
+   * [FeedAssessments_v1 Assessments]
+    * [FeedsBotnet_v1 Botnet]
+    * [FeedsMalware_v1 Malware]
+    * [FeedsPhishing_1 Phishing]
+    * [FeedsScanners_v1 Scanners]
+    * [FeedsSpam_v1 Spam]
+    * [FeedSpamvertising_v1 Spamvertising]
   * Cookbook
    * [AddingFeeds_v1 Adding New Feeds]
   * [FAQ_v1 FAQ]
