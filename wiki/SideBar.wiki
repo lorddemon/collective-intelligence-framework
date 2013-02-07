@@ -58,6 +58,7 @@
    * [ServerBackup_v1 Backup]
    * [GroupSupport_v1 Group Support]
    * [RTCIFMinimal_v1 RT Plugin]
+   * [Utilities_v1 Utilities]
    * [ServerInstall_v1_MigrateApikeys API key migration]
   * [Client_v1 Client]
    * [ClientInstall_v1 Client Install]
