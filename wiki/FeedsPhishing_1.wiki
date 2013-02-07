@@ -9,7 +9,7 @@
 <wiki:toc max_depth="2" />
 
 = Introduction =
-The [TaxonomyAssessment_v1#Phishing phishing] assessment is typically a [TaxonomySeverity_v1#Medium medium severity] feed depicting things that probably have no business being seen on your network. Communications with these addresses will probably lead to a credential type theft when combined with a [TaxonomyConfidence_v1#85_-_94 high] confidence observation.
+The [TaxonomyAssessment_v1#Phishing phishing] assessment is typically a feed of indicators that are attempting to Phish for credentials on your network.
 
 Typical examples might include items from: 
  * the [http://www.phishtank.com] list ([TaxonomyConfidence_v1#41_-_74 medium] confidence)
