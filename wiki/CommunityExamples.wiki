@@ -21,6 +21,7 @@
  * https://github.com/divious1/cif_globe
 
 = Advanced Stuff =
+ * http://eyeis.net/category/cif
  * http://ossectools.blogspot.com/2012/04/accelerating-cif-with-sphinx.html
  * http://scrapbook.zscaler.com/2012/06/cif-lite-customizing-cif-to-your-schema.html
  * http://securityblog.verizonbusiness.com/2012/11/15/gluing-our-stuff-together
