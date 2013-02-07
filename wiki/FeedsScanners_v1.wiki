@@ -1,0 +1,35 @@
+#summary scanner feeds page (v1)
+#labels Version-1
+
+<font color="red">
+= Unstable =
+ * fix api examples
+</font>
+
+<wiki:toc max_depth="2" />
+
+= Introduction =
+The [TaxonomyAssessment_v1t#Scanner scanner] assessment is typically a feed depicting known malicious scanners brute-forcing the internet (ssh, portscanners, etc).
+
+Typical examples might include items from: 
+ * the [http://sshbl.org] list ([TaxonomyConfidence_v1#41_-_74 medium] confidence)
+ * the [http://dragonresearchgroup.org/insight/sshpwauth.txt DRG SSH] list ([TaxonomyConfidence_v1#41_-_74 medium] confidence)
+
+= Details =
+== Infrastructure ==
+----
+=== API ===
+{{{
+GET https://cif.example.com:443/api/infrastructure/scan?confidence=95&apikey=XXX
+GET https://cif.example.com:443/api/infrastructure/scan?confidence=85&apikey=XXX
+GET https://cif.example.com:443/api/infrastructure/scan?confidence=65&apikey=XXX
+}}}
+
+=== CLI ===
+{{{
+$ cif -q infrastructure/scan -c 95
+$ cif -q infrastructure/scan -c 85
+$ cif -q infrastructure/scan -c 65
+$ cif -q infrastructure/scan -c 95 -p iptables
+$ cif -q infrastructure/scan -c 95 -p snort
+}}}
