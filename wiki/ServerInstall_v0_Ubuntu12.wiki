@@ -18,7 +18,7 @@
 
  # Install the base deps
 {{{
-$ sudo aptitude install rng-tools postgresql apache2 apache2-threaded-dev gcc make libexpat-dev libapache2-mod-perl2 libclass-dbi-perl libdigest-sha1-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev libjson-perl rsync libunicode-string-perl libconfig-simple-perl libmodule-pluggable-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libapr1-dbg libhtml-table-perl libcrypt-ssleay-perl libdigest-sha-perl pkg-config
+$ sudo aptitude install rng-tools postgresql apache2 apache2-threaded-dev gcc make libexpat-dev libapache2-mod-perl2 libclass-dbi-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev libjson-perl rsync libunicode-string-perl libconfig-simple-perl libmodule-pluggable-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libapr1-dbg libhtml-table-perl libcrypt-ssleay-perl libdigest-sha-perl pkg-config
 }}}
  # Install the remaining CPAN modules
 {{{
