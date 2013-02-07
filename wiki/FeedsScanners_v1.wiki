@@ -9,7 +9,7 @@
 <wiki:toc max_depth="2" />
 
 = Introduction =
-The [TaxonomyAssessment_v1t#Scanner scanner] assessment is typically a feed depicting known malicious scanners brute-forcing the internet (ssh, portscanners, etc).
+The [TaxonomyAssessment_v1#Scanner scanner] assessment is typically a feed depicting known malicious scanners brute-forcing the internet (ssh, portscanners, etc).
 
 Typical examples might include items from: 
  * the [http://sshbl.org] list ([TaxonomyConfidence_v1#41_-_74 medium] confidence)
