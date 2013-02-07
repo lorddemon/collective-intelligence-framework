@@ -1,5 +1,5 @@
 #labels Version-1
-#Description of feeds (v1)
+#description of feeds (v1)
 
 <font color="red">
 = Unstable =
