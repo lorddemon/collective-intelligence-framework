@@ -29,7 +29,7 @@ A list of known [KnownIssues_v1 issues] for v1
 == Required Dependencies ==
  * (testing) [ClientInstall_DebianSqueeze_v1 Debian Squeeze] 
  * (testing) [ClientInstall_Ubuntu12_v1 Ubuntu 12] 
- * (testing) [ClientInstall_CentOS6_v1 CentOS 6] 
+ * (testing) [ClientInstall_CentOS6_v1 RHEL/CentOS 6] 
  * (unstable) [ClientInstall_OSX7_v1 OSX 7] 
 == Package ==
  # download the latest [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:v1+libcif package]
