@@ -20,7 +20,16 @@ Type:
 
 Assessment:
 
- * 
+ * Botnet
+ * Email
+ * Fastflux
+ * Malware
+ * Phishing
+ * Scanners
+ * Spam
+ * Spamvertising
+ * Suspicious
+ * Whitelists
 
 Confidence:
 
