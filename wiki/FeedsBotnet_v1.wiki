@@ -11,6 +11,7 @@ The [TaxonomyImpact_v1#Botnet botnet] assessment is typically a feed depicting t
 
 = Details =
 == Infrastructure ==
+----
 === API ===
 {{{
 GET https://cif.example.com:443/api/infrastructure/botnet?confidence=95&apikey=XXX
@@ -27,6 +28,7 @@ $ cif -q infrastructure/botnet -c 95 -p snort
 $ cif -q infrastructure/botnet -c 95 -p iptables
 }}}
 == Domains ==
+----
 === API ===
 {{{
 GET https://cif.example.com:443/api/domain/botnet?confidence=95&apikey=XXX
@@ -43,6 +45,7 @@ $ cif -q domain/botnet -c 95 -p bindzone
 $ cif -q domain/botnet -c 95 -p snort
 }}}
 == Urls ==
+----
 === API ===
 {{{
 GET https://cif.example.com:443/api/url/botnet?confidence=95&apikey=XXX
