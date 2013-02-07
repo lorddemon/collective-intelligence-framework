@@ -12,6 +12,10 @@
 
 == cif_apikeys ==
 
+{{{
+$ cif_apikeys -h
+}}}
+
 == cif_crontool ==
 
 cif_crontool is used to call cif_smrt. It's similar to cron, as in it:
