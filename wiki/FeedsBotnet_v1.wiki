@@ -7,7 +7,7 @@
 </font>
 
 = Introduction =
-The [TaxonomyImpact_v1#Botnet botnet] assessment is typically a feed depicting things that would indicate a compromise. (e.g. only a compromised machine would connect to a botnet command and control server.)
+The [TaxonomyAssessment_v1#Botnet botnet] assessment is typically a feed depicting things that would indicate a compromise. (e.g. only a compromised machine would connect to a botnet command and control server.)
 
 = Details =
 == Infrastructure ==
