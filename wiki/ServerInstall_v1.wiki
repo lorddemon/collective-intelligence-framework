@@ -66,7 +66,7 @@ Choose the distribution you used as your base operating system and install the r
 
  * (testing) [ServerInstall_DebianSqueeze_v1 Debian Squeeze] 
  * (testing) [ServerInstall_Ubuntu12_v1 Ubuntu 12.04 ] 
- * (testing) [ServerInstall_CentOS6_v1 CentOS 6] 
+ * (testing) [ServerInstall_CentOS6_v1 RHEL/CentOS 6] 
 
 == Postgres, Bind and Resolvconf configuration ==
 ----
