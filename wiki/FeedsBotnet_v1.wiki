@@ -1,10 +1,11 @@
 #summary botnets feed page (v1)
 #labels Version-1
-<wiki:toc max_depth="2" />
 
 <font color="red">
 = Unstable =
 </font>
+
+<wiki:toc max_depth="2" />
 
 = Introduction =
 The [TaxonomyAssessment_v1#Botnet botnet] assessment is typically a feed depicting things that would indicate a compromise. (e.g. only a compromised machine would connect to a botnet command and control server.)
