@@ -18,7 +18,7 @@ Type:
  * search
  * malware
 
-Assessment:
+[TaxonomyAssessment_v1 Assessment]:
 
  * Botnet
  * Email
@@ -31,6 +31,6 @@ Assessment:
  * Suspicious
  * Whitelists
 
-Confidence:
+[TaxonomyConfidence_v1 Confidence]:
 
  * 0-100
