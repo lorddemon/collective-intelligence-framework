@@ -9,7 +9,7 @@
 <wiki:toc max_depth="2" />
 
 = Introduction =
-The [TaxonomyAssessment_v1#Phishing phishing] assessment is typically a feed of indicators that are attempting to Phish for credentials on your network.
+The [TaxonomyAssessment_v1#Phishing phishing] assessment is typically a feed of indicators that are attempting to phish for credentials on your network.
 
 Typical examples might include items from: 
  * the [http://www.phishtank.com] list ([TaxonomyConfidence_v1#41_-_74 medium] confidence)
