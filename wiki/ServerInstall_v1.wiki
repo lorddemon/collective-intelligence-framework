@@ -32,6 +32,10 @@ These requirements will handle everything on the same box pretty well with the d
 
 These specs will handle around 10k feeds at once with minimal impact on memory usage. Past that you'll need to start doubling your specs. Virtual machine technology is great for prototyping your implementation and will give you a good baseline of what you'll need for production.
 
+Keep in mind that not all virtual machine software are created equal. Some more production grade (vmware, etc) might work better than others (vbox, kvm, etc). If you experience exceptional degraded performance with the resources cited below, please provide that [https://groups.google.com/forum/?fromgroups=#!tags/ci-framework/performance feedback] (with specs, tests run, etc).
+
+Some initial benchmarking [https://docs.google.com/spreadsheet/ccc?key=0AvXpkVE0WKXgdHVOcW9WVnZQSHVnbkg5d1dXX2hyT0E#gid=0 stats] to test a setup against
+
 === Small Install ===
 ----
  * an x86-64bit platform (vm or bare-metal)
