@@ -1,4 +1,4 @@
-#summary installing the dbi component in stand-alone mode
+#summary installing the router component in standalone mode
 
 <font color='red'>
 UNDER CONSTRUCTION
