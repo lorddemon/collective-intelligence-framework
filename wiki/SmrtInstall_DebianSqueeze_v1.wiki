@@ -29,7 +29,7 @@ $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cp
 == System Setup ==
 -----
 === Resolver Config ===
-Configure the static interface to use 127.0.0.1 as the nameserver. Bind will be configured next. 
+Configure the static interface to use 127.0.0.1 as the nameserver.
 
  # edit /etc/network/interfaces
 {{{
