@@ -23,7 +23,6 @@ $ ./configure && make testdeps
 $ sudo make install
 }}}
 == Configuration ==
-== Environment ==
  # create a default configuration file
 {{{
 $ vi ~/.cif
