@@ -57,8 +57,8 @@
    * Distributed Environment
     * [CIFInfrastructureDiagram CIF Infrastructure Diagram]
     * [ServerInstall_Router_v1 Standalone Router]
-    * [ServerInstall_Dbi_v1 Database Interface]
     * [ServerInstall_Smrt_v1 Standalone Smrt]
+    * [ServerInstall_Dbi_v1 Database Interface]
    * [ServerBackup_v1 Backup]
    * [GroupSupport_v1 Group Support]
    * [RTCIFMinimal_v1 RT Plugin]
