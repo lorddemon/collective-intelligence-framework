@@ -81,4 +81,4 @@ $ sudo service rngd restart
 $ sudo chkconfig --levels 345 named on
 $ sudo chkconfig --levels 345 rngd on
 }}}
- # Continue with the cif-smrt [SmrtInstall_v1#Package installation]
+ # Continue with the cif-smrt [SmrtInstall_v1#Install_Package installation]
