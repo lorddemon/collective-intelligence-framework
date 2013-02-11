@@ -1,9 +1,5 @@
 #summary ubuntu 12 smrt install doc (v1)
 
-**TODO**
-
-* configure bind
-
 = Introduction =
 This assumes a clean install of Ubuntu 12 with sudo and all base system updates applied.
 
@@ -11,13 +7,6 @@ This assumes a clean install of Ubuntu 12 with sudo and all base system updates 
 <wiki:toc max_depth="2" />
 
 = Details =
-== Caveats ==
-----
-=== Debian Minimal ===
-debian-minimal does not come with sudo or the normal version of vim. If you used the net boot version of the debian installer, you'll need to install these (as root):
-{{{
-$ aptitude -y install sudo vim
-}}}
 == Required Dependencies ==
 ----
  # install the [ClientInstall_v1 client]
