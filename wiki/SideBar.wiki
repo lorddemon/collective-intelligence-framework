@@ -62,8 +62,7 @@
    * [RTCIFMinimal_v1 RT Plugin]
    * [Utilities_v1 Utilities]
    * [MigrateApikeys_v1 API key migration]
-  * [Client_v1 Client]
-   * [ClientInstall_v1 Client Install]
+  * [ClientInstall_v1 Client]
   * API
   * [Taxonomy_v1 Taxonomy]
    * [TaxonomyAssessment_v1 Assessment Definitions]
