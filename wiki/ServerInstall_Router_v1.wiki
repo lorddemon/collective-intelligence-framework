@@ -12,9 +12,9 @@ UNDER CONSTRUCTION
 = Details =
 == Required Dependencies ==
 ----
- * (unstable) [ServerInstall_Router_DebianSqueeze_v1 Debian Squeeze]
- * (unstable) [ServerInstall_Router_Ubuntu12_v1 Ubuntu12]
- * (unstable) [ServerInstall_Router_RHEL6_v1 RHEL6/CentOS6]
+ * (unstable) [RouterInstall_DebianSqueeze_v1 Debian Squeeze]
+ * (unstable) [RouterInstall_Ubuntu12_v1 Ubuntu12]
+ * (unstable) [RouterInstall_RHEL6_v1 RHEL6/CentOS6]
 
 == Install Library ==
  # download the latest libcif-dbi [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:v1+router package]
