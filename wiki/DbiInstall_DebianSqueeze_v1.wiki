@@ -9,12 +9,6 @@ This doc provides for the installation of a remote database client (eg: the rout
 <wiki:toc max_depth="2" />
 
 = Details =
-== Caveats ==
-=== Minimal Debian ===
-Minimal Debian does not come with sudo or the normal version of vim. If you used the net boot version of the debian installer, you'll need to install these as root:
-{{{
-$ aptitude -y install sudo vim
-}}}
 == Dependencies Installation ==
 ----
  # install the [ClientInstall_v1 client]
