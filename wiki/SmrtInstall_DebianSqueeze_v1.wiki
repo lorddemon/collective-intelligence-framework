@@ -12,7 +12,15 @@ This assumes a clean install of Debian Squeeze (v6.0.x) with sudo and all base s
  # install the [ClientInstall_v1 client]
  # Install the following dependencies
 {{{
-$ aptitude -y install rng-tools libexpat1-dev libxml-libxml-perl libxml2-dev bind9 libregexp-common-perl libxml-rss-perl libunicode-string-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libdate-manip-perl libclass-accessor-perl pkg-config vim libjson-xs-perl libtime-hires-perl libencode-perl libzmq-dev libzmq1 libzeromq-perl
+$ sudo aptitude -y install libexpat-dev libnet-cidr-perl libxml-libxml-perl libxml2-dev libmodule-install-perl bind9 libregexp-common-perl libxml-rss-perl libunicode-string-perl libconfig-simple-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libhtml-table-perl libdate-manip-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl libextutils-parsexs-perl libdatetime-format-dateparse-perl libnet-patricia-perl libdatetime-perl libtext-table-perl
+}}}
+ # Install zeromq-2.2.0 from source
+{{{
+$ wget http://download.zeromq.org/zeromq-2.2.0.tar.gz
+$ tar -zxvf zeromq-2.2.0.tar.gz
+$ cd zeromq-2.2.0
+$ ./configure && make && sudo make install
+$ sudo ldconfig
 }}}
  # Install the remaining CPAN modules
 {{{
