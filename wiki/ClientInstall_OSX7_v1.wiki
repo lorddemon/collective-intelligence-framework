@@ -1,5 +1,7 @@
 #summary OS X client install doc (v1)
-* UNSTABLE / DOES NOT WORK ATM *
+<font color='red'>
+=UNDER CONSTRUCTION=
+</font>
 = Introduction =
 * due to the osx implementation of perl, ossp::uuid doesn't install properly on os x, please use the browser plugin *
 
