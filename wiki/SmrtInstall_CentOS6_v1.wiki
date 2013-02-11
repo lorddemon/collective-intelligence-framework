@@ -42,6 +42,9 @@ $ sudo make install
 }}}
 == System Setup ==
 ----
+=== Bind9 Setup ===
+ # configure [BindSetup_v1 bind]
+
 === Resolve Config ===
 We need to point our dns resoultion to the local nameserver instance.
  # modify /etc/sysconfig/network-scripts/ifcfg-eth0 with the following DNS1="127.0.0.1" line
