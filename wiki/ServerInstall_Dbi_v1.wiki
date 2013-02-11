@@ -8,7 +8,7 @@
 = Details =
 == Required Dependencies ==
 ----
- * (unstable) [ServerInstall_Dbi_DebianSqeeze_v1 Debian Squeeze]
+ * (unstable) [ServerInstall_Dbi_DebianSqueeze_v1 Debian Squeeze]
  * (unstable) [ServerInstall_Dbi_Ubuntu12_v1 Ubuntu12]
  * (unstable) [ServerInstall_Dbi_RHEL6_v1 RHEL6/CentOS6]
 
