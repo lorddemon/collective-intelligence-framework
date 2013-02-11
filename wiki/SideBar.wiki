@@ -54,7 +54,11 @@
  * v1 (Development -- testing)
   * [WhatisCIF Server]
    * [ServerInstall_v1 Server Install v1]
-   * [CIFInfrastructureDiagram CIF Infrastructure Diagram]
+   * Distributed Environment
+    * [CIFInfrastructureDiagram CIF Infrastructure Diagram]
+    * [ServerInstall_Router_v1 Standalone Router]
+    * [ServerInstall_Dbi_v1 Database Interface]
+    * [ServerInstall_Smrt_v1 Standalone Smrt]
    * [ServerBackup_v1 Backup]
    * [GroupSupport_v1 Group Support]
    * [RTCIFMinimal_v1 RT Plugin]
