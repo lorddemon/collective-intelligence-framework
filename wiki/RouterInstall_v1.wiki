@@ -14,7 +14,7 @@
  * (unstable) [RouterInstall_DebianSqueeze_v1 Debian Squeeze] 
  * (unstable) [RouterInstall_Ubuntu12_v1 Ubuntu 12] 
  * (unstable) [RouterInstall_CentOS6_v1 CentOS 6] 
-== Package ==
+== Install Package ==
  # download the latest [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:v1+cif-router package]
 {{{
 $ tar -xzvf cif-router-v1-XXX.tar.gz
