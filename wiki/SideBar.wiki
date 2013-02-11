@@ -59,7 +59,7 @@
    * [GroupSupport_v1 Group Support]
    * [RTCIFMinimal_v1 RT Plugin]
    * [Utilities_v1 Utilities]
-   * [ServerInstall_v1_MigrateApikeys API key migration]
+   * [MigrateApikeys_v1 API key migration]
   * [Client_v1 Client]
    * [ClientInstall_v1 Client Install]
   * API
