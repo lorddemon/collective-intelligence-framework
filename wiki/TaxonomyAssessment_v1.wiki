@@ -3,8 +3,6 @@
 
 = Introduction =
 
-See the official [http://tools.ietf.org/html/rfc5070#section-3.10.1 IODEF] Impact class description.
-
 = Details =
 == Botnet ==
  * typically a host used to control another host or malicious process
