@@ -19,6 +19,6 @@ $ aptitude -y install sudo vim
  # install the [ClientInstall_v1 client]
  # Install the following dependencies
 {{{
-$ sudo aptitude -y install apache2 apache2-threaded-dev libapache2-mod-perl2 libapache2-request-perl libapache2-mod-gnutls libapreq2-dev libapr1-dbg
+$ sudo aptitude -y install 
 }}}
  # Continue with the cif-smrt [SmrtInstall_v1#Install_Package installation]
