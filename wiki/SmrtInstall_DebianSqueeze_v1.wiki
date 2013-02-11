@@ -1,5 +1,5 @@
 #summary squeeze smrt install doc (v1)
-
+<a href='www.yahoo.com' target=_blank>test</a>
 = Introduction =
 This assumes a clean install of Debian Squeeze (v6.0.x) with sudo and all base system updates applied.
 
@@ -22,5 +22,3 @@ $ aptitude -y install sudo vim
 $ sudo aptitude -y install 
 }}}
  # Continue with the cif-smrt [SmrtInstall_v1#Install_Package installation]
-
-<a href='www.yahoo.com' target=_blank>test</a>
