@@ -1,6 +1,8 @@
 #summary the v1 stand-alone router installation
 
-
+<font color='red'>
+=UNDER CONSTRUCTION=
+</font>
 
 * Before you Begin *
 
