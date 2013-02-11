@@ -6,7 +6,7 @@ This doc provides for the installation of a remote database client (eg: the rout
  * the database instance (physical data) is located on a different set of resources
 
 * Table of Contents *
-<wiki:toc max_depth="3" />
+<wiki:toc max_depth="2" />
 
 = Details =
 == Caveats ==
