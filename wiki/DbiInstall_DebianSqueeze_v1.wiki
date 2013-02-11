@@ -26,3 +26,4 @@ $ sudo aptitude -y install postgresql-client libclass-dbi-perl libdbd-pg-perl
 {{{
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::DNS::Match'
 }}}
+ # continue with the [DbiInstall_v1#Install_Library install]
