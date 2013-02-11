@@ -16,7 +16,7 @@
  * (unstable) [SmrtInstall_Ubuntu12_v1 Ubuntu12]
  * (unstable) [SmrtInstall_CentOS6_v1 CentOS6]
 
-== Install Library ==
+== Install Package ==
  # download the latest smrt [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:v1+smrt package]
 {{{
 $ tar -xzvf cif-smrt-v1-XXX.tar.gz
