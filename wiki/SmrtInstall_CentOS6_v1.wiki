@@ -14,7 +14,6 @@ This assumes a clean install of CentOS6 with sudo and all base system updates ap
 {{{
 $ sudo yum -y install sudo bind-utils rng-tools bind
 }}}
-}}}
  # import the fedoraproject EPEL-6 gpg key
 {{{
 $ sudo rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
