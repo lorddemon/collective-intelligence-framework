@@ -22,3 +22,5 @@ $ aptitude -y install sudo vim
 $ sudo aptitude -y install 
 }}}
  # Continue with the cif-smrt [SmrtInstall_v1#Install_Package installation]
+
+<a href='www.yahoo.com' target=_blank>test</a>
