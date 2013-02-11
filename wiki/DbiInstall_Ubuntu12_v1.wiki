@@ -28,3 +28,4 @@ Create your "cif" user/group (the configure script will default to this user "ci
 {{{
 $ sudo adduser --disabled-password --gecos '' cif
 }}}
+ # continue with the [DbiInstall_v1#Install_Library install]
