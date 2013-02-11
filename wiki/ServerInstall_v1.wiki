@@ -12,7 +12,7 @@ A semi-complete [ChangeLog_v1 ChangeLog] of v1
 
 A list of known [KnownIssues_v1 issues] for v1
 
-The v1 FAQ can be found [Faq_v1 here]
+The v1 FAQ can be found [FAQ_v1 here]
 
 Issues being discussed on the mailing list can be found [https://groups.google.com/forum/?hl=en&fromgroups=#!tags/ci-framework/v1 here]
 
