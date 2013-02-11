@@ -66,8 +66,9 @@
    * [ServerBackup_v1 Backup]
   * [ClientInstall_v1 Client]
   * API
-  * [Taxonomy_v1 Taxonomy]
-   * [TaxonomyAssessment_v1 Assessment Definitions]
+  * [Feeds_v1 Feeds]
+   * [FeedConfig_v1 Feed Config]
+   * [FeedsFAQ_v1 Feed FAQ]
    * [FeedAssessments_v1 Assessments]
     * [FeedsBotnet_v1 Botnet]
     * [FeedEmail_v1 Email]
@@ -80,9 +81,6 @@
     * [FeedSuspicious_v1 Suspicious]
     * [FeedWhitelists_v1 Whitelists]
    * [TaxonomyConfidence_v1 Confidence Definitions]
-  * [Feeds_v1 Feeds]
-   * [FeedConfig_v1 Feed Config]
-   * [FeedsFAQ_v1 Feed FAQ]
   * Cookbook
    * [AddingFeeds_v1 Adding New Feeds]
   * [FAQ_v1 FAQ]
