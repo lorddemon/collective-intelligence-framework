@@ -1,5 +1,9 @@
 #summary installing the dbi component in stand-alone mode
 
+<font color='red'>
+UNDER CONSTRUCTION
+</font>
+
 = Introduction =
 
 * Table of Contents *
