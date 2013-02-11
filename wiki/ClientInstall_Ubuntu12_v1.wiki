@@ -96,6 +96,12 @@ $ aptitude -y install build-essential libossp-uuid-perl libmodule-install-perl l
 {{{
 $ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Log::Dispatch,Net::SSLeay,LWP::Protocol::https'
 }}}
+=== Default CIF user ===
+----
+Create your "cif" user/group (the configure script will default to this user "cif")
+{{{
+$ sudo adduser --disabled-password --gecos '' cif
+}}}
 == Environment ==
 ----
  # set up your user's environment (typically ~/.profile)
