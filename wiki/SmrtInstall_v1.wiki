@@ -1,7 +1,7 @@
 #summary installing the smrt component in standalone mode
 
 <font color='red'>
-UNDER CONSTRUCTION
+=UNDER CONSTRUCTION=
 </font>
 
 = Introduction =
