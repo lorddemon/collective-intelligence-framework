@@ -62,16 +62,6 @@ cat /etc/resolv.conf
 nameserver 127.0.0.1
 ...
 }}}
-=== Default CIF user ===
-----
- # create your "cif" user/group (the configure script will default to this user "cif")
-{{{
-$ sudo adduser cif
-}}}
- # change the default home permissions
-{{{
-$ sudo chmod 770 /home/cif
-}}}
 === Random Number Generator ===
 ----
 The "rngd' service [https://www.centos.org/modules/newbb/viewtopic.php?topic_id=36209 helps] with random number generation (mainly used for generating security certificates in bind and apache, speeds up the entropy process).
