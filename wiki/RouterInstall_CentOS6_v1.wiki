@@ -1,4 +1,4 @@
-#summary ubuntu 12 router install doc (v1)
+#summary CentOS6 router install doc (v1)
 
 = Introduction =
 This assumes a clean install of Ubuntu v12.x with sudo and all base system updates applied.
