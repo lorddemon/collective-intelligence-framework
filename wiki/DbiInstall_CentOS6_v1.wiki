@@ -29,4 +29,4 @@ $ sudo adduser cif
 {{{
 $ sudo chmod 770 /home/cif
 }}}
- # continue installing the [DbiInstall_v1#Install_Library library]
+ # continue with the [DbiInstall_v1#Install_Library install]
