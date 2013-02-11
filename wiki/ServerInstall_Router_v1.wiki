@@ -17,7 +17,7 @@ UNDER CONSTRUCTION
  * (unstable) [RouterInstall_CentOS6_v1 CentOS6]
 
 == Install Library ==
- # download the latest libcif-dbi [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:v1+router package]
+ # download the latest router [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:v1+router package]
 {{{
 $ tar -xzvf cif-router-v1-XXX.tar.gz
 $ cd cif-router-v1-XXX
