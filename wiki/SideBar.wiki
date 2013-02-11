@@ -79,7 +79,7 @@
     * [FeedSpamvertising_v1 Spamvertising]
     * [FeedSuspicious_v1 Suspicious]
     * [FeedWhitelists_v1 Whitelists]
-   * [TaxonomyConfidence_v1 Confidence Definitions]
+   * [TaxonomyConfidence_v1 Confidence]
   * Cookbook
    * [AddingFeeds_v1 Adding New Feeds]
   * [FAQ_v1 FAQ]
