@@ -12,6 +12,3 @@ Throughout this framework, assessment, confidence, and severity are used to desc
 
 == Confidence ==
 [TaxonomyConfidence_v1 Confidence] describes how confidence we are in our observation (0-100, 0-low, 100-high).
-
-== Severity ==
-[TaxonomySeverity_v1 Severity] describes the seriousness of an observation. A sort of "pain scale".
