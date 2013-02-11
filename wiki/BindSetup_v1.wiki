@@ -82,9 +82,6 @@ ns1.google.com.         21588   IN      A       216.239.32.10
 ...
 ;; SERVER: 127.0.0.1#53(127.0.0.1)
 }}}
-= Continue with installation =
-----
-1. Continue with [ServerInstall_v1#Postgres Postgres Configuration]
 
 == References ==
 ----
