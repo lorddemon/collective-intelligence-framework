@@ -1,7 +1,9 @@
  * Help
+  * [WhatisCIF What is CIF]
   * [FAQ]
+  * [CommunityExamples]
   * [http://groups.google.com/group/ci-framework Discussion Group]
- * v0 (Current - stable)
+ * (stable) v0
   * [Server_v0 Server]
    * [ServerInstall_v0 Server Install]
    * [ServerBackup_v0 Backup]
@@ -51,7 +53,7 @@
    * [MalwareDomains_v0 Malware Domains]
    * [Tools_crontool_v0 CIF Crontool]
    * [Tools_cif_apikeys_v0 CIF Apikeys]
- * v1 (Development -- testing)
+ * (testing) v1
   * [ServerInstall_v1 Server]
    * [CIFInfrastructureDiagram Distributed Environment]
     * [RouterInstall_v1 Standalone Router]
@@ -86,5 +88,3 @@
   * [FAQ_v1 FAQ]
  * Other
   * [ProjectsLab]
-  * [CommunityExamples]
-  * [WhatisCIF What is CIF]
