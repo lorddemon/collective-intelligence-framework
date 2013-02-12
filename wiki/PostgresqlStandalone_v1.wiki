@@ -10,7 +10,10 @@
 * Table of Contents *
 <wiki:toc max_depth="2" />
 
-= Details =
+== Preamble ==
+----
+For the purpose of this document, it is assumed that the IP address of cif-router is 10.0.0.2.
+
 == Disk Layout ==
 ----
 Consult the Disk Layout Guide before setting up your operating system. There are implications as to how this is done based on which type of install is opted for. Larger install's with LVM require a bit more configuration than a small install.
@@ -35,7 +38,7 @@ Configure Postgres authentication and performance tuning
 === Additional Postgres Configuration ===
 Configure Postgres to accept connections from a host running cif-router.
 
- # Configure iptables to allow access to port 5432 from cif-router.
+ # Configure iptables to allow access to port 5432 from cif-router (10.0.0.2).
  # Add the IP address of cif-router  to pg_hba.conf. 
 {{{
 $ sudo vi /etc/postgresql/9.1/main/pg_hba.conf
