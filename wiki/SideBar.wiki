@@ -53,7 +53,7 @@
    * [MalwareDomains_v0 Malware Domains]
    * [Tools_crontool_v0 CIF Crontool]
    * [Tools_cif_apikeys_v0 CIF Apikeys]
- * (testing) [WhatIsCIF v1]
+ * (testing) [WhatisCIF v1]
   * [ServerInstall_v1 Server]
    * [Utilities_v1 Utilities]
    * [MigrateApikeys_v1 API key migration]
