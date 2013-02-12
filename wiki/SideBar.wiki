@@ -61,6 +61,7 @@
     * [RouterInstall_v1 Router Standalone]
     * [SmrtInstall_v1 Smrt Standalone]
     * [DbiInstall_v1 Database Interface]
+    * [PostgresqlStandalone_v1 PostgreSQL Standalone]
    * [GroupSupport_v1 Group Support]
    * [RTCIFMinimal_v1 RT Plugin]
    * [ServerBackup_v1 Backup]
