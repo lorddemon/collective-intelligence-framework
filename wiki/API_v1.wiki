@@ -8,12 +8,20 @@
 
 <wiki:toc max_depth="2" />
 
+== Overview ==
 The CIF API is the programming interface to the CIF architecture. This can be used to integrate CIF data into day to day operational applications. 
 
 CIF currently supports two styles of interfaces via the cif-router framework:
 
  * [https://developers.google.com/protocol-buffers/docs/overview Google protocol buffers]
  * raw HTTP GET/POST
+
+== Considerations ==
+=== Compression ===
+In most cases, anything represented as "data" in the protocol is base64-compressed (base64+snappy) using google's [http://code.google.com/p/snappy snappy] compression protocol. libcif takes care of the decode+decompression for applications, however if you're implementing the protocol manually or in another language, this should be taken into consideration.
+
+=== IODEF ===
+The data returned by the [
 
 = Details =
 == Protocol Buffers ==
