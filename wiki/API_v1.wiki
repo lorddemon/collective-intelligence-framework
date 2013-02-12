@@ -29,7 +29,7 @@ The interface also supports (legacy) use of the HTTP protocol. The cif-router ac
 In most cases, anything represented as "data" in the protocol is base64-compressed (base64+snappy) using google's [http://code.google.com/p/snappy snappy] compression protocol. libcif takes care of the decode+decompression for applications, however if you're implementing the protocol manually or in another language, this should be taken into consideration.
 
 == IODEF ==
-The data returned by the [API_CIFProtocol_v1#FeedType !FeedType] within cif-protocol in v1 is structured as [http://tools.ietf.org/html/rfc5070 IODEF] (RFC5070). libcif leverages another library, [https://github.com/collectiveintel/iodef-pb-simple-perl iodef-pb-simple-perl] to convert the IODEF structures to simple key-pair values.
+The data returned by the [API_CIFProtocol_v1#FeedType FeedType] within cif-protocol in v1 is structured as [http://tools.ietf.org/html/rfc5070 IODEF] (RFC5070). libcif leverages another library, [https://github.com/collectiveintel/iodef-pb-simple-perl iodef-pb-simple-perl] to convert the IODEF structures to simple key-pair values.
 
 In v1, to leverage in another language, it might be simpler to leverage the 'cif' command to output these more complex structures into the simple key-pair values, encoded in json for manipulation in an (lets say python) application:
 
