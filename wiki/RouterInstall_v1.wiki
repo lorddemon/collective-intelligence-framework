@@ -10,7 +10,7 @@
 <wiki:toc max_depth="2" />
 
 = Details =
-== Install required Dependencies ==
+== Install Required Dependencies ==
  * (unstable) [RouterInstall_DebianSqueeze_v1 Debian Squeeze] 
  * (unstable) [RouterInstall_Ubuntu12_v1 Ubuntu 12] 
  * (unstable) [RouterInstall_CentOS6_v1 CentOS 6] 
