@@ -6,13 +6,17 @@
 
 = Introduction =
 
-<wiki:toc max_depth="2" />
+<wiki:toc max_depth="3" />
 
 The cif-protocol is a low level encapsulation protocol that enables the transport of CIF messages throughout the framework. This protocol defines two types of objects, a top level raw 'msg' object, which acts like an envelope, as well as a 'feed' object that encapsulates feeds of data.
 
 A current version of the protocol can be found [https://github.com/collectiveintel/cif-protocol/tree/v1 here]
 
 = Details =
+== !MessageType ==
+----
+The [https://github.com/collectiveintel/cif-protocol/blob/v1/src/msg.proto 'MessageType'] acts as an envelope to other data. It is used to convey if the message is a 'query', a 'submission', or a data 'reply'. It also contains the apikey and any status information needed to execute the transaction.
+
 {{{
 message MessageType {
     enum StatusType {
@@ -42,23 +46,17 @@ message MessageType {
         optional string guid    = 1;
         repeated bytes data     = 2;
     }
-    // TODO: this is a string for now
-    // git describe will give off string references
-    // based on the tags, may not be optimal
+
     required string version     = 1;
     required MsgType type       = 2;
     optional StatusType status  = 3;
     
-    optional string apikey  = 4;
-
-    // TODO: research [ packed = true ]
-    // src/msg.proto:37:14: [packed = true] can only be specified for repeated primitive fields.
+    optional string apikey      = 4;
     repeated bytes data         = 5;
 }
 }}}
-== !MessageType ==
-----
-The [https://github.com/collectiveintel/cif-protocol/blob/v1/src/msg.proto 'MessageType'] acts as an envelope to other data. It is used to convey if the message is a 'query', a 'submission', or a data 'reply'. It also contains the apikey and any status information needed to execute the transaction.
+
+
 
 === !StatusType ===
 An enumeration that represents result information pertaining to the transaction. Valid values:
@@ -81,6 +79,43 @@ query
 nolog
   optional. boolean. denotes whether or not the query should be logged
 
+=== !QueryType ===
+=== !SubmissionType ===
 == !FeedType ==
 ----
 The [https://github.com/collectiveintel/cif-protocol/blob/v1/src/feed.proto 'FeedType'] represents a dataset or contiguous set of records. It wraps these in a set of metadata such as confidence, description, restriction, reporttime, etc. It's also responsible for conveying the 'restriction map' and 'group map' back to the client. A 'FeedType' blob will be encapsulated in a 'MessageType' message.
+{{{
+message FeedType {
+    enum RestrictionType {
+        restriction_type_default        = 1;
+        restriction_type_need_to_know   = 2;
+        restriction_type_private        = 3;
+        restriction_type_public         = 4;
+    }
+    message MapType {
+        required string key = 1;
+        required string value = 2;
+    }
+
+    required string version                  = 1;
+    optional string guid                    = 2;
+
+    optional int32 confidence               = 3;
+
+    required string description             = 4;
+    required string ReportTime              = 5;
+    optional RestrictionType restriction    = 6;
+    repeated MapType restriction_map        = 7;
+    repeated MapType group_map              = 8;
+
+    repeated bytes data                     = 9;
+    
+    optional string uuid                    = 10;
+    optional int32 query_limit              = 11;
+    
+    repeated MapType feeds_map              = 12;
+}
+}}}
+=== !FeedType ===
+=== !RestrictionType ===
+=== !MapType ===
