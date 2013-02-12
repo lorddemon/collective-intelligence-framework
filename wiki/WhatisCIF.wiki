@@ -2,10 +2,20 @@
 
 = What is the Collective Intelligence Framework (CIF)?=
 
+* Table of Contents *
+<wiki:toc max_depth="2" />
+
 CIF is a cyber threat intelligence management system. CIF allows you to combine known malicious threat information from many sources and use that information for identification (incident response), detection (IDS) and mitigation (null route). The most common types of threat intelligence warehoused in CIF are IP addresses, domains and urls that are observed to be related to malicious activity. 
+
+This framework pulls in various data-observations from any source; create a series of messages "over time" (eg: reputation). When you query for the data, you'll get back a series of messages chronologically and make decisions much as you would look at an email thread, a series of observations about a particular bad-actor. 
 
 CIF helps you to parse, normalize, store, post process, query, share and produce data sets of threat intelligence. 
 
+The original idea came from from:
+
+http://bret.appspot.com/entry/how-friendfeed-uses-mysql
+
+== the Process ==
 === Parse ===
 
 CIF supports ingesting many different sources of data of the same type; for example data sets or “feeds” of malicious domains. Each similar dataset can be marked with different attributes like source and confidence to name a few.
@@ -44,14 +54,33 @@ CIF supports creating new data sets from the stored threat intelligence. These d
 
 Example: [Feeds_v0 Feeds]
 
-== Community Examples ==
+= Community Examples =
 
  * [http://threatthoughts.com/2012/05/07/introduction-to-the-collective-intelligence-framework/ Introduction to the Collective Intelligence Framework]
  * [http://holisticinfosec.blogspot.com/2012/07/toolsmith-collective-intelligence.html toolsmith: Collective Intelligence Framework]
  * [http://www.ren-isac.net/ses/ SES - Security Event System]
  * [http://code.google.com/p/collective-intelligence-framework/wiki/CommunityExamples more]
 
-== Presentations ==
+= Papers / Presentations =
+== Papers ==
+ * [http://www.cert.pl/PDF/MP-IST-111-18.pdf Proactive Detection and Automated Exchange of Network Security Incidents]
+ * ProjectAvenger
 
- * [http://code.google.com/p/collective-intelligence-framework/#Recent_Presentations Recent]
- * [http://code.google.com/p/collective-intelligence-framework/#Archived_Presentations More]
+== Recent Presentations ==
+All public presentation content licensed under [http://creativecommons.org/licenses/by-sa/3.0 CCv3]
+
+ * 2012 -- [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=2012_SANS.pdf GFIRST/NIST] the next ten years
+ * 2012 -- [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=2012_FIRST.pdf FIRST.org] Sharing data's hard [http://media.first.org/podcasts/FIRST2012-WesYoung.mp3 here's] how we did it (mp3)
+ * 2012 -- [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=i2smm2012_ses.pdf Internet2 Combined Industry and Research Constituency Meeting]
+ * 2012 -- [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=2012_zombie_hunting.pdf Zombie Hunting]
+
+== Archived Presentations ==
+ * 2011 -- [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=ren-isac.pdf GFirst | NIST ISTAC | APWG]
+ * 2011 -- [http://collective-intelligence-framework.googlecode.com/files/ISOI_2011.pdf ISOI9]
+ * 2011 -- [http://www.ren-isac.net/docs/ren-isac_ses_rimm_2011.pdf REN-ISAC Member Meeting]
+ * 2011 -- [http://www.educause.edu/SEC11/Program/SESS25 Educause SPC]
+ * 2010 -- [http://www.ren-isac.net/docs/ren-isac_ses_20100907.pdf SES v2 Update]
+ * 2010 -- [http://security.internet2.edu/ddcsw2/docs/wes-young-ddcsw2.pdf DDCSW2]
+ * 2009 -- [http://security.internet2.edu/ddcsw/docs/young.pdf DDCSW1]
+ * 2009 -- [http://events.internet2.edu/2009/jt-indy/agenda.cfm?go=session&id=10000713&event=1037 Joint Techs]
+ * 2009 -- [http://www.educause.edu/Resources/RENISACandCSI28212TheSecurityE/170555 Educause SPC]
