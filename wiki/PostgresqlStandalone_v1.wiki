@@ -25,3 +25,6 @@ Consult the Disk Layout Guide before setting up your operating system. There are
 $ sudo aptitude -y install postgresql postgresql-contrib
 }}}
  * (unstable) CentOS6
+
+== Postgres configuration ==
+----
