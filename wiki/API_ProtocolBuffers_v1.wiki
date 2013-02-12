@@ -84,11 +84,9 @@ my $iodef = Iodef::Pb::Simple->new($hash);
 
 # generate a new SubmssionType cif-protocol object
 # https://github.com/collectiveintel/cif-smrt/blob/v1/lib/CIF/Smrt.pm#L726
-{{{
 $ret = $cli->new_submission({
     guid    => 'everyone',
     data    => $iodef->encode(),
 });
     
 $ret = $cli->submit($ret);
-}}}
