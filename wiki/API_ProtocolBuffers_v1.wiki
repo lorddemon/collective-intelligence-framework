@@ -1,0 +1,42 @@
+#summary protocol buffers interface
+
+<font color='red'>
+=UNDER CONSTRUCTION=
+</font>
+
+= Introduction =
+<wiki:toc max_depth="2" />
+
+Interacting via protocol buffers requires that the actual data is encoded properly for the 'API' to process the data appropriately. Instead of passing required parameters to a 'live' API as with the [API_HTTP_v1 HTTP] interface, we generate the appropriate data structure locally and pass along to the transport layer (HTTP, ZeroMQ, etc) as a data-blob and wait for a response.
+
+An example implementation can be found via the [https://raw.github.com/collectiveintel/libcif/v1/lib/CIF/Client.pm libcif] client.
+
+= Details =
+== Config ==
+Interacting with this API requires instantiating 'CIF::Client' objects. This is done by calling the ->new() creator:
+{{{
+use CIF::Client;
+my $cli = CIF::Client->new();
+}}}
+To leverage an existing config file with the 'host' and 'apikey' information:
+{{{
+my $cli = CIF::Client->new({
+    config => '/home/cif/.cif',
+});
+}}}
+== Authorization ==
+This API uses a simple uuid for it's authorization. This key is passed to the api using the 'apikey' parameter:
+
+{{{
+my ($err,$ret) = CIF::Client->new({
+    apikey => '249cd5fd-04e3-46ad-bf0f-c02030cc864a'
+});
+}}}
+
+or set at run-time:
+{{{
+$cli->set_apikey('249cd5fd-04e3-46ad-bf0f-c02030cc864a');
+}}}
+== Queries ==
+== Submissions ==
+== Common Parameters ==
