@@ -85,4 +85,4 @@
   * [FAQ_v1 FAQ]
   * [API_v1 API]
    * [API_ProtocolBuffers_v1 Protocol Buffers]
-   * [API_HTTP_v1]
+   * [API_HTTP_v1 HTTP]
