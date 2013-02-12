@@ -28,3 +28,6 @@ $ sudo aptitude -y install postgresql postgresql-contrib
 
 == Postgres configuration ==
 ----
+=== Postgres ===
+Configure Postgres authentication and performance tuning
+ # [PostgresInstall_v1 PostgresSetup]
