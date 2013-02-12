@@ -1,0 +1,15 @@
+#summary the cif-protocol
+
+<font color='red'>
+=UNDER CONSTRUCTION=
+</font>
+
+= Introduction =
+
+<wiki:toc max_depth="2" />
+
+The cif-protocol is a low level encapsulation protocol that enables the transport of CIF messages throughout the framework. This protocol defines two types of objects, a top level raw 'msg' object, which acts like an envelope, as well as a 'feed' object that encapsulates feeds of data.
+
+= Details =
+== MessageType ==
+== FeedType ==
