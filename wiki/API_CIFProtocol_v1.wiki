@@ -13,23 +13,73 @@ The cif-protocol is a low level encapsulation protocol that enables the transpor
 A current version of the protocol can be found [https://github.com/collectiveintel/cif-protocol/tree/v1 here]
 
 = Details =
+{{{
+message MessageType {
+    enum StatusType {
+        SUCCESS         = 1;
+        FAILED          = 2;
+        UNAUTHORIZED    = 3;
+    }
+    enum MsgType {
+        QUERY       = 1;
+        SUBMISSION  = 2;
+        REPLY       = 3;
+    }
+    message QueryStruct {
+        required string query   = 1;
+        optional bool nolog     = 2;
+    }
+    message QueryType {
+        optional string apikey      = 1;
+        optional string guid        = 2;
+        optional int32 limit        = 3;
+        optional int32 confidence   = 4;
+        repeated QueryStruct query  = 5;
+        optional string description = 6;
+        optional bool feed          = 7 [ default = false ];
+    }
+    message SubmissionType {
+        optional string guid    = 1;
+        repeated bytes data     = 2;
+    }
+    // TODO: this is a string for now
+    // git describe will give off string references
+    // based on the tags, may not be optimal
+    required string version     = 1;
+    required MsgType type       = 2;
+    optional StatusType status  = 3;
+    
+    optional string apikey  = 4;
+
+    // TODO: research [ packed = true ]
+    // src/msg.proto:37:14: [packed = true] can only be specified for repeated primitive fields.
+    repeated bytes data         = 5;
+}
+}}}
 == !MessageType ==
 ----
 The [https://github.com/collectiveintel/cif-protocol/blob/v1/src/msg.proto 'MessageType'] acts as an envelope to other data. It is used to convey if the message is a 'query', a 'submission', or a data 'reply'. It also contains the apikey and any status information needed to execute the transaction.
 
 === !StatusType ===
-Represents result information pertaining to the transaction. Valid values:
+An enumeration that represents result information pertaining to the transaction. Valid values:
  * SUCCESS
  * FAILED
  * UNAUTHORIZED
 
-=== MsgType ===
-Represents the type of message being transmitted. Valid values:
+=== !MsgType ===
+An enumeration that represents the type of message being transmitted. Valid values:
  * QUERY
  * SUBMISSION
  * REPLY
 
 === !QueryStruct ===
+An object that represents a query, typically embedded in a !QueryType object.
+
+query
+  required string. represents the question to ask
+
+nolog
+  optional. boolean. denotes whether or not the query should be logged
 
 == !FeedType ==
 ----
