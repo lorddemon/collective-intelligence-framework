@@ -90,7 +90,7 @@ Note: when you run the first "perl -MCPAN install ..." command, it will auto-con
 
 == Dependencies ==
 ----
- # follow the [ServerInstall_Dbi_Ubuntu12_v1 libcif-dbi] install instructions
+ # follow the [DbiInstall_Ubuntu12_v1 libcif-dbi] install instructions
  # Install the following dependencies
 {{{
 $ sudo aptitude -y install apache2 apache2-threaded-dev libapache2-mod-perl2 libapache2-request-perl libapache2-mod-gnutls libapreq2-dev libapr1-dbg
