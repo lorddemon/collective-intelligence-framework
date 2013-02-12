@@ -1,4 +1,4 @@
-#summary the HTTP GET interface
+#summary the HTTP interface
 
 <font color='red'>
 =UNDER CONSTRUCTION=
