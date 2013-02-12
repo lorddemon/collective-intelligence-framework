@@ -20,5 +20,5 @@ Consult the Disk Layout Guide before setting up your operating system. There are
 == Install Required Dependencies ==
 ----
  * (unstable) [Debian Squeeze]
- * (unstable) [Ubuntu12]
+ * (unstable) [PostgresqlInstall_Ubuntu12_v1 Ubuntu 12]
  * (unstable) [CentOS6]
