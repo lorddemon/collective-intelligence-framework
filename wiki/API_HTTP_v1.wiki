@@ -19,6 +19,16 @@ Accept => 'application/json'
 By default, this functionality is turned on. It can be turned off by setting the 'disable_legacy' option to 1 in the webserver config (apache) if performance degrades.
 
 = Details =
+== Common Parameters ==
+
+|| Parameter Name || Value || Description ||
+|| apikey || <uuid> || specify your apikey ||
+|| confidence || <real> || filter by confidence, *0-100* ||
+|| restriction || <enum> || filter by restriction, *public,need-to-know,private* ||
+|| guid || <uuid> || filter by group uuid ||
+|| nomap || <boolean> || don't map restriction to your local restriction map ||
+|| nolog || <boolean> || don't log the query ||
+
 == Authorization ==
 This API uses a simple uuid for it's authorization. This key is passed to the api using the 'apikey' parameter:
 
@@ -66,12 +76,3 @@ my $hash = {
 my $ret = $ua->post($url,Content => encode_json($hash));
 warn Dumper($ret);
 }}}
-
-== Common Parameters ==
-|| Parameter Name || Value || Description ||
-|| apikey || <uuid> || specify your apikey ||
-|| confidence || <real> || filter by confidence, *0-100* ||
-|| restriction || <enum> || filter by restriction, *public,need-to-know,private* ||
-|| guid || <uuid> || filter by group uuid ||
-|| nomap || <boolean> || don't map restriction to your local restriction map ||
-|| nolog || <boolean> || don't log the query ||
