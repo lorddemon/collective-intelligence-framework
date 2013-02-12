@@ -19,6 +19,9 @@ Consult the Disk Layout Guide before setting up your operating system. There are
 
 == Install Required Dependencies ==
 ----
- * (unstable) [Debian Squeeze]
- * (unstable) [PostgresqlInstall_Ubuntu12_v1 Ubuntu 12]
- * (unstable) [CentOS6]
+ * (unstable) Debian Squeeze
+ * (unstable) Ubuntu 12
+{{{
+$ sudo aptitude -y install postgresql postgresql-contrib
+}}}
+ * (unstable) CentOS6
