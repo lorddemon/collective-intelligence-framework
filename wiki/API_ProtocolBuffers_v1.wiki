@@ -82,7 +82,7 @@ my $hash = {
 # https://github.com/collectiveintel/cif-smrt/blob/v1/lib/CIF/Smrt.pm#L571
 my $iodef = Iodef::Pb::Simple->new($hash);
 
-# generate a new [API_CIFProtocol_v1#SubmissionType !SubmissionType] cif-protocol object
+# generate a new SubmssionType cif-protocol object
 # https://github.com/collectiveintel/cif-smrt/blob/v1/lib/CIF/Smrt.pm#L726
 {{{
 $ret = $cli->new_submission({
