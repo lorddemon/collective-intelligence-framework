@@ -8,7 +8,7 @@
 
 <wiki:toc max_depth="2" />
 
-== Overview ==
+= Overview =
 The CIF API is the programming interface to the CIF architecture. This can be used to integrate CIF data into day to day operational applications. 
 
 CIF currently supports two styles of interfaces via the cif-router framework:
@@ -16,14 +16,7 @@ CIF currently supports two styles of interfaces via the cif-router framework:
  * [https://developers.google.com/protocol-buffers/docs/overview Google protocol buffers]
  * raw HTTP GET/POST
 
-== Considerations ==
-=== Compression ===
-In most cases, anything represented as "data" in the protocol is base64-compressed (base64+snappy) using google's [http://code.google.com/p/snappy snappy] compression protocol. libcif takes care of the decode+decompression for applications, however if you're implementing the protocol manually or in another language, this should be taken into consideration.
 
-=== IODEF ===
-The data returned by the [
-
-= Details =
 == Protocol Buffers ==
 
 The raw cif-protocol is implemented in libcif that can be leveraged by applications with-out requiring the application to understand the protocol.
@@ -31,3 +24,32 @@ The raw cif-protocol is implemented in libcif that can be leveraged by applicati
 == HTTP ==
 
 The interface also supports (legacy) use of the HTTP protocol. The cif-router acts as a proxy for applications where leveraging google protocol buffers is not an efficient option. The router will translate between the JSON based HTTP GET requests to the cif-protocol and vs versa.
+
+= Considerations =
+== Compression ==
+In most cases, anything represented as "data" in the protocol is base64-compressed (base64+snappy) using google's [http://code.google.com/p/snappy snappy] compression protocol. libcif takes care of the decode+decompression for applications, however if you're implementing the protocol manually or in another language, this should be taken into consideration.
+
+== IODEF ==
+The data returned by the [API_CIFProtocol_v1#FeedType !FeedType] within cif-protocol in v1 is structured as [http://tools.ietf.org/html/rfc5070 IODEF] (RFC5070). libcif leverages another library, [https://github.com/collectiveintel/iodef-pb-simple-perl iodef-pb-simple-perl] to convert the IODEF structures to simple key-pair values.
+
+In v1, to leverage in another language, it might be simpler to leverage the 'cif' command to output these more complex structures into the simple key-pair values, encoded in json for manipulation in an (lets say python) application:
+
+{{{
+# example adapted from: 
+# https://github.com/technoskald/maltegoxforms/blob/master/cif-maltego.py
+import sys
+import json
+
+from subprocess import Popen, PIPE
+
+cifresult = Popen('/usr/local/bin/cif -q '+ipaddr+' -p json', shell=True, stdout=PIPE).stdout.read()
+sys.stderr.write('D:CIF output: '+cifresult+'\n')
+
+for result in json.loads(cifresult):
+    sys.stderr.write(result['description']+'\n')
+    sys.stderr.write(result['address']+'\n')
+    sys.stderr.write(result['reporttime']+'\n')
+    sys.stderr.write(result['assessment']+'\n')
+}}}
+
+with the release of v2, libcif should be completed in C and able to be bound to many lower level languages natively.
