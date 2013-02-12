@@ -35,8 +35,7 @@ Configure Postgres authentication and performance tuning
 === Additional Postgres Configuration ===
 Configure Postgres to accept connections from a host running cif-router.
 
-(note the 'trust' setting, make sure your iptables are up to date!)
-
+ # Configure iptables to allow access to port 5432 from cif-router.
  # Add the IP address of cif-router  to pg_hba.conf. 
 {{{
 $ sudo vi /etc/postgresql/9.1/main/pg_hba.conf
