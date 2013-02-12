@@ -7,8 +7,7 @@
 = Introduction =
 
 <wiki:toc max_depth="2" />
-
-= Overview =
+== Overview ==
 The CIF API is the programming interface to the CIF architecture. This can be used to integrate CIF data into day to day operational applications. 
 
 CIF currently supports two styles of interfaces via the cif-router framework:
@@ -16,6 +15,15 @@ CIF currently supports two styles of interfaces via the cif-router framework:
  * google [https://developers.google.com/protocol-buffers/docs/overview protocol buffers]
  * raw HTTP GET/POST
 
+== Repositories ==
+The v1 cif repositories can be found on github:
+ * top-level v1 meta [https://github.com/collectiveintel/cif-v1 repo]
+ * libcif v1 [https://github.com/collectiveintel/libcif/tree/v1 repo]
+ * libcif-dbi v1 [https://github.com/collectiveintel/libcif-dbi/tree/v1 repo]
+ * cif-smrt v1 [https://github.com/collectiveintel/cif-smrt/tree/v1 repo]
+ * cif-router v1 [https://github.com/collectiveintel/cif-router/tree/v1 repo]
+
+= Details =
 == Protocol Buffers ==
 
 The raw cif-protocol is implemented in [https://github.com/collectiveintel/libcif/tree/v1 libcif] that can be leveraged by applications with-out requiring the application to understand the underlying protocol. The 'cif' [https://github.com/collectiveintel/libcif/blob/v1/bin/cif command] serves as an example of how to interact with the underlying libraries.
