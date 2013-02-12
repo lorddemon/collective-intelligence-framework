@@ -211,13 +211,13 @@ message FeedType {
   required. string. a timestamp in which the data was generated, typically in the format 'YYYY-MM-DDThh:mm:ssZ'
 
 *restriction*
-  optional. enum RestrictionType. restriction of the complete feed data-set
+  optional. enum !RestrictionType. restriction of the complete feed data-set
 
 *restriction_map*
-  repeated. enum MapType. a map of restriction values (eg: IODEF to TLP) for a client to translate and represent locally.
+  repeated. enum !MapType. a map of restriction values (eg: IODEF to TLP) for a client to translate and represent locally.
 
 *group_map*
-  repeated. enum MapType. a map of the guid values for a client to translate and represent locally.
+  repeated. enum !MapType. a map of the guid values for a client to translate and represent locally.
 
 *data*
   repeated. bytes. the payload.
@@ -229,9 +229,11 @@ message FeedType {
   optional. int32. used to inform a client when a router has overwritten a limit value.
 
 *feed_map*
-  repeated. enum MapType. a map of feeds avail from the router.
+  repeated. enum !MapType. a map of feeds avail from the router.
 
 === !RestrictionType ===
+An enumeration copied from RFC 5070 representing a simple set of restrictions.
+
 {{{
     enum RestrictionType {
         restriction_type_default        = 1;
@@ -241,6 +243,7 @@ message FeedType {
     }
 }}}
 === !MapType ===
+A basic "key pair value" structure, used in group maps, restriction maps, feed maps, etc.
 {{{
     message MapType {
         required string key = 1;
