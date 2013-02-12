@@ -101,10 +101,10 @@ An object that represents a query, typically embedded in a !QueryType object.
     }
 }}}
 
-query
+*query*
   required string. represents the question to ask
 
-nolog
+*nolog*
   optional. boolean. denotes whether or not the query should be logged
 
 === !QueryType ===
@@ -120,27 +120,26 @@ nolog
     }
 }}}
 
-apikey
+*apikey*
   optional. string.
 
-guid
+*guid*
   optional. string.
 
-limit
+*limit*
   optional. int32.
 
-confidence
+*confidence*
   optional. int32.
 
-query
+*query*
   repeated. enum !QueryStruct.
 
-description
+*description*
   optional. string.
 
-feed
+*feed*
   optional. boolean.
-
 
 === !SubmissionType ===
 {{{
@@ -150,10 +149,10 @@ feed
     }
 }}}
 
-guid
+*guid*
   optional. string.
 
-data
+*data*
   repeated. bytes.
 
 == !FeedType ==
@@ -192,40 +191,42 @@ message FeedType {
 }
 }}}
 
-version
+*version*
   required. string.
 
-guid
+*guid*
   optional. string.
 
-confidence
+*confidence*
   optional. int32.
 
-description
+*description*
+  required. string.
 
+*ReportTime*
+  required. string.
 
-ReportTime
+*restriction*
+  optional. enum RestrictionType.
 
+*restriction_map*
+  repeated. enum MapType.
 
-restriction
+*group_map*
+  repeated. enum MapType.
 
+*data*
+  repeated. bytes.
 
-restriction_map
+*uuid*
+  optional. string.
 
+*query_limit*
+  optional. int32.
 
-group_map
+*feed_map*
+  repeated. enum MapType.
 
-
-data
-
-
-uuid
-
-
-query_limit
-
-
-feed_map
 === !RestrictionType ===
 {{{
     enum RestrictionType {
