@@ -11,7 +11,14 @@
 <wiki:toc max_depth="2" />
 
 = Details =
+== Disk Layout ==
+----
+Consult the Disk Layout Guide before setting up your operating system. There are implications as to how this is done based on which type of install is opted for. Larger install's with LVM require a bit more configuration than a small install.
+
+ # [DiskLayout_v1 Disk Layout Guide]
+
 == Install Required Dependencies ==
+----
  * (unstable) [Debian Squeeze]
  * (unstable) [Ubuntu12]
  * (unstable) [CentOS6]
