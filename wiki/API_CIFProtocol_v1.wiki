@@ -56,22 +56,50 @@ message MessageType {
 }
 }}}
 
+*version*
+  required. string.
 
+*type*
+  required. enum. !MsgType.
+
+*status*
+  optional. enum. !StatusType.
+
+*apikey*
+  optional. string.
+
+*data*
+  repeated. bytes.
 
 === !StatusType ===
-An enumeration that represents result information pertaining to the transaction. Valid values:
- * SUCCESS
- * FAILED
- * UNAUTHORIZED
+An enumeration that represents result information pertaining to the transaction.
+{{{
+    enum StatusType {
+        SUCCESS         = 1;
+        FAILED          = 2;
+        UNAUTHORIZED    = 3;
+    }
+}}}
 
 === !MsgType ===
-An enumeration that represents the type of message being transmitted. Valid values:
- * QUERY
- * SUBMISSION
- * REPLY
+An enumeration that represents the type of message being transmitted. 
+{{{
+    enum MsgType {
+        QUERY       = 1;
+        SUBMISSION  = 2;
+        REPLY       = 3;
+    }
+}}}
 
 === !QueryStruct ===
 An object that represents a query, typically embedded in a !QueryType object.
+
+{{{
+    message QueryStruct {
+        required string query   = 1;
+        optional bool nolog     = 2;
+    }
+}}}
 
 query
   required string. represents the question to ask
@@ -80,7 +108,54 @@ nolog
   optional. boolean. denotes whether or not the query should be logged
 
 === !QueryType ===
+{{{
+    message QueryType {
+        optional string apikey      = 1;
+        optional string guid        = 2;
+        optional int32 limit        = 3;
+        optional int32 confidence   = 4;
+        repeated QueryStruct query  = 5;
+        optional string description = 6;
+        optional bool feed          = 7 [ default = false ];
+    }
+}}}
+
+apikey
+  optional. string.
+
+guid
+  optional. string.
+
+limit
+  optional. int32.
+
+confidence
+  optional. int32.
+
+query
+  repeated. enum !QueryStruct.
+
+description
+  optional. string.
+
+feed
+  optional. boolean.
+
+
 === !SubmissionType ===
+{{{
+    message SubmissionType {
+        optional string guid    = 1;
+        repeated bytes data     = 2;
+    }
+}}}
+
+guid
+  optional. string.
+
+data
+  repeated. bytes.
+
 == !FeedType ==
 ----
 The [https://github.com/collectiveintel/cif-protocol/blob/v1/src/feed.proto 'FeedType'] represents a dataset or contiguous set of records. It wraps these in a set of metadata such as confidence, description, restriction, reporttime, etc. It's also responsible for conveying the 'restriction map' and 'group map' back to the client. A 'FeedType' blob will be encapsulated in a 'MessageType' message.
@@ -116,6 +191,54 @@ message FeedType {
     repeated MapType feeds_map              = 12;
 }
 }}}
-=== !FeedType ===
+
+version
+  required. string.
+
+guid
+  optional. string.
+
+confidence
+  optional. int32.
+
+description
+
+
+ReportTime
+
+
+restriction
+
+
+restriction_map
+
+
+group_map
+
+
+data
+
+
+uuid
+
+
+query_limit
+
+
+feed_map
 === !RestrictionType ===
+{{{
+    enum RestrictionType {
+        restriction_type_default        = 1;
+        restriction_type_need_to_know   = 2;
+        restriction_type_private        = 3;
+        restriction_type_public         = 4;
+    }
+}}}
 === !MapType ===
+{{{
+    message MapType {
+        required string key = 1;
+        required string value = 2;
+    }
+}}}
