@@ -84,5 +84,6 @@
    * [AddingFeeds_v1 Adding New Feeds]
   * [FAQ_v1 FAQ]
   * [API_v1 API]
+   * [API_CIFProtocol_v1 CIF Protocol]
    * [API_ProtocolBuffers_v1 Protocol Buffer API]
    * [API_HTTP_v1 HTTP API]
