@@ -12,6 +12,16 @@ Interacting via protocol buffers requires that the actual data is encoded proper
 An example implementation can be found via the [https://raw.github.com/collectiveintel/libcif/v1/lib/CIF/Client.pm libcif] client.
 
 = Details =
+== Common Parameters ==
+
+|| Parameter Name || Value || Description ||
+|| apikey || <uuid> || specify your apikey ||
+|| confidence || <real> || filter by confidence, *0-100* ||
+|| restriction || <enum> || filter by restriction, *public,need-to-know,private* ||
+|| guid || <uuid> || filter by group uuid ||
+|| nomap || <boolean> || don't map restriction to your local restriction map ||
+|| nolog || <boolean> || don't log the query ||
+
 == Config ==
 Interacting with this API requires instantiating 'CIF::Client' objects. This is done by calling the ->new() creator:
 {{{
@@ -38,5 +48,34 @@ or set at run-time:
 $cli->set_apikey('249cd5fd-04e3-46ad-bf0f-c02030cc864a');
 }}}
 == Queries ==
+The 'search' function is used to facilitate queries:
+{{{
+my ($err,$ret) = $cli->search({
+    query               => 'example.com',
+    confidence          => $confidence,
+});
+}}}
 == Submissions ==
-== Common Parameters ==
+Submissions are currently a two-step process and require some knowledge of how [https://github.com/collectiveintel/iodef-pb-simple-perl iodef-pb-simple-perl] works. More complex examples exist within [https://github.com/collectiveintel/cif-smrt/tree/v1 cif-smrt].
+{{{
+# this adapted from cif-smrt v1
+use CIF;
+use CIF::Client;
+use Iodef::Pb::Simple;
+
+my ($err,$ret) = CIF::Config->new({
+    config => '/home/cif/.cif',
+});
+
+my $hash = {
+    address     => 'example.com',
+    assessment  => 'botnet',
+    confidence  => 86,
+    description => 'zeus',
+};
+# https://github.com/collectiveintel/cif-smrt/blob/v1/lib/CIF/Smrt.pm#L571
+my $iodef = Iodef::Pb::Simple->new($hash);
+
+# https://github.com/collectiveintel/cif-smrt/blob/v1/lib/CIF/Smrt.pm#L726
+
+    
