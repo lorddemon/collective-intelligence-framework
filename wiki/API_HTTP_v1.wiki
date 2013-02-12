@@ -75,5 +75,3 @@ warn Dumper($ret);
 || guid || <uuid> || filter by group uuid ||
 || nomap || <boolean> || don't map restriction to your local restriction map ||
 || nolog || <boolean> || don't log the query ||
-
-= API Calls =
