@@ -32,16 +32,18 @@ $ sudo aptitude -y install postgresql postgresql-contrib
 Configure Postgres authentication and performance tuning
  # [PostgresInstall_v1 PostgresSetup]
 
-=== Postgres Authentication Configuration ===
+=== Additional Postgres Configuration ===
+Configure Postgres to accept connections from a host running cif-router.
+
 (note the 'trust' setting, make sure your iptables are up to date!)
 
- # Add the listening IP address of the machine to pg_hba.conf. 
+ # Add the IP address of cif-router  to pg_hba.conf. 
 {{{
 $ sudo vi /etc/postgresql/9.1/main/pg_hba.conf
 }}}
 {{{
  # IPv4 local connections:
-+host	 all	     all	 10.0.0.1/32	       trust
++host	 all	     all	 10.0.0.2/32	       trust
 }}}
  # Modify the postgresql service so that it is listening for IP based connections
 {{{
