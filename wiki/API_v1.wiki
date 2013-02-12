@@ -8,14 +8,18 @@
 
 <wiki:toc max_depth="2" />
 
-The CIF API is the programming interface to the CIF architecture. This can be used to integrate CIF data into day to day operational applications. CIF currently supports two styles of interfaces via the cif-router framework:
+The CIF API is the programming interface to the CIF architecture. This can be used to integrate CIF data into day to day operational applications. 
 
- * protocol buffers
+CIF currently supports two styles of interfaces via the cif-router framework:
+
+ * Google protocol buffers
  * raw HTTP
 
 = Details =
 == Protocol Buffers ==
 
-The raw protocol buffer interface is implemented in libcif that can be leveraged by applications. 
+The raw cif-protocol is implemented in libcif that can be leveraged by applications with-out requiring the application to understand the protocol.
 
-== HTTP ===
+== HTTP ==
+
+The interface also supports (legacy) use of the HTTP protocol. The cif-router acts as a proxy for applications where leveraging google protocol buffers is not an efficient option. The router will translate between the JSON based HTTP GET requests to the cif-protocol and vs versa.
