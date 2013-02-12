@@ -11,7 +11,6 @@
 
 = Details =
 == Install Required Dependencies ==
-----
  * (unstable) [DbiInstall_DebianSqueeze_v1 Debian Squeeze]
  * (unstable) [DbiInstall_Ubuntu12_v1 Ubuntu12]
  * (unstable) [DbiInstall_CentOS6_v1 CentOS6]
