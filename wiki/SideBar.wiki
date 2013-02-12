@@ -83,4 +83,6 @@
   * Cookbook
    * [AddingFeeds_v1 Adding New Feeds]
   * [FAQ_v1 FAQ]
-  * API
+  * [API_v1 API]
+   * [Protocol Buffers]
+   * [HTTP]
