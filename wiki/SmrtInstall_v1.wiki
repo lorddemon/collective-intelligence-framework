@@ -10,7 +10,7 @@
 <wiki:toc max_depth="2" />
 
 = Details =
-== Required Dependencies ==
+== Install Required Dependencies ==
 ----
  * (unstable) [SmrtInstall_DebianSqueeze_v1 Debian Squeeze]
  * (unstable) [SmrtInstall_Ubuntu12_v1 Ubuntu12]
