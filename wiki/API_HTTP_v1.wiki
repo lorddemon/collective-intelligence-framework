@@ -1,0 +1,79 @@
+#summary the HTTP GET interface
+
+<font color='red'>
+=UNDER CONSTRUCTION=
+</font>
+
+= Introduction =
+<wiki:toc max_depth="2" />
+
+This interface supports the GET/POST methods. The cif-router acts as a proxy for applications where leveraging google protocol buffers is not an efficient option. The cif-router will accept simple JSON keypairs and convert them to the cif-protocol via libcif, then reply back with simple JSON output.
+== Caveats ==
+=== Accept Headers ===
+The HTTP transport can be used for non HTTP encoded requests (eg: as a transport for the protocol buffer encapsulated messages). As a result, to leverage the HTTP GET API, requests must have the 'Accept' header set to 'application/json' for the API to respond in the appropriate manner:
+{{{
+Accept => 'application/json'
+}}}
+
+=== Enabled Default ===
+By default, this functionality is turned on. It can be turned off by setting the 'disable_legacy' option to 1 in the webserver config (apache) if performance degrades.
+
+= Details =
+== Authorization ==
+This API uses a simple uuid for it's authorization. This key is passed to the api using the 'apikey' parameter:
+
+{{{
+GET https://cif.example.com/api?apikey=249cd5fd-04e3-46ad-bf0f-c02030cc864a
+}}}
+
+== Queries ==
+The API uses the 'q' parameter to respond to queries:
+
+{{{
+GET https://cif.example.com/apiq=example.com
+
+GET https://cif.example.com/api?q=infrastructure/botnet
+
+GET https://cif.example.com/api?apikey=249cd5fd-04e3-46ad-bf0f-c02030cc864a&q=192.168.1.1/24
+}}}
+
+== Submissions ==
+The API leverages the 'POST' function, which should contain a simple JSON key-pair value, as well as the API as cited in the Authorization section.
+
+{{{
+#!/usr/bin/perl
+
+use warnings;
+use strict;
+
+use LWP::UserAgent;
+use JSON::XS;
+use Data::Dumper;
+
+my $url = 'https://cif.example.com/api?apikey=249cd5fd-04e3-46ad-bf0f-c02030cc864a';
+
+my $ua = LWP::UserAgent->new();
+$ua->ssl_opts(verify_hostname => 0);
+$ua->default_header('Accept' => 'application/json');
+
+my $hash = {
+    address     => 'example.com',
+    assessment  => 'botnet',
+    confidence  => 86,
+    description => 'zeus',
+};
+
+my $ret = $ua->post($url,Content => encode_json($hash));
+warn Dumper($ret);
+}}}
+
+== Common Parameters ==
+|| Parameter Name || Value || Description ||
+|| apikey || <uuid> || specify your apikey ||
+|| confidence || <real> || filter by confidence, *0-100* ||
+|| restriction || <enum> || filter by restriction, *public,need-to-know,private* ||
+|| guid || <uuid> || filter by group uuid ||
+|| nomap || <boolean> || don't map restriction to your local restriction map ||
+|| nolog || <boolean> || don't log the query ||
+
+= API Calls =
