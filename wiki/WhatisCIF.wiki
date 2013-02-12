@@ -1,7 +1,7 @@
 #summary Explanation of CIF
 
 = What is the Collective Intelligence Framework (CIF)?=
-
+----
 * Table of Contents *
 <wiki:toc max_depth="2" />
 
@@ -16,6 +16,7 @@ The original idea came from from:
 http://bret.appspot.com/entry/how-friendfeed-uses-mysql
 
 == the Process ==
+----
 === Parse ===
 
 CIF supports ingesting many different sources of data of the same type; for example data sets or “feeds” of malicious domains. Each similar dataset can be marked with different attributes like source and confidence to name a few.
@@ -55,13 +56,14 @@ CIF supports creating new data sets from the stored threat intelligence. These d
 Example: [Feeds_v0 Feeds]
 
 = Community Examples =
-
+----
  * [http://threatthoughts.com/2012/05/07/introduction-to-the-collective-intelligence-framework/ Introduction to the Collective Intelligence Framework]
  * [http://holisticinfosec.blogspot.com/2012/07/toolsmith-collective-intelligence.html toolsmith: Collective Intelligence Framework]
  * [http://www.ren-isac.net/ses/ SES - Security Event System]
  * [http://code.google.com/p/collective-intelligence-framework/wiki/CommunityExamples more]
 
 = Papers / Presentations =
+----
 == Papers ==
  * [http://www.cert.pl/PDF/MP-IST-111-18.pdf Proactive Detection and Automated Exchange of Network Security Incidents]
  * ProjectAvenger
