@@ -13,24 +13,24 @@ The cif-protocol is a low level encapsulation protocol that enables the transpor
 A current version of the protocol can be found [https://github.com/collectiveintel/cif-protocol/tree/v1 here]
 
 = Details =
-== MessageType ==
+== !MessageType ==
 ----
 The [https://github.com/collectiveintel/cif-protocol/blob/v1/src/msg.proto 'MessageType'] acts as an envelope to other data. It is used to convey if the message is a 'query', a 'submission', or a data 'reply'. It also contains the apikey and any status information needed to execute the transaction.
 
-=== StatusType ===
-Status type holds result information pertaining to the transaction. Valid statuses are:
+=== !StatusType ===
+Represents result information pertaining to the transaction. Valid values:
  * SUCCESS
  * FAILED
  * UNAUTHORIZED
 
 === MsgType ===
-The 'MsgType' depicts the type of message being transmitted. Valid types are:
+Represents the type of message being transmitted. Valid values:
  * QUERY
  * SUBMISSION
  * REPLY
 
-=== QueryStruct ===
+=== !QueryStruct ===
 
-== FeedType ==
+== !FeedType ==
 ----
 The [https://github.com/collectiveintel/cif-protocol/blob/v1/src/feed.proto 'FeedType'] represents a dataset or contiguous set of records. It wraps these in a set of metadata such as confidence, description, restriction, reporttime, etc. It's also responsible for conveying the 'restriction map' and 'group map' back to the client. A 'FeedType' blob will be encapsulated in a 'MessageType' message.
