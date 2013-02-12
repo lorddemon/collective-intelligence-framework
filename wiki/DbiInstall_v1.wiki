@@ -1,4 +1,5 @@
 #summary installing the dbi component in stand-alone mode
+#labels Version-1
 
 <font color='red'>
 =UNDER CONSTRUCTION=
