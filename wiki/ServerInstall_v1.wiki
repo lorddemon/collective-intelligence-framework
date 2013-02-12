@@ -54,7 +54,7 @@ Some initial benchmarking [https://docs.google.com/spreadsheet/ccc?key=0AvXpkVE0
 = Setup =
 == Choose an operating system ==
 ----
-Debian is the operating system in which CIF is developed against and is the most commonly used. A RHEL derivative is the second most common platform used by the community. 
+Debian/Ubuntu is the operating system in which CIF is developed against and is the most commonly used. A RHEL derivative is the second most common platform used by the community. 
 
 In theory any current Unix/Linux operating system should be able to run CIF. The challenge may be installing the required applications and dependencies.
 
