@@ -13,7 +13,7 @@ The CIF API is the programming interface to the CIF architecture. This can be us
 CIF currently supports two styles of interfaces via the cif-router framework:
 
  * [https://developers.google.com/protocol-buffers/docs/overview Google protocol buffers]
- * raw HTTP
+ * raw HTTP GET/POST
 
 = Details =
 == Protocol Buffers ==
