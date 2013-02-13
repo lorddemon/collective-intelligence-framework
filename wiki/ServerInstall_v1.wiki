@@ -342,29 +342,44 @@ need-to-know|everyone|scanner   |ssh        |85        |2012-12-20T16:00:00Z|201
 = Finishing Up =
 ----
 
-== Configuring Crontab ==
- # log into the cif user (sudo su - cif) and modify it's cron tab (crontab -e)
-  * no logging
+== Configuring Logging ==
+
+ # Create the log folder and set permissions
 {{{
-# set the path
-PATH=/bin:/usr/local/bin:/opt/cif/bin
-
-# pull feed data
-05     *       * * * /opt/cif/bin/cif_crontool -p hourly -P -N -A root &> /dev/null
-30     00     * * * /opt/cif/bin/cif_crontool -p daily -P -N -A root &> /dev/null
-
-# if you've enabled feed generation in your config
-45     *       * * * /opt/cif/bin/cif_feed &> /dev/null
+$ sudo mkdir /var/log/cif
+$ sudo chown cif:cif /var/log/cif
 }}}
-  * with logging
+ # Create the Logrotate conf file
 {{{
+$ sudo vim /etc/logrotate.d/cif
+}}}
+ # Copy and paste the following
+{{{
+/var/log/cif/*.log {
+	  weekly
+	  rotate 52
+	  compress
+	  notifempty
+	  missingok
+	  nocreate
+}
+}}}
+
+== Configuring Crontab ==
+ # log into the cif user and modify it's cron tab
+{{{
+$ sudo su - cif
+$ crontab -e
+}}}
+ # configure the following
+{{{	
 # set the path
 PATH=/bin:/usr/local/bin:/opt/cif/bin
 
 # pull feed data
-05     *       * * * /opt/cif/bin/cif_crontool -p hourly -P -d -N -A root >> /home/cif/crontool_hourly.log 2>&1
-30     00      * * * /opt/cif/bin/cif_crontool -p daily -P -d -N -A root >> /home/cif/crontool_daily.log 2>&1
+05     *       * * * /opt/cif/bin/cif_crontool -p hourly -P -d -N -A root >> /var/log/cif/crontool_hourly.log 2>&1
+30     00      * * * /opt/cif/bin/cif_crontool -p daily -P -d -N -A root >> /var/log/cif/crontool_daily.log 2>&1
 
 # if you've enabled feed generation in your config
-45     *       * * * /opt/cif/bin/cif_feed -d >> /home/cif/cif_feed.log 2>&1
+45     *       * * * /opt/cif/bin/cif_feed -d >> /var/log/cif/cif_feed.log 2>&1
 }}}
