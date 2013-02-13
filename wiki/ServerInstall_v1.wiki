@@ -353,7 +353,7 @@ $ sudo chown cif:cif /var/log/cif
 }}}
  # Create the Logrotate conf file
 {{{
-$ sudo vim /etc/logrotate.d/cif
+$ sudo vi /etc/logrotate.d/cif
 }}}
  # Copy and paste the following
 {{{
