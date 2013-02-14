@@ -49,7 +49,7 @@ import json
 
 from subprocess import Popen, PIPE
 
-cifresult = Popen('/usr/local/bin/cif -q '+ipaddr+' -p json', shell=True, stdout=PIPE).stdout.read()
+cifresult = Popen('/opt/cif/bin/cif -q '+ipaddr+' -p json', shell=True, stdout=PIPE).stdout.read()
 sys.stderr.write('D:CIF output: '+cifresult+'\n')
 
 for result in json.loads(cifresult):
