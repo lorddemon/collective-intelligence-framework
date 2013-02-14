@@ -46,17 +46,24 @@ In v1, to leverage in another language, it might be simpler to leverage the 'cif
 # https://github.com/technoskald/maltegoxforms/blob/master/cif-maltego.py
 import sys
 import json
+import pprint
+
+pp = pprint.PrettyPrinter(indent=4)
 
 from subprocess import Popen, PIPE
 
-cifresult = Popen('/opt/cif/bin/cif -q '+ipaddr+' -p json', shell=True, stdout=PIPE).stdout.read()
-sys.stderr.write('D:CIF output: '+cifresult+'\n')
+cifresult = Popen('libcif/bin/cif -n -C ~/.cifv1 -q example.com -p json', shell=True, stdout=PIPE).stdout.read()
+#sys.stderr.write(cifresult+'\n')
 
-for result in json.loads(cifresult):
-    sys.stderr.write(result['description']+'\n')
-    sys.stderr.write(result['address']+'\n')
-    sys.stderr.write(result['reporttime']+'\n')
-    sys.stderr.write(result['assessment']+'\n')
+
+
+array = cifresult.split('\n')
+for result in array:
+    r = json.loads(result)
+    sys.stderr.write(r['description']+',')
+    sys.stderr.write(r['address']+',')
+    sys.stderr.write(r['reporttime']+',')
+    sys.stderr.write(r['assessment']+'\n')
 }}}
 
 with the release of v2, libcif should be completed in C and able to be bound to many lower level languages natively.
