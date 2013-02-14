@@ -59,11 +59,12 @@ cifresult = Popen('libcif/bin/cif -n -C ~/.cifv1 -q example.com -p json', shell=
 
 array = cifresult.split('\n')
 for result in array:
-    r = json.loads(result)
-    sys.stderr.write(r['description']+',')
-    sys.stderr.write(r['address']+',')
-    sys.stderr.write(r['reporttime']+',')
-    sys.stderr.write(r['assessment']+'\n')
+    if result:
+        r = json.loads(result)
+        sys.stderr.write(r['description']+',')
+        sys.stderr.write(r['address']+',')
+        sys.stderr.write(r['reporttime']+',')
+        sys.stderr.write(r['assessment']+'\n')
 }}}
 
 with the release of v2, libcif should be completed in C and able to be bound to many lower level languages natively.
