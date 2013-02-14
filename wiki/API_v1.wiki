@@ -52,7 +52,7 @@ pp = pprint.PrettyPrinter(indent=4)
 
 from subprocess import Popen, PIPE
 
-cifresult = Popen('libcif/bin/cif -n -C ~/.cifv1 -q example.com -p json', shell=True, stdout=PIPE).stdout.read()
+cifresult = Popen('libcif/bin/cif -n -q example.com -p json', shell=True, stdout=PIPE).stdout.read()
 #sys.stderr.write(cifresult+'\n')
 
 
