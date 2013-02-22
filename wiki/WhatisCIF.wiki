@@ -1,9 +1,10 @@
 #summary Explanation of CIF
 
+* Table of Contents *
+<wiki:toc max_depth="1" />
+
 = What is the Collective Intelligence Framework (CIF)?=
 ----
-* Table of Contents *
-<wiki:toc max_depth="2" />
 
 CIF is a cyber threat intelligence management system. CIF allows you to combine known malicious threat information from many sources and use that information for identification (incident response), detection (IDS) and mitigation (null route). The most common types of threat intelligence warehoused in CIF are IP addresses, domains and urls that are observed to be related to malicious activity. 
 
@@ -15,52 +16,52 @@ The original idea came from from:
 
 http://bret.appspot.com/entry/how-friendfeed-uses-mysql
 
-== the Process ==
-----
-=== Parse ===
-
-CIF supports ingesting many different sources of data of the same type; for example data sets or “feeds” of malicious domains. Each similar dataset can be marked with different attributes like source and confidence to name a few.
-
-Example: [AddingFeeds_v0 Adding Data]
-
-=== Normalize ===
-
-Data sets of threat intelligence often have subtle differences between them. CIF normalizes these data sets which gives you a predictable experience when leveraging the threat intelligence in other applications or processes. 
-
-Example: [Taxonomy_v0 Taxonomy]
-
-=== Post Process ===
-
-CIF has many post processors that derive additional intelligence from a single piece of threat intelligence. A simple example would be that a domain and an IP address can be derived from a URL ingested into CIF.
-
-=== Store ===
-
-CIF has a database schema that is highly optimized to store billions of records of threat intelligence. CIF v1 uses a [http://backchannel.org/blog/friendfeed-schemaless-mysql "schema-less"] storage system on top of a RDBMS. 
-
-=== Query ===
-
-CIF can be queried via a web browser, CLI or API. CIF has a database schema that is highly optimized to perform queries against a database of billions of records. 
-
-Example: [BrowserPluginsInstall_v0 Web Browser], [CliClientExamples_v0 CLI], [API_v0 API]
-
-=== Share ===
-
-CIF supports users, groups and api keys. Each threat intelligence record can be tagged to be shared with specific group of users. This allows the sharing of threat intelligence among federations. 
-
-Example: [FederatedSharingExample_v0 Sharing]
-
-=== Produce ===
-
-CIF supports creating new data sets from the stored threat intelligence. These data sets can be created by type and confidence. CIF also supports whitelisting during the generation process.
-
-Example: [Feeds_v0 Feeds]
-
-= Community Examples =
+= Introductions =
 ----
  * [http://threatthoughts.com/2012/05/07/introduction-to-the-collective-intelligence-framework/ Introduction to the Collective Intelligence Framework]
  * [http://holisticinfosec.blogspot.com/2012/07/toolsmith-collective-intelligence.html toolsmith: Collective Intelligence Framework]
  * [http://www.ren-isac.net/ses/ SES - Security Event System]
  * [http://code.google.com/p/collective-intelligence-framework/wiki/CommunityExamples more]
+
+= the Process =
+----
+== Parse ==
+
+CIF supports ingesting many different sources of data of the same type; for example data sets or “feeds” of malicious domains. Each similar dataset can be marked with different attributes like source and confidence to name a few.
+
+Example: [AddingFeeds_v0 Adding Data]
+
+== Normalize ==
+
+Data sets of threat intelligence often have subtle differences between them. CIF normalizes these data sets which gives you a predictable experience when leveraging the threat intelligence in other applications or processes. 
+
+Example: [Taxonomy_v0 Taxonomy]
+
+== Post Process ==
+
+CIF has many post processors that derive additional intelligence from a single piece of threat intelligence. A simple example would be that a domain and an IP address can be derived from a URL ingested into CIF.
+
+== Store ==
+
+CIF has a database schema that is highly optimized to store billions of records of threat intelligence. CIF v1 uses a [http://backchannel.org/blog/friendfeed-schemaless-mysql "schema-less"] storage system on top of a RDBMS. 
+
+== Query ==
+
+CIF can be queried via a web browser, CLI or API. CIF has a database schema that is highly optimized to perform queries against a database of billions of records. 
+
+Example: [BrowserPluginsInstall_v0 Web Browser], [CliClientExamples_v0 CLI], [API_v0 API]
+
+== Share ==
+
+CIF supports users, groups and api keys. Each threat intelligence record can be tagged to be shared with specific group of users. This allows the sharing of threat intelligence among federations. 
+
+Example: [FederatedSharingExample_v0 Sharing]
+
+== Produce ==
+
+CIF supports creating new data sets from the stored threat intelligence. These data sets can be created by type and confidence. CIF also supports whitelisting during the generation process.
+
+Example: [Feeds_v0 Feeds]
 
 = Papers / Presentations =
 ----
