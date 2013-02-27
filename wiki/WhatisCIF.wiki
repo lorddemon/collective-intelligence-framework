@@ -67,6 +67,7 @@ Example: [Feeds_v0 Feeds]
 ----
 == Papers ==
  * [http://www.cert.pl/PDF/MP-IST-111-18.pdf Proactive Detection and Automated Exchange of Network Security Incidents]
+ * [http://www.enisa.europa.eu/activities/cert/support/proactive-detection/proactive-detection-report Proactive Detection of Network Security Incidents]
  * ProjectAvenger
 
 == Recent Presentations ==
