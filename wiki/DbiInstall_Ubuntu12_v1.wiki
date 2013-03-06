@@ -21,8 +21,8 @@ $ sudo aptitude -y install postgresql-client libclass-dbi-perl libdbd-pg-perl
 {{{
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::DNS::Match'
 }}}
-== System Setup == 		
------ 		
+== System Setup ==		
+----
 === Default CIF user === 		
 # Create your "cif" user/group (the configure script will default to this user "cif") that will own the application (/opt/cif). 		
 {{{ 		
