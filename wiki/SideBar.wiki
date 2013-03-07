@@ -92,7 +92,7 @@
    * [API_CIFProtocol_v1 CIF Protocol]
    * [API_ProtocolBuffers_v1 Protocol Buffer API]
    * [API_HTTP_v1 HTTP API]
- * (devel) [WhatisCIF v3]
+ * (devel) [WhatisCIF]
   * [ServerInstall_v3 Server]
    * [Utilities_v3 Utilities]
    * [MigrateApikeys_v3 API key migration]
