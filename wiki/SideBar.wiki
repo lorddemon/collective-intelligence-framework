@@ -83,6 +83,10 @@
    * [TaxonomyConfidence_v1 Confidence]
   * Cookbook
    * [AddingFeeds_v1 Adding New Feeds]
+  * Feed Integration
+    * [Integration_Snort Snort]
+    * [Integration_TippingPoint Tipping Point]
+    * [Integration_Bind Bind]
   * [FAQ_v1 FAQ]
   * [API_v1 API]
    * [API_CIFProtocol_v1 CIF Protocol]
