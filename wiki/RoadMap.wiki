@@ -4,7 +4,7 @@
 
 These are our best projections as of the last 'wiki edit' date, subject to change as the project evolves. The issues list can be found [http://code.google.com/p/collective-intelligence-framework/issues/list here] for a more refined map of what the blockers are to each release.
 
-= Winter 2013 - v1  =
+= Spring 2013 - v1  =
  
  * conversion from JSON to protocol buffers
  * split up components to cif-smrt, cif-router, cif-dbi, etc...
