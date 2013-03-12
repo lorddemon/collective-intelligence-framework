@@ -1,5 +1,9 @@
 #summary centos 6 install doc (v1)
 
+<font color='red'>
+=UNDER CONSTRUCTION=
+</font>
+
 = Introduction =
 
 This doc assumes a base CentOS5 x64 minimal base install.
