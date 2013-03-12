@@ -112,7 +112,7 @@ $ sudo service postgresql start
 ----
  # create your "cif" user/group (the configure script will default to this user "cif")
 {{{
-$ sudo adduser cif
+$ sudo useradd cif
 }}}
  # change the default home permissions
 {{{
