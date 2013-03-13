@@ -1,4 +1,5 @@
 #summary Diagrams of different infrastructure layouts
+#labels Deprecated
 
 = CIFv1 Distributed Environment =
 
