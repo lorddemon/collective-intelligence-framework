@@ -57,7 +57,7 @@
   * [ServerInstall_v1 Server]
    * [Utilities_v1 Utilities]
    * [MigrateApikeys_v1 API key migration]
-   * [CIFInfrastructureDiagram Distributed Environment]
+   * [CIFInfrastructureDiagram_v1 Distributed Environment]
     * [SmrtInstall_v1 Smrt Standalone]
     * [RouterInstall_v1 Router Standalone]
     * [DbiInstall_v1 Database Interface]
