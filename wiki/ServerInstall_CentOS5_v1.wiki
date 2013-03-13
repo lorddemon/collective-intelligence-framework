@@ -211,7 +211,7 @@ $ sudo /usr/sbin/usermod -a -G cif apache
 == Random Number Generator ==
 ----
 
-The "rngd' service [helps](https://www.centos.org/modules/newbb/viewtopic.php?topic_id=36209) with random number generation (mainly used for generating security certificates in bind and apache, speeds up the entropy process).
+The "rngd' service [https://www.centos.org/modules/newbb/viewtopic.php?topic_id=36209 helps] with random number generation (mainly used for generating security certificates in bind and apache, speeds up the entropy process).
 
 By default, there is no rngd service script. This does exist in CentOS 6, so we'll take that one and use it.
 
