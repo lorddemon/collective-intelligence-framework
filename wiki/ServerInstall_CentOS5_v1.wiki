@@ -174,7 +174,7 @@ $ sudo chmod 770 /home/cif
 
 Some of the "CIF" values will be created later in the doc. For now just follow the config as is, don't worry about creating things in /opt/cif or /home/cif
 
- 1. if you need help generating your own certificates, follow the directions [here http://wiki.centos.org/HowTos/Https]
+ 1. if you need help generating your own certificates, follow the directions [http://wiki.centos.org/HowTos/Https here]
  1. unless you know what you're doing with virtual hosts, comment out the port-80 stuff in /etc/httpd/conf/httpd.conf (around line 130)
 {{{
 # Listen: Allows you to bind Apache to specific IP addresses and/or
