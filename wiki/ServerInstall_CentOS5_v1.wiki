@@ -206,6 +206,7 @@ Some of the "CIF" values will be created later in the doc. For now just follow t
 {{{
 $ sudo /usr/sbin/usermod -a -G cif apache
 }}}
+ 1. we'll restart apache later in the doc after we install the core CIF code
 		
 == Random Number Generator ==
 ----
