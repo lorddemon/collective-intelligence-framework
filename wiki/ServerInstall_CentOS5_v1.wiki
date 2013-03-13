@@ -352,52 +352,6 @@ $ sudo /sbin/chkconfig --levels 345 named on
 $ sudo /sbin/chkconfig --levels 345 rngd on
 $ sudo /sbin/chkconfig --levels 345 httpd on
 }}}		
- 1. This part of the documentation extends from the CentOS 5 part, and into the "General" documentation
-
-== Configure Bind ===
-
- 1. create the config file /etc/named.conf
-{{{
-options {
-
-	// If there is a firewall between you and nameservers you want
-	// to talk to, you may need to fix the firewall to allow multiple
-	// ports to talk.  See http://www.kb.cert.org/vuls/id/800113
-
-	// If your ISP provided one or more IP addresses for stable
-	// nameservers, you probably want to use them as forwarders.
-	// Uncomment the following block, and insert the addresses replacing
-	// the all-0's placeholder.
-	forward only;
-	forwarders {
-		8.8.8.8;
-		8.8.4.4;
-	};
-
-	auth-nxdomain no;    # conform to RFC1035
-	// listen-on-v6 { any; };
-	listen-on { 127.0.0.1; };
-};
-
-// bypass the Google public servers
-zone "cymru.com" {
-	forward only;
-	type forward;
-	forwarders { };
-};
-
-zone "zen.spamhaus.org" {
-	forward only;
-	type forward;
-	forwarders { };
-};
-
-zone "dbl.spamhaus.org" {
-	forward only;
-	type forward;
-	forwarders { };
-};
-}}}
 
 == Continue with installation ==
 ----
