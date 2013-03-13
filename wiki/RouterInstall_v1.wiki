@@ -1,7 +1,7 @@
 #summary the v1 stand-alone router installation
 
 <font color='red'>
-=UNDER CONSTRUCTION=
+=Unstable=
 </font>
 
 = Introduction =
