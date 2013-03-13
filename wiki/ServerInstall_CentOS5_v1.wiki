@@ -22,7 +22,7 @@ Make sure your instance has a static v4 address
 There are some weird issues with the way RHEL (and therefor CentOS) handle the ipv6 driver module, and how some perl modules react to this. If you've left the ipv6 defaults (or leverage ipv6 for routing) you'll probably be OK. If you've "disabled" ipv6, you might run into some build testing issues. If you do, try to force install the modules, gather the testing output (and your ipv6 configurations, etc) and log a bug report.
 
 === SELINUX ===
-Selinux either needs to be disabled or a [policy](http://wiki.centos.org/HowTos/SELinux) needs to be written allowing postgres r/w access to /mnt/archive and /mnt/index
+Selinux either needs to be disabled or a [http://wiki.centos.org/HowTos/SELinux policy] needs to be written allowing postgres r/w access to /mnt/archive and /mnt/index
 
  1. disable selinux via /etc/selinux/config
 {{{
@@ -54,19 +54,6 @@ $ sudo rpm -iv pgdg-centos-8.4-3.noarch.rpm
 {{{
 $ sudo yum -y install rng-utils bind-utils postgresql-server httpd httpd-devel mod_ssl gcc make expat expat-devel uuid uuid-devel wget bind rsync mod_perl mod_perl-devel ntp
 }}}
-{{{
-To be removed after testing instructions:
-
- * NOTE: removed or changed packages from CentOS 6
-  * libuuid-devel doesn't exist (I think uuid-devel provides the same libraries)
-  * rng-tools in CentOS 6 is rng-utils in CentOS 5
-  * ntp package installs ntpdate
-  * pretty sure I don't need the following (i.e. they're already installed), but need to check from a bare install:
-   * rng-utils
-   * wget
-   * sudo
-   * wget
-}}}
  1. make sure your clock is up to date (some packages might not install if it's too far skewed)
 {{{
 $ sudo /sbin/ntpdate -u pool.ntp.org
@@ -78,12 +65,6 @@ $ sudo yum -y install libapreq2 libapreq2-devel perl-libapreq2 zeromq zeromq-dev
  1. install the baseline perl modules
 {{{
 $ sudo yum -y install perl-Digest-SHA libxml2 libxml2-devel perl-XML-LibXML uuid-perl perl-DBD-Pg perl-XML-RSS perl-JSON perl-Unicode-String perl-Config-Simple perl-Module-Pluggable perl-MIME-Lite perl-Class-Accessor perl-YAML perl-XML-Parser perl-Net-DNS perl-DateTime-Format-DateParse perl-IO-Socket-INET6 openssl-devel perl-Module-Install perl-Net-SSLeay perl-Class-Trigger perl-IO-Socket-SSL
-}}}
-{{{
-To be removed after testing instructions:		 
- * NOTE: removed or changed packages from CentOS 6
-  * perl-Date-Manip doesn't exist
-  * perl-CPAN doesn't exist
 }}}
 == CPAN ==
 ----
@@ -101,18 +82,10 @@ $ perl -MCPAN -e 'shell'
 {{{
 $ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Bundle::CPAN'
 }}}		
- 1. If prompted during install, accept default values. Note that if this isn't done, {{{DateTime}}} refuses to install cleanly, which leads to other issues
+ 1. If prompted during install, accept default values.
  1. Install (as root) the remaining CPAN modules. Note: changing the order of the packages in the above line can result in packages not building/installing correctly.
 {{{
 $ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,ZeroMQ,Sys::MemInfo,JSON::XS,File::Type,LWP::UserAgent,Class::Trigger,Class::DBI,Net::Patricia,Text::Table,Mozilla::CA,Net::SSLeay,IO::Socket::SSL,IO::Socket::INET6,Text::CSV,XML::RSS,Date::Manip,Module::Pluggable,MIME::Lite,Time::HiRes,LWP::Protocol::https'
-}}}
-{{{
-To be removed after testing instructions:
-
- * Note: The following packages have been added, compared to the CentOS 6 installation:
-  * DateTime
-  * Time::HiRes
-  * MIME::Lite
 }}}
 
 == System Setup ==
