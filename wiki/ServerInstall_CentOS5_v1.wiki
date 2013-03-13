@@ -156,7 +156,7 @@ $ sudo ln -sf /var/lib/pgsql/data/pg_hba.conf /etc/postgresql/8.4/main/pg_hba.co
 }}}
  1. start up the cluster
 {{{
-$ sudo service postgresql start
+$ sudo /sbin/service postgresql start
 }}}
 
 == Default CIF user ==
