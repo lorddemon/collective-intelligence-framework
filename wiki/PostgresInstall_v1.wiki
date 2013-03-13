@@ -86,8 +86,13 @@ echo vm.swappiness = 0
 $ /bin/bash shmsetup.sh | sudo tee -a /etc/sysctl.conf
 }}}
  # reload the kernel settings
+  * Debian / Ubuntu / RHEL 6.x
 {{{
 $ sudo sysctl -p
+}}}
+  * RHEL 5.x
+{{{
+$ sudo /sbin/sysctl -p
 }}}
  # Comment out existing shared_buffers and max_connections settings so it can be set below
 {{{
