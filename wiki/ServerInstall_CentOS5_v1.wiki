@@ -399,6 +399,6 @@ zone "dbl.spamhaus.org" {
 };
 }}}
 
-== Continue with installation --
+== Continue with installation ==
 ----
 1. Continue with [ServerInstall_v1#Bind Nameserver configuration]
