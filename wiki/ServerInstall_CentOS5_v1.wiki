@@ -97,7 +97,7 @@ $ perl -MCPAN -e 'shell'
  1. when returned to the `cpan>` prompt, type `exit`
 
 === Update CPAN ===
-11. update CPAN (as root)
+ 1. update CPAN (as root)
 {{{
 $ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Bundle::CPAN'
 }}}		
