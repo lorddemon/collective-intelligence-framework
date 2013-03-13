@@ -1,7 +1,7 @@
 #summary centos 5 install doc (v1)
 
 <font color='red'>
-=UNDER CONSTRUCTION=
+=Unstable=
 </font>
 
 = Introduction =
