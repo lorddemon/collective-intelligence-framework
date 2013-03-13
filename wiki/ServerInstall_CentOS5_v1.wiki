@@ -398,20 +398,7 @@ zone "dbl.spamhaus.org" {
 	forwarders { };
 };
 }}}
-	* In the current example, the config file has a line that consists of only "...". Although this obviously represents an omission of a section of the file, if someone were to directly copy/paste, it would be an invalid config file.
-	
-* The rest of the instructions in the Bind configuration section are valid
 
-## Postgres Configuration
-
-### Performance Configuration
-
-* Step 4
-
-		$ sudo /sbin/sysctl -p
-		
-* The rest of the instructions in the Postgres configuration section are valid
-
-## Main page
-
-* all the rest of the documentation appears to be valid
+== Continue with installation --
+----
+1. Continue with [ServerInstall_v1#Bind Nameserver configuration]
