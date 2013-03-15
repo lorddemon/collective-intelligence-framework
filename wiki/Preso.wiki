@@ -15,7 +15,7 @@ All content licensed under [http://creativecommons.org/licenses/by-sa/3.0 CCv3] 
  * 2012 -- [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=i2smm2012_ses.pdf Internet2 Combined Industry and Research Constituency Meeting]
  * 2012 -- [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=2012_zombie_hunting.pdf Zombie Hunting]
 
-= Recent 3rd Party Presentations=
+= 3rd Party Presentations=
  * http://www.slideshare.net/eherna2000/intro-to-cif-hackmiamiorg
 
 = Archived Presentations =
