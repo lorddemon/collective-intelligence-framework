@@ -19,13 +19,20 @@ $ sudo chown postgres:postgres /mnt/archive
 $ sudo chown postgres:postgres /mnt/index
 }}}
 === Large Install ===
- # Set the appropriate permissions and link the pg_xlog directory:
+ # Set the appropriate permissions:
 {{{
 $ sudo chown postgres:postgres /mnt/archive
 $ sudo chown postgres:postgres /mnt/index
 $ sudo chown postgres:postgres /mnt/pg_xlog
+}}}
+ # Stop the postgresql service
+ # Link the pg_xlog directory:
+{{{
+$ sudo mv /var/lib/postgresql/X.X/main/pg_xlog/* /mnt/pg_xlog/.
+$ sudo rm -rf /var/lib/postgresql/X.X/main/pg_xlog
 $ sudo ln -sf /mnt/pg_xlog /var/lib/postgresql/X.X/main/pg_xlog
 }}}
+ # Restart the postgresql service
 
 == Postgres Authentication Configuration ==
 ----
