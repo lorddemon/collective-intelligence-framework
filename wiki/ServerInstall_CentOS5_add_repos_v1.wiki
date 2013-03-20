@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+= Dependency installation when adding 3rd party repositories =
 
 === Add repositories ===
  1. add the EPEL repo
