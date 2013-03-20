@@ -33,4 +33,4 @@ $ sudo yum -y install perl-Digest-SHA libxml2 libxml2-devel perl-XML-LibXML uuid
 
 == Continue with installation ==
 ----
-1. Continue with [ServerInstall_CentOS5_v1#CPAN CPAN installation]
+ 1. Continue with [ServerInstall_CentOS5_v1#CPAN CPAN installation]
