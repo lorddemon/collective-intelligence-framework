@@ -1,0 +1,27 @@
+#summary explaining whitelisting (v1)
+#labels version-1
+
+= Whitelisting =
+
+CIFv1 has the capability to whitelist observations from entering a feed during the feed generation process. 
+
+=== How does whitelisting work in CIFv1? ===
+
+Any observation (IP, domain, URL) with the following will be whitelisted during feed generation: 
+
+ * Assessment = whitelist
+ * Confidence >= 25
+
+=== How does an observation get an assessment of "whitelist" and a confidece >= 25? ===
+
+By default CIFv1 is configured with the following whitelists:
+
+ 1. https://github.com/collectiveintel/cif-smrt-rules/blob/v1/etc/00_alexa_whitelist.cfg
+ 1. https://github.com/collectiveintel/cif-smrt-rules/blob/v1/etc/00_mirc_whitelist.cfg
+ 1. https://github.com/collectiveintel/cif-smrt-rules/blob/v1/etc/00_whitelist.cfg
+ 
+Looking at the 00_whitelist.cfg file you'll see there are additional configuration files that contribute to whitelisting. 
+
+=== (Need to explain how how /16's get added as a whitelist) ===
+
+=== (Need to explain how IP addresses get resolved and whitelisted) ===
