@@ -29,7 +29,7 @@ Type:
  * Spam
  * Spamvertising
  * Suspicious
- * Whitelists
+ * Whitelist
 
 [TaxonomyConfidence_v1 Confidence]:
 
