@@ -81,6 +81,7 @@
     * [FeedSuspicious_v1 Suspicious]
     * [FeedWhitelists_v1 Whitelists]
    * [TaxonomyConfidence_v1 Confidence]
+   * [Whitelist_v1 Whitelisting]
   * Cookbook
    * [AddingFeeds_v1 Adding New Feeds]
   * Feed Integration
