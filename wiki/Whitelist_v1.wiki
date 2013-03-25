@@ -29,4 +29,4 @@ Looking at the 00_whitelist.cfg file you'll see there are additional configurati
 
 === (Need to explain how how /16's get added as a whitelist) ===
 
-=== (Need to explain how IP addresses get resolved and whitelisted) ===
+=== (Need to explain how IP addresses get resolved from domains and  IP's whitelisted at 47..%) ===
