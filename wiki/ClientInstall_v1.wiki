@@ -33,7 +33,7 @@ A list of known [KnownIssues_v1 issues] for v1
  * (testing) [ClientInstall_CentOS6_v1 CentOS 6] 
  * (unstable) [ClientInstall_OSX7_v1 OSX 7] 
 == Package ==
- # download the latest [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:v1+libcif package]
+ # download the latest [https://code.google.com/p/collective-intelligence-framework/downloads/list?q=summary:libcif-v1 package]
 {{{
 $ tar -xzvf libcif-v1-XXX.tar.gz
 $ cd libcif-v1-XXX
