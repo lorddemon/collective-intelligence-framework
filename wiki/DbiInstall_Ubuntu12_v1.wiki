@@ -2,7 +2,7 @@
 
 = Introduction =
 This doc provides for the installation of a remote database client (eg: the router, or an apikeys interface manager). This doc assumes:
- * a clean install of Ubuntu 12.x with sudo and all base system updates applied.
+ * a clean install of Ubuntu 12.04 with sudo and all base system updates applied.
  * the database instance (physical data) is located on a different set of resources
 
 * Table of Contents *
