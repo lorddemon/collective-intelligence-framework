@@ -23,9 +23,9 @@ Consult the Disk Layout Guide before setting up your operating system. There are
 == Install Required Dependencies ==
 ----
  * (unstable) Debian Squeeze
- * (unstable) Ubuntu 12
+ * (unstable) Ubuntu 12.04
 {{{
-$ sudo aptitude -y install postgresql postgresql-contrib
+$ sudo aptitude -y install postgresql
 }}}
  * (unstable) CentOS6
 
@@ -41,7 +41,7 @@ Configure Postgres to accept connections from a host running cif-router.
  # Configure iptables to allow access to port 5432 from cif-router (10.0.0.2).
  # Add the IP address of cif-router  to pg_hba.conf. 
 {{{
-$ sudo vi /etc/postgresql/9.1/main/pg_hba.conf
+$ sudo vi /etc/postgresql/X.X/main/pg_hba.conf
 }}}
 {{{
  # IPv4 local connections:
@@ -49,7 +49,7 @@ $ sudo vi /etc/postgresql/9.1/main/pg_hba.conf
 }}}
  # Modify the postgresql service so that it is listening for IP based connections
 {{{
-$ sudo vi /etc/postgresql/9.1/main/postgresql.conf
+$ sudo vi /etc/postgresql/X.X/main/postgresql.conf
 }}}
 {{{
 -listen_addresses = 'localhost'
