@@ -20,6 +20,14 @@ Consult the Disk Layout Guide before setting up your operating system. There are
 
  # [DiskLayout_v1 Disk Layout Guide]
 
+=== Additional Disk Configuration ===
+Some additional directories need to be created, otherwise when the CIF DB creation script is ran from the primary server, the DB will not be properly created.
+
+{{{
+$ mkdir -p /mnt/{archive,index}/data
+$ chown postgres:postgres /mnt/{archive,index}/data
+}}}
+
 == Install Required Dependencies ==
 ----
  * (unstable) Debian Squeeze
