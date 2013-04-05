@@ -23,4 +23,4 @@ These are our best projections as of the last 'wiki edit' date, subject to chang
  * advanced correlation
  * advanced analytics
  * machine learning algo's
- * [http://code.google.com/p/collective-intelligence-framework/issues/list?q=Milestone=v2&sort=priority+id complete list]
+ * [https://github.com/collectiveintel/cif-v2/issues/milestones complete list]
