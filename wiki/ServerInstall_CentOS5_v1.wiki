@@ -64,7 +64,7 @@ $ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Bundle::CPAN'
  1. If prompted during install, accept default values.
  1. Install (as root) the remaining CPAN modules. Note: changing the order of the packages in the above line can result in packages not building/installing correctly.
 {{{
-$ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,ZeroMQ,Sys::MemInfo,JSON::XS,File::Type,LWP::UserAgent,Class::Trigger,Class::DBI,Net::Patricia,Text::Table,Mozilla::CA,Net::SSLeay,IO::Socket::SSL,IO::Socket::INET6,Text::CSV,XML::RSS,Date::Manip,Module::Pluggable,MIME::Lite,Time::HiRes,LWP::Protocol::https,LWPx::ParanoidAgent'
+$ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,ZeroMQ,Sys::MemInfo,JSON::XS,File::Type,LWP::UserAgent,Class::Trigger,Class::DBI,Net::Patricia,Text::Table,Mozilla::CA,Net::SSLeay,IO::Socket::SSL,IO::Socket::INET6,Text::CSV,XML::RSS,Date::Manip,Module::Pluggable,MIME::Lite,Time::HiRes,LWP::Protocol::https'
 }}}
 
 == System Setup ==
