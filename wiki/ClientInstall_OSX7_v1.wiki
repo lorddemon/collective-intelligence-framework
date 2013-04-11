@@ -1,9 +1,11 @@
 #summary OS X client install doc (v1)
+
 <font color='red'>
 =UNDER CONSTRUCTION=
 </font>
+
 = Introduction =
-* due to the osx implementation of perl, ossp::uuid doesn't install properly on os x, please use the browser plugin *
+This assumes you're using macports (could be adapted for homebrew)
 
 * Table of Contents *
 <wiki:toc max_depth="2" />
@@ -11,6 +13,8 @@
 = Details =
 == Caveats ==
 ----
+=== Mac Ports ===
+ # make sure macports (or homebrew) is up to date
 === Xcode ===
  # install latest version of xcode from the app store
  # make sure the command line tools are installed (via preferences, ... downloads, ... components)
@@ -18,24 +22,16 @@
 {{{
 sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer/
 }}}
+ # re-install perl5 if you're using mac ports (or homebrew) so they know where the new compiler is
 == Dependencies ==
 ----
- # the perl OSSP::uuid bindings must be installed from source
+ # install some of the base deps
 {{{
-$ wget ftp://ftp.ossp.org/pkg/lib/uuid/uuid-1.6.2.tar.gz
-$ tar -zxvf uuid-1.6.2.tar.gz
-$ cd uuid-1.6.2
-$ ./configure --with-perl
-$ make
-$ sudo make install
-}}}
- # test to make sure uuid is installed properly
-{{{
-$ perl -e 'use OSSP::uuid'
+$ sudo port install p5-uuid p5-digest-sha p5-digest-sha1 p5-log-dispatch p5-list-moreutils p5-datetime
 }}}
  # install the CPAN modules
 {{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::SSLeay,Compress::Snappy,Net::Patricia, Iodef::Pb::Simple,DateTime::Format::DateParse,Digest::SHA,Log::Dispatch,List::MoreUtils,DateTime'
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::SSLeay, Compress::Snappy, Net::Patricia, Iodef::Pb::Simple, DateTime::Format::DateParse, Config::Simple'
 }}}
  # update config-simple-perl manually (something's wrong where 4.59 won't update on OS X)
 {{{
@@ -51,9 +47,20 @@ if [ -d "/opt/cif/bin" ]; then
     PATH="/opt/cif/bin:$PATH"
 fi
 }}}
- # reload your environment
+ # reload your environment (could require a relog of the terminal app)
 {{{
 $ source ~/.profile
+}}}
+ # test
+{{{
+$ cif -h
+Usage: perl /opt/cif/bin/cif -q xyz.com
+
+Standard Options:
+    -h  --help:             this message
+    -C  --config:           specify cofiguration file, default: /home/wes/.cif
+
+...
 }}}
 
 Continue with the libcif [ClientInstall_v1#Package installation]
