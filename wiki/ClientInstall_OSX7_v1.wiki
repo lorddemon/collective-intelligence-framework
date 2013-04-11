@@ -65,17 +65,6 @@ fi
 {{{
 $ source ~/.profile
 }}}
- # test
-{{{
-$ cif -h
-Usage: perl /opt/cif/bin/cif -q xyz.com
-
-Standard Options:
-    -h  --help:             this message
-    -C  --config:           specify cofiguration file, default: /home/wes/.cif
-
-...
-}}}
 
 Continue with the libcif [ClientInstall_v1#Package installation]
 = References =
