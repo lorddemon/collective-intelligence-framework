@@ -27,8 +27,22 @@ sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer/
 ----
  # install some of the base deps
 {{{
-$ sudo port install p5-uuid p5-digest-sha p5-digest-sha1 p5-log-dispatch p5-list-moreutils p5-datetime
+$ sudo port install p5-digest-sha p5-digest-sha1 p5-log-dispatch p5-list-moreutils p5-datetime
 }}}
+ # the perl OSSP::uuid bindings must be installed from source into /opt/local (for macports)
+{{{
+$ wget ftp://ftp.ossp.org/pkg/lib/uuid/uuid-1.6.2.tar.gz
+$ tar -zxvf uuid-1.6.2.tar.gz
+$ cd uuid-1.6.2
+$ ./configure --prefix=/opt/local --with-perl --with-perl-compat
+$ make
+$ sudo make install
+}}}
+ # test to make sure uuid is installed properly
+{{{
+$ perl -e 'use OSSP::uuid'
+}}}
+
  # install the CPAN modules
 {{{
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::SSLeay, Compress::Snappy, Net::Patricia, Iodef::Pb::Simple, DateTime::Format::DateParse, Config::Simple'
