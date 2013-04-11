@@ -45,7 +45,7 @@ $ perl -e 'use OSSP::uuid'
 
  # install the CPAN modules
 {{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::SSLeay, Compress::Snappy, Net::Patricia, Iodef::Pb::Simple, DateTime::Format::DateParse, Config::Simple,Log::Dispatch'
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::SSLeay, Compress::Snappy, Net::Patricia, Iodef::Pb::Simple, DateTime::Format::DateParse, Config::Simple, Log::Dispatch'
 }}}
  # update config-simple-perl manually (something's wrong where 4.59 won't update on OS X)
 {{{
