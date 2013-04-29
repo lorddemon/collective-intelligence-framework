@@ -90,10 +90,10 @@ Configure Postgres authentication and performance tuning
 This release assumes that the client is on the same hardware as the backend server/router components. The final release will include an independent "libcif" (the client libraries) package. This release is for *testing purposes only*... 
 
  # power down apache2
- # install the latest CIF [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:RC2 package]
+ # install the latest CIF [http://code.google.com/p/collective-intelligence-framework/downloads/list?q=label:RC3 package]
 {{{
-$ tar -xzvf cif-v1-rc2-XXXX.tar.gz
-$ cd cif-v1-rc2-XXXX
+$ tar -xzvf cif-v1-v0.99-RC3-XXXX.tar.gz
+$ cd cif-v1-v0.99-RC3-XXXX
 $ ./configure && make testdeps
 $ sudo make install
 }}}
