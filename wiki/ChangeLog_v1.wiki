@@ -1,6 +1,8 @@
 #summary the v1 change log
 
-== Changes==
+== ChangeLog==
+the official, up-to-date changelog can now be found [https://github.com/collectiveintel/cif-v1/blob/master/ChangeLog here]
+
 === RC3 - 2013-05 ===
 ==== libcif ====
 {{{
