@@ -1,7 +1,7 @@
 #summary the v1 change log
 
 == Changes==
-=== RC3 2013-05 ===
+=== RC3 - 2013-05 ===
 ==== libcif ====
  * swiched bin/cif to use env instead of /usr/bin/perl (better for other UNIX's)
  * added no_decode and new_only flags to client (see doc)
@@ -37,7 +37,7 @@
  * json output cleanup
  * minor installation fixes
 
-=== RC2 2013-01 === 
+=== RC2 - 2013-01 === 
  * complied CentOS6, Ubuntu12 and Debian6 doc
  * merged everything under the cif-v1 tree in github (cif-router, etc are all submodules)
  * cleaned up the installer as one automake "meta installer"
@@ -53,7 +53,7 @@
  * (rt-cifminimal) updated to work with cif-v1
  * other various performance enhancements
 
-=== RC1 2012 ===
+=== RC1 - 2012 ===
  * renamed cif-perl to libcif
  * renamed cif-dbi-perl to libcif-dbi
  * merged cif-client to libcif
