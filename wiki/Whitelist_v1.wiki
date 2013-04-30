@@ -21,12 +21,22 @@ Any observation (IP, domain, URL) with the following will be whitelisted during 
 
 By default CIFv1 is configured with the following whitelists:
 
- 1. https://github.com/collectiveintel/cif-smrt-rules/blob/v1/etc/00_alexa_whitelist.cfg
- 1. https://github.com/collectiveintel/cif-smrt-rules/blob/v1/etc/00_mirc_whitelist.cfg
- 1. https://github.com/collectiveintel/cif-smrt-rules/blob/v1/etc/00_whitelist.cfg
+ * https://github.com/collectiveintel/cif-smrt-rules/blob/v1/etc/00_alexa_whitelist.cfg
+ * https://github.com/collectiveintel/cif-smrt-rules/blob/v1/etc/00_mirc_whitelist.cfg
+ * https://github.com/collectiveintel/cif-smrt-rules/blob/v1/etc/00_whitelist.cfg
  
-Looking at the 00_whitelist.cfg file you'll see there are additional configuration files that contribute to whitelisting. 
+Looking at the 00_whitelist.cfg file you'll see there are additional configuration files that contribute to whitelisting.
 
-=== (Need to explain how how /16's get added as a whitelist) ===
+When these feeds are processed via cif_smrt using the '-P' flag, cif_smrt applies the following logic:
 
-=== (Need to explain how IP addresses get resolved from domains and  IP's whitelisted at 47..%) ===
+ * resolve all domains to their ip's, slightly degrade the confidence value, whitelist the ip's
+ * resolve all ip's to their bgp prefix, slightly degrade the confidence value, whitelist the prefix (/16, /18, /22, /24, etc).
+
+For example:
+
+ 1. google.com is given the assessment 'whitelist' with a confidence value of 95%
+ 1. google.com resolves to: 173.194.46.64-78, which are whitelisted at ~ 69% confidence
+ 1. 173.194.46.64-78 resolves to 173.194.46.0/24 (bgp prefix lookup)
+ 1. 173.194.46.0/24 is whitelisted 47% confidence
+
+When a feed is generated, a whitelist data-set is pre-populated with these values and the feed items are checked against them (sub-domains included).
