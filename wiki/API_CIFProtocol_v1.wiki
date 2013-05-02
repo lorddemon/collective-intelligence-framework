@@ -1,8 +1,4 @@
-#summary the cif-protocol v1
-
-<font color='red'>
-=UNDER CONSTRUCTION=
-</font>
+#summary the v1 cif-protocol
 
 = Introduction =
 
