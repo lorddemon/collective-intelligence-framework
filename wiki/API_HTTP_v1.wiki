@@ -1,4 +1,4 @@
-#summary the HTTP interface
+#summary the LEGACY HTTP interface
 
 = Introduction =
 <wiki:toc max_depth="2" />
