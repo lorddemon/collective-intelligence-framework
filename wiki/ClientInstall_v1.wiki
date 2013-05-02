@@ -34,7 +34,7 @@ A list of known [https://github.com/collectiveintel/cif-v1/issues issues] for v1
  * (testing) [ClientInstall_CentOS6_v1 CentOS 6] 
  * (unstable) [ClientInstall_OSX7_v1 OSX 7] 
 == Package ==
- # download the latest [https://code.google.com/p/collective-intelligence-framework/downloads/list?q=summary:libcif-v1 package]
+ # download the latest [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=label%3ARC2+label%3Av1+summary%3Alibcif-v1 package]
 {{{
 $ tar -xzvf libcif-v1-XXX.tar.gz
 $ cd libcif-v1-XXX
