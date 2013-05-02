@@ -265,7 +265,7 @@ confidence = 95,85,75,65
 roles = role_everyone
 
 # how far back in time to generate the feeds from
-max_days = 7
+limit_days = 7
 }}}
  # generate a "role key" for generating feeds everyone (with an apikey) in the system can query for. They apikey generated can be ignored as it's just a placeholder for the system.
 {{{
