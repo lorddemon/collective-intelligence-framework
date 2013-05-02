@@ -7,9 +7,9 @@
 
 = Preamble =
 ----
-A semi-complete [ChangeLog_v1 ChangeLog] of v1
+A semi-complete [https://github.com/collectiveintel/cif-v1/blob/master/ChangeLog ChangeLog] of v1
 
-A list of known [KnownIssues_v1 issues] for v1
+A list of known [https://github.com/collectiveintel/cif-v1/issues issues] for v1
 
 == Backwards Compatibility ==
  * as of v1, the 'CIF-Client' is now part of the client side library 'libcif'
