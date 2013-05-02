@@ -3,7 +3,7 @@
   * [FAQ]
   * [CommunityExamples]
   * [http://groups.google.com/group/ci-framework Discussion Group]
- * (stable) v0
+ * (deprecating) v0
   * [Server_v0 Server]
    * [ServerInstall_v0 Server Install]
    * [ServerBackup_v0 Backup]
