@@ -15,6 +15,7 @@ CIF currently supports two styles of interfaces via the cif-router framework:
 The v1 cif repositories can be found on github:
  * top-level v1 meta [https://github.com/collectiveintel/cif-v1 repo]
  * libcif v1 [https://github.com/collectiveintel/libcif/tree/v1 repo]
+ * simple python [https://github.com/collectiveintel/cif-client-python/tree/v1 client]
  * libcif-dbi v1 [https://github.com/collectiveintel/libcif-dbi/tree/v1 repo]
  * cif-smrt v1 [https://github.com/collectiveintel/cif-smrt/tree/v1 repo]
  * cif-router v1 [https://github.com/collectiveintel/cif-router/tree/v1 repo]
