@@ -266,6 +266,9 @@ roles = role_everyone
 
 # how far back in time to generate the feeds from
 limit_days = 7
+
+# how many days of generated feeds to keep in the archive
+feed_retention = 7
 }}}
  # generate a "role key" for generating feeds everyone (with an apikey) in the system can query for. They apikey generated can be ignored as it's just a placeholder for the system.
 {{{
