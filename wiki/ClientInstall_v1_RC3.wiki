@@ -32,7 +32,7 @@ A list of known [https://github.com/collectiveintel/cif-v1/issues issues] for v1
  * (testing) [ClientInstall_DebianSqueeze_v1 Debian Squeeze] 
  * (testing) [ClientInstall_Ubuntu12_v1 Ubuntu 12] 
  * (testing) [ClientInstall_CentOS6_v1 CentOS 6] 
- * (unstable) [ClientInstall_OSX7_v1 OSX 7] 
+ * (testing) [ClientInstall_OSX7_v1 OSX 7] 
 == Package ==
  # download the latest [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=label%3ARC3+label%3Av1+summary%3Alibcif-v1 package]
 {{{
