@@ -1,11 +1,6 @@
 #summary Adding New Feeds (v1)
 #labels Version-0
 
-<font color="red">
-= Unstable =
- * paste output from cif_smrt -d
-</font>
-
 = Introduction =
 
 This is a walk-through of adding new feeds. It explains the commonly used configuration values and how they affect feed generation, etc. If you are already familiar with the feed configuration and just need details about all of the configuration values, see the [FeedConfig_v1 FeedConfig] page. 
@@ -116,7 +111,22 @@ A feed can be tested by running *cif_smrt* in debug mode with a specific feed an
 {{{
 ~$ /opt/cif/bin/cif_smrt -d -v 2 -r /opt/cif/etc/custommalware.cfg -f dshield_suspiciousdomains -T low
 
-<output here>
+[DEBUG][2013-05-02T18:01:54Z][]: fail closed: 0
+[DEBUG][2013-05-02T18:01:54Z][CIF::Smrt::init]: postprocessing disabled...
+[DEBUG][2013-05-02T18:01:54Z][CIF::Smrt::process]: setting up zmq interfaces...
+[DEBUG][2013-05-02T18:01:54Z][CIF::Smrt::process]: sending ctrl warm-up msg...
+[DEBUG][2013-05-02T18:01:54Z][CIF::Smrt::process]: starting sender thread...
+[DEBUG][2013-05-02T18:01:54Z][CIF::Smrt::process]: creating 1 worker threads...
+[DEBUG][2013-05-02T18:01:54Z][CIF::Smrt::process]: done...
+[DEBUG][2013-05-02T18:01:54Z][CIF::Smrt::process]: running preprocessor routine...
+[DEBUG][2013-05-02T18:01:54Z][CIF::Smrt::preprocess_routine]: parsing...
+[DEBUG][2013-05-02T18:01:54Z][CIF::Smrt::parse]: pulling feed: http://isc.sans.edu/feeds/suspiciousdomains_Low.txt
+[DEBUG][2013-05-02T18:01:54Z][CIF::Smrt::worker_routine]: starting worker: 2
+[DEBUG][2013-05-02T18:01:57Z][CIF::Smrt::worker_routine]: uuid: cafb5431-17ba-4e2b-b86c-11f0b8a86213 - 2013-05-02T18:01:55Z - 000007.ru - malware - dshield low false positive list
+[DEBUG][2013-05-02T18:01:57Z][CIF::Smrt::worker_routine]: uuid: 2616bdcc-94dc-4cf1-a647-fedb59262d96 - 2013-05-02T18:01:55Z - 000023p.rcomhost.com - malware - dshield low false positive list
+[DEBUG][2013-05-02T18:01:57Z][CIF::Smrt::worker_routine]: uuid: 8e53de25-81da-496a-b2f8-536625ea9528 - 2013-05-02T18:01:55Z - 000cc.com - malware - dshield low false positive list
+[DEBUG][2013-05-02T18:01:57Z][CIF::Smrt::worker_routine]: uuid: 380a3a49-84b5-49b4-a8d7-89c4b9d9a4d9 - 2013-05-02T18:01:55Z - 000e0062fb44cd5b277591349e070277.info - malware - dshield low false positive list
+...
 }}}
 cif_smrt should output a line for each item in the data source. If  nothing comes back, verify that the regex and URL to the feed is correct.
 
