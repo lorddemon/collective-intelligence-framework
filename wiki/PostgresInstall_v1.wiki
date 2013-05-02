@@ -145,6 +145,14 @@ $ /bin/bash postgressetup.sh | sudo tee -a /etc/postgresql/X.X/main/postgresql.c
 == Testing ==
 ----
  # restart postgres
+  * Debian
+{{{
+sudo /etc/init.d/postgresql restart
+}}}
+  * Ubuntu/RHEL
+{{{
+$ sudo service postgresql restart
+}}}
  # make sure your user can log in:
 {{{
 $> psql -U postgres
