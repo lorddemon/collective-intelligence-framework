@@ -25,6 +25,7 @@ A list of known [KnownIssues_v1 issues] for v1
  * to build applications in other languages, simply pipe the 'cif' command with '-p json' which will pipe stripped down (non-iodef) json key-pairs to your application
  * currently, libcif defaults to the /opt/cif environment due to it's perl nature
  * future versions of libcif will be written in a lower level language (more portable) and provide high level language bindings
+ * a sample python client can be found [https://github.com/collectiveintel/cif-client-python/tree/v1 here]
 
 = Installation =
 == Required Dependencies ==
