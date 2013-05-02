@@ -1,9 +1,5 @@
 #summary protocol buffers interface
 
-<font color='red'>
-=UNDER CONSTRUCTION=
-</font>
-
 = Introduction =
 <wiki:toc max_depth="2" />
 
