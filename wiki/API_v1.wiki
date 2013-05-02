@@ -9,7 +9,7 @@ The CIF API is the programming interface to the CIF architecture. This can be us
 CIF currently supports two styles of interfaces via the cif-router framework:
 
  * google [https://developers.google.com/protocol-buffers/docs/overview protocol buffers]
- * raw HTTP GET/POST
+ * legacy access via raw HTTP GET/POST
 
 == Repositories ==
 The v1 cif repositories can be found on github:
@@ -21,12 +21,10 @@ The v1 cif repositories can be found on github:
 
 = Details =
 == Protocol Buffers ==
-
 The raw cif-protocol is implemented in [https://github.com/collectiveintel/libcif/tree/v1 libcif] that can be leveraged by applications with-out requiring the application to understand the underlying protocol. The 'cif' [https://github.com/collectiveintel/libcif/blob/v1/bin/cif command] serves as an example of how to interact with the underlying libraries.
 
 == HTTP ==
-
-The interface also supports (legacy) use of the HTTP protocol. The cif-router acts as a proxy for applications where leveraging google protocol buffers is not an efficient option. The router will translate between the JSON based HTTP GET requests to the cif-protocol and vs versa.
+The interface also supports (legacy) use of the [https://code.google.com/p/collective-intelligence-framework/wiki/API_HTTP_v1 HTTP protocol]. The cif-router acts as a proxy for applications where leveraging google protocol buffers is not an efficient option. The router will translate between the JSON based HTTP GET requests to the cif-protocol and vs versa.
 
 = Considerations =
 == Compression ==
