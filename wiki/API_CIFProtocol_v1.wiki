@@ -157,7 +157,7 @@ An object that holds submission data. Allows for a group id to be assigned to th
 
 == !FeedType ==
 ----
-The [https://github.com/collectiveintel/cif-protocol/blob/v1/src/feed.proto 'FeedType'] represents a dataset or contiguous set of records. It wraps these in a set of metadata such as confidence, description, restriction, reporttime, etc. It's also responsible for conveying the 'restriction map' and 'group map' back to the client. A 'FeedType' blob will be encapsulated in a 'MessageType' message.
+The [https://github.com/collectiveintel/cif-protocol/blob/v1/src/feed.proto 'FeedType'] represents a dataset or contiguous set of records. It wraps these in a set of metadata such as confidence, description, restriction, reporttime, etc. It's also responsible for conveying the 'restriction map' and 'group map' back to the client. A '!FeedType' blob will be encapsulated in a '!MessageType' message.
 {{{
 message FeedType {
     enum RestrictionType {
@@ -203,7 +203,7 @@ message FeedType {
 *description*
   required. string. a description of the feed data-set.
 
-*ReportTime*
+*!ReportTime*
   required. string. a timestamp in which the data was generated, typically in the format 'YYYY-MM-DDThh:mm:ssZ'
 
 *restriction*
