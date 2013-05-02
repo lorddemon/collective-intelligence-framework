@@ -1,5 +1,0 @@
-#summary known issues in v1
-
-= RC2 =
- * spyeye tracker parsing issues (upstream feed)
- * zeus tracker parsing issues (upstream feed)
