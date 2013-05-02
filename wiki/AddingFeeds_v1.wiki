@@ -114,7 +114,7 @@ description = 'urlblacklist.com malware urls'
 
 A feed can be tested by running *cif_smrt* in debug mode with a specific feed and config file. The following example tests the *dshield_suspiciousdomains* feed in the */opt/cif/etc/custommalware.cfg* config.
 {{{
-~$ /opt/cif/bin/cif_smrt -d -r /opt/cif/etc/custommalware.cfg -f dshield_suspiciousdomains -T low
+~$ /opt/cif/bin/cif_smrt -d -v 2 -r /opt/cif/etc/custommalware.cfg -f dshield_suspiciousdomains -T low
 
 <output here>
 }}}
