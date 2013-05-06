@@ -2,7 +2,7 @@
 
 = Introduction =
 
-This doc assumes the CentOS-6.x-x86_64-minimal.iso was used during installation. 
+This doc assumes the CentOS-6.4-x86_64-minimal.iso was used during installation. 
 
 * Table of Contents *
 <wiki:toc max_depth="3" />
