@@ -2,6 +2,8 @@
 
 <font color='red'>
 =Unstable=
+ * Last tested on RC2
+ * Perl Module's updated for RC3
 </font>
 
 = Introduction =
