@@ -49,7 +49,8 @@ $ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/libapreq2-devel-2.13-1.el6.
 $ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/perl-libapreq2-2.13-1.el6.x86_64.rpm
 $ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/zeromq-2.2.0-4.el6.x86_64.rpm
 $ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/zeromq-devel-2.2.0-4.el6.x86_64.rpm
-$ sudo rpm -iv libapreq2-2.13-1.el6.x86_64.rpm libapreq2-devel-2.13-1.el6.x86_64.rpm perl-libapreq2-2.13-1.el6.x86_64.rpm zeromq-2.2.0-4.el6.x86_64.rpm zeromq-devel-2.2.0-4.el6.x86_64.rpm
+$ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/openpgm-5.1.118-3.el6.x86_64.rpm
+$ sudo rpm -iv libapreq2-2.13-1.el6.x86_64.rpm libapreq2-devel-2.13-1.el6.x86_64.rpm perl-libapreq2-2.13-1.el6.x86_64.rpm openpgm-5.1.118-3.el6.x86_64.rpm zeromq-2.2.0-4.el6.x86_64.rpm zeromq-devel-2.2.0-4.el6.x86_64.rpm
 }}}
  # install the baseline perl modules
 {{{
