@@ -8,7 +8,7 @@
 
 = Introduction =
 
-This doc assumes a base CentOS5 x64 minimal base install.
+This doc assumes the CentOS-5.9-x86_64-netinstall.iso was used during installation.
 
 * Table of Contents *
 <wiki:toc max_depth="3" />
