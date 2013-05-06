@@ -5,7 +5,7 @@
  * http://holisticinfosec.blogspot.com/2012/07/toolsmith-collective-intelligence.html
  * http://holisticinfosec.org/toolsmith/pdf/july2012.pdf
  * a 3rd party, contributed public [http://www.josehelps.com/p/feeds.html instance]
- * http://securityblog.verizonbusiness.com/2012/11/01/everyday-im-ciffling/
+ * http://www.verizonenterprise.com/security/blog/index.xml?postid=1606
 
 = SEM integration =
  * http://eyeis.net/2012/04/querying-cif-data-from-splunk
