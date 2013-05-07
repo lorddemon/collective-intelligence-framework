@@ -7,7 +7,7 @@
  * (testing) [WhatisCIF v1]
   * [FAQ_v1 FAQ]
    * [TaxonomyConfidence_v1 Confidence Definitions]
-   * [TaxonomyAssessments_v1 Assessment Definitions]
+   * [TaxonomyAssessment_v1 Assessment Definitions]
     * [FeedsBotnet_v1 Botnet]
     * [FeedEmail_v1 Email]
     * [FeedFastflux_v1 Fastflux]
