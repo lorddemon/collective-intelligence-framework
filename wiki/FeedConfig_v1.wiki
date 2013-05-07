@@ -1,9 +1,5 @@
 #summary designing your own custom.cfg feed parsing config (v1)
 
-<font color="red">
-= Unstable =
-</font>
-
 = Introduction =
 
 CIF comes with a variety of pre-built feed configurations, with that there are many ways to create your own configs for various custom feeds. A tutorial on how to create a new feed config file can be found [AddingFeeds_v1 here].
@@ -54,11 +50,9 @@ CIF comes with a variety of pre-built feed configurations, with that there are m
 
 === Delimited Text Files ===
 {{{
-severity = medium
 confidence = 65
-detection = daily
 feed = "http://mirror1.malwaredomains.com/files/domains.txt"
-assessment = 'malicious domain'
+assessment = 'malware'
 source = 'malwaredomains.com'
 restriction = need-to-know
 alternativeid_restriction = public
@@ -89,7 +83,7 @@ period = daily
 {{{
 [cleanmx]
 feed = 'http://support.clean-mx.de/clean-mx/xmlviruses.php?'
-assessment = 'malware url'
+assessment = 'malware'
 source = 'clean-mx.de'
 node = entry
 elements = 'id,first,md5,virusname,url'
@@ -107,12 +101,10 @@ period = daily
 [phishtank]
 guid = everyone
 feed = http://data.phishtank.com/data/online-valid.json.gz
-assessment = 'phishing url'
+assessment = 'phishing'
 source = 'phishtank.com'
 fields = 'url,target,phish_detail_url'
 fields_map = 'address,description,alternativeid'
-detection = daily
-severity = 'medium'
 confidence = 85
 restriction = 'need-to-know'
 alternativeid_restriction = 'public'
@@ -123,4 +115,4 @@ alternativeid_restriction = 'public'
 || field_map ||  <csv-string> || a comma separated list of the fields ||
 
 === More examples ===
-Additional example config files can be found [https://github.com/collectiveintel/cif-smrt/tree/master/etc here].
+Additional example config files can be found [https://github.com/collectiveintel/cif-smrt-rules/tree/v1/etc here] in the cif-smrt-rules source repository.
