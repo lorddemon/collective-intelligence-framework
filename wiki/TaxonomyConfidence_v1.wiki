@@ -8,7 +8,7 @@
 Confidence details the degree of certainty of a given observation. For instance:
 
  * "I am 85% confident that on 2013-05-05T00:00:01Z example.com is dropping malware"
- * "I am 95% confident that partner-1's observation that http://example.com/1.html on 2013-05-05T00:00:01Z was being used as a phishing url"
+ * "I am 95% confident that partner-1's observation that {{{http://example.com/1.html}}} on 2013-05-05T00:00:01Z was being used as a phishing url"
 
 = Details =
 
