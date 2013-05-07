@@ -25,6 +25,7 @@
    * [Integration_Bro_v1 Bro]
    * [Integration_Bind_v1 Bind]
    * [Integration_TippingPoint_v1 Tipping Point]
+   * [Integration_ELSA_v1 ELSA]
   * [FeedConfig_v1 Parsing Custom Feeds]
    * [AddingFeeds_v1 Example]
   * Advanced
