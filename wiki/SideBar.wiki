@@ -20,7 +20,7 @@
     * [Integration_TippingPoint_v1 Tipping Point]
   * [Feeds_v1 Feeds]
    * [FeedsFAQ_v1 Feed FAQ]
-   * [FeedConfig_v1 Feed Config]
+   * [FeedConfig_v1 Custom Configs]
    * [FeedAssessments_v1 Assessments]
     * [FeedsBotnet_v1 Botnet]
     * [FeedEmail_v1 Email]
