@@ -1,5 +1,7 @@
 #summary designing your own custom.cfg feed parsing config (v1)
 
+<wiki:toc max_depth="2" />
+
 = Introduction =
 
 CIF comes with a variety of pre-built feed configurations, with that there are many ways to create your own configs for various custom feeds. A tutorial on how to create a new feed config file can be found [AddingFeeds_v1 here].
