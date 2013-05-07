@@ -39,7 +39,7 @@
    * [API_ProtocolBuffers_v1 Protocol Buffer API]
    * [API_HTTP_v1 HTTP API]
   * Cookbook
-   * [Recipe_EC2_v1 EC2]
+   * [Recipe_EC2_v1 Amazon EC2]
    * [Recipe_Sinkhole_v1 DNS Sinkhole]
    * [Recipe_ELSA_v1 ELSA Guide]
    * [Recipe_FederatedSharing_v1 Federated Sharing Tutorial]
