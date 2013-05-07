@@ -1,11 +1,15 @@
 #summary FAQ for CIFv1
 #labels v1
 
-= Frequently Asked Questions =
+*Frequently Asked Questions*
 
-<wiki:toc max_depth="2" />
+<wiki:toc max_depth="4" />
 
-== When I try to pull a feed, no data is returned? ==
+==== Undocumented FAQ's ====
+
+Currently evolving FAQ's can be found via the [https://groups.google.com/forum/?fromgroups#!tags/ci-framework/faq/topics mailing list] FAQ tag
+
+==== When I try to pull a feed, no data is returned? ====
 ----
  1. Ensure you are using valid [FeedTypes_v1 feed syntax]
  1. Ensure you have [ServerInstall_v1#Enabling_Feed_Generation enabled feed generation]
@@ -38,19 +42,19 @@ feed limit:         50
 $ /opt/cif/bin/cif_feed -d >> /home/cif/cif_feed.log 2>&1
 }}}
 
-== How much disk space will I need? ==
+==== How much disk space will I need? ====
 ----
 In testing with the default data sets, 23 million records used 6GB in the archive table and 12GB in the index table. That averages out to roughly 1.3 million records per GB. You can reduce disk space over time be pruning the index tables. 
 
-== Too many open files (signaler.cpp:330) ==
+==== Too many open files (signaler.cpp:330) ====
 ----
-=== Ubuntu 12 ===
+==== Ubuntu 12 ====
 Edit /etc/security/limits.conf and add:
  * soft nofile 20000
  * hard nofile 30000
 
 reference: https://groups.google.com/d/topic/ci-framework/LDNSJnf6BZg/discussion
 
-== Is there an easy way to purge my current repo and start over ==
+==== Is there an easy way to purge my current repo and start over ====
 
 running 'make purgedb' will purge all your tables, except for the apikeys. 
