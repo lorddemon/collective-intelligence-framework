@@ -14,7 +14,7 @@
    * [ClientInstall_v1 Native Client]
    * [ClientInstall_Browser_v1 Browser Plugins]
   * Integration
-    * [Integration_RT_v1]
+    * [Integration_RT_v1 Request Tracker]
     * [Integration_Snort Snort]
     * [Integration_TippingPoint Tipping Point]
     * [Integration_Bind Bind]
