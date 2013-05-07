@@ -10,9 +10,9 @@
 
 = Preamble =
 ----
-A semi-complete [ChangeLog_v1 ChangeLog] of v1
+A semi-complete v1 [https://github.com/collectiveintel/cif-v1/blob/master/ChangeLog ChangeLog]
 
-A list of known [KnownIssues_v1 issues] for v1
+A list of known v1 [https://github.com/collectiveintel/cif-v1/issues issues]
 
 The v1 FAQ can be found [FAQ_v1 here]
 
