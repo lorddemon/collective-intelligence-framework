@@ -11,8 +11,8 @@ CIF has the capability to [ServerInstall_v1#Enabling_Feed_Generation generate fe
 
 Type:
 
- * infrastructure (IP address or CIDR notation)
- * domain
+ * infrastructure (IP/CIDR prefixes)
+ * domain (FQDN)
  * url
  * email
  * search
