@@ -24,5 +24,6 @@
  * http://eyeis.net/category/cif
  * http://ossectools.blogspot.com/2012/04/accelerating-cif-with-sphinx.html
  * http://scrapbook.zscaler.com/2012/06/cif-lite-customizing-cif-to-your-schema.html
- * http://securityblog.verizonbusiness.com/2012/11/15/gluing-our-stuff-together
- * http://securityblog.verizonbusiness.com/2012/12/04/cif-looking-under-the-hood
+ * http://www.verizonenterprise.com/security/blog/index.xml?postid=1611
+ * http://www.verizonenterprise.com/security/blog/index.xml?postid=1613
+ * http://www.verizonenterprise.com/security/blog/index.xml?postid=1615
