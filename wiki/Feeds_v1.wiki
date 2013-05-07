@@ -1,7 +1,6 @@
 #summary the basics about datasets and feeds (v1)
-#labels Version-1
 
-<wiki:toc max_depth="2" />
+<wiki:toc max_depth="3" />
 
 = Introduction =
 
@@ -12,7 +11,12 @@ This describes the various dynamically generated data-sets within the framework.
  * firewall rules
  * and more...
 
-= Output Plugins =
+= Details =
+By default, servers will deliver feeds with a a confidence of "95" respectively by default. These paramaters can be over-written at the command-line (typically with the -s and -c flags) or via the [API].
+
+Because of this, *the botnet infrastructure (high confidence) feed will remain relatively small or even empty* until users enter fairly confidence data either via manual submission, or a known, high-quality data-set is added to the system. This is by design, novice users of the system should use these feeds as starter-feeds to get a feel for the system with-out having to deal with too many false-positives.
+
+== Output Plugins ==
 The perl-client has a number of "output plugins" available:
 {{{
 $ cif -h
@@ -53,15 +57,11 @@ alert ip any any -> 176.112.80.0/21 any ( msg:"need-to-know - suspicious hijacke
 ...
 }}}
 
-= Details =
-By default, servers will deliver feeds with a a confidence of "95" respectively by default. These paramaters can be over-written at the command-line (typically with the -s and -c flags) or via the [API].
-
-Because of this, *the botnet infrastructure (high confidence) feed will remain relatively small or even empty* until users enter fairly confidence data either via manual submission, or a known, high-quality data-set is added to the system. This is by design, novice users of the system should use these feeds as starter-feeds to get a feel for the system with-out having to deal with too many false-positives.
-
-== Infrastructure ==
+== Usage ==
+=== Infrastructure ===
 IP-based threats
 
-=== Detection ===
+==== Detection ====
  * detecting botnet controller communication
 {{{
 $ cif -q infrastructure/botnet -c 85
@@ -70,7 +70,7 @@ $ cif -q infrastructure/botnet -c 85 -p bro
 $ cif -q infrastructure/botnet -c 85 -p snort
 }}}
 
-=== Mitigation ===
+==== Mitigation ====
  * mitigation against infection (exploit pages, etc, should use domain or url based where possible)
 {{{
 $ cif -q infrastructure/malware -c 85
@@ -84,27 +84,27 @@ $ cif -q infrastructure/scan -c 85 -p snort
 $ cif -q infrastructure/scan -c 85 -p iptables
 }}}
 
-== Domains ==
+=== Domains ===
 Domain-based threats
 
-=== Detection ===
+==== Detection ====
  * detecting botnet controller communication:
 {{{
 $ cif -q domain/botnet -c 85
 $ cif -q domain/botnet -c 85 -p snort
 $ cif -q domain/botnet -c 85 -p bindzone
 }}}
-=== Mitigation ===
+==== Mitigation ====
  * mitigating against infections (exploit pages, etc):
 {{{
 $ cif -q domain/malware -c 85
 $ cif -q domain/malware -c 85 -p bindzone
 $ cif -q domain/malware -c 85 -p snort
 }}}
-== Urls ==
+=== Urls ===
 URL-based threats
 
-=== Detection ===
+==== Detection ====
  * detecting botnet controller traffic:
 {{{
 $ cif -q url/botnet -c 85
@@ -112,7 +112,7 @@ $ cif -q url/botnet -c 85 -p snort
 $ cif -q url/botnet -c 85 -p bro
 }}}
 
-=== Mitigation ===
+==== Mitigation ====
  * mitigation against infection (exploit pages, etc):
 {{{
 $ cif -q url/malware -c 85
