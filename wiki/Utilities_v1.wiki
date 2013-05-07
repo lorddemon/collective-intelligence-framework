@@ -4,19 +4,14 @@
 
 = Introduction =
 
-== cif ==
+This is a basic list of commonly used utilities within the framework and their descriptions. For any of these utilities, the '-h' flag can be processed to give a more specific overview of the utility and it's options.
+
+== Basic ==
+=== cif ===
 
 a command line utility used for accessing the API of a cif instance (making queries, etc).
 
-== cif_apikeys ==
-
-server-side, command line utility used to generate api keys.
-
-{{{
-$ cif_apikeys -h
-}}}
-
-== cif_crontool ==
+=== cif_crontool ===
 
 cif_crontool is used to call cif_smrt. It's similar to cron, as in it:
 
@@ -47,18 +42,24 @@ cif_crontool tells cif_smrt to run the following command:
 $ cif_smrt -c /opt/cif/etc/custom.cfg -T medium -f phishtank
 }}}
 
-== cif_smrt ==
+=== cif_smrt ===
 
 a utility (usually called by cif_crontool) that reads in configs, parses feed data and transforms it into IODEF.
 
-== cif_feed ==
+== Advanced ==
+
+=== cif_apikeys ===
+
+server-side, command line utility used to generate api keys.
+
+=== cif_feed ===
 
 server-side, command line utility used (usually via cron) to generate pre-cached feeds (infrastructure/botnet, domain/malware, url/phishing, etc...).
 
-== cif_vacuum ==
+=== cif_vacuum ===
 
 a server-side tool that vacuums' the cif warehouse (removes older entries, etc).
 
-== cif_skel ==
+=== cif_skel ===
 
 a sample skeleton script used to create new server-side utilities.
