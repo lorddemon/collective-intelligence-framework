@@ -36,7 +36,8 @@
    * [Whitelist_v1 Whitelisting]
   * Cookbook
    * [AddingFeeds_v1 Adding New Feeds]
-  * Feed Integration
+  * Integration
+    * [Integration_RT_v1]
     * [Integration_Snort Snort]
     * [Integration_TippingPoint Tipping Point]
     * [Integration_Bind Bind]
