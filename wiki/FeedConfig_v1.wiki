@@ -1,5 +1,4 @@
 #summary designing your own custom.cfg feed parsing config (v1)
-#labels Version-0
 
 <font color="red">
 = Unstable =
