@@ -30,13 +30,21 @@ Usage: perl /opt/cif/bin/cif -q xyz.com
 }}}
 
 This functionality allows feeds to be written out in other formats removing the need to "parse and convert" the feeds to meet your target device requirements. These formats include:
+
  * snort rules
  * csv
- * raw json
+ * json
  * bindzone
- * etc
+ * html table
+ * ascii table
+ * bro (network monitor)
+ * pcap filter
+ * iptables
+ * raw ARRAYREF perl object (when calling from within a perllib)
 
 If another format is required, please let us know. These plugins are typically 10-20 lines of code and are easy to write. All that's required is a sample of the format (eg: example rules, etc). For devices that have the ability to incorporate perl/python code into their operation (eg: NFSEN, bro, etc..), we are writing code that will hook directly into the API allowing these tools to pull the data in directly, rather than having to write them out to rules, re-parse, etc...
+
+The current list of output plugins can be found [https://github.com/collectiveintel/iodef-pb-simple-perl/tree/master/lib/Iodef/Pb/Format here]
 
 {{{
 $ /opt/cif/bin/cif -q infrastructure/suspicious -c 85 -p snort
@@ -53,13 +61,9 @@ alert ip any any -> 176.112.80.0/21 any ( msg:"need-to-know - suspicious hijacke
 }}}
 
 = Details =
-By default, servers will deliver feeds with a severity of "high" and a confidence of "95" respectively by default. These paramaters can be over-written at the command-line (typically with the -s and -c flags) or via the [API].
+By default, servers will deliver feeds with a a confidence of "95" respectively by default. These paramaters can be over-written at the command-line (typically with the -s and -c flags) or via the [API].
 
-Because of this, *the botnet infrastructure (high severity, high confidence) feed will remain relatively small or even empty* until users enter fairly confidence data either via manual submission, or a known, high-quality data-set is added to the system. This is by design, novice users of the system should use these feeds as starter-feeds to get a feel for the system with-out having to deal with too many false-positives.
-
-Advanced users, who understand their organizations risk tolerance can dig into the more advanced botnet feeds [FeedsBotnet page] or even the [API#Common_Parameters API] to override these default values.
-
-_You'll need the [http://code.google.com/p/collective-intelligence-framework/wiki/PerlClient PerlClient] installed to pull these feeds. There is also a [http://code.google.com/p/collective-intelligence-framework/wiki/PythonClient PythonClient] that has less features, but can be used at your own risk for right now._
+Because of this, *the botnet infrastructure (high confidence) feed will remain relatively small or even empty* until users enter fairly confidence data either via manual submission, or a known, high-quality data-set is added to the system. This is by design, novice users of the system should use these feeds as starter-feeds to get a feel for the system with-out having to deal with too many false-positives.
 
 == Infrastructure ==
 IP-based threats
