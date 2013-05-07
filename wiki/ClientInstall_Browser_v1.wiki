@@ -7,7 +7,6 @@
 
 This extension for Google Chrome/Firefox allows you to query CIF servers and get formatted results in your browser. It also allows new data to be submitted directly via the API.
 
-= Features = 
   * Supports multiple API keys and multiple servers
   * Submit [DataTypes data types] points directly to the server without creating a feed
   * libcif *NOT* required
