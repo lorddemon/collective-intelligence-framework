@@ -4,13 +4,6 @@
 
 This is a collection of projects and ideas based on CIF. Here you'll find two things, the client-side projects and a wish-list
 
-= Client Side Projects =
- * PerlClient
- * PythonClient
- * FirefoxToolbar
- * ChromeToolbar
- * RT-CIFMinimal RT [http://search.cpan.org/~saxjazman/RT-CIFMinimal/lib/RT/CIFMinimal.pm plugin]
-
 = Idea List =
 == Guides ==
  * [UserInterfaceIdeas UI Integration Ideas]
