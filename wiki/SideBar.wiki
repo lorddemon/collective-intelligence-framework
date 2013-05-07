@@ -31,10 +31,11 @@
     * [Integration_Snort_v1 Snort]
     * [Integration_Bind_v1 Bind]
     * [Integration_TippingPoint_v1 Tipping Point]
-  * [Feeds_v1 Feeds]
-   * [FeedsFAQ_v1 Feed FAQ]
+  * [CustomFeeds_v1 Adding Custom Feeds]
    * [AddingFeeds_v1 Parsing New Feeds]
    * [FeedConfig_v1 Custom Configs]
+  * [Feeds_v1 Generating Feeds]
+   * [FeedsFAQ_v1 Feed FAQ]
   * Advanced
    * [CIFInfrastructureDiagram_v1 Distributed Environment]
     * [SmrtInstall_v1 Smrt Standalone]
