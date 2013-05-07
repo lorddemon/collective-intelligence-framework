@@ -33,7 +33,7 @@
     * [Integration_TippingPoint_v1 Tipping Point]
   * [Feeds_v1 Feeds]
    * [FeedsFAQ_v1 Feed FAQ]
-   * [AddingFeeds_v1 Adding New Feeds]
+   * [AddingFeeds_v1 Parsing New Feeds]
    * [FeedConfig_v1 Custom Configs]
   * Advanced
    * [CIFInfrastructureDiagram_v1 Distributed Environment]
