@@ -1,5 +1,6 @@
  * Help
   * [WhatisCIF What is CIF]
+  * [Contribute Contributing to the Project]
   * [FAQ_v0 FAQ v0]
   * [FAQ_v1 FAQ v1]
   * [CommunityExamples]
