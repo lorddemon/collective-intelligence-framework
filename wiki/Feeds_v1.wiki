@@ -1,6 +1,8 @@
 #summary the basics about datasets and feeds (v1)
 #labels Version-1
 
+<wiki:toc max_depth="2" />
+
 = Introduction =
 
 This describes the various dynamically generated data-sets within the framework. These data-sets can be used as:
