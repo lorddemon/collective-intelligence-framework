@@ -1,6 +1,7 @@
  * Help
   * [WhatisCIF What is CIF]
-  * [FAQ]
+  * [FAQ_v0 FAQ v0]
+  * [FAQ_v1 FAQ v1]
   * [CommunityExamples]
   * [http://groups.google.com/group/ci-framework Discussion Group]
  * (testing) [WhatisCIF v1]
