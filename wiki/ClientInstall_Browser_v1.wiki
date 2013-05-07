@@ -21,18 +21,18 @@ This extension for Google Chrome/Firefox allows you to query CIF servers and get
   # From Google Chrome, click [https://chrome.google.com/webstore/detail/collective-intelligence-f/bimiihlcdmbjjpbmnkiaaiolfneljdne here] for the plugin
   # Install the plug-in. (_Note: You will receive a warning that the plugin as access to your data on all websites. The plugin needs to be able to contact custom servers that are specified and the 'tabs' permission is required to switch to an existing query tab.)_
   # Right click CIF button (top right) -> *Options*
-  # Fill out *Nickname* (e.g. _CIF-West_)
-  # Fill out URL (e.g. _https://example.org/api/_)
-  # Fill out [Tools_cif_apikeys_v1 API key]
+  # Enter your *Nickname* for the host you're connecting to (e.g. _CIF-West_)
+  # Enter your URL (e.g. _https://example.org/api/_)
+  # Enter your [Tools_cif_apikeys API key]
   # Click test connection  (_Note: using a self-signed certificate, the URL needs to be opened in a separate tab to accept the certificate before this will succeed._)
   # Click *Save* and close the settings page.
 
 == Firefox ==
   # From Firefox, click [https://collective-intelligence-framework.googlecode.com/files/CIF-FFExtension.xpi here] to download the plugin. Drag the downloaded file into the browser to install it.
   # Right click CIF button (top right) -> *Settings*
-  # Fill out *Nickname* (e.g. _CIF-West_)
-  # Fill out URL (e.g. _https://example.org/api/_)
-  # Fill out [Tools_cif_apikeys API key]
+  # Enter your *Nickname* for the host you're connecting to (e.g. _CIF-West_)
+  # Enter your URL (e.g. _https://example.org/api/_)
+  # Enter your [Tools_cif_apikeys API key]
   # Click test connection  (_Note: If you are using a self-signed certificate, you will need to open the URL in a separate tab to accept the certificate before this will succeed._)
   # Click *Save* and close the settings page.
 
@@ -49,10 +49,8 @@ This extension for Google Chrome/Firefox allows you to query CIF servers and get
 The query page will parse out comma-separated, space-separated, new-line separated queries and a mix of all three. 
 
 == Filtering Results ==
-Click the plus next to the query to view the possible filters for the query. The results can be filtered by the following attributes:
-  * *restriction*: filters records by their sharing restriction
+Click the plus next to the query to view the possible filters for the query. The results can be filtered by the following attributes using the "Adv Filters" link:
   * *confidence*: sets a minimum confidence that the incident must meet to be returned (numeric value between 0 and 100).
-  * *severity*: sets a minimum severity that the incident must meet 
   * *limit*: numeric value that limits the total number of records that will come back.
 
 == Adding Data ==
@@ -68,6 +66,5 @@ Click the plus next to the query to view the possible filters for the query. The
   * The data page will also parse out comma-separated, space-separated, new-line separated queries. A preview of the entries is shown on the right of the data entry page.
   * The API key you use requires write privileges, which are not given to a key by default. Use the *cif_apikeys* tool with the *-w* option to grant a key write access.
   * Data types can't be mixed. (e.g. No URL's and email address in the same submission)
-  * Whitelist entries automatically result in a null severity.
   * Values for confidence can be modified on the options page.
   * By adding a data point using this method, it will only be entered once so it will fall out of a feed after the *max_days* value for that feed. (It will still show up in queries for that specific item.)
