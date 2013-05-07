@@ -21,8 +21,8 @@
     * [Integration_Snort_v1 Snort]
     * [Integration_Bind_v1 Bind]
     * [Integration_TippingPoint_v1 Tipping Point]
-  * [FeedConfig_v1 Custom Feeds]
-   * [AddingFeeds_v1 Custom Configs Example]
+  * [FeedConfig_v1 Parsing Custom Feeds]
+   * [AddingFeeds_v1 Example]
   * [Feeds_v1 Generating Feeds]
   * Advanced
    * [CIFInfrastructureDiagram_v1 Distributed Environment]
