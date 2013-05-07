@@ -10,7 +10,7 @@
 ----
 A semi-complete [ChangeLog_v1 ChangeLog] of v1
 
-A list of known [github.com/collectiveintel/cif-v1/issues issues] for v1
+A list of known [https://github.com/collectiveintel/cif-v1/issues issues] for v1
 
 The v1 FAQ can be found [FAQ_v1 here]
 
