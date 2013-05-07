@@ -1,0 +1,14 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+There are two main client options when accessing a CIF instance. They are:
+
+ * [ClientInstall_v1 Native Client]
+ * [ClientInstall_Browser_v1 Firefox/Chrome]
+
+= Native Client =
+The native client is a simple library that provides the [API_v1 api] as well as a command line interface for interacting with a cif instance. This usually installs cleanly on native UNIX based systems (including OSX). Win32/64 users should use the Firefox/Chrome plugin.
+
+= Firefox/Chrome =
+The browser plugins allow for simple interaction with the api via it's legacy HTTP/JSON [API_HTTP_v1 interface]. The API auto-detects the requests and translates between google protocol buffers and JSON behind the scenes for the client. This is the simplest way to interact with a CIF instance for all users.
