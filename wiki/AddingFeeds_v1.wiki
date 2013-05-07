@@ -1,5 +1,4 @@
 #summary Adding New Feeds (v1)
-#labels Version-0
 
 = Introduction =
 
@@ -22,16 +21,12 @@ Configuration files can contain multiple feeds, which provides a way to group re
 Since all of these feeds will be related to malware, a few of the 'global' configuration values can be placed at the top of the config file. 
 {{{
 assessment = 'malware'
-severity = 'medium'
-detection = daily
 period = daily
 mirror = '/tmp'
 guid = everyone
 }}}
 
   * *assessment* determines how the data will be classified. For a list of the possible assessment values, see the [TaxonomyAssessment_v1 Assessment Taxonomy].
-  * *severity* depends on how your organization views the threat of what the feeds identify. If malware isn't a concern, it makes sense to keep the severity low. See the [TaxonomySeverity_v1 Severity Taxonomy] for more information.  
-  * *detection* determines the granularity of the detection time of the items in the feeds. If the data in the source doesn't provide a time stamp for each item, CIF has to assume the item was detected when it first appears in the source. Since these feeds are generated daily, the granularity can only be at the daily level. Possible values are either *hourly* or *daily*.
   * *period* is how often CIF will read the source. This can be done *hourly* or *daily*.
   * *mirror* is a location to cache a local copy of the feed to prevent repeated downloads if the file hasn't updated at the source.
   * *guid* specifies the CIF group that will have access to the data.
@@ -78,8 +73,6 @@ Most of these configuration values can also be extracted directly from the feed 
 */opt/cif/etc/custommalware.cfg*
 {{{
 assessment = 'malware'
-severity = 'medium'
-detection = daily
 period = daily
 mirror = '/tmp'
 guid = everyone
