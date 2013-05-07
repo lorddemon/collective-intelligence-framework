@@ -13,6 +13,11 @@
   * [ClientOptions_v1 Client]
    * [ClientInstall_v1 Native Client]
    * [ClientInstall_Browser_v1 Browser Plugins]
+  * Integration
+    * [Integration_RT_v1]
+    * [Integration_Snort Snort]
+    * [Integration_TippingPoint Tipping Point]
+    * [Integration_Bind Bind]
   * [Feeds_v1 Feeds]
    * [FeedsFAQ_v1 Feed FAQ]
    * [FeedConfig_v1 Feed Config]
@@ -37,11 +42,6 @@
     * [DbiInstall_v1 Database Interface]
     * [PostgresqlStandalone_v1 PostgreSQL Standalone]
    * [ServerBackup_v1 Backup]
-  * Integration
-    * [Integration_RT_v1]
-    * [Integration_Snort Snort]
-    * [Integration_TippingPoint Tipping Point]
-    * [Integration_Bind Bind]
   * [API_v1 API]
    * [API_CIFProtocol_v1 CIF Protocol]
    * [API_ProtocolBuffers_v1 Protocol Buffer API]
