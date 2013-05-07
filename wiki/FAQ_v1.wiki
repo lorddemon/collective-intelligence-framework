@@ -6,6 +6,7 @@
 <wiki:toc max_depth="4" />
 
 ==== Undocumented FAQ's ====
+----
 
 Currently evolving FAQ's can be found via the [https://groups.google.com/forum/?fromgroups#!tags/ci-framework/faq/topics mailing list] FAQ tag
 
