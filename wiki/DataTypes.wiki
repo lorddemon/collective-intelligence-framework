@@ -2,9 +2,9 @@
 
 = Data types supported by CIF =
 
-By default CIF supports the following primary data types for queries or feeds:
+By default CIF supports the following native data types:
  # IP address
- # Domain / FQDN
+ # FQDN
  # URI
  # CIDR
  # Email address
