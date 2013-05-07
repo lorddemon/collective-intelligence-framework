@@ -7,12 +7,8 @@ This is a collection of projects and ideas based on CIF. Here you'll find two th
 = Idea List =
 == Guides ==
  * [UserInterfaceIdeas UI Integration Ideas]
- * SnortGuide
- * BroGuide
- * ElsaGuide
- * DnsSinkhole
- * NFSenGuide
- * TippingpointGuide
+ * [Integration_Snort_v1 Snort Guide]
+ * [Integration_Bro_v1 Bro Guide]
 
 == Client Side Goodies ==
  * Refactoring Chrome's  [http://code.google.com/p/scriptno/source/browse/trunk ScriptNo] to support CIF feed downloading (Same with NoScript?)
