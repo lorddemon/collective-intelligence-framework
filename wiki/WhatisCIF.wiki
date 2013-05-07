@@ -16,8 +16,6 @@ The original idea came from from:
 
 http://bret.appspot.com/entry/how-friendfeed-uses-mysql
 
-https://collective-intelligence-framework.googlecode.com/files/L.png
-
 = Introductions =
 ----
  * [http://threatthoughts.com/2012/05/07/introduction-to-the-collective-intelligence-framework/ Introduction to the Collective Intelligence Framework]
