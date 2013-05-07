@@ -8,10 +8,8 @@ By default CIF supports the following primary data types for queries or feeds:
  # URI
  # CIDR
  # Email address
- # Malware hash
-  * (_must be enabled in feed config_)
- # UUID
-  * (_generally used by the API_)
+ # Malware hash (sha1/md5) (_must be enabled in feed config_)
+ # UUID (_generally used by the API_)
 
 == Feed Examples ==
 
