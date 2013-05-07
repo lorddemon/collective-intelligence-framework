@@ -1,6 +1,6 @@
 #summary designing your own custom.cfg feed parsing config (v1)
 
-<wiki:toc max_depth="2" />
+<wiki:toc max_depth="3" />
 
 = Introduction =
 
