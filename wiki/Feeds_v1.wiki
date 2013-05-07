@@ -17,8 +17,6 @@ This describes the various dynamically generated data-sets within the framework.
  * firewall rules
  * and more...
 
-The simplest feed to get started with is the [FeedsBotnet_v1#Infrastructure botnet Infrastructure] feed. 
-
 = Output Plugins =
 The perl-client has a number of "output plugins" available:
 {{{
@@ -40,7 +38,7 @@ This functionality allows feeds to be written out in other formats removing the 
  * bro (network monitor)
  * pcap filter
  * iptables
- * raw ARRAYREF perl object (when calling from within a perllib)
+ * raw ARRAY (perl) object (when calling from within a perllib)
 
 If another format is required, please let us know. These plugins are typically 10-20 lines of code and are easy to write. All that's required is a sample of the format (eg: example rules, etc). For devices that have the ability to incorporate perl/python code into their operation (eg: NFSEN, bro, etc..), we are writing code that will hook directly into the API allowing these tools to pull the data in directly, rather than having to write them out to rules, re-parse, etc...
 
@@ -67,46 +65,69 @@ Because of this, *the botnet infrastructure (high confidence) feed will remain r
 
 == Infrastructure ==
 IP-based threats
+
 === Detection ===
  * detecting botnet controller communication
 {{{
 $ cif -q infrastructure/botnet -c 85
+$ cif -q infrastructure/botnet -c 85 -p iptables
+$ cif -q infrastructure/botnet -c 85 -p bro
+$ cif -q infrastructure/botnet -c 85 -p snort
 }}}
+
 === Mitigation ===
  * mitigation against infection (exploit pages, etc, should use domain or url based where possible)
 {{{
 $ cif -q infrastructure/malware -c 85
+$ cif -q infrastructure/malware -c 85 -p iptables
+$ cif -q infrastructure/malware -c 85 -p bro
 }}}
  * mitigation against brute-force and/or network scanner-based threats
 {{{
 $ cif -q infrastructure/scan -c 85
+$ cif -q infrastructure/scan -c 85 -p snort
+$ cif -q infrastructure/scan -c 85 -p iptables
 }}}
 
 == Domains ==
 Domain-based threats
+
 === Detection ===
  * detecting botnet controller communication:
 {{{
-cif -q domain/botnet -c 85
+$ cif -q domain/botnet -c 85
+$ cif -q domain/botnet -c 85 -p snort
+$ cif -q domain/botnet -c 85 -p bindzone
 }}}
 === Mitigation ===
  * mitigating against infections (exploit pages, etc):
 {{{
-cif -q domain/malware -c 85
+$ cif -q domain/malware -c 85
+$ cif -q domain/malware -c 85 -p bindzone
+$ cif -q domain/malware -c 85 -p snort
 }}}
 == Urls ==
 URL-based threats
+
 === Detection ===
  * detecting botnet controller traffic:
 {{{
-cif -q url/botnet -c 85
+$ cif -q url/botnet -c 85
+$ cif -q url/botnet -c 85 -p snort
+$ cif -q url/botnet -c 85 -p bro
 }}}
+
 === Mitigation ===
  * mitigation against infection (exploit pages, etc):
 {{{
-cif -q url/malware -c 85
+$ cif -q url/malware -c 85
+$ cif -q url/malware -c 85 -p snort
+$ cif -q url/malware -c 85 -p csv
 }}}
  * mitigation against phishing url lures
 {{{
-cif -q url/phishing -c 85
+$ cif -q url/phishing -c 85
+$ cif -q url/phishing -c 85 -p snort
+$ cif -q url/phishing -c 85 -p csv
+$ cif -q url/phishing -c 85 -p html
 }}}
