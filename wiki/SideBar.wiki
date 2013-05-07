@@ -16,6 +16,7 @@
    * [RTCIFMinimal_v1 RT Plugin]
    * [ServerBackup_v1 Backup]
   * [ClientInstall_v1 Client]
+   * [ClientInstall_Browser_v1 Browser Plugins]
   * [Feeds_v1 Feeds]
    * [FeedConfig_v1 Feed Config]
    * [FeedsFAQ_v1 Feed FAQ]
