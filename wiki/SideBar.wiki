@@ -20,6 +20,7 @@
     * [Integration_TippingPoint_v1 Tipping Point]
   * [Feeds_v1 Feeds]
    * [FeedsFAQ_v1 Feed FAQ]
+   * [AddingFeeds_v1 Adding New Feeds]
    * [FeedConfig_v1 Custom Configs]
    * [FeedAssessments_v1 Assessments]
     * [FeedsBotnet_v1 Botnet]
@@ -35,7 +36,6 @@
    * [TaxonomyConfidence_v1 Confidence]
    * [Whitelist_v1 Whitelisting]
   * Advanced
-   * [AddingFeeds_v1 Adding New Feeds]
    * [CIFInfrastructureDiagram_v1 Distributed Environment]
     * [SmrtInstall_v1 Smrt Standalone]
     * [RouterInstall_v1 Router Standalone]
