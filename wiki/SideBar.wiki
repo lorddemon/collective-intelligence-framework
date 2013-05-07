@@ -18,7 +18,7 @@
     * [FeedSpamvertising_v1 Spamvertising]
     * [FeedSuspicious_v1 Suspicious]
     * [FeedWhitelists_v1 Whitelists Definitions]
-   * [Whitelist_v1 Whitelisting]
+   * [Whitelist_v1 Whitelisting Definitions]
    * [Utilities_v1 Utilities]
    * [MigrateApikeys_v1 API key migration]
    * [GroupSupport_v1 Group Support]
