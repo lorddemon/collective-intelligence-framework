@@ -1,5 +1,7 @@
 #summary Adding New Feeds (v1)
 
+<wiki:toc max_depth="2" />
+
 = Introduction =
 
 This is a walk-through of adding new feeds. It explains the commonly used configuration values and how they affect feed generation, etc. If you are already familiar with the feed configuration and just need details about all of the configuration values, see the [FeedConfig_v1 FeedConfig] page. 
