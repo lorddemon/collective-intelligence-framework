@@ -1,20 +1,14 @@
 #summary example of running a dns sinkhole using CIF (v1)
 
-<font color="red">
-
-* THIS DOES NOT WORK, NEEDS TO BE UPGRADED FOR v1 DO NOT USE *
-
-</font>
-
 = Introduction =
  * This was tested on a Ubuntu 10.04.3 server
  * This was tested using Bind 9.7.0
- * This documentation is written with the Perl CIF client installed on the Bind server. In production instances we would expect the Perl CIF client to be installed on another machine. 
+ * This documentation is written with the client (libcif) installed on the Bind server.
 
 = Details =
 == Configure the CIF client ==
 
- 1. Open the Perl CIF client configuration file
+ 1. Open the client configuration file
 {{{
 vim .cif
 }}} 
@@ -25,11 +19,13 @@ bindzone_path = /etc/bind/
   * example config
 {{{
 [client]
-host = https://ses.ren-isac.net:443/api
 apikey = xx-xx-xx-xx-xx
+bindzone_path = /etc/bind/
+
+[client_http]
+host = https://example.com/api
 timeout = 60
 #verify_tls = 0
-bindzone_path = /etc/bind/
 }}}
 
 == Configure Bind ==
@@ -77,9 +73,9 @@ $TTL 600
 {{{
 sudo chmod 666 /var/lib/bind/sink_local.conf
 }}}
- 1. Configure the Perl CIF client to export a sinkhole file
+ 1. Configure the client to export a sinkhole file
 {{{
-/usr/local/bin/cif -q domain/malware -p bindzone -c 85 -s medium > /var/lib/bind/sink_local.conf
+/usr/local/bin/cif -q domain/malware -p bindzone -c 85 > /var/lib/bind/sink_local.conf
 }}}
  1. Reload configuration file and new zones only
 {{{
