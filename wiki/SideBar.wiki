@@ -35,7 +35,7 @@
    * [API_CIFProtocol_v1 CIF Protocol]
    * [API_ProtocolBuffers_v1 Protocol Buffer API]
    * [API_HTTP_v1 HTTP API]
- * (deprecating) v0
+ * (deprecated) v0
   * [Server_v0 Server]
    * [ServerInstall_v0 Server Install]
    * [ServerBackup_v0 Backup]
