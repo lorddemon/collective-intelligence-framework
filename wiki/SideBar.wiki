@@ -22,6 +22,7 @@
    * [Integration_RT_v1 Request Tracker]
    * [Integration_NFSEN_v1 NFSEN]
    * [Integration_Snort_v1 Snort]
+   * [Integration_Bro_v1 Bro]
    * [Integration_Bind_v1 Bind]
    * [Integration_TippingPoint_v1 Tipping Point]
   * [FeedConfig_v1 Parsing Custom Feeds]
