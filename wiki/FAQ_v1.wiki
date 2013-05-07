@@ -6,7 +6,7 @@
 <wiki:toc max_depth="2" />
 
 == When I try to pull a feed, no data is returned? ==
-
+----
  1. Ensure you are using valid [FeedTypes_v1 feed syntax]
  1. Ensure you have [ServerInstall_v1#Enabling_Feed_Generation enabled feed generation]
  1. Ensure you have [ServerInstall_v1#With_Feeds generated the first batch of feeds]
