@@ -1,11 +1,6 @@
 #summary explaining whitelisting (v1)
 #labels version-1
 
-<font color="red">
-= Unstable =
- * need to complete sections below
-</font>
-
 = Whitelisting =
 
 CIFv1 has the capability to whitelist observations from entering a feed during the feed generation process. 
