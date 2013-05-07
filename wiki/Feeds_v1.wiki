@@ -1,13 +1,6 @@
 #summary the basics about datasets and feeds (v1)
 #labels Version-1
 
-<font color="red">
-
-= Unstable = 
- * update "details"
-
-</font>
-
 = Introduction =
 
 This describes the various dynamically generated data-sets within the framework. These data-sets can be used as:
