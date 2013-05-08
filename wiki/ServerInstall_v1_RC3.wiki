@@ -147,6 +147,8 @@ $ vi ~/.cif
 # the simple stuff
 [cif_archive]
 datatypes = infrastructure,domain,url,email,search,malware
+# if we enabled asn/cc/rir in the configure
+# datatypes = infrastructure,domain,url,email,search,malware,cc,asn,rir
 
 # enable your own groups is you start doing data-sharing with various groups
 #groups = everyone,group1.example.com,group2.example.com,group3.example.com
