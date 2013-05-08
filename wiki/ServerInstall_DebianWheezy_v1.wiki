@@ -15,7 +15,7 @@ This assumes a clean install of Debian Wheezy (v7.x) with sudo and all base syst
 = Details =
 == Caveats ==
 === Minimal Debian ===
- # make sure apt is up to date
+ # make sure apt is up to dateexpa
 {{{
 # aptitude update
 }}}
@@ -31,7 +31,7 @@ There are two different tree's in the zeromq family, 2.x and 3.x, CIF v1 leverag
 ----
  # Install the base deps
 {{{
-$ sudo aptitude -y install rng-tools postgresql apache2 apache2-threaded-dev gcc g++ make libexpat-dev libapache2-mod-perl2 libclass-dbi-perl libdigest-sha1-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev rsync libunicode-string-perl libconfig-simple-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libapr1-dbg libhtml-table-perl libdate-manip-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl libextutils-parsexs-perl libdatetime-format-dateparse-perl libnet-patricia-perl libdatetime-perl libtext-table-perl
+$ sudo aptitude -y install rng-tools postgresql apache2 apache2-threaded-dev gcc g++ make libexpat1-dev libapache2-mod-perl2 libclass-dbi-perl libdigest-sha-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev rsync libunicode-string-perl libconfig-simple-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libapr1-dbg libhtml-table-perl libdate-manip-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl libextutils-parsexs-perl libdatetime-format-dateparse-perl libnet-patricia-perl libdatetime-perl libtext-table-perl
 }}}
  # Install zeromq-2.2.0 from source
 {{{
