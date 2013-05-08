@@ -80,8 +80,7 @@ Some of the "CIF" values will be created later in the doc, for now just follow t
  # enable the default-ssl site (debian):
 {{{
 $ sudo a2ensite default-ssl
-$ sudo a2enmod apreq
-$ sudo a2enmod ssl
+$ sudo a2enmod ssl perl apreq
 }}}
  # unless you know what you're doing with virtual hosts, comment out the port-80 stuff in /etc/apache2/ports.conf
 {{{
