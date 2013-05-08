@@ -83,7 +83,7 @@ Configure Bind to use Google public DNS servers to push domain name resolution u
 Configure Postgres authentication and performance tuning
  # [PostgresInstall_v1 PostgresSetup]
 
-== Installing CIF RC2 ==
+== Installing CIF ==
 ----
 This release assumes that the client is on the same hardware as the backend server/router components. The final release will include an independent "libcif" (the client libraries) package. This release is for *testing purposes only*... 
 
