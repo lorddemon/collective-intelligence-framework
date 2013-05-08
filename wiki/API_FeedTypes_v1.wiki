@@ -1,0 +1,36 @@
+#summary faq about default feeds in v1
+
+= Introduction =
+
+This document describes the native feed types available in v1
+
+= Details =
+== Infrastructure ==
+||*type*||*description*||
+||infrastructure/botnet||botnet controllers||
+||infrastructure/scan||bruteforce, port-scan, etc||
+||infrastructure/phishing||things that host phishing||
+||infrastructure/malware||things that exploit, drop malware||
+||infrastructure/spam||things that host/send spammers||
+||infrastructure/spamvertising||things that related to viagra||
+||infrastructure/suspicious||things that are unknown but not friendly||
+||infrastructure/whitelist||amazon, google, facebook, etc (alexa top 10000ish)||
+||infrastructure/warez||things that aid in piracy that could cause us pain from the RIAA botnet||
+||infrastructure/fastflux||things used with fastfluxing botnets||
+
+== FQDN ==
+||*type*||*description*||
+||domain/botnet||botnet controllers||
+||infrastructure/scan||bruteforce, port-scan, etc||
+||infrastructure/phishing||things that host phishing||
+||infrastructure/malware||things that exploit, drop malware||
+||infrastructure/spam||things that host/send spammers||
+||infrastructure/spamvertising||things that related to viagra||
+||infrastructure/suspicious||things that are unknown but not friendly||
+||infrastructure/whitelist||amazon, google, facebook, etc (alexa top 10000ish)||
+||infrastructure/warez||things that aid in piracy that could cause us pain from the RIAA botnet||
+||infrastructure/fastflux||things used with fastfluxing botnets||
+
+== URL ==
+
+== Malware ==
