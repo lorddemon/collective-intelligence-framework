@@ -85,7 +85,7 @@ Configure Bind to use Google public DNS servers to push domain name resolution u
 Configure Postgres authentication and performance tuning
  # [PostgresInstall_v1 PostgresSetup]
 
-== Installing CIF RC3 ==
+== Installing CIF ==
 ----
 This guide assumes that the client is on the same hardware as the backend server/router components. If you want to build out in HA mode, se our [CIFInfrastructureDiagram_v1 HA Guide].
 
