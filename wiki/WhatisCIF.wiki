@@ -27,15 +27,11 @@ http://bret.appspot.com/entry/how-friendfeed-uses-mysql
 ----
 == Parse ==
 
-CIF supports ingesting many different sources of data of the same type; for example data sets or “feeds” of malicious domains. Each similar dataset can be marked with different attributes like source and confidence to name a few.
-
-Example: [AddingFeeds_v1 Adding Data]
+CIF supports [AddingFeeds_v1 ingesting] many different sources of data of the same type; for example data sets or “feeds” of malicious domains. Each similar dataset can be marked with different attributes like source and confidence to name a few.
 
 == Normalize ==
 
-Data sets of threat intelligence often have subtle differences between them. CIF normalizes these data sets which gives you a predictable experience when leveraging the threat intelligence in other applications or processes. 
-
-Example: [TaxonomyAssessment_v1 Taxonomy]
+Threat intelligence datasets often have subtle differences between them. CIF [TaxonomyAssessment_v1 normalizes] these data sets which gives you a predictable experience when leveraging the threat intelligence in other applications or processes. 
 
 == Post Process ==
 
