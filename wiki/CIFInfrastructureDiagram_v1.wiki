@@ -5,20 +5,18 @@
 * THIS GUIDE IS STILL IN BETA *
 </font>
 
-<wiki:toc max_depth="2" />
-
 = CIFv1 High Availability Environment =
 
 cif v1 is architected in a way that allows it's major components to be distributed among many hosts when a single host becomes resource constrained. 
 
-=== Key ===
+== Key ==
 
-==== libcif ====
+=== libcif ===
  * query cif
  * submit data to cif
  * get feeds from cif
 
-==== cif-smart ====
+=== cif-smart ===
  * parse data sets
  * run post processors on parsed data sets
   * dns resolution
@@ -27,14 +25,14 @@ cif v1 is architected in a way that allows it's major components to be distribut
   * malware resolution from TC MW hash reg
   * bgp prefix whitelisting
 
-==== cif-router ====
+=== cif-router ===
  * peers with clients giving access to data-warehouse
  * peers with other routers
 
-==== postgresql ====
+=== postgresql ===
  * data store
 
-== One server ==
+= One server =
 
 With a single server every component is installed on the same host and must share resources (cpu and i/o) with the other components. 
 
@@ -46,7 +44,7 @@ With a single server every component is installed on the same host and must shar
 </tbody>
 </table>
 
-== Two servers ==
+= Two servers =
 
 When you hit resource constraints with one server, it is likely the first component you would split out is the postgresql database.
 
@@ -58,7 +56,7 @@ When you hit resource constraints with one server, it is likely the first compon
 </tbody>
 </table>
 
-== Six servers ==
+= Six servers =
 
 With three or more servers you can dedicate one or more servers per component. This allows you to add additional resources as needed.
 
