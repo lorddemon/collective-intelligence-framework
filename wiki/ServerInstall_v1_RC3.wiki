@@ -98,16 +98,16 @@ $ ./configure && make testdeps
 $ sudo make install
 }}}
 
-=== Fresh Installation ===
-If you're doing a fresh RC3 install, then all that needs to be done is to create the data schemas.
-{{{
-$ sudo make initdb
-}}}
-
 === Upgrade From RC2 ===
 If you're upgrading from RC2, *THIS WILL PURGE ALL EXISTING DATA*, but it will preserve your apikeys. Due to some data-structure changes in RC3 there is no way around this.
 {{{
 $ make rebuilddb
+}}}
+
+=== Fresh Installation ===
+If you're doing a fresh RC3 install, then all that needs to be done is to create the data schemas.
+{{{
+$ sudo make initdb
 }}}
 
 = Configuration =
