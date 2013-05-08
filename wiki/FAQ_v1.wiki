@@ -10,6 +10,10 @@
 
 Currently evolving FAQ's can be found via the [https://groups.google.com/forum/?fromgroups#!tags/ci-framework/faq/topics mailing list] FAQ tag
 
+==== What native feeds are available out of the box? ====
+----
+See the [API_FeedTypes_v1 API]
+
 ==== When I try to pull a feed, no data is returned? ====
 ----
  1. Ensure you are using valid [FeedTypes_v1 feed syntax]
