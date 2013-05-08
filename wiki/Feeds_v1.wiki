@@ -58,6 +58,8 @@ alert ip any any -> 176.112.80.0/21 any ( msg:"need-to-know - suspicious hijacke
 }}}
 
 == Usage ==
+For a complete list of the native feed types available, visit the [API_FeedTypes_v1 API]
+
 === Infrastructure ===
 IP-based threats
 
