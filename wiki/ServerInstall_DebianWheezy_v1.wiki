@@ -15,9 +15,13 @@ This assumes a clean install of Debian Wheezy (v7.x) with sudo and all base syst
 = Details =
 == Caveats ==
 === Minimal Debian ===
-Minimal Debian does not come with sudo. If you used the net boot version of the debian installer, you'll need to install this as root:
+ # make sure apt is up to date
 {{{
-$ aptitude install sudo
+# aptitude update
+}}}
+ # minimal Debian does not come with sudo. If you used the net boot version of the debian installer, you'll need to install this as root:
+{{{
+# aptitude install sudo
 }}}
 === Static Address ===
 Make sure your instance has a static v4 address
