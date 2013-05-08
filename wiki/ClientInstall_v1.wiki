@@ -58,3 +58,34 @@ apikey = XXXXXX-XXX-XXXX
 host = https://localhost:443/api
 verify_tls = 0
 }}}
+
+= Examples =
+For a more complete overview, see the [Feeds_v1 Generating Feeds] page.
+== Infrastructure ==
+ # ipv4 query:
+{{{
+$ cif -q 130.201.0.2
+}}}
+ # ipv4 prefix query:
+{{{
+$ cif -q 130.201.0.0/16
+}}}
+== FQDN ==
+ # top level domain query:
+{{{
+$ cif -q example.com
+}}}
+ # simple domain query:
+{{{
+$ cif -q test.yahoo.com
+}}}
+== URL ==
+ # simple url query:
+{{{
+$ cif -q 'http://www.yahoo.com/example.html'
+}}}
+== Malware ==
+ # simple sha1 hash lookup:
+{{{
+$ cif -q a5135ec6f2322cc12f3d9daa38dfb358
+}}}
