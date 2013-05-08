@@ -2,7 +2,9 @@
 
 = Introduction =
 
-This document describes the native feed types available in v1
+This document describes the native feed types available in v1.
+
+For more detail on each description, visit the [TaxonomyAssessment_v1 assessments] page.
 
 = Details =
 == Infrastructure ==
