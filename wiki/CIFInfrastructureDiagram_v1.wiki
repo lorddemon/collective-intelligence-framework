@@ -1,7 +1,11 @@
 #summary Diagrams of different infrastructure layouts (v1)
 #labels version-1
 
-= CIFv1 Distributed Environment =
+<font color="red">
+* THIS GUIDE IS STILL IN BETA *
+</font>
+
+= CIFv1 High Availability Environment =
 
 * Table of Contents *
 <wiki:toc max_depth="2" />
