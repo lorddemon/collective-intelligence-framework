@@ -5,7 +5,6 @@
 * THIS GUIDE IS STILL IN BETA *
 </font>
 
-* Table of Contents *
 <wiki:toc max_depth="2" />
 
 = CIFv1 High Availability Environment =
