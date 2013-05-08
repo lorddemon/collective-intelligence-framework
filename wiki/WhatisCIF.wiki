@@ -29,13 +29,13 @@ http://bret.appspot.com/entry/how-friendfeed-uses-mysql
 
 CIF supports ingesting many different sources of data of the same type; for example data sets or “feeds” of malicious domains. Each similar dataset can be marked with different attributes like source and confidence to name a few.
 
-Example: [AddingFeeds_v0 Adding Data]
+Example: [AddingFeeds_v1 Adding Data]
 
 == Normalize ==
 
 Data sets of threat intelligence often have subtle differences between them. CIF normalizes these data sets which gives you a predictable experience when leveraging the threat intelligence in other applications or processes. 
 
-Example: [Taxonomy_v0 Taxonomy]
+Example: [TaxonomyAssessment_v1 Taxonomy]
 
 == Post Process ==
 
@@ -47,21 +47,15 @@ CIF has a database schema that is highly optimized to store billions of records 
 
 == Query ==
 
-CIF can be queried via a web browser, CLI or API. CIF has a database schema that is highly optimized to perform queries against a database of billions of records. 
-
-Example: [BrowserPluginsInstall_v0 Web Browser], [CliClientExamples_v0 CLI], [API_v0 API]
+CIF can be queried via a [ClientInstall_Browser_v1 web browser], [ClientInstall_v1 native client] or directly using the [API_v1 API]. CIF has a database schema that is highly optimized to perform queries against a database of millions of records. 
 
 == Share ==
 
-CIF supports users, groups and api keys. Each threat intelligence record can be tagged to be shared with specific group of users. This allows the sharing of threat intelligence among federations. 
-
-Example: [FederatedSharingExample_v0 Sharing]
+CIF supports users, groups and api keys. Each threat intelligence record can be tagged to be shared with specific group of users. This allows the sharing of threat intelligence among [Recipe_FederatedSharing_v1 federations].
 
 == Produce ==
 
-CIF supports creating new data sets from the stored threat intelligence. These data sets can be created by type and confidence. CIF also supports whitelisting during the generation process.
-
-Example: [Feeds_v0 Feeds]
+CIF supports creating new [Feeds_v1 Feeds data sets] from the stored threat intelligence. These data sets can be created by type and confidence. CIF also supports whitelisting during the generation process.
 
 = Papers / Presentations =
 ----
