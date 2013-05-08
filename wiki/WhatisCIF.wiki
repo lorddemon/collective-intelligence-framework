@@ -51,7 +51,7 @@ CIF supports users, groups and api keys. Each threat intelligence record can be 
 
 == Produce ==
 
-CIF supports creating new [Feeds_v1 Feeds data sets] from the stored threat intelligence. These data sets can be created by type and confidence. CIF also supports whitelisting during the generation process.
+CIF supports creating new [Feeds_v1 data sets] from the stored threat intelligence. These data sets can be created by type and confidence. CIF also supports whitelisting during the generation process.
 
 = Papers / Presentations =
 ----
