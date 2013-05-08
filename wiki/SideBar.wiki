@@ -36,6 +36,7 @@
     * [PostgresqlStandalone_v1 PostgreSQL Standalone]
    * [ServerBackup_v1 Backup]
   * [API_v1 API]
+   * [API_FeedTypes_v1 Native Feed Types]
    * [API_CIFProtocol_v1 CIF Protocol]
    * [API_ProtocolBuffers_v1 Protocol Buffer API]
    * [API_HTTP_v1 HTTP API]
