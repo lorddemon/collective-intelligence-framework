@@ -5,10 +5,10 @@
 * THIS GUIDE IS STILL IN BETA *
 </font>
 
-= CIFv1 High Availability Environment =
-
 * Table of Contents *
 <wiki:toc max_depth="2" />
+
+= CIFv1 High Availability Environment =
 
 cif v1 is architected in a way that allows it's major components to be distributed among many hosts when a single host becomes resource constrained. 
 
