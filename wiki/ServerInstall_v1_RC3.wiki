@@ -87,7 +87,15 @@ Configure Postgres authentication and performance tuning
 
 == Installing CIF RC3 ==
 ----
-This release assumes that the client is on the same hardware as the backend server/router components. The final release will include an independent "libcif" (the client libraries) package. This release is for *testing purposes only*... 
+This guide assumes that the client is on the same hardware as the backend server/router components. If you want to build out in HA mode, se our [CIFInfrastructureDiagram_v1 HA Guide].
+
+In v1, the ability to query based on BGP prefix information (asn, country code, rir, etc) has been broken out into plugins (included in the base package). These plugins log lots more data to the warehouse and should only be enabled if you have a direct need to query these datatypes (eg: if you're an ISP wanting to query for your AS, etc).
+
+To enable, during the configure process, simply:
+
+{{{
+$ ./configure --enable-dbi-asn --enable-dbi-cc --enable-dbi-rir
+}}}
 
  # power down apache2
  # install the latest CIF [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=filename%3Acif-v1-rc3 package]
