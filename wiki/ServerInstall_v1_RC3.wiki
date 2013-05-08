@@ -92,8 +92,8 @@ This release assumes that the client is on the same hardware as the backend serv
  # power down apache2
  # install the latest CIF [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=filename%3Acif-v1-rc3 package]
 {{{
-$ tar -xzvf cif-v1-v0.99-RC3-XXXX.tar.gz
-$ cd cif-v1-v0.99-RC3-XXXX
+$ tar -xzvf cif-v1-rc3-XXXX.tar.gz
+$ cd cif-v1-rc3-XXXX
 $ ./configure && make testdeps
 $ sudo make install
 }}}
