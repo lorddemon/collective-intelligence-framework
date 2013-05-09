@@ -213,6 +213,7 @@ $ cif_apikeys -l
 $ vi ~/.cif
 }}}
  # log out of the cif user into your regular user (that has sudo access)
+ # if you're working with groups that aren't defined out of the box ('everyone') check out the [GroupSupport_v1 Group Support] doc.
 
 == Router Setup ==
 Most of this setup should have been accomplished in the distribution specific doc (Debian, RHEL, etc).
