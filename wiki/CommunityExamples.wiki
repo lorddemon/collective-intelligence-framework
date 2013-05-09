@@ -15,6 +15,7 @@
  * http://dfirjournal.wordpress.com/2012/06/10/using-cif-to-create-content-for-arcsight-part-2
  * http://ossectools.blogspot.com/2012/06/elsa-with-collective-intelligence.html
  * http://eyeis.net/2012/09/more-advanced-querying-cif-data-with-splunk
+ * http://infosecmatters.blogspot.co.uk/2013/05/using-cif-with-silk.html
 
 = Eye Candy =
  * http://threatthoughts.com/2012/09/06/far-pointers-threat-intel-concepts-and-cif-maltego-edition
