@@ -47,6 +47,11 @@ feed limit:         50
 $ /opt/cif/bin/cif_feed -d >> /home/cif/cif_feed.log 2>&1
 }}}
 
+==== Why does the 'guid' field print out as a 'uuid' instead of my group name? ====
+----
+
+See: [GroupSupport_v1 Group Support] and  [https://groups.google.com/d/msg/ci-framework/Ya7RqUF6OQ0/jW2BEoD7DR4J the archive]
+
 ==== How much disk space will I need? ====
 ----
 In testing with the default data sets, 23 million records used 6GB in the archive table and 12GB in the index table. That averages out to roughly 1.3 million records per GB. You can reduce disk space over time be pruning the index tables. 
