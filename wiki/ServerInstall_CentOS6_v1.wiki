@@ -75,7 +75,10 @@ $ sudo make install
 === Bind Config ===
 On RHEL6 with this setup you might get [http://crashmag.net/disable-ipv6-lookups-with-bind-on-rhel-or-centos messages like the following] if you're not using ipv6:
 {{{
-error (network unreachable) resolving '0.158.225.189.zen.spamhaus.org/A/IN': 2001:7fd::1#53: 1 Time(s) error (network unreachable) resolving '0.215.141.74.zen.spamhaus.org/A/IN': 2001:7fd::1#53: 1 Time(s) error (network unreachable) resolving '0.239.22.98.zen.spamhaus.org/A/IN': 2001:500:3::42#53: 1 Time(s) error (network unreachable) resolving '0.239.22.98.zen.spamhaus.org/A/IN': 2001:503:ba3e::2:30#53: 1 Time(s)
+error (network unreachable) resolving '0.158.225.189.zen.spamhaus.org/A/IN': 2001:7fd::1#53: 1 Time(s) 
+error (network unreachable) resolving '0.215.141.74.zen.spamhaus.org/A/IN': 2001:7fd::1#53: 1 Time(s) 
+error (network unreachable) resolving '0.239.22.98.zen.spamhaus.org/A/IN': 2001:500:3::42#53: 1 Time(s) 
+error (network unreachable) resolving '0.239.22.98.zen.spamhaus.org/A/IN': 2001:503:ba3e::2:30#53: 1 Time(s)
 }}}
  # modify /etc/sysconfig/named:
 {{{
