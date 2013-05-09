@@ -1,8 +1,5 @@
 #summary the Server Installation (v1) RC3
 
-* Before you Begin *
- * From this point on, ignore all other doc (including any client side doc), this page includes all the doc required to test v1 and it could conflict with other doc creating confusion, pain and potential alcohol abuse..
-
 * Table of Contents *
 <wiki:toc max_depth="2" />
 
