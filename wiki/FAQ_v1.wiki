@@ -66,5 +66,6 @@ Edit /etc/security/limits.conf and add:
 reference: https://groups.google.com/d/topic/ci-framework/LDNSJnf6BZg/discussion
 
 ==== Is there an easy way to purge my current repo and start over ====
+----
 
 running 'make purgedb' will purge all your tables, except for the apikeys. 
