@@ -9,6 +9,7 @@ All content licensed under [http://creativecommons.org/licenses/by-sa/3.0 CCv3] 
 
 = Recent Presentations =
 
+* 2013 -- [https://collective-intelligence-framework.googlecode.com/files/2013_auscert_wesyoung.pdf AusCERT sharing data]
  * 2013 -- [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=2013_MAAWG_wesyoung.pdf&can=2&q=#makechanges maawg] data-sharing economics
  * 2012 -- [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=2012_SANS.pdf GFIRST/NIST] the next ten years
  * 2012 -- [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=2012_FIRST.pdf FIRST.org] Sharing data's hard [http://media.first.org/podcasts/FIRST2012-WesYoung.mp3 here's] how we did it (mp3)
