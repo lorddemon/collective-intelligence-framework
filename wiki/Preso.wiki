@@ -17,6 +17,7 @@ All content licensed under [http://creativecommons.org/licenses/by-sa/3.0 CCv3] 
  * 2012 -- [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=2012_zombie_hunting.pdf Zombie Hunting]
 
 = 3rd Party Presentations=
+ * 2013 --  * VZ - the [https://speakerdeck.com/technoskald/open-source-threat-intelligence larger context]
  * 2013 -- [http://www.slideshare.net/alienvault/how-to-normalize-threat-intelligence-data-from-multiple-sources-alienvault-tech-talk-tuesday How to Normalize Threat Intelligence Data from Multiple Sources]
  * 2012 -- [https://collective-intelligence-framework.googlecode.com/files/RSA_Conference_2012_BR-303_Geide.pdf RSA Europe 2012]
  * 2012 -- [http://www.slideshare.net/eherna2000/intro-to-cif-hackmiamiorg Introduction to CIF]
