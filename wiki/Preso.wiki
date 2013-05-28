@@ -18,7 +18,7 @@ All content licensed under [http://creativecommons.org/licenses/by-sa/3.0 CCv3] 
 
 = 3rd Party Presentations=
  * 2012 -- [https://collective-intelligence-framework.googlecode.com/files/RSA_Conference_2012_BR-303_Geide.pdf RSA Europe 2012]
- * http://www.slideshare.net/eherna2000/intro-to-cif-hackmiamiorg
+ * 2012 -- [http://www.slideshare.net/eherna2000/intro-to-cif-hackmiamiorg Introduction to CIF]
 
 = Archived Presentations =
  * 2011 -- [http://code.google.com/p/collective-intelligence-framework/downloads/detail?name=ren-isac.pdf GFirst | NIST ISTAC | APWG]
