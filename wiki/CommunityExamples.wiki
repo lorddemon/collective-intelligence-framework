@@ -28,4 +28,3 @@
  * http://www.verizonenterprise.com/security/blog/index.xml?postid=1611
  * http://www.verizonenterprise.com/security/blog/index.xml?postid=1613
  * http://www.verizonenterprise.com/security/blog/index.xml?postid=1615
- * VZ - the [https://speakerdeck.com/technoskald/open-source-threat-intelligence larger context]
