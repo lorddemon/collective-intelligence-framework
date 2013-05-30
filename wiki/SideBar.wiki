@@ -13,6 +13,7 @@
    * [Utilities_v1 Utilities]
    * [MigrateApikeys_v1 API key migration]
    * [GroupSupport_v1 Group Support]
+   * [RestrictionMapping_v1 Restriction Mapping]
   * [ServerInstall_v1 Server]
   * [ClientOptions_v1 Client]
    * [ClientInstall_v1 Native Client]
