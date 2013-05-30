@@ -178,10 +178,12 @@ password =
 database = cif
 
 # if the normal IODEF restriction classes don't fit your needs
+# ref: https://code.google.com/p/collective-intelligence-framework/wiki/RestrictionMapping_v1
 [restriction_map]
-#public = limited
-#need-to-know = amber
-#private = red
+#white = public 
+#green = public 
+#amber = need-to-know 
+#red   = private         
 
 # logging
 # values 0-4
