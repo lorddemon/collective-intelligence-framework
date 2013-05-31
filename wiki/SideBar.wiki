@@ -5,6 +5,7 @@
   * [FAQ_v1 FAQ v1]
   * [CommunityExamples]
   * [http://groups.google.com/group/ci-framework Discussion Group]
+  * [DeveloperWorkflow_v1 Developer Workflow]
  * (testing) [WhatisCIF v1]
   * [FAQ_v1 FAQ]
    * [TaxonomyConfidence_v1 Confidence Definitions]
