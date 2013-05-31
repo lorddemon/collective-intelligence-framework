@@ -10,7 +10,7 @@
 = SEM integration =
  * http://eyeis.net/2012/04/querying-cif-data-from-splunk
  * http://code.google.com/p/collective-intelligence-framework/wiki/ElsaGuide
- * http://dfirjournal.wordpress.com/2012/04/28/cif-integration-with-arcsight
+ * [http://dfirjournal.wordpress.com/2012/04/28/cif-integration-with-arcsight CIF Integration with ArcSight]
  * [http://dfirjournal.wordpress.com/2012/04/29/using-cif-to-create-content-for-arcsight-part-1 Using CIF to create content for ArcSight – Part 1]
  * [http://dfirjournal.wordpress.com/2012/06/10/using-cif-to-create-content-for-arcsight-part-2 Using CIF to create content for ArcSight – Part 2]
  * [http://ossectools.blogspot.com/2012/06/elsa-with-collective-intelligence.html ELSA with the Collective Intelligence Framework]
