@@ -5,6 +5,8 @@
 
 = Preamble =
 ----
+If you have not joined the [https://groups.google.com/forum/?fromgroups#!forum/ci-framework CIF Community] yet, please do. It's a great place to ask questions..
+
 A semi-complete v1 [https://github.com/collectiveintel/cif-v1/blob/master/ChangeLog ChangeLog]
 
 A list of known v1 [https://github.com/collectiveintel/cif-v1/issues issues]
