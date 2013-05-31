@@ -1,0 +1,20 @@
+#summary developer workflow
+
+<wiki:toc max_depth="2" />
+
+= Introduction =
+
+Our developer workflow is done primarily through git and [https://github.com github]. More generalized information on how to contribute to a project can be found [https://help.github.com/articles/fork-a-repo here].
+
+= Details =
+== Forking ===
+
+=== Cloning ===
+
+=== Branching ===
+
+=== Committing ===
+
+=== Pushing ===
+
+=== Pull Request === 
