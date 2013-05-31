@@ -21,9 +21,9 @@
  * [https://github.com/divious1/cif_globe CIF Globe (github)]
 
 = Advanced Stuff =
- * http://eyeis.net/category/cif
- * http://ossectools.blogspot.com/2012/04/accelerating-cif-with-sphinx.html
- * http://scrapbook.zscaler.com/2012/06/cif-lite-customizing-cif-to-your-schema.html
- * http://www.verizonenterprise.com/security/blog/index.xml?postid=1611
- * http://www.verizonenterprise.com/security/blog/index.xml?postid=1613
- * http://www.verizonenterprise.com/security/blog/index.xml?postid=1615
+ * [http://eyeis.net/category/cif Category Archives: CIF]
+ * [http://ossectools.blogspot.com/2012/04/accelerating-cif-with-sphinx.html Accelerating CIF with Sphinx]
+ * [http://scrapbook.zscaler.com/2012/06/cif-lite-customizing-cif-to-your-schema.html CIF-Lite: Customizing CIF to your schema]
+ * [http://www.verizonenterprise.com/security/blog/index.xml?postid=1611 Gluing Our Stuff Together]
+ * [http://www.verizonenterprise.com/security/blog/index.xml?postid=1613 Recent Improvements to CIFGlue]
+ * [http://www.verizonenterprise.com/security/blog/index.xml?postid=1615 CIF: Looking Under the Hood]
