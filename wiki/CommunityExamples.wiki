@@ -18,8 +18,7 @@
  * [http://infosecmatters.blogspot.co.uk/2013/05/using-cif-with-silk.html Using CIF with SiLK]
 
 = Eye Candy =
- * http://threatthoughts.com/2012/09/06/far-pointers-threat-intel-concepts-and-cif-maltego-edition
- * https://github.com/divious1/cif_globe
+ * [https://github.com/divious1/cif_globe CIF Globe (github)]
 
 = Advanced Stuff =
  * http://eyeis.net/category/cif
