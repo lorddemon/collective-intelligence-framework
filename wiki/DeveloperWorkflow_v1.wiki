@@ -15,7 +15,7 @@ Goto the cif-v1 [https://github.com/collectiveintel/cif-v1 repo] and click the "
 You can follow instruction provided on github page. Basically, you set you username and clone the git repository:
 
 {{{
-git clone -r https://github.com/<username>/cif-v1.git
+git clone --recursive https://github.com/<username>/cif-v1.git
 }}}
 
 == Branching ==
