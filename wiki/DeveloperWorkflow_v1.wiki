@@ -8,6 +8,8 @@ Our developer workflow is done primarily through git and [https://github.com git
 
 Other mailing list threads that can be used for [https://groups.google.com/forum/?fromgroups#!tags/ci-framework/developer reference]
 
+The cif-v1 repo is a meta repository with various submodules (cif-smrt, cif-router, libcif, etc) and and their "v1" tree's. The cif-v2 repo is the same, pointing at their various "v2" tree's, and so on.
+
 = Details =
 == Forking ==
 
