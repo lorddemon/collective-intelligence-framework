@@ -8,8 +8,8 @@
  * http://www.verizonenterprise.com/security/blog/index.xml?postid=1606
 
 = SEM integration =
- * http://eyeis.net/2012/04/querying-cif-data-from-splunk
- * http://code.google.com/p/collective-intelligence-framework/wiki/ElsaGuide
+ * [http://eyeis.net/2012/04/querying-cif-data-from-splunk Querying CIF Data From Splunk]
+ * [http://code.google.com/p/collective-intelligence-framework/wiki/ElsaGuide How to get CIF working with ELSA]
  * [http://dfirjournal.wordpress.com/2012/04/28/cif-integration-with-arcsight CIF Integration with ArcSight]
  * [http://dfirjournal.wordpress.com/2012/04/29/using-cif-to-create-content-for-arcsight-part-1 Using CIF to create content for ArcSight – Part 1]
  * [http://dfirjournal.wordpress.com/2012/06/10/using-cif-to-create-content-for-arcsight-part-2 Using CIF to create content for ArcSight – Part 2]
