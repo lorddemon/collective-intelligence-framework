@@ -1,11 +1,11 @@
 #summary a page of 3rd party community examples
 
 = Introductions =
- * https://overhack.wordpress.com/2012/05/07/introduction-to-the-collective-intelligence-framework
- * http://holisticinfosec.blogspot.com/2012/07/toolsmith-collective-intelligence.html
- * http://holisticinfosec.org/toolsmith/pdf/july2012.pdf
- * a 3rd party, contributed public [http://www.josehelps.com/p/feeds.html instance]
- * http://www.verizonenterprise.com/security/blog/index.xml?postid=1606
+ * [https://overhack.wordpress.com/2012/05/07/introduction-to-the-collective-intelligence-framework Introduction to the Collective Intelligence Framework]
+ * [http://holisticinfosec.blogspot.com/2012/07/toolsmith-collective-intelligence.html toolsmith: Collective Intelligence Framework]
+ * [http://holisticinfosec.org/toolsmith/pdf/july2012.pdf collective-intelligence-framework - a framework for warehousing intelligence bits (PDF)]
+ * a 3rd party, contributed public CIF [http://www.josehelps.com/p/feeds.html instance]
+ * [http://www.verizonenterprise.com/security/blog/index.xml?postid=1606 Everyday I'm CIFfling]
 
 = SEM integration =
  * [http://eyeis.net/2012/04/querying-cif-data-from-splunk Querying CIF Data From Splunk]
