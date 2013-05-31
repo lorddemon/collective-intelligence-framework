@@ -7,14 +7,43 @@
 Our developer workflow is done primarily through git and [https://github.com github]. More generalized information on how to contribute to a project can be found [https://help.github.com/articles/fork-a-repo here].
 
 = Details =
-== Forking ===
+== Forking ==
 
-=== Cloning ===
+Goto the cif-v1 [https://github.com/collectiveintel/cif-v1 repo] and click the "fork" button.
 
-=== Branching ===
+== Cloning ==
+You can follow instruction provided on github page. Basically, you set you username and clone the git repository:
 
-=== Committing ===
+{{{
+git clone -r https://github.com/<username>/cif-v1.git
+}}}
 
-=== Pushing ===
+== Branching ==
+Create a new branch for your changes:
 
-=== Pull Request === 
+{{{
+git checkout master -b <your branch name>
+}}}
+
+== Committing ==
+Commit your changes:
+
+{{{
+git add <changed file(s)>
+git commit -m 'my commit message'
+}}}
+
+== Pushing ==
+Once you're happy with your branch, you can push it back to github:
+
+{{{
+git push origin <your branch name>
+}}}
+
+== Pull Request ==
+To get your changes included in the official branch you need to create a pull request.
+
+To do so, go to your fork page on github and choose the branch you want to merge in the menu.
+
+Once done, click the Pull request button at the top of the page.
+You will then be able to choose the branch on which you want to do the pull request.
