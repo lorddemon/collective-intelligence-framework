@@ -23,11 +23,21 @@ git clone --recursive https://github.com/<username>/cif-v1.git
 }}}
 
 == Branching ==
-Create a new branch for your changes:
+v1 is split into several [http://git-scm.com/book/en/Git-Tools-Submodules sub-modules] under the https://github.com/collectiveintel/cif-v1 cif-v1.git] repo:
+ * [https://github.com/collectiveintel/libcif/tree/v1 libcif.git]
+ * [https://github.com/collectiveintel/libcif-dbi/tree/v1 libcif-dbi.git]
+ * [https://github.com/collectiveintel/cif-smrt/tree/v1 cif-smrt.git]
+ * [https://github.com/collectiveintel/cif-router/tree/v1 cif-router.git]
+ * [https://github.com/collectiveintel/libcif-dbi-asn libcif-dbi-asn.git]
+ * [https://github.com/collectiveintel/libcif-dbi-rir libcif-dbi-rir.git]
+ * [https://github.com/collectiveintel/libcif-dbi-cc libcif-dbi-cc.git]
 
+If you wish to make changes to any of these sub-modules, you must first change to the corresponding directory within the cif-v1.git repo, then create a new branch for your changes:
 {{{
 git checkout master -b <your branch name>
 }}}
+
+and commit your changes to that submodule.
 
 == Committing ==
 Commit your changes:
