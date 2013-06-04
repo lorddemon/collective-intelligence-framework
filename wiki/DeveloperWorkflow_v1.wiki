@@ -37,15 +37,22 @@ git clone --recursive https://github.com/<username>/libcif.git
 
 == Branching ==
 
-If you wish to make changes to any of these sub-modules, you must first change to the corresponding directory within the repo, then create a new branch for your changes:
+If you wish to make changes to any of these sub-modules, you must:
+ # change to the corresponding directory within the repo
+{{{
+cd libcif
+}}}
+ # make sure the v1 tree of the repo is cached in your local repo
+{{{
+git checkout v1
+}}}
+ # create a new branch for your changes:
 {{{
 git checkout v1 -b <your branch name>
 }}}
 
-and commit your changes to that submodule.
-
 == Committing ==
-Commit your changes:
+Commit your changes to the module:
 
 {{{
 git add <changed file(s)>
@@ -62,7 +69,15 @@ git push origin <your branch name>
 == Pull Request ==
 To get your changes included in the official branch you need to create a pull request.
 
-To do so, go to your fork page on github and choose the branch you want to merge in the menu.
+ # go to your fork page on github
+{{{
+https://github.com/<username>/libcif
+}}}
+ # choose the branch you want to merge in the menu
+{{{
+https://github.com/<username>/libcif/tree/mytestbranch
+}}}
 
-Once done, click the Pull request button at the top of the page.
-You will then be able to choose the branch on which you want to do the pull request.
+Once done, click the Pull request button at the top of the page (middle left of the page).
+
+You will then be able to choose some advanced options for submitting the pull-request to the original tree.
