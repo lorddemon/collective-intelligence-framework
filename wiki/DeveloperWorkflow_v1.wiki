@@ -13,31 +13,34 @@ The cif-v1 repo is a meta repository with various submodules (cif-smrt, cif-rout
 = Details =
 == Forking ==
 
-Goto the cif-v1 [https://github.com/collectiveintel/cif-v1 repo] and click the "fork" button.
+*In order to submit a [https://help.github.com/articles/creating-a-pull-request pull-request], you must fork one of these sub-module repos (NOT the cif-v1.git repo, which requires more advanced git configuration to do effectively).*
+
+v1 is split into several [http://git-scm.com/book/en/Git-Tools-Submodules sub-modules] under the [https://github.com/collectiveintel/cif-v1 cif-v1.git] repo:
+
+|| repo || info ||
+||[https://github.com/collectiveintel/libcif/tree/v1 libcif.git] || client side libs, provides: cif ||
+||[https://github.com/collectiveintel/cif-protocol/tree/v1 cif-protocol.git] || the core cif-protocol defs ||
+||[https://github.com/collectiveintel/libcif-dbi/tree/v1 libcif-dbi.git] || database interface, provides: cif_apikeys, cif_feed||
+||[https://github.com/collectiveintel/cif-smrt/tree/v1 cif-smrt.git] || intelligence parser, provides: cif_smrt ||
+||[https://github.com/collectiveintel/cif-smrt-rules/tree/v1 cif-smrt-rules.git] || intel parser rulesets, provides: the smrt cfg's ||
+||[https://github.com/collectiveintel/cif-router/tree/v1 cif-router.git] || the cif-router interface (server) ||
+||[https://github.com/collectiveintel/libcif-dbi-asn libcif-dbi-asn.git] || the asn db plugin (indexer) ||
+||[https://github.com/collectiveintel/libcif-dbi-rir libcif-dbi-rir.git] || the rir db plugin (indexer) ||
+||[https://github.com/collectiveintel/libcif-dbi-cc libcif-dbi-cc.git] || the country code db plugin (indexer) ||
 
 == Cloning ==
 You can follow instruction provided on github page. Basically, you set you username and clone the git repository:
 
 {{{
-git clone --recursive https://github.com/<username>/cif-v1.git
+git clone --recursive https://github.com/<username>/libcif.git
 }}}
 
 == Branching ==
-v1 is split into several [http://git-scm.com/book/en/Git-Tools-Submodules sub-modules] under the [https://github.com/collectiveintel/cif-v1 cif-v1.git] repo:
- * [https://github.com/collectiveintel/libcif/tree/v1 libcif.git]
- * [https://github.com/collectiveintel/cif-protocol/tree/v1 cif-protocol.git] (under 'libcif/protocol/')
- * [https://github.com/collectiveintel/libcif-dbi/tree/v1 libcif-dbi.git]
- * [https://github.com/collectiveintel/cif-smrt/tree/v1 cif-smrt.git]
- * [https://github.com/collectiveintel/cif-smrt-rules/tree/v1 cif-smrt-rules.git] (under 'cif-smrt/rules/')
- * [https://github.com/collectiveintel/cif-router/tree/v1 cif-router.git]
- * [https://github.com/collectiveintel/libcif-dbi-asn libcif-dbi-asn.git]
- * [https://github.com/collectiveintel/libcif-dbi-rir libcif-dbi-rir.git]
- * [https://github.com/collectiveintel/libcif-dbi-cc libcif-dbi-cc.git]
 
 If you wish to make changes to any of these sub-modules, you must first change to the corresponding directory within the cif-v1.git repo, then create a new branch for your changes:
 {{{
 cd <sub-module>
-git checkout master -b <your branch name>
+git checkout v1 -b <your branch name>
 }}}
 
 and commit your changes to that submodule.
