@@ -15,7 +15,7 @@ The cif-v1 repo is a meta repository with various submodules (cif-smrt, cif-rout
 
 *In order to submit a [https://help.github.com/articles/creating-a-pull-request pull-request], you must fork one of these sub-module repos (NOT the cif-v1.git repo, which requires more advanced git configuration to do effectively).*
 
-v1 is split into several [http://git-scm.com/book/en/Git-Tools-Submodules sub-modules] under the [https://github.com/collectiveintel/cif-v1 cif-v1.git] repo:
+v1 is split into several [http://git-scm.com/book/en/Git-Tools-Submodules sub-modules] under the cif-v1.git repo:
 
 || repo || info ||
 ||[https://github.com/collectiveintel/libcif/tree/v1 libcif.git] || client side libs, provides: cif ||
