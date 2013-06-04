@@ -37,9 +37,8 @@ git clone --recursive https://github.com/<username>/libcif.git
 
 == Branching ==
 
-If you wish to make changes to any of these sub-modules, you must first change to the corresponding directory within the cif-v1.git repo, then create a new branch for your changes:
+If you wish to make changes to any of these sub-modules, you must first change to the corresponding directory within the repo, then create a new branch for your changes:
 {{{
-cd <sub-module>
 git checkout v1 -b <your branch name>
 }}}
 
