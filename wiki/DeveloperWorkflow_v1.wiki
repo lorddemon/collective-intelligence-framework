@@ -75,9 +75,11 @@ https://github.com/<username>/libcif
 }}}
  # choose the branch you want to merge in the menu
 {{{
-https://github.com/<username>/libcif/tree/mytestbranch
+https://github.com/<username>/libcif/tree/mybranch
 }}}
-
-Once done, click the Pull request button at the top of the page (middle left of the page).
-
-You will then be able to choose some advanced options for submitting the pull-request to the original tree.
+ # click the Pull request button at the top of the page (middle left of the page).
+ # for the "base branch" select "v1"
+<img src='https://collective-intelligence-framework.googlecode.com/files/github_screen.png'></img>
+ # fill in a pull-req subject and message
+ # review your commits, make sure it's what you want (if there are more commits than you made, you're probably trying to base this on the master tree rather than the v1 tree)
+ # hit "Send pull request"
