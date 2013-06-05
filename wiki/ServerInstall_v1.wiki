@@ -194,6 +194,10 @@ database = cif
 debug = 1
 }}}
 === APIKey ===
+ # make sure you're still logged in as the 'cif' user and have set the proper environment stuff (as per above) or the following commands will fail
+{{{
+$ sudo su - cif
+}}}
  # generate your initial apikey to be used by your client
 {{{
 $ cif_apikeys -u myuser@mydomain.com -a -g everyone -G everyone
