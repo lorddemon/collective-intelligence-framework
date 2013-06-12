@@ -35,7 +35,7 @@ Threat intelligence datasets often have subtle differences between them. CIF [Ta
 
 == Post Process ==
 
-CIF has many post processors that derive additional intelligence from a single piece of threat intelligence. A simple example would be that a domain and an IP address can be derived from a URL ingested into CIF.
+CIF has many [https://github.com/collectiveintel/cif-smrt/tree/v1/lib/CIF/Smrt/Plugin/Postprocessor post processors] that derive additional intelligence from a single piece of threat intelligence. A simple example would be that a domain and an IP address can be derived from a URL ingested into CIF.
 
 == Store ==
 
