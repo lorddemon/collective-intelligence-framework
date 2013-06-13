@@ -50,7 +50,7 @@ The command above adds a new user (myuser@cifeast.local) on the CIF West instanc
 Now the group sshgroup needs to be given access to some of the data sources.  This is done by duplicating the sources with a new guid value. Refer to the following configuration (*/opt/cif/etc/knownsshattackers.cfg*) for example:
 {{{
 confidence = 95
-restriction = 'restricted'
+restriction = 'private'
 period = hourly
 
 [drg_ssh_everyone]
