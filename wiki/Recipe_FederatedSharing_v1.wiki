@@ -23,7 +23,7 @@ In this use case scenario, there is an entity running CIF (CIF West) that we (CI
 
 This use case requires two CIF server installations - one for the entity that will be sharing data (CIF West), and another for the one that will import the data (CIF East).
 
-Use the following [ServerInstall_v0 ServerInstall guide] to setup the CIF servers.
+Use the following [ServerInstall_v1 ServerInstall guide] to setup the CIF servers.
 
 If you don't want to use all of the public feeds that are enabled by default, use the following commands to append .example to the end of all of the feed configs to disable them. 
 {{{
@@ -33,7 +33,7 @@ for f in *.cfg; do mv $f $f.example; done
 
 ==CIF Client on the SSH server==
 
-In this use case, the SSH server needs the CIF client  to receive feeds from CIF East to automatically block SSH scanner addresses. Use the following guide to install the [ClientInstallSourcePerl_v0 Perl Client]
+In this use case, the SSH server needs the CIF client  to receive feeds from CIF East to automatically block SSH scanner addresses. Use the following guide to install the [ClientInstall_v1 Perl Client]
 
 = Configuration =
 
@@ -49,13 +49,12 @@ The command above adds a new user (myuser@cifeast.local) on the CIF West instanc
 
 Now the group sshgroup needs to be given access to some of the data sources.  This is done by duplicating the sources with a new guid value. Refer to the following configuration (*/opt/cif/etc/knownsshattackers.cfg*) for example:
 {{{
-severity = 'high'
 confidence = 95
 restriction = 'restricted'
-detection = hourly
+period = hourly
 
 [drg_ssh_everyone]
-impact = 'scanner'
+assessment = 'scanner'
 values = 'source,address,detecttime,null'
 portlist = 22
 source = 'dragonresearchgroup.org'
@@ -68,7 +67,7 @@ alternativeid = 'http://dragonresearchgroup.org/insight/sshpwauth.txt'
 guid = privategroup
 
 [drg_ssh_sshgroup]
-impact = 'scanner'
+assessment = 'scanner'
 values = 'source,address,detecttime,null'
 portlist = 22
 source = 'dragonresearchgroup.org'
@@ -89,15 +88,20 @@ Because the feed generation configuration is based on users, a new user should b
 {{{
 cif@CIFwest:~$ cif_apikeys -a -u role_ssh_group -g sshgroup -G sshgroup
 }}}
-Now edit the feed generation section of the /home/cif/.cif and include the role_ssh_group user in the apikeys value. 
+Now edit the feed generation section of the /home/cif/.cif and include the role_ssh_group user in the roles value. 
 {{{
-[cif_feeds]
-maxrecords = 10000
-severity_feeds = high,medium
+[cif_feed]
+limit = 10000
 confidence_feeds = 95,85
-apikeys = role_everyone_feed, role_sshgroup_feed
-max_days = 2
-disabled_feeds = hash,rir,asn,countrycode,malware
+roles = role_everyone,role_ssh_group
+limit_days = 2
+}}}
+and in the cif_archive section
+{{{
+[cif_archive]
+...
+feed = infrastructure,domain,url,email,search,malware
+groups = everyone,sshgroup
 }}}
 Feeds will be generated for the group sets of these 'role' users.
 
@@ -108,9 +112,10 @@ Currently (and ironically), the CIF feed parser doesn't directly support directl
 Create a client configuration file that contains the API key and the URL to the CIF server that the feed will be pulled from. The following example client config is named cifclient_west.cfg:
 {{{
 [client]
-host = https://<address of CIF West>:443/api
 apikey = <API key for myuser@cifeast.local user created on CIF West>
-timeout = 60
+
+[client_http]
+host = https://<address of CIF West>:443/api
 verify_tls = 0
 }}}
 You can then test it by running `cif -C cifclient_west.cfg -q infrastructure`, which should either return feed data or nothing (i.e. no errors).
@@ -119,7 +124,7 @@ Then setup a script as a [https://help.ubuntu.com/community/CronHowto cron] job 
 {{{
 #!/bin/bash
 cd /home/cif/
-/usr/local/bin/cif -C cifclient_west.cfg -q infrastructure -p raw -s medium -c 1 > WEST_infrastructure.json
+/usr/local/bin/cif -C cifclient_west.cfg -q infrastructure -p json -c 1 > WEST_infrastructure.json
 }}}
 
 Now that the data is being saved to a file, it can be added like a regular feed for the CIF server to parse. Create a feed config (e.g. _/opt/cif/etc/cifwest.cfg_) and enter the following options:
@@ -130,25 +135,26 @@ fields = 'purpose,asn,rir,portlist,alternativeid,detecttime,address,alternativei
 fields_map = 'purpose,asn,rir,portlist,alternativeid,detecttime,address,alternativeid_restriction,severity,description,confidence,restriction,prefix,impact'
 source = 'CIFWEST'
 guid = everyone
-detection = hourly
+period = hourly
 }}}
 
 The CIF East server will now import all of the data from CIF West. The 'source' field is being overwritten to 'CIFWEST' in this case, but it could be imported from the feed by adding it to the 'fields' and 'fields_map' options instead.
 
-More details on the feed configuration options can be found [FeedConfig_v0 here]
+More details on the feed configuration options can be found [FeedConfig_v1 here]
 
 == SSH Server to Retrieve the Infrastructure Feeds from the CIF Server ==
 
-The SSH server should have the CIF client already installed at this point. Run *cif -V* to print the client version. It should be at least v0.1104 for this tutorial.
+The SSH server should have the CIF client already installed at this point. ~~Run *cif -V* to print the client version.~~ It should be at least v0.1104 for this tutorial. *cif -V* doesn't exist.
 
 For the SSH server to receive the necessary feed, it needs the API key that was setup during the initial server install. (_You can run *cif_apikeys -L* on the CIF server to find it._)
 
 Create the configuration file for the client. By default, the client looks for the configuration file in the home directory of the user running it. In this example, the client will be run by root since the output will be used to insert firewall rules. So, create the configuration file */root/.cif* and with the following contents:
 {{{
 [client]
-host = https://<address of CIF server>:443/api
 apikey = <API key from CIF SERVER>
-timeout = 60
+
+[client_http]
+host = https://<address of CIF server>:443/api
 verify_tls = 0
 }}}
 Note: Set the verify_tls option to 1 if the certificate used by the CIF server is signed by a trusted certificate authority.
@@ -180,19 +186,18 @@ This whitelist doesn't need to be located on any particular server since it's ad
 [cifwestsshwhitelist]
 feed = '/opt/serverwhitelist.txt'
 impact = 'scanner whitelist'
-severity = 'null'
 regex = "^(\\S+)$"
 regex_values = 'address'
 guid = everyone
 confidence = 100
-detection = hourly
+period = hourly
 }}}
 
-That specific configuration expects each IP address (or CIDR notation network) to be entered as an individual line in the */opt/serverwhitelist.txt* file. To parse a whitelist in a different format, refer to the following guide for designing your own feed parser [hFeedConfig_v0 config]. 
+That specific configuration expects each IP address (or CIDR notation network) to be entered as an individual line in the */opt/serverwhitelist.txt* file. To parse a whitelist in a different format, refer to the following guide for designing your own feed parser [FeedConfig_v1 config]. 
 
 = Appendix =
 
-The following instructions show how to create threat data from local SSH logs and import it into the CIF server so it can be shared with other servers or another entity. 
+The following instructions show how to create threat data from local SSH logs and import it into the CIF server so it can be shared with other servers or another entity.
 
 == Configure SSH Servers to Produce Attack Feeds ==
 
