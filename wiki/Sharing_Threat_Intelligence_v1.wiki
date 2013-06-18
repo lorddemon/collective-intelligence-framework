@@ -68,6 +68,7 @@ As you mature in your threat intelligence sharing capabilities, you may find tha
 As mentioned above, one of CIF's goals is to make it easier to share threat intelligence. If you deploy a CIF instance and feed your threat intelligence to CIF, what capabilities does CIF give you in regards to sharing threat intelligence?
 
  * Create users with [Utilities_v1#cif_apikeys API keys]
+ * Create [GroupSupport_v1 groups] to share threat intelligence selectively
  * [ServerInstall_v1#Enabling_Feed_Generation Generate] [Feeds_v1 feeds] of threat intelligence
  * Support many [Feeds_v1#Output_Plugins output types], not only CSV
  * Give your partners an [API_v1 API] to program against
