@@ -32,6 +32,7 @@ CIF comes with a variety of pre-built feed configurations, with that there are m
 || confidence || <int> || see [TaxonomyConfidence_v1 Confidence] || no ||
 || description || <string> || short (1-2 space delimited word) description of the activity (eg: tdss spyeye) || no ||
 || detection || <string> || hourly/daily: useful if you do not have a timestamp || no ||
+|| detecttime || <string> || Most common timestamp formats are valid || no ||
 || disabled || <string> || true, false || no ||
 || feed || <uri><filename> || {{{http://example.com/feed.csv}}} or /tmp/feed.csv || yes ||
 || feed_user || <string> || username (Basic authentication) || no ||
