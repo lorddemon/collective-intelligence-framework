@@ -7,6 +7,8 @@ At some point you may want to start sharing your threat intelligence with others
 
 == Minimum Sharing ==
 
+There is a bare minimum that one should strive for when sharing threat intelligence. You can share less than what is described below but the entity on the other side will have to make a lot of assumptions and these assumptions will likely lead to a decreased level of confidence in the shared threat intelligence. 
+
 ==== Common Parameters ====
 
 || Parameter Name || Values || Description ||
