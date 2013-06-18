@@ -5,13 +5,14 @@
 
 Hello World
 
-== Key ==
+== Common Parameters ==
 
 || Parameter Name || Values || Description ||
 || address || <string> ||a IP address, URI, domain, (md5/sha1) hash ||
 || portlist || <int> || 22,25,80 ||
  
 === Infrastructure ===
+
 {{{
 #address,portlist,protocol,detecttime,assessment,restriction
 "192.168.1.1","22","tcp","2013-06-18T10:10:00Z","malware","need-to-know"
