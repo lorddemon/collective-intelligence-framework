@@ -3,7 +3,7 @@
 
 = Sharing Threat Intelligence =
 
-== Common Parameters ==
+=== Common Parameters ===
 
 || Parameter Name || Values || Description ||
 || address || <string> ||a IP address, URI, domain, (md5/sha1) hash ||
