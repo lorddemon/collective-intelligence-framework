@@ -59,7 +59,7 @@ As you mature in your threat intelligence sharing capabilities, you may find tha
 || alternativeid_restriction || <string> || public, default, need-to-know,private ||
 || confidence || <int> || see [TaxonomyConfidence_v1 Confidence] ||
 || description || <string> || short (1-2 space delimited word) description of the activity (eg: tdss spyeye) ||
-|| restriction || <string> || rfc5070: public, need-to-know, private OR [http://www.us-cert.gov/tlp TLP]||
+|| restriction || <string> || rfc5070: (public, need-to-know, private) or [http://www.us-cert.gov/tlp TLP]||
 || severity || <string> || see [TaxonomySeverity_v1 Severity] ||
 || source || <string> || source of the feed, usually the domain where the feed is from (eg: example.com) ||
 
