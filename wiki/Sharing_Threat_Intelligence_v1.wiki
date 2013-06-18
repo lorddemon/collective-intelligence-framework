@@ -9,7 +9,7 @@ At some point you may want to start sharing your threat intelligence with others
 
 The most common way to share threat intelligence in 2013 is to place the intelligence in a CSV file and make it available via http or https with basic auth. A harder way to share threat intelligence in 2013 is to use SMTP and possibly GPG, which requires your partners to parse SMTP messages and possibly unencrypt if encrypted.
 
-One of the goals of the CIF project is to make it easier to share threat intelligence, one familiar with CIF (which is no small feat), CIF can give you a lot of advanced capabilities essentially free. 
+One of the goals of the CIF project is to make it easier to share threat intelligence, once familiar with CIF (which is no small feat), CIF can give you a lot of advanced capabilities essentially free. 
 
 == Minimum Sharing ==
 
