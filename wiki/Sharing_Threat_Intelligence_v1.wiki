@@ -41,4 +41,5 @@
 == Advanced Sharing ==
 
 === Common Parameters ===
+|| Parameter Name || Values || Description ||
 || restriction || <string> || public, default, need-to-know, private ||
