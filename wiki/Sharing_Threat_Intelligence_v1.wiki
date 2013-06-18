@@ -54,3 +54,5 @@ There is a bare minimum that one should strive for when sharing threat intellige
 || restriction || <string> || public, default, need-to-know, private ||
 || severity || <string> || see [TaxonomySeverity_v1 Severity] ||
 || source || <string> || source of the feed, usually the domain where the feed is from (eg: example.com) ||
+
+== Sharing with CIF ==
