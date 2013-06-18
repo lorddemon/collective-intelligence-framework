@@ -17,25 +17,28 @@
 === Infrastructure ===
 
 {{{
-#address,portlist,protocol,detecttime,assessment,restriction
-"192.168.1.1","22","tcp","2013-06-18T10:10:00Z","malware","need-to-know"
-"192.168.10/24","80,443","tcp","2013-06-17T08:01:56Z","botnet","public"
+#address,portlist,protocol,detecttime,assessment
+"192.168.1.1","22","tcp","2013-06-18T10:10:00Z","malware"
+"192.168.10/24","80,443","tcp","2013-06-17T08:01:56Z","botnet"
 }}}
 
 === Domain ===
 
 {{{
 #address,detecttime,assessment,restriction
-"example.com","2013-06-16T12:00:00Z","botnet","private"
-"car.example.com","2013-06-16T12:00:00Z","malware","public"
+"example.com","2013-06-16T12:00:00Z","botnet"
+"car.example.com","2013-06-16T12:00:00Z","malware"
 }}}
 
 === URI ===
 
 {{{
 #address,detecttime,assessment,restriction
-"http://www.example.com/bad.php","2013-06-16T12:00:00Z","malware","public"
-"https://controller.example.com/bad.php","2013-06-16T12:00:00Z","botnet","private"
+"http://www.example.com/bad.php","2013-06-16T12:00:00Z","malware"
+"https://controller.example.com/bad.php","2013-06-16T12:00:00Z","botnet"
 }}}
 
 == Advanced Sharing ==
+
+=== Common Parameters ===
+|| restriction || <string> || public, default, need-to-know, private ||
