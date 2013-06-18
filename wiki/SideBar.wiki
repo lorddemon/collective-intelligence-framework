@@ -45,6 +45,7 @@
   * Cookbook
    * [Recipe_EC2_v1 Amazon EC2]
    * [Recipe_FederatedSharing_v1 Federated Sharing Tutorial]
+   * [Sharing_Threat_Intelligence_v1 Sharing Threat Intelligence]
  * (deprecated) v0
   * [Server_v0 Server]
    * [ServerInstall_v0 Server Install]
