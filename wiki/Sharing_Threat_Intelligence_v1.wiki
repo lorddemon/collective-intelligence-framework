@@ -5,6 +5,12 @@
 
 At some point you may want to start sharing your threat intelligence with others. This may be public like [https://zeustracker.abuse.ch/ Zeustracker] or with trusted private partners/communities. This is a introductory guide to sharing threat intelligence.
 
+== Baseline ==
+
+The most common way to share threat intelligence in 2013 is to place the intelligence in a CSV file and make it available via http or https with basic auth.
+
+One of the goals of the CIF project is to make it easier to share threat intelligence, one familiar with CIF (which is no small feat), CIF can give you a lot of advanced capabilities essentially free. 
+
 == Minimum Sharing ==
 
 There is a bare minimum that one should strive for when sharing threat intelligence. You can share less than what is described below but the entity on the other side will have to make a lot of assumptions and these assumptions will likely lead to a decreased level of confidence in the shared threat intelligence. 
