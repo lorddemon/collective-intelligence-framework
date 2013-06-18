@@ -42,5 +42,7 @@
 
 === Common Parameters ===
 || Parameter Name || Values || Description ||
+|| alternativeid || <string> || usually a url pointing to the original data point (as a reference id) ||
+|| alternativeid_restriction || <string> || public, default, need-to-know,private ||
 || confidence || <int> || see [TaxonomyConfidence_v1 Confidence] ||
 || restriction || <string> || public, default, need-to-know, private ||
