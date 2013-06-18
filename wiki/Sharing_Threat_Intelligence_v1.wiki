@@ -9,10 +9,10 @@
 
 || Parameter Name || Values || Description ||
 || address || <string> ||a IP address, URI, domain, (md5/sha1) hash ||
+|| assessment || <string> || see [TaxonomyAssessment_v1 Assessment] ||
+|| detecttime || <string> || ISO 8601 preferred (2013-06-18T10:10:00Z) ||
 || portlist || <int> || 22,25,80 ||
 || protocol || <int> <string> || 6 or tcp, 17 or udp ||
-|| detecttime || <string> || ISO 8601 preferred (2013-06-18T10:10:00Z) ||
-|| assessment || <string> || see [TaxonomyAssessment_v1 Assessment] ||
 
 === Infrastructure ===
 
