@@ -22,7 +22,9 @@ Whenever possible share the most specific indicator you have. If you have:
  * IP address - share the ip address, port and protocol
  * FQDN - share the FQDN
 
-All too often someone will start with a malicious URL then resolve the A record or strip out the domain and share those two indicators as malicious. Due to shared hosting, compromised servers or compromised web applications, often the most specific indicator is the best indicator of potential compromise. 
+All too often someone will start with a malicious URL then resolve the A record or strip out the domain and share the IP address or domain as the malicious indicator. 
+
+Due to shared hosting, compromised servers or compromised web applications, often the most specific indicator is the best indicator (most confident) of potential compromise. 
 
 == Minimum Sharing ==
 ----
