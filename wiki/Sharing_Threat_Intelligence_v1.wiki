@@ -56,10 +56,10 @@ As you mature in your threat intelligence sharing capabilities, you may find tha
 ==== Common Parameters ====
 || Parameter Name || Values || Description ||
 || alternativeid || <string> || usually a url pointing to the original data point (as a reference id) ||
-|| alternativeid_restriction || <string> || rfc5070: (public, need-to-know, private) or [http://www.us-cert.gov/tlp TLP]||
+|| alternativeid_restriction || <string> || [http://www.ietf.org/rfc/rfc5070.txt rfc5070] (public, need-to-know, private) or [http://www.us-cert.gov/tlp TLP]||
 || confidence || <int> || see [TaxonomyConfidence_v1 Confidence] ||
 || description || <string> || short (1-2 space delimited word) description of the activity (eg: tdss spyeye) ||
-|| restriction || <string> || rfc5070: (public, need-to-know, private) or [http://www.us-cert.gov/tlp TLP]||
+|| restriction || <string> || [http://www.ietf.org/rfc/rfc5070.txt rfc5070] (public, need-to-know, private) or [http://www.us-cert.gov/tlp TLP]||
 || severity || <string> || see [TaxonomySeverity_v1 Severity] ||
 || source || <string> || source of the feed, usually the domain where the feed is from (eg: example.com) ||
 
