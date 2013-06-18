@@ -25,7 +25,7 @@
 ==== Domain ====
 
 {{{
-#address,detecttime,assessment,restriction
+#address,detecttime,assessment
 "example.com","2013-06-16T12:00:00Z","botnet"
 "car.example.com","2013-06-16T12:00:00Z","malware"
 }}}
@@ -33,7 +33,7 @@
 ==== URI ====
 
 {{{
-#address,detecttime,assessment,restriction
+#address,detecttime,assessment
 "http://www.example.com/bad.php","2013-06-16T12:00:00Z","malware"
 "https://controller.example.com/bad.php","2013-06-16T12:00:00Z","botnet"
 }}}
