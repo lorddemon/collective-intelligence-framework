@@ -56,7 +56,7 @@ As you mature in your threat intelligence sharing capabilities, you may find tha
 ==== Common Parameters ====
 || Parameter Name || Values || Description ||
 || alternativeid || <string> || usually a url pointing to the original data point (as a reference id) ||
-|| alternativeid_restriction || <string> || public, default, need-to-know,private ||
+|| alternativeid_restriction || <string> || rfc5070: (public, need-to-know, private) or [http://www.us-cert.gov/tlp TLP]||
 || confidence || <int> || see [TaxonomyConfidence_v1 Confidence] ||
 || description || <string> || short (1-2 space delimited word) description of the activity (eg: tdss spyeye) ||
 || restriction || <string> || rfc5070: (public, need-to-know, private) or [http://www.us-cert.gov/tlp TLP]||
