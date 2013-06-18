@@ -3,8 +3,12 @@
 
 = Sharing Threat Intelligence =
 
+== Common Parameters ==
 
- 
+|| Parameter Name || Values || Description ||
+|| address || <string> ||a IP address, URI, domain, (md5/sha1) hash ||
+|| portlist || <int> || 22,25,80 ||
+
 === Infrastructure ===
 
 {{{
