@@ -64,3 +64,7 @@ As you mature in your threat intelligence sharing capabilities, you may find tha
 || source || <string> || source of the feed, usually the domain where the feed is from (eg: example.com) ||
 
 == Sharing with CIF ==
+
+As mentioned above, one of CIF's goals is to make it easier to share threat intelligence. If you deploy a CIF instance and feed your threat intelligence to CIF, what capabilities does CIF give you in regards to sharing threat intelligence?
+
+ * Create users with [Utilities_v1#cif_apikeys API keys]
