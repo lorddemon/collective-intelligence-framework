@@ -42,4 +42,5 @@
 
 === Common Parameters ===
 || Parameter Name || Values || Description ||
+|| confidence || <int> || see [TaxonomyConfidence_v1 Confidence] ||
 || restriction || <string> || public, default, need-to-know, private ||
