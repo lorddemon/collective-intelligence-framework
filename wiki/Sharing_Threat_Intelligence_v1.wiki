@@ -51,7 +51,7 @@ There is a bare minimum that one should strive for when sharing threat intellige
 
 == Advanced Sharing ==
 
-As you mature in your threat intelligence sharing capabilities, you may find that your partners need more than the bare minimum as described above. Below are some common parameters found mature threat intelligence feeds. 
+As you mature in your threat intelligence sharing capabilities, you may find that your partners need more than the bare minimum as described above. Below are some common parameters found in mature threat intelligence feeds. 
 
 ==== Common Parameters ====
 || Parameter Name || Values || Description ||
