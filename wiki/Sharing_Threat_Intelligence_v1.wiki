@@ -3,7 +3,7 @@
 
 = Sharing Threat Intelligence =
 
-At some point you may want to start sharing your threat intelligence with others. This may be public like [https://zeustracker.abuse.ch/ Zeustracker] or with trusted private partners/communities. This is a introductory guide to sharing threat intelligence.
+At some point you may want to start sharing your threat intelligence with others. This may be public like [https://zeustracker.abuse.ch/ Zeustracker] or with trusted private partners or communities. This is a introductory guide to sharing threat intelligence.
 
 == Baseline ==
 
