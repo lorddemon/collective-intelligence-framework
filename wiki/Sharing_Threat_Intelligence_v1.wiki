@@ -4,3 +4,24 @@
 = Sharing Threat Intelligence =
 
 Hello World
+
+=== Infrastructure ===
+{{{
+#Address,portlist,protocol,detecttime,assessment,restriction
+"192.168.1.1","22","tcp","2013-06-18T10:10:00Z","malware","need-to-know"
+"192.168.10/24","80,443","tcp","2013-06-17T08:01:56Z","botnet","public"
+}}}
+
+=== Domain ===
+{{{
+#Address,detecttime,assessment,restriction
+"example.com","2013-06-16T12:00:00Z","botnet","private"
+"car.example.com","2013-06-16T12:00:00Z","malware","public"
+}}}
+
+=== URI ===
+{{{
+#Address,detecttime,assessment,restriction
+"http://www.example.com/bad.php","2013-06-16T12:00:00Z","malware","public"
+"https://controller.example.com/bad.php","2013-06-16T12:00:00Z","botnet","private"
+}}}
