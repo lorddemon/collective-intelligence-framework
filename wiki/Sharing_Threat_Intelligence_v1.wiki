@@ -8,6 +8,8 @@
 || Parameter Name || Values || Description ||
 || address || <string> ||a IP address, URI, domain, (md5/sha1) hash ||
 || portlist || <int> || 22,25,80 ||
+|| protocol || <int> <string> || 6 or tcp, 17 or udp ||
+|| detecttime || <string> || xzy || 
 
 === Infrastructure ===
 
