@@ -13,7 +13,7 @@ The most common way to share threat intelligence in 2013 is to place the intelli
 
 One of the goals of the CIF project is to make it easier to share threat intelligence, once familiar with CIF (which is no small feat), CIF can give you a lot of advanced capabilities essentially for free.
 
-=== Be Specific ===
+=== Most Specific Indicator ===
 
 
 
