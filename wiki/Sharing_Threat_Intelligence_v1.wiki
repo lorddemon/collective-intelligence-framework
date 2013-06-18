@@ -15,7 +15,7 @@ One of the goals of the CIF project is to make it easier to share threat intelli
 
 === Most Specific Indicator ===
 
-
+----
 
 == Minimum Sharing ==
 
@@ -55,6 +55,8 @@ There is a bare minimum that one should strive for when sharing threat intellige
 "https://controller.example.com/bad.php","2013-06-16T12:00:00Z","botnet"
 }}}
 
+----
+
 == Advanced Sharing ==
 
 As you mature in your threat intelligence sharing capabilities, you may find that your partners need more than the bare minimum as described above. Below are some common parameters found in mature threat intelligence feeds. 
@@ -68,6 +70,8 @@ As you mature in your threat intelligence sharing capabilities, you may find tha
 || restriction || <string> || [http://www.ietf.org/rfc/rfc5070.txt rfc5070] (public, need-to-know, private) or [http://www.us-cert.gov/tlp TLP]||
 || severity || <string> || see [TaxonomySeverity_v1 Severity] ||
 || source || <string> || source of the feed, usually the domain where the feed is from (eg: example.com) ||
+
+----
 
 == Sharing with CIF ==
 
