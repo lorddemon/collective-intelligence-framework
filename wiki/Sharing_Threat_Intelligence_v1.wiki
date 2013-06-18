@@ -1,6 +1,6 @@
 #summary introduction to sharing threat intelligence
 #labels v1
 
-= Sharing threat intelligence =
+= Sharing Threat Intelligence =
 
 Hello World
