@@ -3,7 +3,7 @@
 * Table of Contents *
 <wiki:toc max_depth="1" />
 
-= What is the Collective Intelligence Framework ? =
+= What is the Collective Intelligence Framework? =
 ----
 
 CIF is a cyber threat intelligence management system. CIF allows you to combine known malicious threat information from many sources and use that information for identification (incident response), detection (IDS) and mitigation (null route). The most common types of threat intelligence warehoused in CIF are IP addresses, domains and urls that are observed to be related to malicious activity. 
