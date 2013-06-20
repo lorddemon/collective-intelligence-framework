@@ -104,7 +104,7 @@ $ ./configure && make testdeps
 $ sudo make install
 }}}
 
-==== Upgrading From RC2 ====
+==== ONLY IF YOU ARE Upgrading From RC2 ====
 If you're upgrading from RC2, *THIS WILL PURGE ALL EXISTING DATA*, but it will preserve your apikeys. Due to some data-structure changes in RC3 there is no way around this.
 {{{
 $ make rebuilddb
