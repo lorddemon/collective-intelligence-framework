@@ -204,7 +204,7 @@ $ sudo su - cif
 }}}
  # generate your initial apikey to be used by your client
 {{{
-$ cif_apikeys -u myuser@mydomain.com -a -g everyone -G everyone
+$ cif_apikeys -u <myuser@example.com> -a -g everyone -G everyone
 userid              key                                  description guid                                 default_guid access write revoked expires created                      
 myuser@mydomain.com 249cd5fd-04e3-46ad-bf0f-c02030cc864a             8c864306-d21a-37b1-8705-746a786719bf true         all                          2012-08-01 11:50:15.969724+00
 }}}
