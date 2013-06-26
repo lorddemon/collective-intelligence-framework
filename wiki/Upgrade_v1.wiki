@@ -1,7 +1,7 @@
 #summary upgrading from a v0 instance
 
 * Table of Contents *
-<wiki:toc max_depth="2" />
+<wiki:toc max_depth="3" />
 
 = Introduction =
 <font color="red">
@@ -26,9 +26,28 @@ There are two ways to perform an upgrade, in-place and new installation. Both of
  * drops all v0 tables, with the exception of archive, apikeys and apikeys_groups
  * alters the archive and apikeys tables to be compatible with v1
  * creates the v1 tables around the archive table (in the index tablespace)
-
+ * <font color="red">EXPORT YOUR ARCHIVE TABLE TO A TEMPORARY DISK (lots of GB's)</font>
+{{{
+$ psql -U postgres -d cif
+psql> COPY (select uuid,guid,format,created,data from archive WHERE format = 'iodef' AND description NOT LIKE '% feed') TO '/mnt/<my_big_drive>/cif.sql WITH binary;
+}}}
 === Details ===
-
+ # power down apache
+ # remove the v0 [ClientRemoval_v0 client code]
+ # re-name the old cif directory
+{{{
+$ sudo mv /opt/cif /opt/cif-v0
+$ sudo mv /home/cif/.cif /home/cif/.cifv0
+}}}
+ # follow the v1 [ServerInstall_v1 install] instructions until you get to the "Installing CIF" section (make sure all deps checkout, etc..)
+ # install the latest CIF [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=filename%3Acif-v1-rc4 package]
+{{{
+$ tar -xzvf cif-v1-rc4-XXXX.tar.gz
+$ cd cif-v1-rc3-XXXX
+$ ./configure && make testdeps
+$ sudo make install
+}}}
+ # 
 === New Installation Upgrade ===
 ==== Overview ====
  * this requires a new installation of v1 on a separate host
@@ -60,5 +79,10 @@ psql> COPY archive (uuid,format,created,data) FROM '/tmp/cif.sql' WITH binary;
 }}}
 
 == v1-RC2 ==
+If you're upgrading from RC2, *THIS WILL PURGE ALL EXISTING DATA*, but it will preserve your apikeys. Due to some data-structure changes in RC3 there is no way around this.
+{{{
+$ make rebuilddb
+}}}
 
 == v1-RC3 ==
+If you're upgrading from RC3, there's nothing to do. Continue on.
