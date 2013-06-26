@@ -8,6 +8,8 @@
 Upgrades in generally not recommended unless you have the time/skills to perform them. We do our best to provide the utilities and doc necessarily to cover edge cases, while this will improve over time, if something goes horribly bad, it might make more sense to start fresh with a new installation and new data. This is a learning process for the project and we don't currently have the resources to debug problems that might occur during a database upgrade.
 
 That being said, as long as you follow the directions carefully, backup your archive table (external usb-drives can be handy), you should be able to recover from a failed upgrade with out losing everything.
+
+If you do lose everything, ... it's not the end of the world, within a few weeks, your shinny new v1 instance will have lots of data in it to make lemonade with. :)
 </font>
 
  * pre-v0 instances (xml) are not supported
