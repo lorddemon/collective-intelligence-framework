@@ -134,9 +134,10 @@ $ vi ~/.cif
 {{{
 # the simple stuff
 [cif_archive]
-datatypes = infrastructure,domain,url,email,search,malware
-# if we enabled asn/cc/rir in the configure
+# if we want to enable rir/asn/cc, etc... they take up more space in our repo
 # datatypes = infrastructure,domain,url,email,search,malware,cc,asn,rir
+datatypes = infrastructure,domain,url,email,search,malware
+
 # if you're going to enable feeds
 # feeds = infrastructure,domain,url,email,search,malware
 
