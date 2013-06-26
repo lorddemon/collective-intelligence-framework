@@ -60,7 +60,8 @@ $ sudo make upgradedb
   * this will take a very long time to run (hours, days depending on how much data you have)
   * if the process breaks, it keeps a journal (/tmp/cif-upgrade-database.journal) of where it left off and will re-start where it left off
 {{{
-$ make migratedb
+$ cd libcif-dbi/
+$ perl sbin/migrate-data.pl -t 4 -d
 }}}
  # when this is completed, continue on to the [ServerInstall_v1#Router_Setup router setup]
 
@@ -95,12 +96,12 @@ psql> COPY (select uuid,guid,format,created,data from archive WHERE created > '2
 $ psql -U postgres -d cif
 psql> COPY archive (uuid,format,created,data) FROM '/mnt/<my_large_disk>/cif.sql' WITH binary;
 }}}
- # run the upgrade-database utility that will convert the existing archive data into the new v1 format, as well as any feeds to be generated. 
+ # run the migrate-data utility that will convert the existing archive data into the new v1 format, as well as any feeds to be generated. 
   * this will take a very long time to run (hours, days depending on how much data you have)
   * if the process breaks, it keeps a journal (/tmp/cif-upgrade-database.journal) of where it left off and will re-start where it left off
 {{{
-$ cd cif-v1-XXXX
-$ make migratedb
+$ cd libcif-dbi/
+$ perl sbin/migrate-data.pl -t 4 -d
 }}}
  # if you're doing this as a split process, repeat these steps with the new data (the process will remember where to start with the /tmp/cif-upgrade-database.journal file)
 
