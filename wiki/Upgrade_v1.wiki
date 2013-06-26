@@ -1,0 +1,21 @@
+#summary upgrading from a v0 instance
+
+= Introduction =
+
+* pre-v0 instances (xml) are not supported
+* this upgrade assumes latest v0 instance (v0.06)
+
+= Details =
+
+There are two ways to perform an upgrade, in-place and new installation. 
+
+== In-Place Upgrade ==
+
+The libcif-dbi/sbin/upgrade-database.pl utility:
+
+ * does NOT alter the archive and index tablespaces
+ * drops all v0 tables, with the exception of archive, apikeys and apikeys_groups
+ * alters the archive and apikeys tables to be compatible with v1
+ * creates the v1 tables around the archive table (in the index tablespace)
+
+== New Installation Upgrade ==
