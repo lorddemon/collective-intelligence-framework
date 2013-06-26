@@ -5,7 +5,7 @@
 
 = Introduction =
 <font color="red">
-Upgrades in generally not recommended unless you have the time/skills to perform them. We do our best to provide the utilities and doc necessarily to cover edge cases, while this will improve over time, if something goes horribly bad, it might make more sense to start fresh with a new installation and new data. This is a learning process for the project and we don't currently have the resources to debug problems that might occur during a database upgrade.
+Upgrades are never an exact science, and generally are not recommended unless you have the time/skills to perform them if/when things fail. We do our best to provide the utilities and doc necessarily to cover edge cases, while this will improve over time, if something goes horribly bad, it might make more sense to start fresh with a new installation and new data. This is a learning process for the project and we don't currently have the resources to debug problems that might occur during a database upgrade.
 
 That being said, as long as you follow the directions carefully, backup your archive table (external usb-drives can be handy), you should be able to recover from a failed upgrade with out losing everything.
 
