@@ -2,8 +2,8 @@
 
 = Introduction =
 
-* pre-v0 instances (xml) are not supported
-* this upgrade assumes latest v0 instance (v0.06)
+ * pre-v0 instances (xml) are not supported
+ * this upgrade assumes latest v0 instance (v0.06)
 
 = Details =
 
