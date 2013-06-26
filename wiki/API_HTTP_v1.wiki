@@ -65,7 +65,7 @@ $ua->default_header('Accept' => 'application/json');
 my $hash = {
     address     => 'example.com',
     assessment  => 'botnet',
-    confidence  => 86,
+    confidence  => 85,
     description => 'zeus',
 };
 
