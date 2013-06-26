@@ -59,6 +59,16 @@ apikey = XXXXXX-XXX-XXXX
 host = https://localhost:443/api
 verify_tls = 0
 }}}
+ # set up your user's environment (typically ~/.profile)
+{{{
+if [ -d "/opt/cif/bin" ]; then
+    PATH="/opt/cif/bin:$PATH"
+fi
+}}}
+ # reload your profile
+{{{
+$ source .profile
+}}}
 
 = Examples =
 For a more complete overview, see the [Feeds_v1 Generating Feeds] page.
