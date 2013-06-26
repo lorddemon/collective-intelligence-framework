@@ -47,10 +47,14 @@ $ tar -xzvf cif-v1-rc4-XXXX.tar.gz
 $ cd cif-v1-rc3-XXXX
 $ ./configure && make testdeps
 $ sudo make install
-$ sudo make upgradedb # this only alters / drops some of the tables, data migration happens below
 }}}
- # follow the [ServerInstall_v1_RC4#Configuration configuration] section to generate your new config
- # follow the [ServerInstall_v1_RC4#Enabling_Feed_Generation feed generation] section to generate any feeds you want configured
+ # first we alter the tables (drop old tables, alter the archive/apikeys tables a bit, data migration happens below)
+{{{
+$ sudo make upgradedb
+}}}
+ # now create the default /home/cif/.cif configs so the upgrade knows what feeds to be generated, etc
+  * follow the [ServerInstall_v1_RC4#Configuration configuration] section to generate your new config
+  * follow the [ServerInstall_v1_RC4#Enabling_Feed_Generation feed generation] section to generate any feeds you want configured
  # run the upgrade-database utility that will convert the existing archive data into the new v1 format, as well as any feeds to be generated. 
   * if you haven't backed up the archive table, this is a good time to do it.
   * this will take a very long time to run (hours, days depending on how much data you have)
@@ -58,6 +62,7 @@ $ sudo make upgradedb # this only alters / drops some of the tables, data migrat
 {{{
 $ make migratedb
 }}}
+ # when this is completed, continue on to the [ServerInstall_v1#Router_Setup router setup]
 
 === New Installation Upgrade ===
 ==== Overview ====
@@ -91,9 +96,24 @@ psql> COPY archive (uuid,format,created,data) FROM '/tmp/cif.sql' WITH binary;
 
 == v1-RC2 ==
 If you're upgrading from RC2, *THIS WILL PURGE ALL EXISTING DATA*, but it will preserve your apikeys. Due to some data-structure changes in RC3 there is no way around this.
+
+ # install the latest CIF [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=filename%3Acif-v1-rc4 package]
 {{{
+$ tar -xzvf cif-v1-rc4-XXXX.tar.gz
+$ cd cif-v1-rc4-XXXX
+$ ./configure && make testdeps
+$ sudo make install
 $ make rebuilddb
 }}}
+ # restart apache [ServerInstall_v1#Router_Setup and test]
 
 == v1-RC3 ==
-If you're upgrading from RC3, there's nothing to do. Continue on.
+If you're upgrading from RC3, there's nothing to do other than install the new code
+ # install the latest CIF [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=filename%3Acif-v1-rc4 package]
+{{{
+$ tar -xzvf cif-v1-rc4-XXXX.tar.gz
+$ cd cif-v1-rc4-XXXX
+$ ./configure && make testdeps
+$ sudo make install
+}}}
+ # restart apache [ServerInstall_v1#Router_Setup and test]
