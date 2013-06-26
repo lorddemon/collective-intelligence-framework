@@ -102,12 +102,4 @@ Create your "cif" user/group (the configure script will default to this user "ci
 {{{
 $ sudo adduser --disabled-password --gecos '' cif
 }}}
-== Environment ==
-----
- # set up your user's environment (typically ~/.profile)
-{{{
-if [ -d "/opt/cif/bin" ]; then
-    PATH="/opt/cif/bin:$PATH"
-fi
-}}}
 Continue with the libcif [ClientInstall_v1#Package installation]
