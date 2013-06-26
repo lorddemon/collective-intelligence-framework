@@ -34,6 +34,13 @@ $ psql -U postgres -d cif
 psql> COPY (select uuid,guid,format,created,data from archive WHERE created <= '2012-06-01T23:59:59Z' AND format = 'iodef' AND description NOT LIKE '% feed') TO '/tmp/cif.sql WITH binary;
 }}}
 
+where the 'created' timestamp is a cutoff date sometime in the past (eg: "yesterday"). something easily pointed to in the next export for the official cutover:
+
+{{{
+$ psql -U postgres -d cif
+psql> COPY (select uuid,guid,format,created,data from archive WHERE created > '2012-06-01T23:59:59Z' AND format = 'iodef' AND description NOT LIKE '% feed') TO '/tmp/cif.sql WITH binary;
+}}}
+
 {{{
 $ psql -U postgres -d cif
 psql> COPY archive (uuid,format,created,data) FROM '/tmp/cif.sql' WITH binary;
