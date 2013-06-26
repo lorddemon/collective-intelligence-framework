@@ -47,12 +47,14 @@ $ tar -xzvf cif-v1-rc4-XXXX.tar.gz
 $ cd cif-v1-rc3-XXXX
 $ ./configure && make testdeps
 $ sudo make install
-$ sudo make upgradedb
+$ sudo make upgradedb # this only alters / drops some of the tables, data migration happens below
 }}}
  # follow the [ServerInstall_v1_RC4#Configuration configuration] section to generate your new config
  # follow the [ServerInstall_v1_RC4#Enabling_Feed_Generation feed generation] section to generate any feeds you want configured
- # run the upgrade-database utility that will convert the existing archive data into the new v1 format, as well as any feeds to be generated. if you haven't backed up the archive table, this is a good time to do it.
- # this will take a very long time to run (hours, days depending on how much data you have)
+ # run the upgrade-database utility that will convert the existing archive data into the new v1 format, as well as any feeds to be generated. 
+  * if you haven't backed up the archive table, this is a good time to do it.
+  * this will take a very long time to run (hours, days depending on how much data you have)
+  * if the process breaks, it keeps a journal (/tmp/cif-upgrade-database.journal) of where it left off and will re-start where it left off
 {{{
 $ make migratedb
 }}}
