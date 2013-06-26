@@ -4,7 +4,7 @@
 
  * pre-v0 instances (xml) are not supported
  * this upgrade assumes latest v0 instance (v0.06), v1-RCX releases are not supported by this document
- * a system can be upgraded from v1-RC3 to v1-RC4 and v1-RC4 to v1-FINAL by following the 'upgrade' section of ServerInstall_v1
+ * a system can be upgraded from v1-RC3 to v1-RC4 and v1-RC4 to v1-FINAL by following the 'upgrade' section of [ServerInstall_v1 the install guide]
 
 = Details =
 
