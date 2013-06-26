@@ -65,38 +65,37 @@ $ make migratedb
  # when this is completed, continue on to the [ServerInstall_v1#Router_Setup router setup]
 
 === New Installation Upgrade ===
-==== Overview ====
  * this requires a new installation of v1 on a separate host
  * this requires a copy of the existing archive table file to be made available to the new installation
  * this option takes a little longer as a data-export / import is required
  * depending on the size of your archive tablespace, it could require extra temporary space to do the export (eg: a fast, external usb drive is handy in these cases if your network is too slow for moving large files around easily)
 
-==== Details ====
 There are two ways to handle this type of upgrade:
 
  * cut off all services, run the upgrade, turn on all services
  * split the migration into two different exports, the first for the bulk of the historical data, the second for the data absorbed by the system from that point on
 
+For a split migration, the dual-staged data-export will look something like:
 {{{
 $ psql -U postgres -d cif
-psql> COPY (select uuid,guid,format,created,data from archive WHERE created <= '2012-06-01T23:59:59Z' AND format = 'iodef' AND description NOT LIKE '% feed') TO '/tmp/cif.sql WITH binary;
+psql> COPY (select uuid,guid,format,created,data from archive WHERE created <= '2012-06-01T23:59:59Z' AND format = 'iodef' AND description NOT LIKE '% feed') TO '/mnt/<my_large_disk>/cif.sql WITH binary;
 }}}
 
 where the 'created' timestamp is a cutoff date sometime in the past (eg: "yesterday"). something easily pointed to in the next export for the official cutover:
 
 {{{
 $ psql -U postgres -d cif
-psql> COPY (select uuid,guid,format,created,data from archive WHERE created > '2012-06-01T23:59:59Z' AND format = 'iodef' AND description NOT LIKE '% feed') TO '/tmp/cif.sql WITH binary;
+psql> COPY (select uuid,guid,format,created,data from archive WHERE created > '2012-06-01T23:59:59Z' AND format = 'iodef' AND description NOT LIKE '% feed') TO '/mnt/<my_large_disk>/cif.sql WITH binary;
 }}}
 
+==== Details ====
  # follow the v1 [ServerInstall_v1 install] instructions until you get to the "Load Data" section
  # import the archive copy to your current v1 database (could take a long time)
 {{{
 $ psql -U postgres -d cif
-psql> COPY archive (uuid,format,created,data) FROM '/tmp/cif.sql' WITH binary;
+psql> COPY archive (uuid,format,created,data) FROM '/mnt/<my_large_disk>/cif.sql' WITH binary;
 }}}
  # run the upgrade-database utility that will convert the existing archive data into the new v1 format, as well as any feeds to be generated. 
-  * if you haven't backed up the archive table, this is a good time to do it.
   * this will take a very long time to run (hours, days depending on how much data you have)
   * if the process breaks, it keeps a journal (/tmp/cif-upgrade-database.journal) of where it left off and will re-start where it left off
 {{{
