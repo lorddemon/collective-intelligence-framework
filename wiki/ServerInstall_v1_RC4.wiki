@@ -214,37 +214,6 @@ $ vi ~/.cif
  # log out of the cif user into your regular user (that has sudo access)
  # if you're working with groups that aren't defined out of the box ('everyone') check out the [GroupSupport_v1 Group Support] doc.
 
-== Router Setup ==
-Most of this setup should have been accomplished in the distribution specific doc (Debian, RHEL, etc).
- # restart apache
- # re-login as the cif user and test your connectivity to the router:
-{{{
-$ sudo su - cif
-$ cif -d -q example.com
-[DEBUG][2012-12-20T15:18:34Z]: generating query
-[DEBUG][2012-12-20T15:18:34Z]: query: example.com
-[DEBUG][2012-12-20T15:18:34Z]: sending query
-[DEBUG][2012-12-20T15:18:35Z]: decoding...
-[DEBUG][2012-12-20T15:18:35Z]: processing: 2 items
-[DEBUG][2012-12-20T15:18:35Z]: final results: 2
-[DEBUG][2012-12-20T15:18:35Z]: done processing
-[DEBUG][2012-12-20T15:18:35Z]: formatting as Table...
-WARNING: This table output not to be used for parsing, see "-p plugins" (via cif -h)
-WARNING: Turn off this warning by adding: 'table_nowarning = 1' to your ~/.cif config
-
-feed description:   search example.com
-feed reporttime:    2012-12-20T15:18:35Z
-feed uuid:          fa843602-4f62-49b5-99c0-010d4c873ee3
-feed guid:          everyone
-feed restriction:   private
-feed confidence:    0
-feed limit:              50
-
-restriction|guid    |assessment|description       |confidence|detecttime          |reporttime          |address    |alternativeid_restriction|alternativeid
-private    |everyone|search    |search example.com|50        |2012-12-20T15:18:35Z|2012-12-20T15:18:35Z|example.com|                         |             
-[DEBUG][2012-12-20T15:18:35Z]: done
-}}}
-
 == Enabling Feed Generation ==
 To enable feed generation, which requires more space a few more options need to be ticked. If you only plan to leverage the system for "querying" (not putting feeds into something like a firewall, etc) then this section can be skipped.
 
@@ -281,6 +250,37 @@ feed_retention = 7
 $ cif_apikeys -u role_everyone -G everyone -g everyone -a
 }}}
  # log out of the cif user and restart apache
+
+== Router Setup ==
+Most of this setup should have been accomplished in the distribution specific doc (Debian, RHEL, etc).
+ # restart apache
+ # re-login as the cif user and test your connectivity to the router:
+{{{
+$ sudo su - cif
+$ cif -d -q example.com
+[DEBUG][2012-12-20T15:18:34Z]: generating query
+[DEBUG][2012-12-20T15:18:34Z]: query: example.com
+[DEBUG][2012-12-20T15:18:34Z]: sending query
+[DEBUG][2012-12-20T15:18:35Z]: decoding...
+[DEBUG][2012-12-20T15:18:35Z]: processing: 2 items
+[DEBUG][2012-12-20T15:18:35Z]: final results: 2
+[DEBUG][2012-12-20T15:18:35Z]: done processing
+[DEBUG][2012-12-20T15:18:35Z]: formatting as Table...
+WARNING: This table output not to be used for parsing, see "-p plugins" (via cif -h)
+WARNING: Turn off this warning by adding: 'table_nowarning = 1' to your ~/.cif config
+
+feed description:   search example.com
+feed reporttime:    2012-12-20T15:18:35Z
+feed uuid:          fa843602-4f62-49b5-99c0-010d4c873ee3
+feed guid:          everyone
+feed restriction:   private
+feed confidence:    0
+feed limit:              50
+
+restriction|guid    |assessment|description       |confidence|detecttime          |reporttime          |address    |alternativeid_restriction|alternativeid
+private    |everyone|search    |search example.com|50        |2012-12-20T15:18:35Z|2012-12-20T15:18:35Z|example.com|                         |             
+[DEBUG][2012-12-20T15:18:35Z]: done
+}}}
 
 = Initialization =
 ----
