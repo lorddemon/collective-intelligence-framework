@@ -31,8 +31,9 @@ There are two ways to perform an upgrade, in-place and new installation. Both of
 $ psql -U postgres -d cif
 psql> COPY (select uuid,guid,format,created,data from archive WHERE format = 'iodef' AND description NOT LIKE '% feed') TO '/mnt/<my_big_drive>/cif.sql WITH binary;
 }}}
-=== Details ===
+==== Details ====
  # power down apache
+ # comment out your cif_crontool crons and kill any existing running processes
  # remove the v0 [ClientRemoval_v0 client code]
  # re-name the old cif directory
 {{{
@@ -46,8 +47,16 @@ $ tar -xzvf cif-v1-rc4-XXXX.tar.gz
 $ cd cif-v1-rc3-XXXX
 $ ./configure && make testdeps
 $ sudo make install
+$ sudo make upgradedb
 }}}
- # 
+ # follow the [ServerInstall_v1_RC4#Configuration configuration] section to generate your new config
+ # follow the [ServerInstall_v1_RC4#Enabling_Feed_Generation feed generation] section to generate any feeds you want configured
+ # run the upgrade-database utility that will convert the existing archive data into the new v1 format, as well as any feeds to be generated. if you haven't backed up the archive table, this is a good time to do it.
+ # this will take a very long time to run (hours, days depending on how much data you have)
+{{{
+$ make migratedb
+}}}
+
 === New Installation Upgrade ===
 ==== Overview ====
  * this requires a new installation of v1 on a separate host
