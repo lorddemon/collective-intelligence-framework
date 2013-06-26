@@ -18,7 +18,6 @@ There are two ways to perform an upgrade, in-place and new installation. Both of
  * creates the v1 tables around the archive table (in the index tablespace)
 
 == Details ==
- # follow the upgrade instructions
 
 ===
 
