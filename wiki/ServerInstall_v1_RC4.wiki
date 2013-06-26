@@ -125,11 +125,12 @@ fi
 $ logout
 $ sudo su - cif
 }}}
- # create a ~/.cif
+== Default Config ==
+ # as the cif user create /home/cif/.cif
 {{{
 $ vi ~/.cif
 }}}
- # add the following as a template, the API KEYS will be generated in the next section, for now just use the XXX as the placeholders.
+ # add the following as a template, the API KEYS will be generated in a following section, for now just use the XXX as the placeholders.
 {{{
 # the simple stuff
 [cif_archive]
@@ -184,35 +185,6 @@ database = cif
 # set to 0 if it's too noisy and reload the cif-router (apache), only on for RC2
 debug = 1
 }}}
-=== APIKey ===
- # make sure you're still logged in as the 'cif' user and have set the proper environment stuff (as per above) or the following commands will fail
-{{{
-$ sudo su - cif
-}}}
- # generate your initial apikey to be used by your client
-{{{
-$ cif_apikeys -u <myuser@example.com> -a -g everyone -G everyone
-userid              key                                  description guid                                 default_guid access write revoked expires created                      
-myuser@mydomain.com 249cd5fd-04e3-46ad-bf0f-c02030cc864a             8c864306-d21a-37b1-8705-746a786719bf true         all                          2012-08-01 11:50:15.969724+00
-}}}
- # check to make sure your 'guid' has _*8c864306-d21a-37b1-8705-746a786719bf*_ in it. If it doesn't you won't be able to see all the default, public data that's permissioned to the 'everyone' group in your system
- # generate a cif-smrt key to be used by cif_smrt to submit data to the router:
-{{{
-$ cif_apikeys -u cif_smrt -G everyone -g everyone -a -w
-userid   key                                  description guid                                 default_guid restricted access write revoked expires created                      
-cif_smrt bf1e0a9f-9518-409d-8e67-bfcc36dc5f44             8c864306-d21a-37b1-8705-746a786719bf true         0                 1                     2012-08-15 17:37:18.53348+00 
-}}}
- # to list all of your apikeys:
-{{{
-$ cif_apikeys -l
-}}}
- # cif_apikeys -h will give you an example of how to use the tool
- # replace the "apikey = XXXX" in your config with the client and cif_smrt keys respectively
-{{{
-$ vi ~/.cif
-}}}
- # log out of the cif user into your regular user (that has sudo access)
- # if you're working with groups that aren't defined out of the box ('everyone') check out the [GroupSupport_v1 Group Support] doc.
 
 == Enabling Feed Generation ==
 To enable feed generation, which requires more space a few more options need to be ticked. If you only plan to leverage the system for "querying" (not putting feeds into something like a firewall, etc) then this section can be skipped.
@@ -250,6 +222,36 @@ feed_retention = 7
 $ cif_apikeys -u role_everyone -G everyone -g everyone -a
 }}}
  # log out of the cif user and restart apache
+
+=== APIKey ===
+ # make sure you're still logged in as the 'cif' user and have set the proper environment stuff or the following commands will fail
+{{{
+$ sudo su - cif
+}}}
+ # generate your initial apikey to be used by your client
+{{{
+$ cif_apikeys -u <myuser@example.com> -a -g everyone -G everyone
+userid              key                                  description guid                                 default_guid access write revoked expires created                      
+myuser@mydomain.com 249cd5fd-04e3-46ad-bf0f-c02030cc864a             8c864306-d21a-37b1-8705-746a786719bf true         all                          2012-08-01 11:50:15.969724+00
+}}}
+ # check to make sure your 'guid' has _*8c864306-d21a-37b1-8705-746a786719bf*_ in it. If it doesn't you won't be able to see all the default, public data that's permissioned to the 'everyone' group in your system
+ # generate a cif-smrt key to be used by cif_smrt to submit data to the router:
+{{{
+$ cif_apikeys -u cif_smrt -G everyone -g everyone -a -w
+userid   key                                  description guid                                 default_guid restricted access write revoked expires created                      
+cif_smrt bf1e0a9f-9518-409d-8e67-bfcc36dc5f44             8c864306-d21a-37b1-8705-746a786719bf true         0                 1                     2012-08-15 17:37:18.53348+00 
+}}}
+ # to list all of your apikeys:
+{{{
+$ cif_apikeys -l
+}}}
+ # cif_apikeys -h will give you an example of how to use the tool
+ # replace the "apikey = XXXX" in your config with the client and cif_smrt keys respectively
+{{{
+$ vi ~/.cif
+}}}
+ # log out of the cif user into your regular user (that has sudo access)
+ # if you're working with groups that aren't defined out of the box ('everyone') check out the [GroupSupport_v1 Group Support] doc.
 
 == Router Setup ==
 Most of this setup should have been accomplished in the distribution specific doc (Debian, RHEL, etc).
