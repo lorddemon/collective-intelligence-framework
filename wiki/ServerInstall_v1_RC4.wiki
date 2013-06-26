@@ -91,11 +91,10 @@ Configure Postgres authentication and performance tuning
 === Overview ===
 This guide assumes that the client is on the same hardware as the backend server/router components. If you want to build out in HA mode, se our [CIFInfrastructureDiagram_v1 HA Guide].
 
-==== Upgrading ====
+=== Upgrading ===
 <font color="red">Review the [Upgrade_v1 upgrade guide] FIRST!</font>
 
-==== New Installation ====
-=== Details ===
+=== New Installation ===
  # power down apache2
  # install the latest CIF [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=filename%3Acif-v1-rc3 package]
 {{{
