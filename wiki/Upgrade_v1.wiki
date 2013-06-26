@@ -1,34 +1,40 @@
 #summary upgrading from a v0 instance
 
+* Table of Contents *
+<wiki:toc max_depth="2" />
+
 = Introduction =
+<font color="red">
+Upgrades in generally not recommended unless you have the time/skills to perform them. We do our best to provide the utilities and doc necessarily to cover edge cases, while this will improve over time, if something goes horribly bad, it might make more sense to start fresh with a new installation and new data. This is a learning process for the project and we don't currently have the resources to debug problems that might occur during a database upgrade.
+
+That being said, as long as you follow the directions carefully, backup your archive table (external usb-drives can be handy), you should be able to recover from a failed upgrade with out losing everything.
+</font>
 
  * pre-v0 instances (xml) are not supported
- * this upgrade assumes latest v0 instance (v0.06), v1-RCX releases are not supported by this document
- * a system can be upgraded from v1-RC3 to v1-RC4 and v1-RC4 to v1-FINAL by following the 'upgrade' section of [ServerInstall_v1 the install guide]
+ * pre-v1-RC2 instances are not supported
 
 = Details =
+== v0 ==
 
 There are two ways to perform an upgrade, in-place and new installation. Both of these options take some time as we evolve our data formats. They require that the discrete steps are followed very carefully to avoid data corruption, etc.
 
-== In-Place Upgrade ==
-=== Overview ===
+=== In-Place Upgrade ===
+==== Overview ====
  * does NOT alter the archive and index tablespaces
  * drops all v0 tables, with the exception of archive, apikeys and apikeys_groups
  * alters the archive and apikeys tables to be compatible with v1
  * creates the v1 tables around the archive table (in the index tablespace)
 
-== Details ==
+=== Details ===
 
-===
-
-== New Installation Upgrade ==
-=== Overview ===
+=== New Installation Upgrade ===
+==== Overview ====
  * this requires a new installation of v1 on a separate host
  * this requires a copy of the existing archive table file to be made available to the new installation
  * this option takes a little longer as a data-export / import is required
  * depending on the size of your archive tablespace, it could require extra temporary space to do the export (eg: a fast, external usb drive is handy in these cases if your network is too slow for moving large files around easily)
 
-=== Details ===
+==== Details ====
 There are two ways to handle this type of upgrade:
 
  * cut off all services, run the upgrade, turn on all services
@@ -50,3 +56,7 @@ psql> COPY (select uuid,guid,format,created,data from archive WHERE created > '2
 $ psql -U postgres -d cif
 psql> COPY archive (uuid,format,created,data) FROM '/tmp/cif.sql' WITH binary;
 }}}
+
+== v1-RC2 ==
+
+== v1-RC3 ==
