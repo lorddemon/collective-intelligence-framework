@@ -3,7 +3,8 @@
 = Introduction =
 
  * pre-v0 instances (xml) are not supported
- * this upgrade assumes latest v0 instance (v0.06)
+ * this upgrade assumes latest v0 instance (v0.06), v1-RCX releases are not supported by this document
+ * a system can be upgraded from v1-RC3 to v1-RC4 and v1-RC4 to v1-FINAL by following the 'upgrade' section of ServerInstall_v1
 
 = Details =
 
@@ -15,6 +16,9 @@ There are two ways to perform an upgrade, in-place and new installation. Both of
  * drops all v0 tables, with the exception of archive, apikeys and apikeys_groups
  * alters the archive and apikeys tables to be compatible with v1
  * creates the v1 tables around the archive table (in the index tablespace)
+
+== Details ==
+ # follow the upgrade instructions
 
 ===
 
