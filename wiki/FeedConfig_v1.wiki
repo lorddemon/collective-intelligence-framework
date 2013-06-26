@@ -44,7 +44,7 @@ CIF comes with a variety of pre-built feed configurations, with that there are m
 || null || n/a || Use the null value for columns of data you want to ignore || no ||
 || period || <string> || hourly/daily: how often the cif_crontool should pick up this feed (when in doubt, use daily) || no ||
 || protocol || <int><string> || 6 or tcp, 17 or udp || no ||
-|| portlist || <int> || (22) OR (80,443) OR (6660-7000) || no ||
+|| portlist || <int> || (22) or (80,443) or (6660-7000) || no ||
 || reporttime || <string> || Most common timestamp formats are valid || no ||
 || restriction || <string> || public, default, need-to-know, private || no ||
 || severity || <string> || see [TaxonomySeverity_v1 Severity] || no ||
