@@ -89,10 +89,21 @@ $ psql -U postgres -d cif
 psql> COPY (select uuid,guid,format,created,data from archive WHERE created > '2012-06-01T23:59:59Z' AND format = 'iodef' AND description NOT LIKE '% feed') TO '/tmp/cif.sql WITH binary;
 }}}
 
+ # follow the v1 [ServerInstall_v1 install] instructions until you get to the "Load Data" section
+ # import the archive copy to your current v1 database (could take a long time)
 {{{
 $ psql -U postgres -d cif
 psql> COPY archive (uuid,format,created,data) FROM '/tmp/cif.sql' WITH binary;
 }}}
+ # run the upgrade-database utility that will convert the existing archive data into the new v1 format, as well as any feeds to be generated. 
+  * if you haven't backed up the archive table, this is a good time to do it.
+  * this will take a very long time to run (hours, days depending on how much data you have)
+  * if the process breaks, it keeps a journal (/tmp/cif-upgrade-database.journal) of where it left off and will re-start where it left off
+{{{
+$ cd cif-v1-XXXX
+$ make migratedb
+}}}
+ # if you're doing this as a split process, repeat these steps with the new data (the process will remember where to start with the /tmp/cif-upgrade-database.journal file)
 
 == v1-RC2 ==
 If you're upgrading from RC2, *THIS WILL PURGE ALL EXISTING DATA*, but it will preserve your apikeys. Due to some data-structure changes in RC3 there is no way around this.
