@@ -10,11 +10,13 @@
 There are two ways to perform an upgrade, in-place and new installation. Both of these options take some time as we evolve our data formats. They require that the discrete steps are followed very carefully to avoid data corruption, etc.
 
 == In-Place Upgrade ==
-
+=== Overview ===
  * does NOT alter the archive and index tablespaces
  * drops all v0 tables, with the exception of archive, apikeys and apikeys_groups
  * alters the archive and apikeys tables to be compatible with v1
  * creates the v1 tables around the archive table (in the index tablespace)
+
+===
 
 == New Installation Upgrade ==
 === Overview ===
