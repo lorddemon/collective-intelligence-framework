@@ -110,8 +110,4 @@ if [ -d "/opt/cif/bin" ]; then
     PATH="/opt/cif/bin:$PATH"
 fi
 }}}
- # reload your environment
-{{{
-$ source ~/.profile
-}}}
 Continue with the libcif [ClientInstall_v1#Package installation]
