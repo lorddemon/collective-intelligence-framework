@@ -1,7 +1,7 @@
 #summary upgrading from a v0 instance
 
 * Table of Contents *
-<wiki:toc max_depth="3" />
+<wiki:toc max_depth="2" />
 
 = Introduction =
 <font color="red">
