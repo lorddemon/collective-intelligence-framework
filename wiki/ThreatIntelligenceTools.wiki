@@ -4,4 +4,5 @@
 
 A page to highlight and record tools in the threat intelligence space
 
+ * [https://github.com/MISP/MISP MISP] - Malware Information Sharing Platform
  * [https://csirt.cesnet.cz/Warden/Intro WARDEN] - a system for efficient sharing information about detected events (threats).
