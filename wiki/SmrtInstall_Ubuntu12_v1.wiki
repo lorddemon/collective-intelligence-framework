@@ -16,7 +16,7 @@ $ sudo aptitude -y install rng-tools libexpat1-dev libxml-libxml-perl libxml2-de
 }}}
  # Install additional CPAN/perl dependencies
 {{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Sys::MemInfo,Net::Abuse::Utils,Linux::Cpuinfo,Net::Abuse::Utils::Spamhaus,ZeroMQ'
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Sys::MemInfo,Net::Abuse::Utils,Linux::Cpuinfo,Net::Abuse::Utils::Spamhaus,ZeroMQ,IO::Stringy'
 }}}
 
 == System Setup ==
