@@ -7,4 +7,5 @@ A page to highlight and record tools in the threat intelligence space
  * [http://abusehelper.be AbuseHelper] - Automatically process your incident notifications
  * [http://collectiveintel.org CIF] - Collective Intelligence Framework
  * [https://github.com/MISP/MISP MISP] - Malware Information Sharing Platform
+ * [http://n6.cert.pl/ n6] - a platform for collection, processing and transmission of information on security incidents on the network
  * [https://csirt.cesnet.cz/Warden/Intro WARDEN] - a system for efficient sharing information about detected events (threats).
