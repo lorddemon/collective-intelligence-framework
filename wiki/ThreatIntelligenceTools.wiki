@@ -4,4 +4,4 @@
 
 A page to highlight and record tools in the threat intelligence space
 
-* [https://csirt.cesnet.cz/Warden/Intro WARDEN] - a system for efficient sharing information about detected events (threats).
+ * [https://csirt.cesnet.cz/Warden/Intro WARDEN] - a system for efficient sharing information about detected events (threats).
