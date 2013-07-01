@@ -44,7 +44,7 @@ psql> COPY (select uuid,guid,format,created,data from archive WHERE format = 'io
 $ sudo mv /opt/cif /opt/cif-v0
 $ sudo mv /home/cif/.cif /home/cif/.cifv0
 }}}
- # follow the v1 [ServerInstall_v1 install] instructions until you get to the "Installing CIF" section (make sure all deps checkout, etc..)
+ # follow the v1 [ServerInstall_v1#Required_applications_and_dependencies install] instructions until you get to the "Installing CIF" section (make sure all deps checkout, etc..)
  # install the latest CIF [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=filename%3Acif-v1-rc4 package]
 {{{
 $ tar -xzvf cif-v1-rc4-XXXX.tar.gz
