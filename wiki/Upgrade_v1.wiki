@@ -35,7 +35,7 @@ There are two ways to perform an upgrade, an *'in-place'* or *'new-installation'
 $ psql -U postgres -d cif
 psql> COPY (select uuid,guid,format,created,data from archive WHERE format = 'iodef' AND description NOT LIKE '% feed') TO '/mnt/<my_big_drive>/cif.sql WITH binary;
 }}}
-==== Details ====
+==== Prepare ====
  # power down apache
  # comment out your cif_crontool crons and kill any existing running processes
  # remove the v0 [ClientRemoval_v0 client code]
@@ -44,7 +44,12 @@ psql> COPY (select uuid,guid,format,created,data from archive WHERE format = 'io
 $ sudo mv /opt/cif /opt/cif-v0
 $ sudo mv /home/cif/.cif /home/cif/.cifv0
 }}}
- # follow the v1 [ServerInstall_v1#Required_applications_and_dependencies install] instructions until you get to the "Installing CIF" section (make sure all deps checkout, etc..)
+==== Upgrade ====
+ # upgrade system dependencies
+  * (testing) [Upgrade_Squeeze_v1 Debian 6]
+  * (unstable) [Upgrade_Wheezy_v1 Debian 7]
+  * (unstable) [Upgrade_Ubuntu_v1 Ubuntu 12]
+  * (unstable) [Upgrade_CentOS_v1 CentOS6]
  # install the latest CIF [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=filename%3Acif-v1-rc4 package]
 {{{
 $ tar -xzvf cif-v1-rc4-XXXX.tar.gz
@@ -52,7 +57,7 @@ $ cd cif-v1-rc3-XXXX
 $ ./configure && make testdeps
 $ sudo make install
 }}}
- # first we alter the tables (drop old tables, alter the archive/apikeys tables a bit, data migration happens below)
+ # upgrade the table structure (drop old tables, alter the archive/apikeys tables a bit, data migration happens below)
 {{{
 $ sudo make upgradedb
 }}}
