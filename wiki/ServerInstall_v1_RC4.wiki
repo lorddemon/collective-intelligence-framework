@@ -145,7 +145,7 @@ datatypes = infrastructure,domain,url,email,search,malware
 # enable your own groups is you start doing data-sharing with various groups
 #groups = everyone,group1.example.com,group2.example.com,group3.example.com
 
-# client is required by cif_router, cif_smrt (cif-router, cif-smrt)
+# client is required by the client, cif_router, cif_smrt (libcif, cif-router, cif-smrt)
 [client]
 # the apikey for your client
 apikey = XXXXXX-XXX-XXXX
