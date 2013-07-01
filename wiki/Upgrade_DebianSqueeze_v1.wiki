@@ -4,7 +4,7 @@
 This assumes a clean install of Debian Squeeze (v6.0.x) with sudo, all base system updates applied and a base v0 CIF installation.
 
 * Table of Contents *
-<wiki:toc max_depth="3" />
+<wiki:toc max_depth="2" />
 
 = Details =
 == Dependencies Installation ==
@@ -69,6 +69,6 @@ sudo vi /etc/apache2/cif.conf
 </Location>
 
 }}}
-== Continue ==
+= Continue =
 ----
 Continue with [ServerInstall_v1#Bind Bind configuration]
