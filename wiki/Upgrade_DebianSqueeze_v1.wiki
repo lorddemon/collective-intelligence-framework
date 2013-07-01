@@ -30,11 +30,9 @@ $ sudo ldconfig
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Module::Build,Test::SharedFork,Test::TCP,Net::Abuse::Utils,Regexp::Common::net::CIDR,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::SSLeay,Net::DNS::Match,Log::Dispatch,Sys::MemInfo,LWPx::ParanoidAgent,ZeroMQ'
 }}}
 
-== System Setup ==
------
-=== CIF Router Configuration (Apache) ===
+== Router Configuration (Apache) ==
 ----
- # configure apache2, add this line to your default-ssl site (or default if you're not using TLS)
+ # modify your apache site settings
 {{{
 $ sudo vi /etc/apache2/sites-available/default-ssl
 }}}
@@ -46,7 +44,7 @@ $ sudo vi /etc/apache2/sites-available/default-ssl
 +     Include /etc/apache2/cif.conf
 ....
 }}}
- # create your config at /etc/apache2/cif.conf, which should look like:
+ # modify your apache cif config
 {{{
 sudo vi /etc/apache2/cif.conf
 }}}
@@ -71,8 +69,5 @@ sudo vi /etc/apache2/cif.conf
 +    PerlResponseHandler CIF::Router::HTTP
 +    PerlSetVar CIFRouterConfig "/home/cif/.cif"
 </Location>
-
 }}}
-= Continue =
-----
-Continue with [ServerInstall_v1#Bind Bind configuration]
+ # restart apache2
