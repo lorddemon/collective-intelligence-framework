@@ -65,7 +65,7 @@ $ sudo make upgradedb
   * if the process breaks, it keeps a journal (/tmp/cif-upgrade-database.journal) of where it left off and will re-start where it left off
 {{{
 $ cd libcif-dbi/
-$ perl sbin/migrate-data.pl -t 4 -d
+$ perl sbin/migrate-data.pl -t 4 -d -C /home/cif/.cif
 }}}
  # when this is completed, continue on to the [ServerInstall_v1#Router_Setup router setup]
 
