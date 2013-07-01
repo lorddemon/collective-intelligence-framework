@@ -46,7 +46,7 @@ $ sudo mv /home/cif/.cif /home/cif/.cifv0
 }}}
 ==== Upgrade ====
  # upgrade system dependencies
-  * (testing) [Upgrade_Squeeze_v1 Debian 6]
+  * (testing) [Upgrade_DebianSqueeze_v1 Debian 6]
   * (unstable) [Upgrade_Wheezy_v1 Debian 7]
   * (unstable) [Upgrade_Ubuntu_v1 Ubuntu 12]
   * (unstable) [Upgrade_CentOS_v1 CentOS6]
