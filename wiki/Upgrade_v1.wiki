@@ -33,7 +33,7 @@ There are two ways to perform an upgrade, an *'in-place'* or *'new-installation'
  * <font color="red">EXPORT YOUR ARCHIVE TABLE TO A TEMPORARY DISK (lots of GB's)</font>
 {{{
 $ psql -U postgres -d cif
-psql> COPY (select uuid,guid,format,created,data from archive WHERE format = 'iodef' AND description NOT LIKE '% feed') TO '/mnt/<my_big_drive>/cif.sql WITH binary;
+psql> COPY (select uuid,guid,format,created,data from archive WHERE format = 'iodef' AND description NOT LIKE '% feed') TO '/mnt/<my_big_drive>/cif.sql' WITH binary;
 }}}
 ==== Prepare ====
  # power down apache
