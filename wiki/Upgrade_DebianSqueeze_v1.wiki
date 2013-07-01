@@ -9,6 +9,10 @@ This assumes a clean install of Debian Squeeze (v6.0.x) with sudo, all base syst
 = Details =
 == Dependencies Installation ==
 ----
+ # make sure aptitude is up to date
+{{{
+$ sudo aptitude update
+}}}
  # Install the base deps
 {{{
 $ sudo aptitude -y install rng-tools postgresql apache2 apache2-threaded-dev gcc g++ make libexpat-dev libapache2-mod-perl2 libclass-dbi-perl libdigest-sha1-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev rsync libunicode-string-perl libconfig-simple-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libapr1-dbg libhtml-table-perl libdate-manip-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl libextutils-parsexs-perl libdatetime-format-dateparse-perl libnet-patricia-perl libdatetime-perl libtext-table-perl
