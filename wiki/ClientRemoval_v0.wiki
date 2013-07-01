@@ -10,7 +10,6 @@ This doc shows how to manually remove the legacy v0 perl based client. This does
 This doc assumes the 'CIF::Client' was installed via CPAN. If it was installed manually, the removal procedure should be the same, although in some cases the paths might be different.
 
 = Removal =
-== Command Line Client ==
  # remove the /usr/local/bin/cif command utility
  # The CIF client library is installed as a 'local' perl module, therefor most if it's files should be somewhere in /usr/local/share/perl/5.10.X/CIF... (or similar).
  # find all the CIF related files
