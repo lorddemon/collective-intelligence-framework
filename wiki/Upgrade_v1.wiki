@@ -22,7 +22,7 @@ If you do lose everything, ... it's not the end of the world, within a few weeks
 = Details =
 == v0 ==
 ----
-There are two ways to perform an upgrade, in-place and new installation. Both of these options take some time as we evolve our data formats. They require that the discrete steps are followed very carefully to avoid data corruption, etc.
+There are two ways to perform an upgrade, an 'in-place' or 'new installation' upgrade. Both of these options take some time as we evolve our data formats. They require that the discrete steps are followed very carefully to avoid data corruption, etc.
 
 === In-Place Upgrade ===
 ==== Overview ====
