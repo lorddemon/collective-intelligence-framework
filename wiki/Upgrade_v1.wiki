@@ -98,7 +98,7 @@ psql> COPY (select uuid,guid,format,created,data from archive WHERE created > '2
  # import the archive copy to your current v1 database (could take a long time)
 {{{
 $ psql -U postgres -d cif
-psql> COPY archive (uuid,format,created,data) FROM '/mnt/<my_large_disk>/cif.sql' WITH binary;
+psql> COPY archive (uuid,guid,format,created,data) FROM '/mnt/<my_large_disk>/cif.sql' WITH binary;
 }}}
  # run the migrate-data utility that will convert the existing archive data into the new v1 format, as well as any feeds to be generated. 
   * this will take a very long time to run (hours, days depending on how much data you have)
