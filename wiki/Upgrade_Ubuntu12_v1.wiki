@@ -1,7 +1,7 @@
 #summary squeeze install doc (v1)
 
 = Introduction =
-This assumes a clean install of Debian Squeeze (v6.0.x) with sudo, all base system updates applied and a base v0 CIF installation.
+This assumes a clean install of Ubuntu 12 with sudo, all base system updates applied and a base v0 CIF installation.
 
 * Table of Contents *
 <wiki:toc max_depth="2" />
@@ -13,21 +13,13 @@ This assumes a clean install of Debian Squeeze (v6.0.x) with sudo, all base syst
 {{{
 $ sudo aptitude update
 }}}
- # Install the base deps
+ # Install the base dependencies from the Ubuntu repositories (as root)
 {{{
-$ sudo aptitude -y install rng-tools postgresql apache2 apache2-threaded-dev gcc g++ make libexpat-dev libapache2-mod-perl2 libclass-dbi-perl libdigest-sha1-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev rsync libunicode-string-perl libconfig-simple-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libapr1-dbg libhtml-table-perl libdate-manip-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl libextutils-parsexs-perl libdatetime-format-dateparse-perl libnet-patricia-perl libdatetime-perl libtext-table-perl
+$ aptitude -y install rng-tools build-essential postgresql apache2 apache2-threaded-dev gcc g++ make libexpat1-dev libapache2-mod-perl2 libclass-dbi-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev rsync libunicode-string-perl libconfig-simple-perl libmodule-pluggable-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libapr1-dbg libdate-manip-perl libtry-tiny-perl libclass-accessor-perl pkg-config vim libjson-xs-perl perl-modules libdigest-sha-perl libsnappy-dev libdatetime-format-dateparse-perl liblwp-protocol-https-perl libtime-hires-perl libnet-patricia-perl libnet-ssleay-perl liblog-dispatch-perl libregexp-common-net-cidr-perl libtext-table-perl libdatetime-perl libencode-perl libmime-base64-perl libhtml-table-perl libzmq-dev libzmq1 libzeromq-perl libssl-dev
 }}}
- # Install zeromq-2.2.0 from source
+ # Install the remaining perl dependencies from CPAN (as root)
 {{{
-$ wget http://download.zeromq.org/zeromq-2.2.0.tar.gz
-$ tar -zxvf zeromq-2.2.0.tar.gz
-$ cd zeromq-2.2.0
-$ ./configure && make && sudo make install
-$ sudo ldconfig
-}}}
- # Install the remaining CPAN modules
-{{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Module::Build,Test::SharedFork,Test::TCP,Net::Abuse::Utils,Regexp::Common::net::CIDR,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::SSLeay,Net::DNS::Match,Log::Dispatch,Sys::MemInfo,LWPx::ParanoidAgent,ZeroMQ'
+$ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Module::Build,Test::SharedFork,Test::TCP,Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,Net::SSLeay,ZeroMQ,Sys::MemInfo,LWP::Protocol::https,LWPx::ParanoidAgent'
 }}}
 
 == Router Configuration (Apache) ==
