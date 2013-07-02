@@ -18,6 +18,7 @@ This document describes the various configuration options (commonly in /home/cif
 || router || router configuration || cif-router ||
 
 == Examples ==
+=== Single Instance ===
 A default (single instance) config example:
 {{{
 [cif_archive]
@@ -49,14 +50,6 @@ instance = cif.localhost
 
 # the apikey for cif_smrt
 apikey = XXXXXX-XXX-XXXX 
-
-# advanced stuff
-
-[db]
-host = 127.0.0.1
-user = postgres
-password =
-database = cif
 }}}
 
 === Client ===
