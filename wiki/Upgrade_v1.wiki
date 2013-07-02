@@ -115,6 +115,7 @@ $ cd cif-v1-rc3-XXXX
 $ ./configure && make testdeps
 $ sudo make install
 }}}
+ # restart apache2
  # upgrade the table structure (drop old tables, alter the archive/apikeys tables a bit, data migration happens below)
 {{{
 $ sudo make upgradedb
