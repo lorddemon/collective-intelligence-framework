@@ -38,7 +38,7 @@ psql> COPY (select uuid,guid,format,created,data from archive WHERE format = 'io
 }}}
 ==== Prepare ====
  # power down apache
- # comment out your cif_crontool crons and kill any existing running processes
+ # comment out / remove your old cif_crontool crons and kill any existing running processes (ps aux | grep cif_)
  # remove the v0 [ClientRemoval_v0 client code]
  # re-name the old cif directory
 {{{
