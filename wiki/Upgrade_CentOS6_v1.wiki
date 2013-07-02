@@ -9,45 +9,57 @@ This assumes a clean install of CentOS6 with sudo, all base system updates appli
 = Details =
 == Dependencies Installation ==
 ----
- # make sure aptitude is up to date
+ # install base server dependencies (as root) first
 {{{
-$ sudo aptitude update
+$ yum -y install sudo bind-utils rng-tools postgresql-server httpd httpd-devel mod_ssl gcc make expat expat-devel uuid uuid-devel wget bind rsync libuuid-devel mod_perl mod_perl-devel ntpdate
 }}}
- # Install the base deps
+ # make sure your clock is up to date (some packages might not install if it's too far skewed)
 {{{
-$ sudo aptitude -y install rng-tools postgresql apache2 apache2-threaded-dev gcc g++ make libexpat-dev libapache2-mod-perl2 libclass-dbi-perl libdigest-sha1-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev rsync libunicode-string-perl libconfig-simple-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libapr1-dbg libhtml-table-perl libdate-manip-perl libtry-tiny-perl libclass-accessor-perl pkg-config libnet-ssleay-perl vim libjson-xs-perl libextutils-parsexs-perl libdatetime-format-dateparse-perl libnet-patricia-perl libdatetime-perl libtext-table-perl
+$ sudo ntpdate -u pool.ntp.org
 }}}
- # Install zeromq-2.2.0 from source
+ # import the fedoraproject EPEL-6 gpg key
 {{{
-$ wget http://download.zeromq.org/zeromq-2.2.0.tar.gz
-$ tar -zxvf zeromq-2.2.0.tar.gz
-$ cd zeromq-2.2.0
-$ ./configure && make && sudo make install
-$ sudo ldconfig
+$ sudo rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
 }}}
- # Install the remaining CPAN modules
+ # install some 3rd party dependencies
 {{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Module::Build,Test::SharedFork,Test::TCP,Net::Abuse::Utils,Regexp::Common::net::CIDR,Linux::Cpuinfo,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::SSLeay,Net::DNS::Match,Log::Dispatch,Sys::MemInfo,LWPx::ParanoidAgent,ZeroMQ'
+$ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/libapreq2-2.13-1.el6.x86_64.rpm
+$ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/libapreq2-devel-2.13-1.el6.x86_64.rpm
+$ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/perl-libapreq2-2.13-1.el6.x86_64.rpm
+$ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/zeromq-2.2.0-4.el6.x86_64.rpm
+$ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/zeromq-devel-2.2.0-4.el6.x86_64.rpm
+$ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/openpgm-5.1.118-3.el6.x86_64.rpm
+$ sudo rpm -iv libapreq2-2.13-1.el6.x86_64.rpm libapreq2-devel-2.13-1.el6.x86_64.rpm perl-libapreq2-2.13-1.el6.x86_64.rpm openpgm-5.1.118-3.el6.x86_64.rpm zeromq-2.2.0-4.el6.x86_64.rpm zeromq-devel-2.2.0-4.el6.x86_64.rpm
+}}}
+ # install the baseline perl modules
+{{{
+$ sudo yum -y install perl-Digest-SHA libxml2 libxml2-devel perl-XML-LibXML perl-DBD-Pg perl-XML-RSS perl-JSON perl-Unicode-String perl-Config-Simple perl-Module-Pluggable perl-MIME-Lite perl-CPAN perl-Class-Accessor perl-YAML perl-XML-Parser uuid-perl perl-Net-DNS perl-DateTime-Format-DateParse perl-IO-Socket-INET6 openssl-devel perl-Module-Install perl-Net-SSLeay perl-Class-Trigger perl-Date-Manip perl-IO-Socket-SSL
+}}}
+ # install the remaining CPAN modules (PERL_MM_USE_DEFAULT=1 will auto "yes" to the prompts)
+{{{
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Module::Build,Test::SharedFork,Test::TCP,Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,ZeroMQ,Sys::MemInfo,JSON::XS,File::Type,LWP::UserAgent,Class::Trigger,Class::DBI,Net::Patricia,Text::Table,Mozilla::CA,IO::Socket::SSL,IO::Socket::INET6,LWP::Protocol::https,Text::CSV,XML::RSS,LWPx::ParanoidAgent'
+}}}
+ # Net-SSLeay > 1.49 has some build issues and perl-Net-SSLeay that comes with CentOS6 is too old, therefore we must install 1.49 manually:
+{{{
+$ wget http://search.cpan.org/CPAN/authors/id/M/MI/MIKEM/Net-SSLeay-1.49.tar.gz
+$ tar -zxvf Net-SSLeay-1.49.tar.gz
+$ cd Net-SSLeay-1.49
+$ perl Makefile.PL
+$ sudo make install
 }}}
 
 == Router Configuration (Apache) ==
 ----
  # modify your apache site settings
+ # configure httpd, add these lines to your /etc/httpd/conf.d/ssl.conf config (line 74 or so)
 {{{
-$ sudo vi /etc/apache2/sites-available/default-ssl
-}}}
-{{{
-<IfModule mod_ssl.c>
 <VirtualHost _default_:443>
--      PerlRequire /opt/cif/bin/webapi.pl
 +     PerlRequire /opt/cif/bin/http_api.pl
-+     Include /etc/apache2/cif.conf
+-     PerlRequire /opt/cif/bin/webapi.pl
+       Include /etc/httpd/conf.d/cif.conf
 ....
 }}}
- # modify your apache cif config
-{{{
-sudo vi /etc/apache2/cif.conf
-}}}
+ # modify your config at /etc/httpd/conf.d/cif.conf, which should look like:
 {{{
 <Location /api>
 -    SetHandler perl-script
@@ -65,12 +77,9 @@ sudo vi /etc/apache2/cif.conf
 -    PerlAddVar Apache2RESTWriterRegistry 'table'
 -    PerlAddVar Apache2RESTWriterRegistry 'CIF::WebAPI::Writer::table'
 
-+    SetHandler perl-script
-+    PerlResponseHandler CIF::Router::HTTP
-+    PerlSetVar CIFRouterConfig "/home/cif/.cif"
++   SetHandler perl-script
++   PerlResponseHandler CIF::Router::HTTP
++   PerlSetVar CIFRouterConfig "/home/cif/.cif"
 </Location>
-}}}
- # restart apache2
 
-Continue with the [Upgrade_v1#Upgrade upgrade]
-----
+}}}
