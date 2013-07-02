@@ -70,7 +70,6 @@ sudo vi /etc/apache2/cif.conf
 +    PerlSetVar CIFRouterConfig "/home/cif/.cif"
 </Location>
 }}}
- # restart apache2
 
 Continue with the [Upgrade_v1#Upgrade upgrade]
 ----
