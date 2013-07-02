@@ -214,7 +214,7 @@ limit = 50000
 confidence = 95,85,75,65
 
 # what 'role' keys to use to generate the feeds
-roles = role_everyone
+roles = role_everyone_feed
 
 # how far back in time to generate the feeds from
 limit_days = 7
