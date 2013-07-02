@@ -44,6 +44,63 @@ psql> COPY (select uuid,guid,format,created,data from archive WHERE format = 'io
 $ sudo mv /opt/cif /opt/cif-v0
 $ sudo mv /home/cif/.cif /home/cif/.cifv0
 }}}
+ # generate a new cif (v1) config in /home/cif/.cif
+ # add the following as a template, if you have a client apikey from your v0 config, replace it in the client section where "apikey = XXXXX..."
+{{{
+[cif_archive]
+
+# to enable asn, cc, rir datatypes (requires more storage)
+# datatypes = infrastructure,domain,url,email,search,malware,cc,asn,rir
+datatypes = infrastructure,domain,url,email,search,malware
+
+# to enable feeds (requires more storage)
+# feeds = infrastructure,domain,url,email,search,malware
+
+# enable your own groups is you start doing data-sharing with various groups
+# groups = everyone,group1.example.com,group2.example.com,group3.example.com
+
+[client]
+# the apikey for your client
+apikey = XXXXXX-XXX-XXXX
+
+[client_http]
+host = https://localhost:443/api
+verify_tls = 0
+
+[cif_smrt]
+# change localhost to your local domain and hostname respectively
+# this identifies the data in your instance and ties it to your specific instance in the event
+# that you start sharing with others
+name = localhost
+instance = cif.localhost
+
+# the apikey for cif_smrt
+apikey = XXXXXX-XXX-XXXX
+}}}
+ # if you're using feeds, enable them in /home/cif/.cif
+{{{
+[cif_archive]
+...
+feeds = infrastructure,domain,url,email,search,malware
+}}}
+ # add this section to end of the config
+{{{
+[cif_feed]
+# max size of any feed generated
+limit = 50000
+
+# each confidence level to generate
+confidence = 95,85,75,65
+
+# what 'role' keys to use to generate the feeds
+roles = role_everyone_feed
+
+# how far back in time to generate the feeds from
+limit_days = 7
+
+# how many days of generated feeds to keep in the archive
+feed_retention = 7
+}}}
 ==== Upgrade ====
  # upgrade system dependencies
   * (testing) [Upgrade_DebianSqueeze_v1 Debian 6]
@@ -61,9 +118,13 @@ $ sudo make install
 {{{
 $ sudo make upgradedb
 }}}
- # now create the default /home/cif/.cif configs so the upgrade knows what feeds to be generated, etc
-  * follow the [ServerInstall_v1_RC4#Configuration configuration] section to generate your new config
-  * follow the [ServerInstall_v1_RC4#Enabling_Feed_Generation feed generation] section to generate any feeds you want configured
+ # generate a cif-smrt key to be used by cif_smrt to submit data to the router and add it to the /home/cif/.cif under the 'cif_smrt' section where 'apikey = XXXX...':
+{{{
+$ cif_apikeys -u cif_smrt -G everyone -g everyone -a -w
+userid   key                                  description guid                                 default_guid restricted access write revoked expires created                      
+cif_smrt bf1e0a9f-9518-409d-8e67-bfcc36dc5f44             8c864306-d21a-37b1-8705-746a786719bf true         0                 1                     2012-08-15 17:37:18.53348+00 
+}}}
+==== Data Migration ====
  # run the upgrade-database utility that will convert the existing archive data into the new v1 format, as well as any feeds to be generated. 
   * <font color="red">if you haven't backed up the archive table, this is a good time to do it.</font>
   * this will take a very long time to run (hours, days depending on how much data you have)
