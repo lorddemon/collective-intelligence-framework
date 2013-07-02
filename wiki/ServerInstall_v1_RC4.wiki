@@ -25,7 +25,7 @@ Issues being discussed on the mailing list can be found [https://groups.google.c
  * If you try to run CIF v1 while watching [http://www.jibjab.com/view/coepggrUTQOmCSW6FZrBSg?mt=1 this], it might not install correctly.
 
 == Upgrading ==
-If you're upgrading an older instance (v0 or v1-RC2+), follow the [Upgrade_v1 upgrade guide]
+<font color="red">If you're upgrading an older instance (v0 or v1-RC2+), follow the [Upgrade_v1 upgrade guide]</font>
 
 == System Requirements ==
 These requirements will handle everything on the same box pretty well with the default open source data-sets. The more (bigger) data-sets you add, the more ram / disk space you'll need. The more cores you add, the more threads that can "batch out" the feed parsers (thus, resulting in faster data consumption).
