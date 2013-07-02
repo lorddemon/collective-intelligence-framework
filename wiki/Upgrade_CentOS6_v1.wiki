@@ -1,7 +1,7 @@
 #summary squeeze install doc (v1)
 
 = Introduction =
-This assumes a clean install of Debian Squeeze (v6.0.x) with sudo, all base system updates applied and a base v0 CIF installation.
+This assumes a clean install of CentOS6 with sudo, all base system updates applied and a base v0 CIF installation.
 
 * Table of Contents *
 <wiki:toc max_depth="2" />
