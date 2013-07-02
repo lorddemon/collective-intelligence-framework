@@ -81,5 +81,6 @@ $ sudo make install
 +   PerlResponseHandler CIF::Router::HTTP
 +   PerlSetVar CIFRouterConfig "/home/cif/.cif"
 </Location>
-
 }}}
+
+Continue with the [Upgrade_v1#Upgrade upgrade]
