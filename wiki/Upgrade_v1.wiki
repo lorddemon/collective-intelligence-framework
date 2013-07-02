@@ -143,6 +143,7 @@ $ perl sbin/migrate-data.pl -t 4 -d -C /home/cif/.cif
  * this requires a copy of the existing archive table file to be made available to the new installation
  * this option takes a little longer as a data-export / import is required
  * depending on the size of your archive tablespace, it could require extra temporary space to do the export (eg: a fast, external usb drive is handy in these cases if your network is too slow for moving large files around easily)
+ * <font color="red">MAKE SURE YOUR CLOCK TIMEZONE IS IN-SYNC (UTC) ACROSS BOTH HOSTS</font>
 
 There are two ways to handle this type of upgrade:
 
