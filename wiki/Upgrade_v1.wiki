@@ -105,9 +105,9 @@ feed_retention = 7
 ==== Upgrade ====
  # upgrade system dependencies
   * (testing) [Upgrade_DebianSqueeze_v1 Debian 6]
-  * (unstable) [Upgrade_Wheezy_v1 Debian 7]
-  * (unstable) [Upgrade_Ubuntu_v1 Ubuntu 12]
-  * (unstable) [Upgrade_CentOS_v1 CentOS6]
+  * (unstable) [Upgrade_DebianWheezy_v1 Debian 7]
+  * (unstable) [Upgrade_Ubuntu12_v1 Ubuntu 12]
+  * (unstable) [Upgrade_CentOS6_v1 CentOS6]
  # install the latest CIF [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=filename%3Acif-v1-rc4 package]
 {{{
 $ tar -xzvf cif-v1-rc4-XXXX.tar.gz
