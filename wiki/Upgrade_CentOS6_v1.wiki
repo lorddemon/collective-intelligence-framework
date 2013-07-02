@@ -82,5 +82,6 @@ $ sudo make install
 +   PerlSetVar CIFRouterConfig "/home/cif/.cif"
 </Location>
 }}}
+ # restart httpd
 
 Continue with the [Upgrade_v1#Upgrade upgrade]
