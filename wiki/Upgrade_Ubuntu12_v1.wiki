@@ -31,9 +31,9 @@ $ sudo vi /etc/apache2/sites-available/default-ssl
 {{{
 <IfModule mod_ssl.c>
 <VirtualHost _default_:443>
--      PerlRequire /opt/cif/bin/webapi.pl
-+     PerlRequire /opt/cif/bin/http_api.pl
-+     Include /etc/apache2/cif.conf
+-    PerlRequire /opt/cif/bin/webapi.pl
++   PerlRequire /opt/cif/bin/http_api.pl
+      Include /etc/apache2/cif.conf
 ....
 }}}
  # modify your apache cif config
