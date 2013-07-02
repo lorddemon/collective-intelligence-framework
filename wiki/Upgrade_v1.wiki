@@ -25,6 +25,7 @@ If you do lose everything, ... it's not the end of the world, within a few weeks
 There are two ways to perform an upgrade, an *'in-place'* or *'new-installation'* upgrade. Both of these options take some time as we evolve our data formats. They require that the discrete steps are followed very carefully to avoid data corruption, etc.
 
 === In-Place Upgrade ===
+----
 ==== Overview ====
  * drops all v0 tables, with the exception of archive, apikeys and apikeys_groups
  * alters the archive and apikeys tables to be compatible with v1
@@ -136,6 +137,7 @@ $ perl sbin/migrate-data.pl -t 4 -d -C /home/cif/.cif
  # when this is completed, continue on to the [ServerInstall_v1#Router_Setup router setup]
 
 === New Installation Upgrade ===
+----
  * this requires a new installation of v1 on a separate host
  * this requires a copy of the existing archive table file to be made available to the new installation
  * this option takes a little longer as a data-export / import is required
