@@ -8,19 +8,25 @@ This document describes the various configuration options (commonly in /home/cif
 
 = Details =
 == Overview ==
-|| section || description || used by ||
-|| cif_archive || cif api configuration || libcif-dbi, cif_feed, cif-router ||
+|| *section* || *description* || *used by* ||
+|| cif_archive || api configuration || libcif-dbi, cif_feed, cif-router ||
+|| client || local client api configuration || libcif, cif-smrt ||
+|| client_http || local client http transport (driver) config || libcif, cif-smrt ||
+|| cif_smrt || SMRT configuration || cif-smrt ||
+|| db || database connection config || libcif-dbi, cif-router, cif_feed ||
+|| restriction_map || router API restriction mapping || libcif-dbi, cif_feed, cif-router ||
+|| router || router configuration || cif-router ||
 
 == Examples ==
 A default (single instance) config example:
 {{{
 [cif_archive]
 
-# if we enabled asn/cc/rir in the configure
+# to enable asn, cc, rir datatypes (requires more storage)
 # datatypes = infrastructure,domain,url,email,search,malware,cc,asn,rir
 datatypes = infrastructure,domain,url,email,search,malware
 
-# if you're going to enable feeds
+# to enable feeds (requires more storage)
 # feeds = infrastructure,domain,url,email,search,malware
 
 # enable your own groups is you start doing data-sharing with various groups
@@ -52,8 +58,8 @@ user = postgres
 password =
 database = cif
 }}}
+
 == Client ==
- * used by libcif and cif-smrt
 {{{
 [client]
 # the apikey for your client
@@ -75,11 +81,9 @@ host = https://localhost:443/api
 verify_tls = 0
 
 [cif_smrt]
-# change example.com to your local domain and hostname respectively
+# change localhost to your local domain and hostname respectively
 # this identifies the data in your instance and ties it to your specific instance in the event
 # that you start sharing with others
-#name = example.com
-#instance = cif.example.com
 name = localhost
 instance = cif.localhost
 
