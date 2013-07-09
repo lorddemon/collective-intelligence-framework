@@ -36,6 +36,10 @@ There are two ways to perform an upgrade, an *'in-place'* or *'new-installation'
 $ psql -U postgres -d cif
 psql> COPY (select uuid,guid,format,created,data from archive WHERE format = 'iodef' AND description NOT LIKE '% feed') TO '/mnt/<my_big_drive>/cif.sql' WITH binary;
 }}}
+ * <font color="red">BACKUP YOUR APIKEYS</font>
+{{{
+$ pg_dump -a -b --inserts -U postgres -t apikeys -t apikeys_groups cif > /tmp/cif_apikeys.sql
+}}}
 ==== Prepare ====
  # power down apache
  # comment out / remove your old cif_crontool crons and kill any existing running processes `(ps aux | grep cif_)`
