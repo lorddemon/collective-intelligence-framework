@@ -122,9 +122,11 @@ $ sudo make upgradedb
 }}}
  # generate a cif-smrt key to be used by cif_smrt to submit data to the router and add it to the /home/cif/.cif under the 'cif_smrt' section where 'apikey = XXXX...':
 {{{
+$ sudo su - cif
 $ cif_apikeys -u cif_smrt -G everyone -g everyone -a -w
 userid   key                                  description guid                                 default_guid restricted access write revoked expires created                      
-cif_smrt bf1e0a9f-9518-409d-8e67-bfcc36dc5f44             8c864306-d21a-37b1-8705-746a786719bf true         0                 1                     2012-08-15 17:37:18.53348+00 
+cif_smrt bf1e0a9f-9518-409d-8e67-bfcc36dc5f44             8c864306-d21a-37b1-8705-746a786719bf true         0                 1                     2012-08-15 17:37:18.53348+00
+$ logout
 }}}
 ==== Data Migration ====
  # run the upgrade-database utility that will convert the existing archive data into the new v1 format, as well as any feeds to be generated. 
