@@ -16,9 +16,9 @@ $ sudo yum install libapreq2 libapreq2-devel perl-libapreq2
 }}}
  # if you don't have that repo (see [http://www.centos.org/modules/newbb/viewtopic.php?topic_id=18264 this] for more info):
 {{{
-$ wget http://download.fedora.redhat.com/pub/epel/6/x86_64/libapreq2-2.13-1.el6.x86_64.rpm
-$ wget http://download.fedora.redhat.com/pub/epel/6/x86_64/libapreq2-devel-2.13-1.el6.x86_64.rpm
-$ wget http://download.fedora.redhat.com/pub/epel/6/x86_64/perl-libapreq2-2.13-1.el6.x86_64.rpm
+$ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/libapreq2-2.13-1.el6.x86_64.rpm
+$ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/libapreq2-devel-2.13-1.el6.x86_64.rpm
+$ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/perl-libapreq2-2.13-1.el6.x86_64.rpm
 $ sudo rpm -i libapreq2-2.13-1.el6.x86_64.rpm libapreq2-devel-2.13-1.el6.x86_64.rpm perl-libapreq2-2.13-1.el6.x86_64.rpm
 }}}
  # install the remaining CPAN modules (follow all the deps)
