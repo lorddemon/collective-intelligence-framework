@@ -19,7 +19,7 @@ $ aptitude -y install rng-tools build-essential postgresql apache2 apache2-threa
 }}}
  # Install the remaining perl dependencies from CPAN (as root)
 {{{
-$ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Module::Build,Test::SharedFork,Test::TCP,Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,Net::SSLeay,ZeroMQ,Sys::MemInfo,LWP::Protocol::https,LWPx::ParanoidAgent'
+$ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Test::SharedFork,Test::TCP,Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,Net::SSLeay,ZeroMQ,Sys::MemInfo,LWP::Protocol::https,LWPx::ParanoidAgent'
 }}}
 
 == Router Configuration (Apache) ==
