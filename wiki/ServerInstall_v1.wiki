@@ -1,4 +1,4 @@
-#summary the Server Installation (v1) RC3
+#summary the Server Installation (v1) RC4
 
 * Table of Contents *
 <wiki:toc max_depth="2" />
@@ -18,13 +18,14 @@ Issues being discussed on the mailing list can be found [https://groups.google.c
 == v0 Compatibility ==
  * You *cannot* run this beta on the same box as CIF v0, it will break stuff. See the client v0 [ClientRemoval_v0 removal guide]
  * older cif clients (v0, v1_RC1, v1_RC2) will not work with this current versions of CIF
+
 == v1 Client ==
  * check out the v1 client [ClientInstall_v1 installer] to install the libcif client libraries (which provides the 'cif' command) on a separate host
  * this document assumes you're testing an instance where the cif client and the server are on the same hardware.
  * If you try to run CIF v1 while watching [http://www.jibjab.com/view/coepggrUTQOmCSW6FZrBSg?mt=1 this], it might not install correctly.
 
 == Upgrading ==
- * If you are installing on top of any of the previous CIF v1 releases, you *must drop* your existing cif v1 database before installing this release candidate. Instructions for this will be provided in the installation instructions below.
+<font color="red">If you're upgrading an older instance (v0 or v1-RC2+), follow the [Upgrade_v1 upgrade guide]</font>
 
 == System Requirements ==
 These requirements will handle everything on the same box pretty well with the default open source data-sets. The more (bigger) data-sets you add, the more ram / disk space you'll need. The more cores you add, the more threads that can "batch out" the feed parsers (thus, resulting in faster data consumption).
@@ -87,34 +88,20 @@ Configure Postgres authentication and performance tuning
 
 == Installing CIF ==
 ----
+=== Overview ===
 This guide assumes that the client is on the same hardware as the backend server/router components. If you want to build out in HA mode, se our [CIFInfrastructureDiagram_v1 HA Guide].
 
-In v1, the ability to query based on BGP prefix information (asn, country code, rir, etc) has been broken out into plugins (included in the base package). These plugins log lots more data to the warehouse and should only be enabled if you have a direct need to query these datatypes (eg: if you're an ISP wanting to query for your AS, etc).
+=== Upgrading ===
+<font color="red">Follow the [Upgrade_v1 upgrade guide]</font>
 
-To enable, during the configure process, simply:
-
-{{{
-$ ./configure --enable-dbi-asn --enable-dbi-cc --enable-dbi-rir
-}}}
-
+=== New Installation ===
  # power down apache2
- # install the latest CIF [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=filename%3Acif-v1-rc3 package]
+ # install the latest CIF [https://github.com/collectiveintel/cif-v1/releases/ package]
 {{{
-$ tar -xzvf cif-v1-rc3-XXXX.tar.gz
-$ cd cif-v1-rc3-XXXX
+$ tar -xzvf cif-v1-v1.X.X.tar.gz
+$ cd cif-v1-v1.X.X
 $ ./configure && make testdeps
 $ sudo make install
-}}}
-
-==== ONLY IF YOU ARE Upgrading From RC2 ====
-If you're upgrading from RC2, *THIS WILL PURGE ALL EXISTING DATA*, but it will preserve your apikeys. Due to some data-structure changes in RC3 there is no way around this.
-{{{
-$ make rebuilddb
-}}}
-
-==== New Installation ====
-If you're doing a fresh RC3 install, then all that needs to be done is to create the data schemas.
-{{{
 $ sudo make initdb
 }}}
 
@@ -138,23 +125,27 @@ fi
 $ logout
 $ sudo su - cif
 }}}
- # create a ~/.cif
+== Default Config ==
+ # as the cif user create /home/cif/.cif
 {{{
 $ vi ~/.cif
 }}}
- # add the following as a template, the API KEYS will be generated in the next section, for now just use the XXX as the placeholders.
+ # add the following as a template, the API KEYS will be generated in a following section, for now just use the XXX as the placeholders.
 {{{
 # the simple stuff
+# cif_archive configuration is required by cif-router, cif_feed (cif-router, libcif-dbi)
 [cif_archive]
-datatypes = infrastructure,domain,url,email,search,malware
-# if we enabled asn/cc/rir in the configure
+# if we want to enable rir/asn/cc, etc... they take up more space in our repo
 # datatypes = infrastructure,domain,url,email,search,malware,cc,asn,rir
+datatypes = infrastructure,domain,url,email,search,malware
+
 # if you're going to enable feeds
 # feeds = infrastructure,domain,url,email,search,malware
 
 # enable your own groups is you start doing data-sharing with various groups
 #groups = everyone,group1.example.com,group2.example.com,group3.example.com
 
+# client is required by the client, cif_router, cif_smrt (libcif, cif-router, cif-smrt)
 [client]
 # the apikey for your client
 apikey = XXXXXX-XXX-XXXX
@@ -163,6 +154,7 @@ apikey = XXXXXX-XXX-XXXX
 host = https://localhost:443/api
 verify_tls = 0
 
+# cif_smrt is required by cif_smrt
 [cif_smrt]
 # change example.com to your local domain and hostname respectively
 # this identifies the data in your instance and ties it to your specific instance in the event
@@ -176,7 +168,7 @@ instance = cif.localhost
 apikey = XXXXXX-XXX-XXXX 
 
 # advanced stuff
-
+# db config is required by cif-router, cif_feed, cif_apikeys (cif-router, libcif-dbi)
 [db]
 host = 127.0.0.1
 user = postgres
@@ -185,6 +177,7 @@ database = cif
 
 # if the normal IODEF restriction classes don't fit your needs
 # ref: https://code.google.com/p/collective-intelligence-framework/wiki/RestrictionMapping_v1
+# restriction map is required by cif-router, cif_feed (cif-router, libcif-dbi)
 [restriction_map]
 #white = public 
 #green = public 
@@ -197,8 +190,46 @@ database = cif
 # set to 0 if it's too noisy and reload the cif-router (apache), only on for RC2
 debug = 1
 }}}
+
+== Enabling Feed Generation ==
+To enable feed generation, which requires more space a few more options need to be ticked. If you only plan to leverage the system for "querying" (not putting feeds into something like a firewall, etc) then this section can be skipped.
+
+ # modify the 'cif' user's ~/.cif config accordingly:
+{{{
+$ vi ~/.cif
+}}}
+ # add the following to the cif_archive section:
+{{{
+[cif_archive]
+...
+feeds = infrastructure,domain,url,email,search,malware
+}}}
+ # add this section to end of the config
+{{{
+[cif_feed]
+# max size of any feed generated
+limit = 50000
+
+# each confidence level to generate
+confidence = 95,85,75,65
+
+# what 'role' keys to use to generate the feeds
+roles = role_everyone_feed
+
+# how far back in time to generate the feeds from
+limit_days = 7
+
+# how many days of generated feeds to keep in the archive
+feed_retention = 7
+}}}
+ # generate a "role key" for generating feeds everyone (with an apikey) in the system can query for. They apikey generated can be ignored as it's just a placeholder for the system.
+{{{
+$ cif_apikeys -u role_everyone_feed -G everyone -g everyone -a
+}}}
+ # log out of the cif user and restart apache
+
 === APIKey ===
- # make sure you're still logged in as the 'cif' user and have set the proper environment stuff (as per above) or the following commands will fail
+ # make sure you're still logged in as the 'cif' user and have set the proper environment stuff or the following commands will fail
 {{{
 $ sudo su - cif
 }}}
@@ -257,43 +288,6 @@ restriction|guid    |assessment|description       |confidence|detecttime        
 private    |everyone|search    |search example.com|50        |2012-12-20T15:18:35Z|2012-12-20T15:18:35Z|example.com|                         |             
 [DEBUG][2012-12-20T15:18:35Z]: done
 }}}
-
-== Enabling Feed Generation ==
-To enable feed generation, which requires more space a few more options need to be ticked. If you only plan to leverage the system for "querying" (not putting feeds into something like a firewall, etc) then this section can be skipped.
-
- # modify the 'cif' user's ~/.cif config accordingly:
-{{{
-$ vi ~/.cif
-}}}
- # add the following to the cif_archive section:
-{{{
-[cif_archive]
-...
-feeds = infrastructure,domain,url,email,search,malware
-}}}
- # add this section to end of the config
-{{{
-[cif_feed]
-# max size of any feed generated
-limit = 50000
-
-# each confidence level to generate
-confidence = 95,85,75,65
-
-# what 'role' keys to use to generate the feeds
-roles = role_everyone
-
-# how far back in time to generate the feeds from
-limit_days = 7
-
-# how many days of generated feeds to keep in the archive
-feed_retention = 7
-}}}
- # generate a "role key" for generating feeds everyone (with an apikey) in the system can query for. They apikey generated can be ignored as it's just a placeholder for the system.
-{{{
-$ cif_apikeys -u role_everyone -G everyone -g everyone -a
-}}}
- # log out of the cif user and restart apache
 
 = Initialization =
 ----
