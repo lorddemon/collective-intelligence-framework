@@ -8,8 +8,6 @@
 <wiki:toc max_depth="2" />
 
 = Introduction =
- * v0.01, v0.02 instances (xml) are not supported
- * pre-v1-RC2 instances are not supported
 
 <font color="red">
 Upgrades are never an exact science, and generally are not recommended unless you have the time/skills to perform them if/when things fail. We do our best to provide the utilities and doc necessarily to cover edge cases, while this will improve over time, if something goes horribly bad, it might make more sense to start fresh with a new installation and new data. This is a learning process for the project and we don't currently have the resources to debug problems that might occur during a database upgrade.
@@ -19,7 +17,19 @@ That being said, as long as you follow the directions carefully, backup your arc
 If you do lose everything, ... it's not the end of the world, within a few weeks, your shinny new v1 instance will have lots of data in it to make lemonade with. :)
 </font>
 
+ * v0.01, v0.02 instances (xml) are not supported
+ * pre-v1-RC2 instances are not supported
+
 = Details =
+From v0, the database upgrade primarily:
+
+ * alters the apikeys tables
+ * alters the archive table
+ * drops the rest of the tables (un-needed in v1)
+ * re-creates all the v1 tables around the archive table
+ * converts the data in archive from json to compressed google protocol buffer blobs (v1 format)
+ * updates the hash index table
+
 == v0 ==
 ----
 There are two ways to perform an upgrade, an *'in-place'* or *'new-installation'* upgrade. Both of these options take some time as we evolve our data formats. They require that the discrete steps are followed very carefully to avoid data corruption, etc.
