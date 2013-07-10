@@ -98,8 +98,8 @@ This guide assumes that the client is on the same hardware as the backend server
  # power down apache2
  # install the latest CIF [https://github.com/collectiveintel/cif-v1/releases/ package]
 {{{
-$ tar -xzvf cif-v1-v1.X.X.tar.gz
-$ cd cif-v1-v1.X.X
+$ tar -xzvf cif-v1-1.X.X.tar.gz
+$ cd cif-v1-1.X.X
 $ ./configure && make testdeps
 $ sudo make install
 $ sudo make initdb
