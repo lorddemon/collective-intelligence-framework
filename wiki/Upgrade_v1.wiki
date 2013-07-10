@@ -114,8 +114,8 @@ feed_retention = 7
   * (testing) [Upgrade_CentOS6_v1 CentOS6]
  # install the latest CIF [https://github.com/collectiveintel/cif-v1/releases release]
 {{{
-$ tar -xzvf cif-v1-rc4-XXXX.tar.gz
-$ cd cif-v1-rc3-XXXX
+$ tar -xzvf cif-v1-1.X.X.tar.gz
+$ cd cif-v1-1.X.X
 $ ./configure && make testdeps
 $ sudo make install
 }}}
