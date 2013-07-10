@@ -96,10 +96,10 @@ This guide assumes that the client is on the same hardware as the backend server
 
 === New Installation ===
  # power down apache2
- # install the latest CIF [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=filename%3Acif-v1-rc3 package]
+ # install the latest CIF [https://github.com/collectiveintel/cif-v1/releases/ package]
 {{{
-$ tar -xzvf cif-v1-rc3-XXXX.tar.gz
-$ cd cif-v1-rc3-XXXX
+$ tar -xzvf cif-v1-v1.X.X.tar.gz
+$ cd cif-v1-v1.X.X
 $ ./configure && make testdeps
 $ sudo make install
 $ sudo make initdb
