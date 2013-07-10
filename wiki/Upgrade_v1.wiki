@@ -112,7 +112,7 @@ feed_retention = 7
   * (testing) [Upgrade_DebianWheezy_v1 Debian 7]
   * (testing) [Upgrade_Ubuntu12_v1 Ubuntu 12]
   * (testing) [Upgrade_CentOS6_v1 CentOS6]
- # install the latest CIF [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=filename%3Acif-v1-rc4 package]
+ # install the latest CIF [https://github.com/collectiveintel/cif-v1/releases release]
 {{{
 $ tar -xzvf cif-v1-rc4-XXXX.tar.gz
 $ cd cif-v1-rc3-XXXX
