@@ -224,7 +224,7 @@ feed_retention = 7
 }}}
  # generate a "role key" for generating feeds everyone (with an apikey) in the system can query for. They apikey generated can be ignored as it's just a placeholder for the system.
 {{{
-$ cif_apikeys -u role_everyone -G everyone -g everyone -a
+$ cif_apikeys -u role_everyone_feed -G everyone -g everyone -a
 }}}
  # log out of the cif user and restart apache
 
