@@ -28,7 +28,7 @@ From v0, the database upgrade primarily:
  * drops the rest of the tables (un-needed in v1)
  * re-creates all the v1 tables around the archive table
  * converts the data in archive from json to compressed google protocol buffer blobs (v1 format)
- * updates the hash index table
+ * re-populates the hash index table (used for searches)
 
 == v0 ==
 ----
