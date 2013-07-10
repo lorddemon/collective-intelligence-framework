@@ -24,7 +24,7 @@ $ sudo rpm -i libapreq2-2.13-1.el6.x86_64.rpm libapreq2-devel-2.13-1.el6.x86_64.
  # install the remaining CPAN modules (follow all the deps)
   # via perl -MCPAN -e
 {{{
-$ PERL_MM_USE_DEFAULT=1 sudo perl -MCPAN -e 'install Class::DBI, Net::CIDR, Module::Install, Apache2::Request, Regexp::Common, File::Type, Text::CSV, HTML::Table, APR::Table, Net::Abuse::Utils, Apache2::REST, Linux::Cpuinfo, XML::IODEF, LWP::Simple, VT::API,Try::Tiny'
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Class::DBI, Net::CIDR, Module::Install, Apache2::Request, Regexp::Common, File::Type, Text::CSV, HTML::Table, APR::Table, Net::Abuse::Utils, Apache2::REST, Linux::Cpuinfo, XML::IODEF, LWP::Simple, VT::API,Try::Tiny'
 }}}
   # or alternatively
 {{{
