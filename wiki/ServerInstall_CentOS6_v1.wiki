@@ -12,7 +12,7 @@ This doc assumes the CentOS-6.4-x86_64-minimal.iso was used during installation.
 === Static Address ===
 Make sure your instance has a static v4 address
 === IPv6 ===
-There are some weird issues with the way RHEL (and therefor CentOS) handle the ipv6 driver module, and how some perl modules react to this. If you've left the ipv6 defaults (or leverage ipv6 for routing) you'll probably be OK. If you've "disabled" ipv6, you might run into some build testing issues. If you do, try to force install the modules, gather the testing output (and your ipv6 configurations, etc) and log a bug report.
+There are some weird issues with the way RHEL (and therefor CentOS) handle the ipv6 driver module, and how some perl modules react to this. If you've left the ipv6 defaults (or leverage ipv6 for routing) you'll probably be OK. If you've "disabled" ipv6, you might run into some build testing issues. If you do, try to force install the modules, gather the testing output (and your ipv6 configurations, etc) and log a bug report. See [http://wiki.centos.org/FAQ/CentOS6#head-d47139912868bcb9d754441ecb6a8a10d41781df here] for more information on disabling.
 === SELINUX ===
 Selinux either needs to be disabled or a [http://wiki.centos.org/HowTos/SELinux policy] needs to be written allowing postgres r/w access to /mnt/archive and /mnt/index
  # disable selinux via /etc/selinux/config
