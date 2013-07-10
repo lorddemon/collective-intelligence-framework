@@ -189,10 +189,10 @@ $ perl sbin/migrate-data.pl -t 4 -d
 ----
 If you're upgrading from RC2, *THIS WILL PURGE ALL EXISTING DATA*, but it will preserve your apikeys. Due to some data-structure changes in RC3 there is no way around this.
 
- # install the latest CIF [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=filename%3Acif-v1-rc4 package]
+ # install the latest CIF [https://github.com/collectiveintel/cif-v1/releases release]
 {{{
-$ tar -xzvf cif-v1-rc4-XXXX.tar.gz
-$ cd cif-v1-rc4-XXXX
+$ tar -xzvf cif-v1-1.X.X.tar.gz
+$ cd cif-v1-1.X.X
 $ ./configure && make testdeps
 $ sudo make install
 $ make rebuilddb
@@ -202,10 +202,10 @@ $ make rebuilddb
 == v1-RC3 ==
 ----
 If you're upgrading from RC3, there's nothing to do other than install the new code
- # install the latest CIF [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=filename%3Acif-v1-rc4 package]
+ # install the latest CIF [https://github.com/collectiveintel/cif-v1/releases release]
 {{{
-$ tar -xzvf cif-v1-rc4-XXXX.tar.gz
-$ cd cif-v1-rc4-XXXX
+$ tar -xzvf cif-v1-1.X.X.tar.gz
+$ cd cif-v1-1.X.X
 $ ./configure && make testdeps
 $ sudo make install
 }}}
