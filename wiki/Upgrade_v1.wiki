@@ -8,7 +8,7 @@
 <wiki:toc max_depth="2" />
 
 = Introduction =
- * pre-v0 instances (xml) are not supported
+ * v0.01, v0.02 instances (xml) are not supported
  * pre-v1-RC2 instances are not supported
 
 <font color="red">
