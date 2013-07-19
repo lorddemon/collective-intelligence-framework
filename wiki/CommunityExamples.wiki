@@ -20,6 +20,10 @@
 = Eye Candy =
  * [https://github.com/divious1/cif_globe CIF Globe (github)]
 
+= Other = [https://isc.sans.edu/diary/Blog+Spam+-+annoying+junk+or+a+source+of+intelligence%3F/16186 Blog Spam - annoying junk or a source of intelligence?]
+
+2013-07-18 
+
 = Advanced Stuff =
  * [http://eyeis.net/category/cif Category Archives: CIF]
  * [http://ossectools.blogspot.com/2012/04/accelerating-cif-with-sphinx.html Accelerating CIF with Sphinx]
