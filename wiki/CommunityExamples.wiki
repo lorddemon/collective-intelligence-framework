@@ -21,7 +21,7 @@
  * [https://github.com/divious1/cif_globe CIF Globe (github)]
 
 = Other =
- * 2013-07-18  [https://isc.sans.edu/diary/Blog+Spam+-+annoying+junk+or+a+source+of+intelligence%3F/16186 Blog Spam - annoying junk or a source of intelligence?]
+ * 2013-07 -- [https://isc.sans.edu/diary/Blog+Spam+-+annoying+junk+or+a+source+of+intelligence%3F/16186 Blog Spam - annoying junk or a source of intelligence?]
 
 
 
