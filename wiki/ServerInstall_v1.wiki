@@ -410,8 +410,8 @@ $ crontab -e
 PATH=/bin:/usr/local/bin:/opt/cif/bin
 
 # pull feed data
-05     *       * * * /opt/cif/bin/cif_crontool -p hourly -P -d -N -A root >> /var/log/cif/crontool_hourly.log 2>&1
-30     00      * * * /opt/cif/bin/cif_crontool -p daily -P -d -N -A root >> /var/log/cif/crontool_daily.log 2>&1
+05     *       * * * /opt/cif/bin/cif_crontool -p hourly -P -d -A root >> /var/log/cif/crontool_hourly.log 2>&1
+30     00      * * * /opt/cif/bin/cif_crontool -p daily -P -d -A root >> /var/log/cif/crontool_daily.log 2>&1
 
 # if you've enabled feed generation in your config
 45     *       * * * /opt/cif/bin/cif_feed -d >> /var/log/cif/cif_feed.log 2>&1
