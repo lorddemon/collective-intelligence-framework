@@ -29,8 +29,20 @@ $ vi ~/.cif
 }}}
  # add the following as a template
 {{{
+# cif_archive configuration is required by cif-router, cif_feed (cif-router, libcif-dbi)
+[cif_archive]
+# if we want to enable rir/asn/cc, etc... they take up more space in our repo
+# datatypes = infrastructure,domain,url,email,search,malware,cc,asn,rir
+datatypes = infrastructure,domain,url,email,search,malware
+
+# if you're going to enable feeds
+# feeds = infrastructure,domain,url,email,search,malware
+
+# enable your own groups is you start doing data-sharing with various groups
+#groups = everyone,group1.example.com,group2.example.com,group3.example.com
+
 # logging
-# values 0-4
+#values 0-4
 [router]
 # set to 0 if it's too noisy and reload the cif-router (apache), only on for RC2
 debug = 1
