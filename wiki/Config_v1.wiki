@@ -9,7 +9,7 @@ This document describes the various configuration options (commonly in /home/cif
 = Details =
 == Overview ==
 || *section* || *description* || *used by* ||
-|| cif_archive || api configuration || libcif-dbi, cif_feed, cif_apikeys cif-router ||
+|| cif_archive || api configuration || libcif-dbi, cif_feed, cif_apikeys, cif-router ||
 || client || local client api configuration || libcif, cif-smrt ||
 || client_http || local client http transport (driver) config || libcif, cif-smrt ||
 || cif_smrt || SMRT configuration || cif-smrt ||
