@@ -49,36 +49,37 @@ cif@CIFwest:~$ cif_apikeys -a -u myuser@cifeast.local -g sshgroup -G sshgroup
 }}}
 The command above adds a new user (myuser@cifeast.local) on the CIF West instance and makes it a member of the group sshgroup and sets its default group to sshgroup. (Note: Groups aren't added independently, they are implicitly created when users are added to them)
 
-Now the group sshgroup needs to be given access to some of the data sources.  This is done by duplicating the sources with a new guid value. Refer to the following configuration (*/opt/cif/etc/knownsshattackers.cfg*) for example:
+Now the group sshgroup needs to be given access to some of the data sources.  This is done by duplicating the sources with a new guid value. Refer to the following configuration (*/opt/cif/etc/drg.cfg*) for example:
 {{{
-confidence = 95
-restriction = 'private'
+confidence = 85
+restriction = 'need-to-know'
+alternative_restriction = 'public'
 period = hourly
 
 [drg_ssh_everyone]
-assessment = 'scanner'
-values = 'source,address,detecttime,null'
-portlist = 22
-source = 'dragonresearchgroup.org'
-protocol = tcp
-description = 'ssh'
 feed = 'http://dragonresearchgroup.org/insight/sshpwauth.txt'
-regex = "^\\d+\\s+\\|\\s+[\\S|\\s]+\\|\\s+(\\S+)\\s+\\|\\s+(\\S+\\s\\S+)\\s+\\|"
+regex = '^\d+\s+\|\s+[\S|\s]+\|\s+(\S+)\s+\|\s+(\S+\s\S+)\s+\|'
 regex_values = 'address,detecttime'
+source = 'dragonresearchgroup.org'
+assessment = 'scanner'
+description = 'ssh'
+portlist = 22
+protocol = tcp
 alternativeid = 'http://dragonresearchgroup.org/insight/sshpwauth.txt'
-guid = privategroup
+period = hourly
+guid = everyone
 
 [drg_ssh_sshgroup]
-assessment = 'scanner'
-values = 'source,address,detecttime,null'
-portlist = 22
-source = 'dragonresearchgroup.org'
-protocol = tcp
-description = 'ssh'
 feed = 'http://dragonresearchgroup.org/insight/sshpwauth.txt'
-regex = "^\\d+\\s+\\|\\s+[\\S|\\s]+\\|\\s+(\\S+)\\s+\\|\\s+(\\S+\\s\\S+)\\s+\\|"
+regex = '^\d+\s+\|\s+[\S|\s]+\|\s+(\S+)\s+\|\s+(\S+\s\S+)\s+\|'
 regex_values = 'address,detecttime'
+source = 'dragonresearchgroup.org'
+assessment = 'scanner'
+description = 'ssh'
+portlist = 22
+protocol = tcp
 alternativeid = 'http://dragonresearchgroup.org/insight/sshpwauth.txt'
+period = hourly
 guid = sshgroup
 }}}
 
@@ -109,8 +110,6 @@ Feeds will be generated for the group sets of these 'role' users.
 
 == Import the CIF West Feed into CIF East ==
 
-Currently (and ironically), the CIF feed parser doesn't directly support directly adding another CIF server as a feed source due to the encoding used in the [API_v0#Feed_Queries API]. The CIF client has to be run on the CIF server to pull the feed from the other server, format it and write it to a file so it can be imported. This work is being completed in the next version of CIF (v1).
-
 Create a client configuration file that contains the API key and the URL to the CIF server that the feed will be pulled from. The following example client config is named cifclient_west.cfg:
 {{{
 [client]
@@ -120,27 +119,24 @@ apikey = <API key for myuser@cifeast.local user created on CIF West>
 host = https://<address of CIF West>:443/api
 verify_tls = 0
 }}}
-You can then test it by running `cif -C cifclient_west.cfg -q infrastructure`, which should either return feed data or nothing (i.e. no errors).
+You can then test it by running *cif -C cifclient_west.cfg -q infrastructure/scan -c 1*, which should either return feed data or nothing (i.e. no errors).
 
-Then setup a script as a [https://help.ubuntu.com/community/CronHowto cron] job to run the client hourly and save the output as JSON to a file. The following script is an example that saves medium severity feeds of any confidence to /home/cif/WEST_infrastructure.json:
-{{{
-#!/bin/bash
-cd /home/cif/
-/usr/local/bin/cif -C cifclient_west.cfg -q infrastructure -p json -c 1 > WEST_infrastructure.json
-}}}
-
-Now that the data is being saved to a file, it can be added like a regular feed for the CIF server to parse. Create a feed config (e.g. _/opt/cif/etc/cifwest.cfg_) and enter the following options:
+Then setup a new cif-smrt rule set in */opt/cif/etc/* (e.g. cifwest.cfg).
 {{{
 [cifwest_infrastructure]
-feed = '/home/cif/WEST_infrastructure.json'
-fields = 'purpose,asn,rir,portlist,alternativeid,detecttime,address,alternativeid_restriction,severity,description,confidence,restriction,prefix,impact'
-fields_map = 'purpose,asn,rir,portlist,alternativeid,detecttime,address,alternativeid_restriction,severity,description,confidence,restriction,prefix,impact'
+feed = infrastructure/scan
 source = 'CIFWEST'
+config = '/home/cif/cifclient_west.cfg'
+cif = true
+confidence = 85
 guid = everyone
 period = hourly
 }}}
 
-The CIF East server will now import all of the data from CIF West. The 'source' field is being overwritten to 'CIFWEST' in this case, but it could be imported from the feed by adding it to the 'fields' and 'fields_map' options instead.
+
+The CIF East server will now import all of the data from CIF West.
+
+~~The 'source' field is being overwritten to 'CIFWEST' in this case, but it could be imported from the feed by adding it to the 'fields' and 'fields_map' options instead.~~
 
 More details on the feed configuration options can be found [FeedConfig_v1 here]
 
@@ -161,7 +157,7 @@ verify_tls = 0
 }}}
 Note: Set the verify_tls option to 1 if the certificate used by the CIF server is signed by a trusted certificate authority.
 
-The command `cif -q infrastructure` should now return some results or no response at all if the feeds are empty, but it shouldn't return any errors. 
+The command `cif -q infrastructure/scan -c 1` should now return some results or no response at all if the feeds are empty, but it shouldn't return any errors. 
 
 The basic bash script below runs the cif client and automatically inserts the resulting firewall rules:
 {{{
@@ -169,11 +165,11 @@ The basic bash script below runs the cif client and automatically inserts the re
 echo "iptables -F" > /root/iptables.sh
 echo "iptables -X CIF_IN" >> /root/iptables.sh
 echo "iptables -X CIF_OUT" >> /root/iptables.sh
-/usr/local/bin/cif -C /root/.cif -q infrastructure/scan -s high -c 95 -p iptables | grep -v '\-j LOG' >> /root/iptables.sh
+/usr/local/bin/cif -C /root/.cif -q infrastructure/scan -c 95 -p iptables | grep -v '\-j LOG' >> /root/iptables.sh
 /bin/bash /root/iptables.sh
 }}}
 The first three lines flush the firewall rules to prevent errors from duplicate rules and to make sure old addresses/networks are removed once they are no longer in the feed.
-The third line runs the client with the iptables plugin to retrieve the infrastructure/scan feed. It also restricts the results to high severity results with a confidence level of 95 or higher. For more information on these parameters, refer to the following [http://code.google.com/p/collective-intelligence-framework/wiki/Feeds page]
+The third line runs the client with the iptables plugin to retrieve the infrastructure/scan feed. It also restricts the results to high severity results with a confidence level of 95 or higher. For more information on these parameters, refer to the following [http://code.google.com/p/collective-intelligence-framework/wiki/Feeds_v1 page]
 Rules to log the dropped packets are generated as well. However, a significant amount of traffic from a blocked source can fill logs quickly, so the example above shows how to remove these log rules by piping the cif client output through grep first. 
 The last line is what ultimately inserts the firewall rules by executing the iptables commands placed in /root/iptables.sh
 
