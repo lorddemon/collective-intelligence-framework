@@ -2,7 +2,7 @@
 
 <font color="red">
 
-* This should work with v1 RC5 and later. If not, let us know.*
+* This should work with v1 RC5 and later. The SSH Server sections have not yet been tested/reviewed/verified *
 
 </font>
 
@@ -183,7 +183,6 @@ This whitelist doesn't need to be located on any particular server since it's ad
 {{{
 [cifwestsshwhitelist]
 feed = '/opt/serverwhitelist.txt'
-impact = 'scanner whitelist'
 regex = "^(\\S+)$"
 regex_values = 'address'
 guid = everyone
