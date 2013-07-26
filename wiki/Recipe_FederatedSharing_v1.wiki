@@ -2,7 +2,7 @@
 
 <font color="red">
 
-* THIS DOES NOT WORK, NEEDS TO BE UPGRADED FOR v1 DO NOT USE *
+* This should work with v1 RC5 and later. If not, let us know.*
 
 </font>
 
