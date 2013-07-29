@@ -55,6 +55,10 @@ my ($err,$ret) = $cli->search({
 === Easy ===
 Beginning in RC5 (or v1-final), there is a simple way to submit simple keypairs to the cif-router using libcif. The underlying library will generate the Iodef messages automatically and send them to the router.
 {{{
+#!/usr/bin/perl -w
+
+use CIF::Client;
+
 my ($err,$cli) = CIF::Client->new({
     config          => $ENV{'HOME'}.'/.cif',
 });
