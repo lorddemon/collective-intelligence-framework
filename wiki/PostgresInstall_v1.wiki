@@ -193,10 +193,10 @@ Continue with the [ServerInstall_v1#Installing_CIF Installing CIF]
  # [http://www.pgexperts.com/document.html?id=36 Five Steps to PostgresSQL Performance]
  # [http://www.randombugs.com/linux/tuning-linux-system-database.html Tuning a Linux system for Database Server]
  # [http://www.amazon.com/PostgreSQL-High-Performance-Gregory-Smith/dp/184951030X/ref=sr_1_1?ie=UTF8&qid=1321356392&sr=8-1 Book: PostgreSQL 9.0 High Performance]
- # http://developer.postgresql.org/pgdocs/postgres/kernel-resources.html
- # http://momjian.us/main/writings/pgsql/hw_performance/
- # http://www.revsys.com/writings/postgresql-performance.html
- # http://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server
- # http://wiki.postgresql.org/wiki/FAQ
- # http://www.thegeekstuff.com/2009/05/15-advanced-postgresql-commands-with-examples/
- # http://wiki.postgresql.org/wiki/Disk_Usage
+ # [http://developer.postgresql.org/pgdocs/postgres/kernel-resources.html Managing Kernel Resources]
+ # [http://momjian.us/main/writings/pgsql/hw_performance/ PostgreSQL Hardware Performance Tuning]
+ # [http://www.revsys.com/writings/postgresql-performance.html Performance Tuning PostgreSQL]
+ # [http://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server Tuning Your PostgreSQL Server]
+ # [http://wiki.postgresql.org/wiki/FAQ PostgreSQL: FAQ]
+ # [http://www.thegeekstuff.com/2009/05/15-advanced-postgresql-commands-with-examples/ 15 Advanced PostgreSQL Commands with Examples]
+ # [http://wiki.postgresql.org/wiki/Disk_Usage PostgreSQL: Disk Usage]
