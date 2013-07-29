@@ -50,7 +50,7 @@ CIF comes with a variety of pre-built feed configurations, with that there are m
 || severity || <string> || see [TaxonomySeverity_v1 Severity] || no ||
 || source || <string> || source of the feed, usually the domain where the feed is from (eg: example.com) || no ||
 || zip_filename || <string> || when the feed is a zip file, this should identify what the zip header is || no ||
-
+|| goback || <int> || number of days to 'goback' over a feed based on the detecttime mapping, default usually 3 days ||
 === Delimited Text Files ===
 {{{
 confidence = 65
