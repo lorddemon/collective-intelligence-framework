@@ -52,7 +52,43 @@ my ($err,$ret) = $cli->search({
 });
 }}}
 == Submissions ==
-Submissions are currently a two-step process and require some knowledge of how [https://github.com/collectiveintel/iodef-pb-simple-perl iodef-pb-simple-perl] works. More complex examples exist within [https://github.com/collectiveintel/cif-smrt/tree/v1 cif-smrt].
+=== Easy ===
+Beginning in RC5 (or v1-final), there is a simple way to submit simple keypairs to the cif-router using libcif. The underlying library will generate the Iodef messages automatically and send them to the router.
+{{{
+my ($err,$cli) = CIF::Client->new({
+    config          => $ENV{'HOME'}.'/.cif',
+});
+
+if($err){
+    print 'ERROR: '.$err."\n";
+    exit(-1);
+}
+
+my $keypair = {
+    address     => 'example.com',
+    assessment  => 'botnet',
+    confidence  => 85,
+    description => 'zeus',
+    guid        => 'everyone',
+};
+
+my $ret = $cli->send_keypairs({ data => $keypair });
+die ::Dumper($ret);
+}}}
+
+The return:
+{{{
+$VAR1 = bless( {
+                 'status' => 1,
+                 'version' => '0.9905',
+                 'data' => [
+                             '506d28d0-bf49-4420-9ce8-138344095a1f'
+                           ],
+                 'type' => 3
+               }, 'MessageType' );
+}}}
+=== Advanced ===
+Advanced submissions are currently a two-step process and require some knowledge of how [https://github.com/collectiveintel/iodef-pb-simple-perl iodef-pb-simple-perl] works. More complex examples exist within [https://github.com/collectiveintel/cif-smrt/tree/v1 cif-smrt].
 {{{
 # this adapted from cif-smrt v1
 use CIF;
