@@ -50,7 +50,7 @@ $ perl Makefile.PL && make && sudo make install
 }}}
  # Install the remaining CPAN modules
 {{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Module::Build,Test::SharedFork,Test::TCP,Net::Abuse::Utils,Regexp::Common::net::CIDR,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::SSLeay,Net::DNS::Match,Log::Dispatch,Sys::MemInfo,LWPx::ParanoidAgent,ZeroMQ,Net::Whois::IP,Net::DNS,Email::Address'
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Test::SharedFork,Test::TCP,Net::Abuse::Utils,Regexp::Common::net::CIDR,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::SSLeay,Net::DNS::Match,Log::Dispatch,Sys::MemInfo,LWPx::ParanoidAgent,ZeroMQ,Net::Whois::IP,Net::DNS,Email::Address'
 }}}
  # Linux::Cpuinfo needs to be installed manually due to a signature bug, this will be fixed in v1-FINAL
 {{{
