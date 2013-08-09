@@ -71,7 +71,7 @@ Choose the distribution you used as your base operating system and install the r
 *We do NOT support non 'LTS' type distro's, eg: release cycles less than 18months, Fedora, non-LTS ubuntu, etc...*
 
  * (testing) [ServerInstall_DebianSqueeze_v1 Debian Squeeze (6)]
- * (unstable) [ServerInstall_DebianWheezy_v1 Debian Wheezy (7)] 
+ * (testing) [ServerInstall_DebianWheezy_v1 Debian Wheezy (7)] 
  * (testing) [ServerInstall_Ubuntu12_v1 Ubuntu 12 LTS] 
  * (testing) [ServerInstall_CentOS6_v1 CentOS 6] 
  * (testing) [ServerInstall_CentOS5_v1 CentOS 5]
