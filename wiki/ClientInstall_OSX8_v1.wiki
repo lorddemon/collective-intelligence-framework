@@ -1,9 +1,5 @@
 #summary OS X client install doc (v1)
 
-<font color='red'>
-=UNDER CONSTRUCTION=
-</font>
-
 = Introduction =
 This assumes you're using macports (could be adapted for homebrew)
 
