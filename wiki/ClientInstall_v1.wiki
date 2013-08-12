@@ -34,6 +34,7 @@ A list of known [https://github.com/collectiveintel/cif-v1/issues issues] for v1
  * (testing) [ClientInstall_Ubuntu12_v1 Ubuntu 12] 
  * (testing) [ClientInstall_CentOS6_v1 CentOS 6] 
  * (testing) [ClientInstall_OSX7_v1 OSX 7] 
+ * (unstable) [ClientInstall_OSX8_v1 OSX 8]
 == Package ==
  # download the latest [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=summary%3Alibcif-v1+label%3ARC3+-label%3Atesting+-label%3ADeprecated package]
 {{{
