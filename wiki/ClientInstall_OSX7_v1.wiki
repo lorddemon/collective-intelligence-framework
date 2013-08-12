@@ -34,6 +34,7 @@ $ ./configure --prefix=/opt/local --with-perl --with-perl-compat
 $ make
 $ sudo make install
 }}}
+ # if you have compile problems, read [https://groups.google.com/forum/#!topic/ci-framework/fSwQSJlpYOk this thread]
  # test to make sure uuid is installed properly
 {{{
 $ perl -e 'use OSSP::uuid'
