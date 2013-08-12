@@ -36,6 +36,7 @@ $ tar -zxvf uuid-1.6.2.tar.gz
 $ cd uuid-1.6.2
 }}}
  # read [https://groups.google.com/forum/#!topic/ci-framework/fSwQSJlpYOk this thread], you'll need to fix some of the headers before you compile
+ # continue on with the compile
 {{{
 $ ./configure --prefix=/opt/local --with-perl --with-perl-compat
 $ make
