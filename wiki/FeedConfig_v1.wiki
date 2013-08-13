@@ -9,6 +9,9 @@ CIF comes with a variety of pre-built feed configurations, with that there are m
 = Details =
 
 == File Format ==
+
+All parameters can be a Global parameter or a Feed parameter. If the parameter is specified twice, the Feed parameter will supersede the Global parameter. 
+
 {{{
 #Global Parameters
 <parameter> = <value>
