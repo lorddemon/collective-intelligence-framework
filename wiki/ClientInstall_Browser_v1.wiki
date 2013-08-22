@@ -1,5 +1,11 @@
 #summary CIF Client for Chrome/Firefox (v1)
 
+<font color="red">
+
+Ensure the links point to the most recent Chrome and FF plugins - gi 8/22/2013
+
+</font>
+
 * Table of Contents *
 <wiki:toc max_depth="3" />
 
