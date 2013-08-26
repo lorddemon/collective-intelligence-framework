@@ -2,6 +2,9 @@
 
 = Introduction =
 
+RC 4.1 bits
+https://www.dropbox.com/sh/69g1kl18lzfgd42/gQ_ohBVago
+
 == Server install single host ==
 
 || OS || arch || CIF || Result || Date || Person ||
@@ -21,4 +24,4 @@ Success is defined as the following without errors:
 
 == Server install multiple host ==
 
-== Result == 
+|| OS || arch || CIF || Result || Date || Person ||
