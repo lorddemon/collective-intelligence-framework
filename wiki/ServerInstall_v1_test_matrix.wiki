@@ -43,6 +43,8 @@ Success is defined as the following without errors:
 
 == Web browser client install ==
 
+[https://code.google.com/p/collective-intelligence-framework/wiki/ClientInstall_Browser_v1 Browser install instructions]
+
 || Browser || CIF Server || Query || Submit || Date || Person ||
 || Firefox 23.0.1 || v0 || || || || ||
 || Firefox 23.0.1 || v1 || || || || ||
