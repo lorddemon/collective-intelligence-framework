@@ -7,13 +7,13 @@
 || OS || CIF || Result || Date || Person ||
 || Ubuntu 12.04.3 || cif-v1-1.0.0-rc.4.1.tar.gz || ? || 8/26/2013 || giovino ||
 
-== Multiple host ==
-
-== Result == 
-
 Success is defined as the following without errors:
  * time cif_crontool -p hourly -d -P
  * time cif_crontool -p daily -d -P
  * cif -d -M -q google.com
  * time cif_feed -d
  * time cif -M -d -q infrastructure/scan -c 85
+
+== Multiple host ==
+
+== Result == 
