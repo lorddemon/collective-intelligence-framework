@@ -12,8 +12,8 @@
 || Ubuntu 12.04.3 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || ? || 8/26/2013 || giovino ||
 || Debian 6.0.7 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
 || Debian 7.1 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
-|| CentOS 6.4 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
 || CentOS 5.9 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
+|| CentOS 6.4 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
 
 Success is defined as the following without errors:
  * time cif_crontool -p hourly -d -P
@@ -28,6 +28,15 @@ Success is defined as the following without errors:
 [https://code.google.com/p/collective-intelligence-framework/wiki/ClientInstall_v1 CLI install instructions]
 
 || OS || arch || CIF || Result || Date || Person ||
+|| Ubuntu 12.04.3 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || ||  ||  ||
+|| Debian 6.0.7 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
+|| Debian 7.1 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
+|| CentOS 5.9 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
+|| CentOS 6.4 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
+|| OS X 10.8 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
+|| OS X 10.9 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
+
+
 
 == Server install multiple host ==
 
