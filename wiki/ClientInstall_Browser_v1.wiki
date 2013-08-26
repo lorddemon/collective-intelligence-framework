@@ -34,7 +34,7 @@ This extension for Google Chrome/Firefox allows you to query CIF servers and get
   # Click *Save* and close the settings page.
 
 == Firefox ==
-  # From Firefox, download the [https://github.com/csirtgadgets/cif-client-chrome/releases latest cif-client-firefox release]. Drag the downloaded file into the browser to install it.
+  # From Firefox, download the [https://github.com/collectiveintel/cif-client-chrome/releases latest cif-client-firefox release]. Drag the downloaded file into the browser to install it.
   # Right click CIF button (top right) -> *Settings*
   # Enter your *Nickname* for the host you're connecting to (e.g. _CIF-West_)
   # Enter your URL (e.g. _https://example.org/api/_)
