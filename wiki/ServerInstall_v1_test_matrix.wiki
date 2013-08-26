@@ -6,6 +6,8 @@
 
 == Server install single host ==
 
+[https://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall_v1 Install instructions]
+
 || OS || arch || CIF || Result || Date || Person ||
 || Ubuntu 12.04.3 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || ? || 8/26/2013 || giovino ||
 || Debian 6.0.7 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
