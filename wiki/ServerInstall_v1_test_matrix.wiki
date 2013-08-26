@@ -38,6 +38,21 @@ Success is defined as the following without errors:
 || OS X 10.9 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
 
 Success is defined as the following without errors:
+ * abc
+ * def
+
+== Web browser client install ==
+
+|| Browser || CIF Server || Query || Submit || Date || Person ||
+|| Firefox 23.0.1 || v0 || || || ||
+|| Firefox 23.0.1 || v1 || || || ||
+|| Chrome 29.0.x || v0 || || || ||
+|| Chrome 29.0.x || v1 || || || ||
+
+Success is defined as the following without errors:
+
+ * Can query to a cif server
+ * Can submit to a cif server
 
 == Server install multiple host ==
 
