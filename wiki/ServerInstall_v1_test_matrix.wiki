@@ -2,8 +2,12 @@
 
 = Introduction =
 
+== Single host ==
+
 || OS || CIF || Result || Date || Person ||
 || Ubuntu 12.04.3 || cif-v1-1.0.0-rc.4.1.tar.gz || ? || 8/26/2013 || giovino ||
+
+== Multiple host ==
 
 == Result == 
 
