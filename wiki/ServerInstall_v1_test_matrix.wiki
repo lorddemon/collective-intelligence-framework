@@ -6,6 +6,10 @@
 
 || OS || CIF || Result || Date || Person ||
 || Ubuntu 12.04.3 || cif-v1-1.0.0-rc.4.1.tar.gz || ? || 8/26/2013 || giovino ||
+|| || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
+|| || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
+|| || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
+|| || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
 
 Success is defined as the following without errors:
  * time cif_crontool -p hourly -d -P
