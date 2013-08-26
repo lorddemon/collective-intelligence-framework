@@ -13,7 +13,8 @@
 
 Success is defined as the following without errors:
  * time cif_crontool -p hourly -d -P
- * time cif_crontool -p daily -d -P
+ * time cif_crontool -p daily -d
+ * time cif_smrt ...
  * cif -d -M -q google.com
  * time cif_feed -d
  * time cif -M -d -q infrastructure/scan -c 85
