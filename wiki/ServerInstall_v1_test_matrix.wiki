@@ -16,6 +16,7 @@
 || CentOS 6.4 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
 
 Success is defined as the following without errors:
+ * server installs without error
  * time cif_crontool -p hourly -d -P
  * time cif_crontool -p daily -d
  * time cif_smrt -C /home/cif/.cif -r /opt/cif/etc/zeustracker.cfg -f dropzones -d -P
@@ -36,7 +37,7 @@ Success is defined as the following without errors:
 || OS X 10.8 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
 || OS X 10.9 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
 
-
+Success is defined as the following without errors:
 
 == Server install multiple host ==
 
