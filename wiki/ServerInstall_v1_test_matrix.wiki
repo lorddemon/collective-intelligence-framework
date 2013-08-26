@@ -9,7 +9,7 @@
 || Debian 6.0.7 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
 || Debian 7.1 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
 || CentOS 6.4 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
-|| || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
+|| CentOS 5.9 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
 
 Success is defined as the following without errors:
  * time cif_crontool -p hourly -d -P
