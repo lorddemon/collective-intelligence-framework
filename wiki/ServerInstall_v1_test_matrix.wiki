@@ -1,4 +1,3 @@
-#test matrix for CIF 1.0 installation
+#summary matrix for CIF 1.0 installation
 
 = Introduction =
-
