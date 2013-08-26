@@ -36,7 +36,7 @@ A list of known [https://github.com/collectiveintel/cif-v1/issues issues] for v1
  * (testing) [ClientInstall_OSX7_v1 OSX 7] 
  * (unstable) [ClientInstall_OSX8_v1 OSX 8]
 == Package ==
- # download the latest [https://code.google.com/p/collective-intelligence-framework/downloads/list?can=2&q=summary%3Alibcif-v1+label%3ARC3+-label%3Atesting+-label%3ADeprecated package]
+ # download the latest [https://github.com/collectiveintel/libcif/releases release] (make sure you use the green button to download, *NOT* the 'source code'
 {{{
 $ tar -xzvf libcif-v1-XXX.tar.gz
 $ cd libcif-v1-XXX
