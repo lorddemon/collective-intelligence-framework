@@ -16,7 +16,7 @@
 || Debian 6.0.7 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || success || 8/27/2013 || giovino ||
 || Debian 7.1 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
 || CentOS 5.9 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
-|| CentOS 6.4 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || success || 2013-08-027 || wy ||
+|| CentOS 6.4 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || success || 2013-08-27 || wy ||
 
 Success is defined as the following without errors:
  * server installs without error
