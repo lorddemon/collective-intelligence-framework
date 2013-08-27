@@ -64,6 +64,8 @@ Success is defined as the following without errors:
 
 === Smrt install single host ===
 
+[SmrtInstall_v1 Smrt install instructions]
+
 || OS || arch || CIF || Result || Date || Person ||
 || Ubuntu 12.04.3 || amd64 || || ||  ||  ||
 || Debian 6.0.7 || amd64 || || || || ||
