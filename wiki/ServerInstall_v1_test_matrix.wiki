@@ -37,8 +37,8 @@ time cif -M -d -q infrastructure/scan -c 85
 || Debian 7.1 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
 || CentOS 5.9 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
 || CentOS 6.4 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
+|| OS X 10.7 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
 || OS X 10.8 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
-|| OS X 10.9 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
 
 Success is defined as the following without errors:
  * aaa
@@ -49,11 +49,11 @@ Success is defined as the following without errors:
 
 [https://code.google.com/p/collective-intelligence-framework/wiki/ClientInstall_Browser_v1 Browser install instructions]
 
-|| Browser || plugin ver || CIF Server || Query || Submit || Date || Person ||
-|| Firefox 23.0.1 || || v0 || || || || ||
-|| Firefox 23.0.1 || || v1 || || || || ||
-|| Chrome 29.0.x || || v0 || || || || ||
-|| Chrome 29.0.x || || v1 || || || || ||
+|| Browser || plugin ver || Query || Submit || Date || Person ||
+|| Firefox 23.0.1 || || v0 || success || 2013-08-27 || wy ||
+|| Firefox 23.0.1 || || v1 || success || 2013-08-27 || wy ||
+|| Chrome 29.0.x || || v0 || success || 2013-08-27 || wy ||
+|| Chrome 29.0.x || || v1 || success || 2013-08-27 || wy ||
 
 Success is defined as the following without errors:
 
