@@ -92,6 +92,22 @@ Success is defined as the following without errors:
 
 === Database interface single host ===
 
+[DbiInstall_v1 Database interface install instructions]
+
+|| OS || arch || CIF || Result || Date || Person ||
+|| Ubuntu 12.04.3 || amd64 || || ||  ||  ||
+|| Debian 6.0.7 || amd64 || || || || ||
+|| CentOS 6.4 || amd64 || || || || ||
+
+Success is defined as the following without errors:
+ * aaa
+ * bbb
+ * ccc
+
+=== PostgreSQL single host ===
+
+[PostgresqlStandalone_v1 PostgreSQL install instructions]
+
 || OS || arch || CIF || Result || Date || Person ||
 || Ubuntu 12.04.3 || amd64 || || ||  ||  ||
 || Debian 6.0.7 || amd64 || || || || ||
