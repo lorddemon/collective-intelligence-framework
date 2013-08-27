@@ -49,11 +49,11 @@ Success is defined as the following without errors:
 
 [https://code.google.com/p/collective-intelligence-framework/wiki/ClientInstall_Browser_v1 Browser install instructions]
 
-|| Browser || CIF Server || Query || Submit || Date || Person ||
-|| Firefox 23.0.1 || v0 || || || || ||
-|| Firefox 23.0.1 || v1 || || || || ||
-|| Chrome 29.0.x || v0 || || || || ||
-|| Chrome 29.0.x || v1 || || || || ||
+|| Browser || plugin ver || CIF Server || Query || Submit || Date || Person ||
+|| Firefox 23.0.1 || || v0 || || || || ||
+|| Firefox 23.0.1 || || v1 || || || || ||
+|| Chrome 29.0.x || || v0 || || || || ||
+|| Chrome 29.0.x || || v1 || || || || ||
 
 Success is defined as the following without errors:
 
