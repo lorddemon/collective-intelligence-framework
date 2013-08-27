@@ -41,8 +41,9 @@ time cif -M -d -q infrastructure/scan -c 85
 || OS X 10.9 || amd64 || libcif-v1.0.0-rc.4.1.tar.gz || || || ||
 
 Success is defined as the following without errors:
- * abc
- * def
+ * aaa
+ * bbb
+ * ccc
 
 == Web browser client install ==
 
@@ -61,4 +62,38 @@ Success is defined as the following without errors:
 
 == Server install multiple host ==
 
+=== Smrt install single host ===
+
 || OS || arch || CIF || Result || Date || Person ||
+|| Ubuntu 12.04.3 || amd64 || || ||  ||  ||
+|| Debian 6.0.7 || amd64 || || || || ||
+|| CentOS 6.4 || amd64 || || || || ||
+
+Success is defined as the following without errors:
+ * aaa
+ * bbb
+ * ccc
+
+=== Router install single host ===
+
+|| OS || arch || CIF || Result || Date || Person ||
+|| Ubuntu 12.04.3 || amd64 || || ||  ||  ||
+|| Debian 6.0.7 || amd64 || || || || ||
+|| CentOS 6.4 || amd64 || || || || ||
+
+Success is defined as the following without errors:
+ * aaa
+ * bbb
+ * ccc
+
+=== Database interface single host ===
+
+|| OS || arch || CIF || Result || Date || Person ||
+|| Ubuntu 12.04.3 || amd64 || || ||  ||  ||
+|| Debian 6.0.7 || amd64 || || || || ||
+|| CentOS 6.4 || amd64 || || || || ||
+
+Success is defined as the following without errors:
+ * aaa
+ * bbb
+ * ccc
