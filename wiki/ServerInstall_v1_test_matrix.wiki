@@ -78,6 +78,8 @@ Success is defined as the following without errors:
 
 === Router install single host ===
 
+[RouterInstall_v1 Router install instructions]
+
 || OS || arch || CIF || Result || Date || Person ||
 || Ubuntu 12.04.3 || amd64 || || ||  ||  ||
 || Debian 6.0.7 || amd64 || || || || ||
