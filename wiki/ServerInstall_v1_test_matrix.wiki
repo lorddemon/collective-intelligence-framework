@@ -30,29 +30,6 @@ time cif_feed -d
 time cif -M -d -q infrastructure/scan -c 85
 }}}
 
-== Upgrade installation ==
-
-[Upgrade_v1 Single server upgrade instructions]
-
-|| OS || arch || CIF || Result || Date || Person ||
-|| Ubuntu 12.04.3 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
-|| Debian 6.0.7 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
-|| Debian 7.1 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
-|| CentOS 5.9 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
-|| CentOS 6.4 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
-
-Success is defined as the following without errors:
- * server installs without error
- * run the following commands without error
-{{{
-time cif_crontool -p hourly -d -P
-time cif_crontool -p daily -d
-time cif_smrt -C /home/cif/.cif -r /opt/cif/etc/zeustracker.cfg -f dropzones -d -P
-cif -d -M -q google.com
-time cif_feed -d
-time cif -M -d -q infrastructure/scan -c 85
-}}}
-
 == Server install multiple host ==
 
 === Smrt install single host ===
@@ -110,6 +87,29 @@ Success is defined as the following without errors:
  * aaa
  * bbb
  * ccc
+
+== Upgrade installation ==
+
+[Upgrade_v1 Single server upgrade instructions]
+
+|| OS || arch || CIF || Result || Date || Person ||
+|| Ubuntu 12.04.3 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
+|| Debian 6.0.7 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
+|| Debian 7.1 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
+|| CentOS 5.9 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
+|| CentOS 6.4 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
+
+Success is defined as the following without errors:
+ * server installs without error
+ * run the following commands without error
+{{{
+time cif_crontool -p hourly -d -P
+time cif_crontool -p daily -d
+time cif_smrt -C /home/cif/.cif -r /opt/cif/etc/zeustracker.cfg -f dropzones -d -P
+cif -d -M -q google.com
+time cif_feed -d
+time cif -M -d -q infrastructure/scan -c 85
+}}}
 
 = Client =
 == CLI client install ==
