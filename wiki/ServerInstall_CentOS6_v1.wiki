@@ -76,7 +76,7 @@ error (network unreachable) resolving '0.239.22.98.zen.spamhaus.org/A/IN': 2001:
 }}}
  # modify /etc/sysconfig/named:
 {{{
-$ echo "OPTIONS="-4" | sudo tee -a /etc/sysconfig/named
+$ echo OPTIONS="-4" | sudo tee -a /etc/sysconfig/named
 }}}
  # restart bind
 === Resolve Config ===
