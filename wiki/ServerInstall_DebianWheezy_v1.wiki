@@ -15,7 +15,7 @@ This assumes a clean install of Debian Wheezy (v7.x) with sudo and all base syst
 = Details =
 == Caveats ==
 === Minimal Debian ===
- # make sure apt is up to dateexpa
+ # make sure apt is up to date
 {{{
 # aptitude update
 }}}
