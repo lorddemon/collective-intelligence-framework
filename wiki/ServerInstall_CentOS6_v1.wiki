@@ -67,7 +67,6 @@ $ sudo yum -y install perl-Digest-SHA libxml2 libxml2-devel perl-XML-LibXML perl
 }}}
  # install the Test::More module
 {{{
-{{{
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Test::More'
 }}}
  # need to manually install a version of the 'version' module, as most recent update breaks on CentOS6
