@@ -17,7 +17,7 @@ This assumes a clean install of Debian Wheezy (v7.x) with sudo and all base syst
 === Minimal Debian ===
  # make sure apt is up to date
 {{{
-# aptitude update
+# aptitude update && aptitude safe-upgrade
 }}}
  # minimal Debian does not come with sudo. If you used the net boot version of the debian installer, you'll need to install this as root:
 {{{
