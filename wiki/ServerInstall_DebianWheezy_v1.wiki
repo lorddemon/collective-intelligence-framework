@@ -1,11 +1,5 @@
 #summary Wheezy install doc (v1)
 
-<font color="red">
-
-* THIS DOC HAS NOT BEEN FULLY TESTED, USE AT YOUR OWN RISK, YOU MAY OR MAY NOT GET SUPPORT *
-
-</font>
-
 = Introduction =
 This assumes a clean install of Debian Wheezy (v7.x) with sudo and all base system updates applied.
 
@@ -41,18 +35,11 @@ $ cd zeromq-2.2.0
 $ ./configure && make && sudo make install
 $ sudo ldconfig
 }}}
- # install Net::Abuse::Utils manually
-{{{
-$ wget http://search.cpan.org/CPAN/authors/id/M/MI/MIKEGRB/Net-Abuse-Utils-0.13.tar.gz
-$ tar xvzf Net-Abuse-Utils-0.13.tar.gz
-$ cd Net-Abuse-Utils-0.13/
-$ perl Makefile.PL && make && sudo make install
-}}}
  # Install the remaining CPAN modules
 {{{
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Test::SharedFork,Test::TCP,Net::Abuse::Utils,Regexp::Common::net::CIDR,LWP::Protocol::https,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Snort::Rule,Time::HiRes,Net::Abuse::Utils::Spamhaus,Net::SSLeay,Net::DNS::Match,Log::Dispatch,Sys::MemInfo,LWPx::ParanoidAgent,ZeroMQ,Net::Whois::IP,Net::DNS,Email::Address'
 }}}
- # Linux::Cpuinfo needs to be installed manually due to a signature bug, this will be fixed in v1-FINAL
+ # Linux::Cpuinfo needs to be installed manually due to a signature bug
 {{{
 $ wget http://search.cpan.org/CPAN/authors/id/J/JS/JSTOWE/Linux-Cpuinfo-1.7.tar.gz
 $ tar -zxvf Linux-Cpuinfo-1.7.tar.gz
