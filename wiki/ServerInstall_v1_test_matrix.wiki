@@ -12,10 +12,10 @@
 [https://code.google.com/p/collective-intelligence-framework/wiki/ServerInstall_v1 Server install instructions]
 
 || OS || arch || CIF || Result || Date || Person ||
-|| Ubuntu 12.04.3 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || success || 8/26/2013 || giovino ||
-|| Debian 6.0.7 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || success || 8/27/2013 || giovino ||
+|| Ubuntu 12.04.3 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || success || 2013-08-26 || giovino ||
+|| Debian 6.0.7 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || success || 2013-08-27 || giovino ||
 || Debian 7.1 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || success || 2013-08-28 || wy ||
-|| CentOS 5.9 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || || ||
+|| CentOS 5.9 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || || 2013-08-29 || giovino ||
 || CentOS 6.4 || amd64 || cif-v1-1.0.0-rc.4.1.tar.gz || success || 2013-08-27 || wy ||
 
 Success is defined as the following without errors:
