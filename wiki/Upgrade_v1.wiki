@@ -1,9 +1,5 @@
 #summary upgrading from a v0 instance
 
-<font color="red">
-*UNDER CONSTRUCTION DO NOT USE
-</font>
-
 * Table of Contents *
 <wiki:toc max_depth="2" />
 
@@ -226,6 +222,31 @@ $ sudo mv /opt/cif /opt/cif-v1-old
 $ tar -xzvf cif-v1-1.X.X.tar.gz
 $ cd cif-v1-1.X.X
 $ ./configure && make testdeps
+$ sudo make install
+}}}
+ # restart apache [ServerInstall_v1#Router_Setup and test]
+
+== v1-RC4 ==
+----
+If you're upgrading from RC4, there's a few things that need to be done
+
+ # backup the old cif directory
+{{{
+$ sudo mv /opt/cif /opt/cif-v1-old
+}}}
+ # update Iodef::Pb::Simple
+{{{
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Iodef::Pb::Simple'
+}}}
+ # install the latest CIF [https://github.com/collectiveintel/cif-v1/releases release] (be sure to pick the green-highlighted pre-built package, not the 'source')
+{{{
+$ tar -xzvf cif-v1-1.X.X.tar.gz
+$ cd cif-v1-1.X.X
+$ ./configure && make testdeps
+}}}
+ # if 'make testdeps' succeeds, go a-head with the install, otherwise [ServerInstall_v1#Required_applications_and_dependencies walk through your OS/Disto guide for any missing libraries]
+ # finish with the install
+{{{
 $ sudo make install
 }}}
  # restart apache [ServerInstall_v1#Router_Setup and test]
