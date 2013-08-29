@@ -39,6 +39,9 @@ $ sudo vi /etc/selinux/config
 SELINUX=permissive
 }}}
  1. restart the server for the kernel changes to take effect
+{{{
+$ sudo /sbin/shutdown -r now
+}}}
 
 == Dependencies ==
 ----
