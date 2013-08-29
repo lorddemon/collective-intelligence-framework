@@ -26,7 +26,10 @@ There are some weird issues with the way RHEL (and therefor CentOS) handle the i
 === SELINUX ===
 Selinux either needs to be disabled or a [http://wiki.centos.org/HowTos/SELinux policy] needs to be written allowing postgres r/w access to /mnt/archive and /mnt/index
 
- 1. disable selinux via /etc/selinux/config
+ 1. disable selinux
+{{{
+$ sudo vi /etc/selinux/config
+}}}
 {{{
 # This file controls the state of SELinux on the system.
 # SELINUX= can take one of these three values:
