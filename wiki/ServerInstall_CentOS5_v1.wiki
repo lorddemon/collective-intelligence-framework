@@ -50,7 +50,12 @@ Click on the option that best fits your needs and continue.
 == CPAN ==
 ----
 === Configure CPAN ===
- 1. configure CPAN for use (as root)
+
+ 1. become root
+{{{
+$ sudo su -
+}}}
+ 1. configure CPAN for use
 {{{
 $ perl -MCPAN -e 'shell'
 }}}
