@@ -59,7 +59,12 @@ $ perl -MCPAN -e 'shell'
  1. when returned to the `cpan>` prompt, type `exit`
 
 === Update CPAN ===
- 1. update CPAN (as root)
+
+ 1. become root
+{{{
+$ sudo su -
+}}}
+ 1. update CPAN
 {{{
 $ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Bundle::CPAN'
 }}}		
