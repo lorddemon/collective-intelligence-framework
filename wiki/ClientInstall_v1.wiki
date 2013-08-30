@@ -29,10 +29,10 @@ A list of known [https://github.com/collectiveintel/cif-v1/issues issues] for v1
 
 = Installation =
 == Required Dependencies ==
- * (testing) [ClientInstall_DebianSqueeze_v1 Debian Squeeze (6.x)]
- * (testing) [ClientInstall_DebianWheezy_v1 Debian Wheezy (7.x)]
- * (testing) [ClientInstall_Ubuntu12_v1 Ubuntu 12] 
- * (testing) [ClientInstall_CentOS6_v1 CentOS 6] 
+ * (stable) [ClientInstall_DebianSqueeze_v1 Debian Squeeze (6.x)]
+ * (stable) [ClientInstall_DebianWheezy_v1 Debian Wheezy (7.x)]
+ * (stable) [ClientInstall_Ubuntu12_v1 Ubuntu 12] 
+ * (stable) [ClientInstall_CentOS6_v1 CentOS 6] 
  * (testing) [ClientInstall_OSX7_v1 OSX 7] 
  * (unstable) [ClientInstall_OSX8_v1 OSX 8]
 == Package ==
