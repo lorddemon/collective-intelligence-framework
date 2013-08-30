@@ -238,6 +238,12 @@ $ sudo mv /opt/cif /opt/cif-v1-old
 {{{
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Iodef::Pb::Simple'
 }}}
+ # if it doesn't auto-update to v0.20 install it manually:
+{{{
+$ wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/iodef/Iodef-Pb-Simple-0.20.tar.gz
+$ tar -zxvf Iodef-Pb-Simple-0.20.tar.gz && cd Iodef-Pb-Simple-0.20
+$ perl Makefile.PL && make && sudo make install
+}}}
  # install the latest CIF [https://github.com/collectiveintel/cif-v1/releases release] (be sure to pick the green-highlighted pre-built package, not the 'source')
 {{{
 $ tar -xzvf cif-v1-1.X.X.tar.gz
