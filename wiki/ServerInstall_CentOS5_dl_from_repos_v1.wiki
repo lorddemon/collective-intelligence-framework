@@ -75,6 +75,11 @@ http://dl.fedoraproject.org/pub/epel/5/x86_64/perl-PAR-Dist-0.25-2.el5.noarch.rp
 http://dl.fedoraproject.org/pub/epel/5/x86_64/perl-Params-Validate-0.88-3.el5.x86_64.rpm
 http://dl.fedoraproject.org/pub/epel/5/x86_64/perl-YAML-Tiny-1.04-2.el5.noarch.rpm
 http://dl.fedoraproject.org/pub/epel/5/x86_64/perl-version-0.7203-1.el5.x86_64.rpm
+http://dl.fedoraproject.org/pub/epel/5/x86_64/perl-Module-Load-0.12-1.el5.noarch.rpm
+http://dl.fedoraproject.org/pub/epel/5/x86_64/perl-Locale-Maketext-Simple-0.18-1.el5.noarch.rpm
+http://dl.fedoraproject.org/pub/epel/5/x86_64/perl-Module-Load-Conditional-0.18-1.el5.noarch.rpm
+http://dl.fedoraproject.org/pub/epel/5/x86_64/perl-Params-Check-0.26-2.el5.noarch.rpm
+http://dl.fedoraproject.org/pub/epel/5/x86_64/perl-Locale-Maketext-Lexicon-0.62-1.el5.noarch.rpm
 }}}
  1. install the downloaded packages
 {{{
