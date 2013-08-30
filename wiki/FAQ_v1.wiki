@@ -9,7 +9,7 @@
 ----
 If what you're looking for doesn't appear in the FAQ, here's what info we'll probably need when you ask the list, be sure to post the relevant information:
 
- * [https://groups.google.com/forum/?fromgroups#!tags/ci-framework/ SEARCH THE MAILING LIST], there's a lot of good info in there.
+ * [https://groups.google.com/forum/?fromgroups#!forum/ci-framework SEARCH THE MAILING LIST], there's a lot of good info in there.
  * steps to reproduce the problem
  * release version of your OS, and of CIF
  * your *obfuscated* config
