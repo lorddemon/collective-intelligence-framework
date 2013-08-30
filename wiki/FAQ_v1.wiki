@@ -4,10 +4,12 @@
 *Frequently Asked Questions*
 
 <wiki:toc max_depth="4" />
-
-==== BEFORE YOU BEGIN =====
+----
+===BEFORE YOU BEGIN ===
+----
 If what you're looking for doesn't appear in the FAQ, here's what info we'll probably need when you ask the list, be sure to post the relevant information:
 
+ * [https://groups.google.com/forum/?fromgroups#!tags/ci-framework/faq/topics SEARCH THE MAILING LIST], there's a lot of good info in there.
  * steps to reproduce the problem
  * release version of your OS, and of CIF
  * your *obfuscated* config
@@ -19,16 +21,13 @@ $ sudo ps aux | grep cif_
  * use something like pastebin to paste the relevant information
  * *BE SURE TO OBFUSCATE SENSITIVE DATA*
 
-==== Undocumented FAQ's ====
+
 ----
-
-Currently evolving FAQ's can be found via the [https://groups.google.com/forum/?fromgroups#!tags/ci-framework/faq/topics mailing list] FAQ tag
-
-==== What native feeds are available out of the box? ====
+=== What native feeds are available out of the box? ===
 ----
 See the [API_FeedTypes_v1 API]
 
-==== When I try to pull a feed, no data is returned? ====
+=== When I try to pull a feed, no data is returned? ===
 ----
  1. Ensure you are using valid [FeedTypes_v1 feed syntax]
  1. Ensure you have [ServerInstall_v1#Enabling_Feed_Generation enabled feed generation]
@@ -61,16 +60,19 @@ feed limit:         50
 $ /opt/cif/bin/cif_feed -d >> /home/cif/cif_feed.log 2>&1
 }}}
 
-==== Why does the 'guid' field print out as a 'uuid' instead of my group name? ====
+----
+=== Why does the 'guid' field print out as a 'uuid' instead of my group name? ===
 ----
 
 See: [GroupSupport_v1 Group Support] and  [https://groups.google.com/d/msg/ci-framework/Ya7RqUF6OQ0/jW2BEoD7DR4J the archive]
 
-==== How much disk space will I need? ====
+----
+=== How much disk space will I need? ===
 ----
 In testing with the default data sets, 23 million records used 6GB in the archive table and 12GB in the index table. That averages out to roughly 1.3 million records per GB. You can reduce disk space over time be pruning the index tables. 
 
-==== Too many open files (signaler.cpp:330) ====
+----
+=== Too many open files (signaler.cpp:330) ===
 ----
 ==== Ubuntu 12 ====
 Edit /etc/security/limits.conf and add:
@@ -79,7 +81,8 @@ Edit /etc/security/limits.conf and add:
 
 reference: https://groups.google.com/d/topic/ci-framework/LDNSJnf6BZg/discussion
 
-==== Is there an easy way to purge my current repo and start over ====
+----
+=== Is there an easy way to purge my current repo and start over ===
 ----
 
 running 'make purgedb' will purge all your tables, except for the apikeys. 
