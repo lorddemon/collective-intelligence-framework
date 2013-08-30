@@ -28,7 +28,7 @@ $ sudo yum -y install libapreq2 libapreq2-devel perl-libapreq2 zeromq zeromq-dev
 }}}		
  1. install the baseline perl modules
 {{{
-$ sudo yum -y install perl-Digest-SHA libxml2 libxml2-devel perl-XML-LibXML uuid-perl perl-DBD-Pg perl-XML-RSS perl-JSON perl-Unicode-String perl-Config-Simple perl-Module-Pluggable perl-MIME-Lite perl-Class-Accessor perl-YAML perl-XML-Parser perl-Net-DNS perl-DateTime-Format-DateParse perl-IO-Socket-INET6 openssl-devel perl-Module-Install perl-Net-SSLeay perl-Class-Trigger perl-IO-Socket-SSL
+$ sudo yum -y install perl-Module-Load-Conditional perl-Digest-SHA libxml2 libxml2-devel perl-XML-LibXML uuid-perl perl-DBD-Pg perl-XML-RSS perl-JSON perl-Unicode-String perl-Config-Simple perl-Module-Pluggable perl-MIME-Lite perl-Class-Accessor perl-YAML perl-XML-Parser perl-Net-DNS perl-DateTime-Format-DateParse perl-IO-Socket-INET6 openssl-devel perl-Module-Install perl-Net-SSLeay perl-Class-Trigger perl-IO-Socket-SSL
 }}}
 
 == Continue with installation ==
