@@ -77,7 +77,7 @@ $ sudo su -
 }}}
  1. update CPAN
 {{{
-$ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install JSON::PP,Bundle::CPAN'
+$ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Bundle::CPAN'
 }}}		
  1. If prompted during install, accept default values.
  1. Install (as root) the remaining CPAN modules. Note: changing the order of the packages in the above line can result in packages not building/installing correctly.
