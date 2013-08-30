@@ -5,6 +5,20 @@
 
 <wiki:toc max_depth="4" />
 
+==== BEFORE YOU BEGIN =====
+If what you're looking for doesn't appear in the FAQ, here's what info we'll probably need when you ask the list, be sure to post the relevant information:
+
+ * steps to reproduce the problem
+ * release version of your OS, and of CIF
+ * your [obfuscated] config
+ * recent apache logs as a result of the problem
+ * a list of running processes that might be useful:
+{{{
+$ sudo ps aux | grep cif_
+}}}
+ * use something like pastebin to paste the relevant information
+ * *BE SURE TO OBFUSCATE SENSITIVE DATA*
+
 ==== Undocumented FAQ's ====
 ----
 
