@@ -1,9 +1,11 @@
 #summary centos 5 install doc (v1)
 
 <font color='red'>
-=Unstable=
+=Testing=
  * Last tested on RC2
- * Perl Module's updated for RC3
+ * 2013-08-30 - giovino
+  * updated required dependencies and perl modules via cpan. 
+  * need to test a full install
 </font>
 
 = Introduction =
