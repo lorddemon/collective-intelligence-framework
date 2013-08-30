@@ -10,7 +10,7 @@ If what you're looking for doesn't appear in the FAQ, here's what info we'll pro
 
  * steps to reproduce the problem
  * release version of your OS, and of CIF
- * your [obfuscated] config
+ * your *obfuscated* config
  * recent apache logs as a result of the problem
  * a list of running processes that might be useful:
 {{{
