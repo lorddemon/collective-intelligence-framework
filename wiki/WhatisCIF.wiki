@@ -30,7 +30,7 @@ CIF supports [AddingFeeds_v1 ingesting] many different sources of data of the sa
 
 == Normalize ==
 
-Threat intelligence datasets often have subtle differences between them. CIF [TaxonomyAssessment_v1 normalizes] these data sets which gives you a predictable experience when leveraging the threat intelligence in other applications or processes. 
+Threat intelligence datasets often have subtle differences between them. CIF [TaxonomyAssessment_v1 normalizes] these data sets which gives you a [TaxonomyConfidence_v1 predictable] experience when leveraging the threat intelligence in other applications or processes. 
 
 == Post Process ==
 
