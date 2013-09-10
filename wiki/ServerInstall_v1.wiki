@@ -105,6 +105,8 @@ $ sudo make install
 $ sudo make initdb
 }}}
 
+_note: there is no need for 'make' itself, just 'configure' and 'make install' since this is a Perl based application, nothing to compile..._
+
 = Configuration =
 ----
 == Environment ==
