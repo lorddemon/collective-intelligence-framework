@@ -1,4 +1,4 @@
-#summary the Server Installation (v1) RC4
+#summary the Server Installation (v1)
 
 * Table of Contents *
 <wiki:toc max_depth="2" />
