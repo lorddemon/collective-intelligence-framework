@@ -180,11 +180,12 @@ database = cif
 # if the normal IODEF restriction classes don't fit your needs
 # ref: https://code.google.com/p/collective-intelligence-framework/wiki/RestrictionMapping_v1
 # restriction map is required by cif-router, cif_feed (cif-router, libcif-dbi)
+
 [restriction_map]
-#white = public 
-#green = public 
-#amber = need-to-know 
-#red   = private         
+#need-to-know = amber
+#private = red
+#default = amber
+#public = green     
 
 # logging
 # values 0-4
