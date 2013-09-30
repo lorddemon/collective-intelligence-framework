@@ -140,4 +140,4 @@ CIF has plugins to generate the following feeds:
  * [https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Infrastructure.pm#L18 infrastructure/<assessment>]
  * malware
  * search
- * url
+ * [https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Url.pm#L16 url/assessment>]
