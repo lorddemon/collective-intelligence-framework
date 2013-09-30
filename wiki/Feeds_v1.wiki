@@ -130,3 +130,14 @@ $ cif -q url/phishing -c 85 -p html
 }}}
 
 = Advanced =
+
+The feeds documented above are the most common type of feeds used by the CIF community. CIF has the capability to generate the following feeds assuming it is configured to do so and it taking in data of the correct assessment. 
+
+CIF has plugins to generate the following feeds:
+
+ * [https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Domain.pm#L16 -q domain/<assessment>]
+ * Email
+ * Infrastructure
+ * Malware
+ * Search
+ * Url
