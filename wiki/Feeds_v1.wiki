@@ -136,8 +136,7 @@ The feeds documented above are the most common type of feeds used by the CIF com
 CIF has plugins to generate the following feeds:
 
  * cif -q domain/[https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Domain.pm#L16 <assessment>] -c 85
- * [https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Email.pm#L16 email/<assessment>]
- * [https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Infrastructure.pm#L18 infrastructure/<assessment>]
+ * cif -q email/[https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Email.pm#L16 <assessment>] -c 85
+ * cif -q infrastructure/[https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Infrastructure.pm#L18 <assessment>] -c 85
  * [https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Malware.pm#L16 malware/<assessment>]
  * [https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Url.pm#L16 url/<assessment>]
- * search
