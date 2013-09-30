@@ -139,5 +139,5 @@ CIF has plugins to generate the following feeds:
  * [https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Email.pm#L16 email/<assessment>]
  * [https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Infrastructure.pm#L18 infrastructure/<assessment>]
  * [https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Malware.pm#L16 malware/<assessment>]
- * search
  * [https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Url.pm#L16 url/<assessment>]
+ * search
