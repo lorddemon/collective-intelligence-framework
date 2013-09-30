@@ -128,3 +128,5 @@ $ cif -q url/phishing -c 85 -p snort
 $ cif -q url/phishing -c 85 -p csv
 $ cif -q url/phishing -c 85 -p html
 }}}
+
+= Advanced =
