@@ -140,3 +140,11 @@ CIF has plugins to generate the following feeds:
  * cif -q infrastructure/[https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Infrastructure.pm#L18 <assessment>] -c 85
  * cif -q malware/[https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Malware.pm#L16 <assessment>] -c 85
  * cif -q  url/[https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Url.pm#L16 <assessment>] -c 85
+
+Note: We cannot stress this enough, CIF will only generate feeds under the following conditions:
+
+ 1. it is configured to generate feeds
+ 1. it is configured to generate feeds at the specified confidence level
+ 1. it is ingesting data at the specified confidence level
+
+It is fully expected that your CIF instance will not generate many of the possible feeds due to the reasons above. [https://github.com/collectiveintel/cif-v2/issues/19 In CIFv2], we hope to make feeds less ambiguous. 
