@@ -28,16 +28,16 @@ Usage: perl /opt/cif/bin/cif -q xyz.com
 
 This functionality allows feeds to be written out in other formats removing the need to "parse and convert" the feeds to meet your target device requirements. These formats include:
 
- * snort rules
- * csv
- * json
- * bindzone
- * html table
- * ascii table
- * bro (network monitor)
- * pcap filter
- * iptables
- * raw ARRAY (perl) object (when calling from within a perllib)
+|| Plugin name || Description ||
+|| bindzone || bindzone ||
+|| bro || bro (network monitor) ||
+|| csv || comma separated value ||
+|| html || html table ||
+|| iptables || iptables ||
+|| json || json ||
+|| pcapfilter || pcap filter ||
+|| snort || snort rules ||
+|| table || ascii table ||
 
 If another format is required, please let us know. These plugins are typically 10-20 lines of code and are easy to write. All that's required is a sample of the format (eg: example rules, etc). For devices that have the ability to incorporate perl/python code into their operation (eg: NFSEN, bro, etc..), we are writing code that will hook directly into the API allowing these tools to pull the data in directly, rather than having to write them out to rules, re-parse, etc...
 
