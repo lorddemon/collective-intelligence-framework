@@ -134,7 +134,7 @@ The feeds documented above are the most common type of feeds used by the CIF com
 
 For a complete list of the native feed types available, visit the [API_FeedTypes_v1 FeedTypes] page.
 
-Note: We cannot stress this enough, CIF will only generate feeds under the following conditions:
+*Note:* We cannot stress this enough, CIF will only generate feeds under the following conditions:
 
  1. it is configured to generate feeds
  1. it is configured to generate feeds at the specified confidence level
