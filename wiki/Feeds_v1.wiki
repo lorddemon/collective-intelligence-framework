@@ -58,7 +58,6 @@ alert ip any any -> 176.112.80.0/21 any ( msg:"need-to-know - suspicious hijacke
 }}}
 
 == Usage ==
-For a complete list of the native feed types available, visit the [API_FeedTypes_v1 API]
 
 === Infrastructure ===
 IP-based threats
@@ -133,13 +132,7 @@ $ cif -q url/phishing -c 85 -p html
 
 The feeds documented above are the most common type of feeds used by the CIF community. CIF has the capability to generate the following feeds assuming it is [ServerInstall_v1#Enabling_Feed_Generation configured to do so] and it is [AddingFeeds_v1 taking in data] of the correct assessment. 
 
-CIF has plugins to generate the following feeds:
-
- * cif -q domain/[https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Domain.pm#L16 <assessment>] -c 85
- * cif -q email/[https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Email.pm#L16 <assessment>] -c 85
- * cif -q infrastructure/[https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Infrastructure.pm#L18 <assessment>] -c 85
- * cif -q malware/[https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Malware.pm#L16 <assessment>] -c 85
- * cif -q  url/[https://github.com/collectiveintel/libcif-dbi/blob/v1/lib/CIF/Feed/Plugin/Url.pm#L16 <assessment>] -c 85
+For a complete list of the native feed types available, visit the [API_FeedTypes_v1 FeedTypes page]
 
 Note: We cannot stress this enough, CIF will only generate feeds under the following conditions:
 
