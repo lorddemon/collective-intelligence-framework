@@ -145,6 +145,6 @@ Note: We cannot stress this enough, CIF will only generate feeds under the follo
 
  1. it is configured to generate feeds
  1. it is configured to generate feeds at the specified confidence level
- 1. it is ingesting data at the specified confidence level
+ 1. it is ingesting data with the necessary assessment and confidence level
 
 It is fully expected that your CIF instance will not generate many of the possible feeds due to the reasons above. [https://github.com/collectiveintel/cif-v2/issues/19 In CIFv2], we hope to make feeds less ambiguous. 
