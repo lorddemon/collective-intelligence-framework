@@ -132,7 +132,7 @@ $ cif -q url/phishing -c 85 -p html
 
 The feeds documented above are the most common type of feeds used by the CIF community. CIF has the capability to generate the following feeds assuming it is [ServerInstall_v1#Enabling_Feed_Generation configured to do so] and it is [AddingFeeds_v1 taking in data] of the correct assessment. 
 
-For a complete list of the native feed types available, visit the [API_FeedTypes_v1 FeedTypes page]
+For a complete list of the native feed types available, visit the [API_FeedTypes_v1 FeedTypes] page.
 
 Note: We cannot stress this enough, CIF will only generate feeds under the following conditions:
 
