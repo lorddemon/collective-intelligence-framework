@@ -108,7 +108,7 @@ Usage: perl /opt/cif/bin/cif -q xyz.com
 
 Standard Options:
     -h  --help:             this message
-    -C  --config:           specify cofiguration file, default: /home/giovino/.cif
+    -C  --config:           specify cofiguration file, default: /home/<username>/.cif
 
 Query Options:
     -q  --query:            query string
