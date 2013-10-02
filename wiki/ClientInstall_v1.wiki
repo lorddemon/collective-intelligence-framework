@@ -102,3 +102,93 @@ $ cif -q 'http://www.yahoo.com/example.html'
 $ cif -q a5135ec6f2322cc12f3d9daa38dfb358
 }}}
 = Features =
+{{{
+$ cif -h
+Usage: perl /opt/cif/bin/cif -q xyz.com
+
+Standard Options:
+    -h  --help:             this message
+    -C  --config:           specify cofiguration file, default: /home/giovino/.cif
+
+Query Options:
+    -q  --query:            query string
+    -n  --nolog:            perform a "silent" query (no log query), default: 0
+    -l  --limit:            set the default result limit (queries only), default is set on server, usually around 500.
+    -c  --confidence:       lowest tolerated confidence (0.00 -- 100.00), default
+
+Format Options:
+    -p  --plugin:           output plugin ('Table','Snort','Csv','Json','Html'), default: Table
+    -f  --fields:           set default output fields for default table display
+    -S  --summary:          consolidated Text::Table output (default: True)
+    -N  --nomap:            don't map restrictions
+    -g  --guid:             filter by a specific group id (guid), ex: group1.example.com
+    -G  --groupmap:         turn group mapping (guid to 'group name') on/off, default: 1
+    -e  --exclude:          exclude a specific assessment (search,botnet,malware, etc).
+    -x  --csv-noheader:     don't display the header when using the csv plugin
+
+Nonstandard Options:
+    -z                      compact address field to 32 chars, applies only to defalt table output, default: 1 (0 turns it off)
+    -I  --round-confidence: round (down) confidence to the nearest integer, default 0.
+    -m                      return only the results where "$DETECTTIME >= $TODAY (UTC)" (the most recent results from a feed)
+    -F  --filter-me:        exclude results based on my apikey (usually logged searches)
+
+Example Queries:
+
+    $> perl /opt/cif/bin/cif -q 1.2.3.4
+    $> perl /opt/cif/bin/cif -q 1.2.3.0/24
+    $> perl /opt/cif/bin/cif -q f8e74165fb840026fd0fce1fd7d62f5d0e57e7ac
+    $> perl /opt/cif/bin/cif -q hut2.ru
+    $> perl /opt/cif/bin/cif -q hut2.ru,f8e74165fb840026fd0fce1fd7d62f5d0e57e7ac
+    $> perl /opt/cif/bin/cif hut2.ru
+
+    $> perl /opt/cif/bin/cif -q malware
+    $> perl /opt/cif/bin/cif -q malware
+    $> perl /opt/cif/bin/cif -q infrastructure/botnet -p Snort
+    $> perl /opt/cif/bin/cif -q domain/malware -p bindzone -c 95
+    $> perl /opt/cif/bin/cif -q domain -c 40
+
+    $ /opt/cif/bin/cif -d -q example.com -e search
+
+Configuration:
+
+    configuration file ~/.cif should be readable and look something like:
+
+    [client]
+    apikey = xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    driver = 'http'
+
+    # table_nowarning = 1
+    # csv_noseperator = 1
+
+    [client_http]
+    host = https://example.com:443/api
+    timeout = 60
+
+    # add this if you have a self signed cert
+    verify_tls = 0
+
+    # proxy settings
+    # proxy = https://localhost:5555
+
+Plugin Specific Configurations:
+
+    Table:
+
+        [client]
+        table_nowarning = 1
+
+    Csv:
+        [client]
+        # when we filter out commas in the various fields, do we replace them with "_"'s or just spaces
+        csv_noseperator = 1
+
+    Bindzone:
+
+        [client]
+        bindzone_path = /etc/namedb/
+
+    Snort:
+
+        [client]
+        snort_startsid = 10000000
+}}}
