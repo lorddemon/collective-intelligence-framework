@@ -256,3 +256,30 @@ $ ./configure && make testdeps
 $ sudo make install
 }}}
  # restart apache [ServerInstall_v1#Router_Setup and test]
+
+== v1-1.0.0 ==
+<font color="red">TESTING, v1.0.1 not released yet</font>
+
+If you're upgrading from v1.0.0 you need to update a the Net::DNS::Match dependency.
+
+ # backup the old cif directory
+{{{
+$ sudo mv /opt/cif /opt/cif-v1.0.0
+}}}
+ # update Net::DNS::Match
+{{{
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::DNS::Match'
+}}}
+ # install the latest CIF [https://github.com/collectiveintel/cif-v1/releases release] (be sure to pick the green-highlighted pre-built package, not the 'source')
+{{{
+$ tar -xzvf cif-v1-1.X.X.tar.gz
+$ cd cif-v1-1.X.X
+$ ./configure && make testdeps
+}}}
+ # if 'make testdeps' succeeds, go a-head with the install, otherwise [ServerInstall_v1#Required_applications_and_dependencies walk through your OS/Disto guide for any missing libraries]
+ # finish with the install
+ # be sure to copy any custom .cfg's from /opt/cif-v1.0.0/etc to your new /opt/cif/etc directory
+{{{
+$ sudo make install
+}}}
+ # restart apache [ServerInstall_v1#Router_Setup and test]
