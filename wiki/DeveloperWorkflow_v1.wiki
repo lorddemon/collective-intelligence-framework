@@ -12,4 +12,6 @@ Our developer workflow is done primarily through git and [https://github.com git
 
 Other mailing list threads that can be used for [https://groups.google.com/forum/?fromgroups#!tags/ci-framework/developer reference]
 
+Our cif-v1 repo can be found [https://github.com/collectiveintel/cif-v1 here]. We've simplified the process from many submodules into a single tree to make the development process more fluid.
+
 As always, feel free for help! Sometimes it's easy to create a fake project and test your git-foo in a sandbox first...
