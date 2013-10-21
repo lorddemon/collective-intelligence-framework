@@ -36,10 +36,10 @@ A list of known [https://github.com/collectiveintel/cif-v1/issues issues] for v1
  * (testing) [ClientInstall_OSX7_v1 OSX 7] 
  * (unstable) [ClientInstall_OSX8_v1 OSX 8]
 == Package ==
- # download the latest [https://github.com/collectiveintel/libcif/releases release] (make sure you use the green button to download, *NOT* the 'source code')
+ # download the latest [https://github.com/collectiveintel/cif-v1/releases libcif-v1.x.x], BE SURE TO PICK THE RIGHT DOWNLOAD (green button).
 {{{
-$ tar -xzvf libcif-v1-XXX.tar.gz
-$ cd libcif-v1-XXX
+$ tar -xzvf libcif-v1.x.x.tar.gz
+$ cd libcif-v1.x.x
 $ ./configure && make testdeps
 $ sudo make install
 }}}
