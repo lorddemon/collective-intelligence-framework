@@ -4,82 +4,12 @@
 
 = Introduction =
 
-Our developer workflow is done primarily through git and [https://github.com github]. More generalized information on how to contribute to a project can be found [https://help.github.com/articles/fork-a-repo here].
+Our developer workflow is done primarily through git and [https://github.com github]. More generalized information on how to contribute to a project:
+
+ * https://help.github.com/articles/fork-a-repo
+ * https://help.github.com/articles/creating-a-pull-request
+ * https://help.github.com/articles/branching-out
 
 Other mailing list threads that can be used for [https://groups.google.com/forum/?fromgroups#!tags/ci-framework/developer reference]
 
-The cif-v1 repo is a meta repository with various submodules (cif-smrt, cif-router, libcif, etc) and and their "v1" tree's. The cif-v2 repo is the same, pointing at their various "v2" tree's, and so on.
-
-= Details =
-== Forking ==
-
-*In order to submit a [https://help.github.com/articles/creating-a-pull-request pull-request], you must fork one of these sub-module repos (NOT the cif-v1.git repo, which requires more advanced git configuration to do effectively).*
-
-v1 is split into several [http://git-scm.com/book/en/Git-Tools-Submodules sub-modules] under the cif-v1.git repo:
-
-|| repo || info ||
-||[https://github.com/collectiveintel/libcif/tree/v1 libcif.git] || client side libs, provides: cif ||
-||[https://github.com/collectiveintel/cif-protocol/tree/v1 cif-protocol.git] || the core cif-protocol defs ||
-||[https://github.com/collectiveintel/libcif-dbi/tree/v1 libcif-dbi.git] || database interface, provides: cif_apikeys, cif_feed||
-||[https://github.com/collectiveintel/cif-smrt/tree/v1 cif-smrt.git] || intelligence parser, provides: cif_smrt ||
-||[https://github.com/collectiveintel/cif-smrt-rules/tree/v1 cif-smrt-rules.git] || intel parser rulesets, provides: the smrt cfg's ||
-||[https://github.com/collectiveintel/cif-router/tree/v1 cif-router.git] || the cif-router interface (server) ||
-||[https://github.com/collectiveintel/libcif-dbi-asn libcif-dbi-asn.git] || the asn db plugin (indexer) ||
-||[https://github.com/collectiveintel/libcif-dbi-rir libcif-dbi-rir.git] || the rir db plugin (indexer) ||
-||[https://github.com/collectiveintel/libcif-dbi-cc libcif-dbi-cc.git] || the country code db plugin (indexer) ||
-
-== Cloning ==
-You can follow instruction provided on github page. Basically, you set your username and clone the git repository (using libcif.git as an example):
-
-{{{
-git clone --recursive https://github.com/<username>/libcif.git
-}}}
-
-== Branching ==
-
-If you wish to make changes to any of these sub-modules, you must (using libcif.git as an example):
- # change to the corresponding directory within the repo
-{{{
-cd libcif
-}}}
- # make sure the v1 tree of the repo is cached in your local repo
-{{{
-git checkout v1
-}}}
- # create a new branch for your changes:
-{{{
-git checkout v1 -b <your branch name>
-}}}
-
-== Committing ==
-Commit your changes to the module:
-
-{{{
-git add <changed file(s)>
-git commit -m 'my commit message'
-}}}
-
-== Pushing ==
-Once you're happy with your branch, you can push it back to github:
-
-{{{
-git push origin <your branch name>
-}}}
-
-== Pull Request ==
-To get your changes included in the official branch you need to create a pull request.
-
- # go to your fork page on github
-{{{
-https://github.com/<username>/libcif
-}}}
- # choose the branch you want to merge in the menu
-{{{
-https://github.com/<username>/libcif/tree/mybranch
-}}}
- # click the Pull request button at the top of the page (middle left of the page).
- # for the "base branch" select "v1"
-<img src='https://collective-intelligence-framework.googlecode.com/files/github_screen.png'></img>
- # fill in a pull-req subject and message
- # review your commits, make sure it's what you want (if there are more commits than you made, you're probably trying to base this on the master tree rather than the v1 tree)
- # hit "Send pull request"
+As always, feel free for help! Sometimes it's easy to create a fake project and test your git-foo in a sandbox first...
