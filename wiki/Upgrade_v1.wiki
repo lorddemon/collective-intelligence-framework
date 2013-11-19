@@ -258,8 +258,6 @@ $ sudo make install
  # restart apache [ServerInstall_v1#Router_Setup and test]
 
 == v1-1.0.0 ==
-<font color="red">TESTING, v1.0.1 not released yet</font>
-
 If you're upgrading from v1.0.0 you need to update a the Net::DNS::Match, LWPx::paranoidAgent and Iodef::Pb::Simple dependencies.
 
  # backup the old cif directory
