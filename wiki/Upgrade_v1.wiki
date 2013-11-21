@@ -266,7 +266,7 @@ $ sudo mv /opt/cif /opt/cif-v1.0.0
 }}}
  # update Net::DNS::Match, LWPx::paranoidAgent and Iodef::Pb::Simple
 {{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Iodef::Pb::Simple, Net::DNS::Match, LWPx::ParanoidAgent'
+$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Iodef::Pb::Simple, Net::DNS::Match, LWPx::ParanoidAgent,Net::Abuse::Utils'
 }}}
  # install the latest CIF [https://github.com/collectiveintel/cif-v1/releases release] (be sure to pick the green-highlighted pre-built package, not the 'source')
 {{{
