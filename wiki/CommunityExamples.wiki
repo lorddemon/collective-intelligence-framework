@@ -1,34 +1,3 @@
 #summary a page of 3rd party community examples
 
-= Introductions =
- * [https://overhack.wordpress.com/2012/05/07/introduction-to-the-collective-intelligence-framework Introduction to the Collective Intelligence Framework]
- * [http://holisticinfosec.blogspot.com/2012/07/toolsmith-collective-intelligence.html toolsmith: Collective Intelligence Framework]
- * [http://holisticinfosec.org/toolsmith/pdf/july2012.pdf collective-intelligence-framework - a framework for warehousing intelligence bits (PDF)]
- * a 3rd party, contributed public CIF [http://www.josehelps.com/p/feeds.html instance]
- * [http://www.verizonenterprise.com/security/blog/index.xml?postid=1606 Everyday I'm CIFfling]
-
-= SEM integration =
- * [http://eyeis.net/2012/04/querying-cif-data-from-splunk Querying CIF Data From Splunk]
- * [http://code.google.com/p/collective-intelligence-framework/wiki/ElsaGuide How to get CIF working with ELSA]
- * [http://dfirjournal.wordpress.com/2012/04/28/cif-integration-with-arcsight CIF Integration with ArcSight]
- * [http://dfirjournal.wordpress.com/2012/04/29/using-cif-to-create-content-for-arcsight-part-1 Using CIF to create content for ArcSight – Part 1]
- * [http://dfirjournal.wordpress.com/2012/06/10/using-cif-to-create-content-for-arcsight-part-2 Using CIF to create content for ArcSight – Part 2]
- * [http://ossectools.blogspot.com/2012/06/elsa-with-collective-intelligence.html ELSA with the Collective Intelligence Framework]
- * [http://eyeis.net/2012/09/more-advanced-querying-cif-data-with-splunk More (Advanced) Querying CIF Data With Splunk]
- * [http://infosecmatters.blogspot.co.uk/2013/05/using-cif-with-silk.html Using CIF with SiLK]
-
-= Eye Candy =
- * [https://github.com/divious1/cif_globe CIF Globe (github)]
-
-= Other =
- * 2013-07 -- [https://isc.sans.edu/diary/Blog+Spam+-+annoying+junk+or+a+source+of+intelligence%3F/16186 Blog Spam - annoying junk or a source of intelligence?]
-
-
-
-= Advanced Stuff =
- * [http://eyeis.net/category/cif Category Archives: CIF]
- * [http://ossectools.blogspot.com/2012/04/accelerating-cif-with-sphinx.html Accelerating CIF with Sphinx]
- * [http://scrapbook.zscaler.com/2012/06/cif-lite-customizing-cif-to-your-schema.html CIF-Lite: Customizing CIF to your schema]
- * [http://www.verizonenterprise.com/security/blog/index.xml?postid=1611 Gluing Our Stuff Together]
- * [http://www.verizonenterprise.com/security/blog/index.xml?postid=1613 Recent Improvements to CIFGlue]
- * [http://www.verizonenterprise.com/security/blog/index.xml?postid=1615 CIF: Looking Under the Hood]
+<font color="red">This page has been moved to: http://csirtgadgets.org/examples</font>
