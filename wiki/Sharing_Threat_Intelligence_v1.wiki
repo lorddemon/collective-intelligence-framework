@@ -32,7 +32,7 @@ There is a bare minimum that one should strive for when sharing threat intellige
 ==== Common Parameters ====
 
 || Parameter Name || Values || Description ||
-|| address || <string> ||a IP address, URI, domain ||
+|| address || <string> ||IP address, URI, domain ||
 || assessment || <string> || see [TaxonomyAssessment_v1 Assessment] ||
 || detecttime || <string> || ISO 8601 preferred (2013-06-18T10:10:00Z) ||
 || portlist || <int> || 22,25,80 ||
