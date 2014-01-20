@@ -36,7 +36,7 @@ GET https://cif.example.com/api?apikey=249cd5fd-04e3-46ad-bf0f-c02030cc864a
 The API uses the 'q' parameter to respond to queries:
 
 {{{
-GET https://cif.example.com/apiq=example.com
+GET https://cif.example.com/api?q=example.com
 
 GET https://cif.example.com/api?q=infrastructure/botnet
 
