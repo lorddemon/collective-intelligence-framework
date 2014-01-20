@@ -31,9 +31,13 @@ The following dependency installation assumes the RHEL [http://fedoraproject.org
 
 == Dependencies Installation ==
 ----
- # install base server dependencies (as root) first
+ # make sure your base OS is up-to-date (as root) first
 {{{
-$ yum -y install sudo bind-utils rng-tools postgresql-server httpd httpd-devel mod_ssl gcc make expat expat-devel uuid uuid-devel wget bind rsync libuuid-devel mod_perl mod_perl-devel ntpdate
+# yum upgrade
+}}}
+ # install base server dependencies (as root)
+{{{
+# yum -y install sudo bind-utils rng-tools postgresql-server httpd httpd-devel mod_ssl gcc make expat expat-devel uuid uuid-devel wget bind rsync libuuid-devel mod_perl mod_perl-devel ntpdate
 }}}
  # make sure your clock is up to date (some packages might not install if it's too far skewed)
 {{{
