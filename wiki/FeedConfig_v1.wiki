@@ -122,4 +122,4 @@ alternativeid_restriction = 'public'
 || field_map ||  <csv-string> || a comma separated list of the fields ||
 
 === More examples ===
-Additional example config files can be found [https://github.com/collectiveintel/cif-smrt-rules/tree/v1/etc here] in the cif-smrt-rules source repository.
+Additional example config files can be found [https://github.com/collectiveintel/cif-v1/tree/master/cif-smrt/rules/etc here] in the cif-smrt source repository.
