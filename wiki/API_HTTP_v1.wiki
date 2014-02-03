@@ -35,12 +35,19 @@ GET https://cif.example.com/api?apikey=249cd5fd-04e3-46ad-bf0f-c02030cc864a
 == Queries ==
 The API uses the 'q' parameter to respond to queries:
 
+==== Domain: example.com ====
 {{{
-GET https://cif.example.com/api?q=example.com
+curl -k -i -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1664.3 Safari/537.36" -H "Accept => application/json" "https://cif.example.com/api?apikey=<api_key>&q=example.com"
+}}}
 
-GET https://cif.example.com/api?q=infrastructure/botnet
+==== Feed: infrastructure/botnet ====
+{{{
+curl -k -i -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1664.3 Safari/537.36" -H "Accept => application/json" "https://cif.example.com/api?apikey=<api_key>&q=infrastructure/botnet"
+}}}
 
-GET https://cif.example.com/api?apikey=249cd5fd-04e3-46ad-bf0f-c02030cc864a&q=192.168.1.1/24
+==== CIDR: 192.168.1.1/24 ====
+{{{
+curl -k -i -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1664.3 Safari/537.36" -H "Accept => application/json" "https://cif.example.com/api?apikey=<api_key>&q=infrastructure/botnet"
 }}}
 
 == Submissions ==
