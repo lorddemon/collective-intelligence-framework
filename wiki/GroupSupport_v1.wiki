@@ -14,7 +14,7 @@ restriction = 'need-to-know'
 alternativeid = 'http://amada.abuse.ch/?search=<address>'
 alternativeid_restriction = 'public'
 confidence = 65
-guid = mygroup.example.com
+guid = mygroup1.example.com
 }}}
   # to enable publishing of the group-name (otherwise it will come across as a guid) via the API, simply modify the /home/cif/.cif file on the cif-router and restart the router:
 {{{
