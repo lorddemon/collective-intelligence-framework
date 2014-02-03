@@ -35,6 +35,8 @@ GET https://cif.example.com/api?apikey=249cd5fd-04e3-46ad-bf0f-c02030cc864a
 == Queries ==
 The API uses the 'q' parameter to respond to queries:
 
+== Curl Examples ==
+
 Note: Do not forget to change the following in these examples;
  * Hostname
  * API Key
