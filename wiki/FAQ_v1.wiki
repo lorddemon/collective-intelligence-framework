@@ -86,3 +86,14 @@ reference: https://groups.google.com/d/topic/ci-framework/LDNSJnf6BZg/discussion
 ----
 
 running 'make purgedb' will purge all your tables, except for the apikeys. 
+
+----
+=== Apache spikes to 100% and 'hangs' ===
+----
+
+Try switching to apache2-mpm-prefork
+==== Ubuntu ====
+This will remove apache2-mpm-worker and install -prefork with handles connections a little better but at the cost of performance (negligible). If you begin to see "UNAUTHORIZED" messages, try tuning your apache2.conf MaxClient to 256 and restarting apache (under the 'mpm_prefork_module' section).
+{{{
+$ sudo aptitude install apache2-mpm-prefork
+}}}
