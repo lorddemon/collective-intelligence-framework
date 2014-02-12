@@ -3,6 +3,7 @@
 All content licensed under [http://creativecommons.org/licenses/by-sa/3.0 CCv3] unless otherwise specifically specified.
 
 = Papers =
+ * 2013 - [https://www.sans.org/reading-room/whitepapers/warfare/tools-standards-cyber-threat-intelligence-projects-34375 Tools and Standards for Cyber Threat Intelligence Projects] SANS Institute
  * 2012 - [http://www.cert.pl/PDF/MP-IST-111-18.pdf Proactive Detection and Automated Exchange of Network Security Incidents] CERT-PL 
  * 2012 - [http://www.enisa.europa.eu/activities/cert/support/proactive-detection/proactive-detection-report Proactive Detection of Network Security Incidents] ENISA
  * 2011 - ProjectAvenger CERTCC/SEI  (independent) 
