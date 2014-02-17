@@ -49,7 +49,7 @@ $ sudo adduser cif
 $ sudo chmod 770 /home/cif
 }}}
 ----
- # set up your user's environment (typically ~/.base_profile)
+ # set up your user's environment (typically ~/.bash_profile)
 {{{
 if [ -d "/opt/cif/bin" ]; then
     PATH="/opt/cif/bin:$PATH"
