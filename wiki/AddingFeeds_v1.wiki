@@ -129,7 +129,7 @@ cif_smrt should output a line for each item in the data source. If  nothing come
 
 Generate feeds using this command
 {{{
-~$ /opt/cif/bin/cif_feeds -d
+~$ /opt/cif/bin/cif_feed -d
 }}}
 
 == Display the Feed ==
