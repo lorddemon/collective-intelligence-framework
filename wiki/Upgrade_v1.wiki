@@ -14,7 +14,7 @@ If you do lose everything, ... it's not the end of the world, within a few weeks
 </font>
 
  * v0.01, v0.02 instances (xml) are not supported
- * pre-v1-RC2 instances are not supported
+ * pre-v1-RC4 instances are not supported
 
 = Details =
 From v0, the database upgrade primarily:
@@ -191,74 +191,8 @@ $ perl sbin/migrate-data.pl -t 4 -d
 }}}
  # if you're doing this as a split process, repeat these steps with the new data (the process will remember where to start with the /tmp/cif-upgrade-database.journal file)
 
-== v1-RC2 ==
-----
-If you're upgrading from RC2, *THIS WILL PURGE ALL EXISTING DATA*, but it will preserve your apikeys. Due to some data-structure changes in RC3 there is no way around this.
-
- # backup the old cif directory if you have any custom rule-sets:
-{{{
-$ sudo mv /opt/cif /opt/cif-v1-old
-}}}
- # install the latest CIF [https://github.com/collectiveintel/cif-v1/releases release] (be sure to pick the green-highlighted pre-built package, not the 'source')
-{{{
-$ tar -xzvf cif-v1-1.X.X.tar.gz
-$ cd cif-v1-1.X.X
-$ ./configure && make testdeps
-$ sudo make install
-$ make rebuilddb
-}}}
- # restart apache [ServerInstall_v1#Router_Setup and test]
-
-== v1-RC3 ==
-----
-If you're upgrading from RC3, there's nothing to do other than install the new code
-
- # backup the old cif directory
-{{{
-$ sudo mv /opt/cif /opt/cif-v1-old
-}}}
- # install the latest CIF [https://github.com/collectiveintel/cif-v1/releases release] (be sure to pick the green-highlighted pre-built package, not the 'source')
-{{{
-$ tar -xzvf cif-v1-1.X.X.tar.gz
-$ cd cif-v1-1.X.X
-$ ./configure && make testdeps
-$ sudo make install
-}}}
- # restart apache [ServerInstall_v1#Router_Setup and test]
-
-== v1-RC4 ==
-----
-If you're upgrading from RC4, there's a few things that need to be done
-
- # backup the old cif directory
-{{{
-$ sudo mv /opt/cif /opt/cif-v1-old
-}}}
- # update Iodef::Pb::Simple
-{{{
-$ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Iodef::Pb::Simple'
-}}}
- # if it doesn't auto-update to v0.20 install it manually:
-{{{
-$ wget http://search.cpan.org/CPAN/authors/id/S/SA/SAXJAZMAN/iodef/Iodef-Pb-Simple-0.20.tar.gz
-$ tar -zxvf Iodef-Pb-Simple-0.20.tar.gz && cd Iodef-Pb-Simple-0.20
-$ perl Makefile.PL && make && sudo make install
-}}}
- # install the latest CIF [https://github.com/collectiveintel/cif-v1/releases release] (be sure to pick the green-highlighted pre-built package, not the 'source')
-{{{
-$ tar -xzvf cif-v1-1.X.X.tar.gz
-$ cd cif-v1-1.X.X
-$ ./configure && make testdeps
-}}}
- # if 'make testdeps' succeeds, go a-head with the install, otherwise [ServerInstall_v1#Required_applications_and_dependencies walk through your OS/Disto guide for any missing libraries]
- # finish with the install
-{{{
-$ sudo make install
-}}}
- # restart apache [ServerInstall_v1#Router_Setup and test]
-
-== v1-1.0.0 ==
-If you're upgrading from v1.0.0 you need to update a the Net::DNS::Match, LWPx::paranoidAgent and Iodef::Pb::Simple dependencies.
+== v1-1.0.1 ==
+If you're upgrading from v1.0.0-RC4 you need to update a the Net::DNS::Match, LWPx::paranoidAgent and Iodef::Pb::Simple dependencies.
 
  # backup the old cif directory
 {{{
