@@ -14,7 +14,7 @@ If you do lose everything, ... it's not the end of the world, within a few weeks
 </font>
 
  * v0.01, v0.02 instances (xml) are not supported
- * pre-v1-RC4 instances are not supported
+ * pre-v1.0.0instances are not supported
 
 = Details =
 From v0, the database upgrade primarily:
