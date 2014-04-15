@@ -16,9 +16,9 @@ Any observation (IP, domain, URL) with the following will be whitelisted during 
 
 By default CIFv1 is configured with the following whitelists:
 
- * https://github.com/collectiveintel/cif-smrt-rules/blob/v1/etc/00_alexa_whitelist.cfg
- * https://github.com/collectiveintel/cif-smrt-rules/blob/v1/etc/00_mirc_whitelist.cfg
- * https://github.com/collectiveintel/cif-smrt-rules/blob/v1/etc/00_whitelist.cfg
+ * https://github.com/collectiveintel/cif-v1/tree/master/cif-smrt/rules/etc/00_alexa_whitelist.cfg
+ * https://github.com/collectiveintel/cif-v1/tree/master/cif-smrt/rules/etc/00_mirc_whitelist.cfg
+ * https://github.com/collectiveintel/cif-v1/tree/master/cif-smrt/rules/etc/00_whitelist.cfg
  
 Looking at the 00_whitelist.cfg file you'll see there are additional configuration files that contribute to whitelisting.
 
