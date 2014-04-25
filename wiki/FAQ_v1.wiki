@@ -97,3 +97,15 @@ This will remove apache2-mpm-worker and install -prefork with handles connection
 {{{
 $ sudo aptitude install apache2-mpm-prefork
 }}}
+
+----
+=== cif_crontool already running or hung ===
+----
+
+ * make sure any cif-crontool / cif-smrt instances are killed (ps aux | grep cif_crontool)
+ * remove any stale lock files:
+{{{
+rm /tmp/.cif_crontool.err cif_crontool.lock.*
+}}}
+
+ref: https://groups.google.com/forum/#!topic/ci-framework/5K5KGG7l1EU
