@@ -29,6 +29,10 @@ SELINUX=permissive
 === EPEL Repo ===
 The following dependency installation assumes the RHEL [http://fedoraproject.org/wiki/EPEL EPEL] repo is not enabled. If you would like to enable it and leverage that there are 3rd party [http://www.thegeekstuff.com/2012/06/enable-epel-repository instructions] for doing so. Most (if not all) the 'wget' deps should install via the repo using 'yum', but we have done no testing to verify this. Feedback welcome.
 
+If EPEL is NOT enabled, please note that an extra dep is required for Encode::Locale:
+
+https://github.com/collectiveintel/cif-v1/issues/66
+
 == Dependencies Installation ==
 ----
  # make sure your base OS is up-to-date (as root) first
