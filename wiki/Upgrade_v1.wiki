@@ -266,6 +266,10 @@ $ ./configure && make testdeps
 {{{
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Net::DNS Net::Abuse::Utils Net::Abuse::Utils::Spamhaus'
 }}}
+ # update Net::DNS (fixes some recent bugs)
+{{{
+$ sudo cpanm http://search.cpan.org/CPAN/authors/id/N/NL/NLNETLABS/Net-DNS-0.76_2.tar.gz
+}}}
  # finish with the install
  # be sure to copy any custom .cfg's from /opt/cif-v1.0.2/etc to your new /opt/cif/etc directory
 {{{
