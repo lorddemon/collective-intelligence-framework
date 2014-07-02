@@ -11,4 +11,4 @@ A page to highlight and record tools in the threat intelligence space
  * [https://github.com/MISP/MISP MISP] - Malware Information Sharing Platform
  * [http://n6.cert.pl/ n6] - a platform for collection, processing and transmission of information on security incidents on the network
  * [https://csirt.cesnet.cz/Warden/Intro WARDEN] - a system for efficient sharing information about detected events (threats).
- * [https://github.com/cikl Cikl] - a RabbitMQ based fork of v1
+ * [https://github.com/cikl Cikl] - a RabbitMQ based fork of CIF v1
