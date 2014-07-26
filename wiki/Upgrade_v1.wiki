@@ -248,8 +248,6 @@ cif=# \q
  # restart apache [ServerInstall_v1#Router_Setup and test]
 
 == v1-1.0.3 ==
-<font color="red">TESTING, TRY AT OWN RISK</font>
-
  # <font color="red">if you're upgrading from a version older than 1.0.2, be sure to follow that upgrade first</font>
  # backup the old cif directory
 {{{
