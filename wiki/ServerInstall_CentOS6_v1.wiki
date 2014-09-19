@@ -84,6 +84,15 @@ $ tar -zxvf version-0.9902.tar.gz
 $ cd version-0.9902
 $ perl Makefile.PL && make && sudo make install
 }}}
+ # install cpanminus
+ # upgrade cpanm to work with github
+{{{
+$ sudo cpanm --self-upgrade
+}}}
+ # work-around for the Linux::Cpuinfo dep
+{{{
+$ sudo cpanm git://github.com/gitpan/Linux-Cpuinfo.git@1.7 --force
+}}}
  # install the remaining CPAN modules
 {{{
 $ sudo PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Module::Build,Test::SharedFork,Test::TCP,Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS::Match,Snort::Rule,Parse::Range,Sys::MemInfo,JSON::XS,File::Type,LWP::UserAgent,Class::Trigger,Class::DBI,Net::Patricia,Text::Table,Mozilla::CA,IO::Socket::SSL,IO::Socket::INET6,LWP::Protocol::https,Text::CSV,XML::RSS,LWPx::ParanoidAgent,Log::Dispatch,ZeroMQ'
