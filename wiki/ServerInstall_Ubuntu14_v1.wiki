@@ -1,7 +1,5 @@
 #summary ubuntu install doc (v1)
 
-<font color="red">THIS IS DOC IN PROGRESS, PLZ EMAIL UPDATES TO THE LIST</font>
-
 = Introduction =
 This assumes a clean install of Ubuntu 14 LTS with all base system updates applied. There are some duplicates between the system wide deps and CPAN, this can be ignored. In some cases we need an upgraded version of the module and by installing the system-wide dependency first, it installs some of the other deps via that mechanism too, simplifying the install. Sometimes it's easier to get bugs fixes into CPAN faster than the more stable Debian/Ubuntu tree.
 
