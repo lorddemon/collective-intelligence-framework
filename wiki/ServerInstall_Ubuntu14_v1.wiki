@@ -103,11 +103,15 @@ $ sudo su - root
 }}}
  # Install the base dependencies from the Ubuntu repositories (as root), you may need to do a "aptitude update && aptitude safe-upgrade" if you run into a lot of conflicts first
 {{{
-$ aptitude -y install perl rng-tools build-essential postgresql apache2 apache2-threaded-dev gcc g++ make libexpat1-dev libapache2-mod-perl2 libclass-dbi-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev rsync libunicode-string-perl libconfig-simple-perl libmodule-pluggable-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libapr1-dbg libdate-manip-perl libtry-tiny-perl libclass-accessor-perl pkg-config vim libjson-xs-perl perl-modules libdigest-sha-perl libsnappy-dev libdatetime-format-dateparse-perl liblwp-protocol-https-perl libtime-hires-perl libnet-patricia-perl libnet-ssleay-perl liblog-dispatch-perl libregexp-common-net-cidr-perl libtext-table-perl libdatetime-perl libencode-perl libmime-base64-perl libhtml-table-perl libzmq-dev libzmq1 libzeromq-perl libssl-dev
+$ aptitude -y install perl rng-tools build-essential postgresql apache2 apache2-threaded-dev gcc g++ make libexpat1-dev libapache2-mod-perl2 libclass-dbi-perl libnet-cidr-perl libossp-uuid-perl libxml-libxml-perl libxml2-dev libmodule-install-perl libapache2-request-perl libdbd-pg-perl bind9 libregexp-common-perl libxml-rss-perl libapache2-mod-gnutls libapreq2-dev rsync libunicode-string-perl libconfig-simple-perl libmodule-pluggable-perl libmime-lite-perl libfile-type-perl libtext-csv-perl libio-socket-inet6-perl libapr1-dbg libdate-manip-perl libtry-tiny-perl libclass-accessor-perl pkg-config vim libjson-xs-perl perl-modules libdigest-sha-perl libsnappy-dev libdatetime-format-dateparse-perl liblwp-protocol-https-perl libtime-hires-perl libnet-patricia-perl libnet-ssleay-perl liblog-dispatch-perl libregexp-common-net-cidr-perl libtext-table-perl libdatetime-perl libencode-perl libmime-base64-perl libhtml-table-perl libzmq-dev libzmq1 libzeromq-perl libssl-dev cpanminus
+}}}
+ # work-around for the Linux::Cpuinfo dep
+{{{
+$ sudo cpanm git://github.com/gitpan/Linux-Cpuinfo.git@1.7 --force
 }}}
  # Install the remaining perl dependencies from CPAN (as root)
 {{{
-$ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Test::SharedFork,Test::TCP,Net::Abuse::Utils,Linux::Cpuinfo,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,Net::SSLeay,ZeroMQ,Sys::MemInfo,LWP::Protocol::https,LWPx::ParanoidAgent'
+$ PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'install Test::SharedFork,Test::TCP,Net::Abuse::Utils,Google::ProtocolBuffers,Iodef::Pb::Simple,Compress::Snappy,Net::Abuse::Utils::Spamhaus,Net::DNS,Net::DNS::Match,Snort::Rule,Parse::Range,Log::Dispatch,Net::SSLeay,ZeroMQ,Sys::MemInfo,LWP::Protocol::https,LWPx::ParanoidAgent'
 }}}
 
 == System Setup ==
