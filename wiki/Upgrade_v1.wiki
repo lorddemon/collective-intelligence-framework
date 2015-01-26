@@ -274,3 +274,7 @@ $ sudo cpanm http://search.cpan.org/CPAN/authors/id/N/NL/NLNETLABS/Net-DNS-0.77.
 $ sudo make install
 }}}
  # restart apache [ServerInstall_v1#Router_Setup and test]
+
+== v1-1.0.4 ==
+
+Follow the v1.0.3 instructions.
