@@ -105,7 +105,7 @@ $ aptitude -y install perl rng-tools build-essential postgresql apache2 apache2-
 }}}
  # work-around for the Linux::Cpuinfo dep
 {{{
-$ sudo cpanm git://github.com/gitpan/Linux-Cpuinfo.git@1.7 --force
+$ sudo cpanm https://github.com/gitpan/Linux-Cpuinfo/archive/gitpan_version/1.7.tar.gz --force
 }}}
  # Install the remaining perl dependencies from CPAN (as root)
 {{{
